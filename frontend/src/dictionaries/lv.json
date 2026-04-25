@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Pakalpojumi",
+    "about": "Par mums",
+    "contact": "Kontakti",
+    "login": "Ieiet",
+    "register": "Reģistrēties",
+    "admin_dashboard": "Administratora panelis",
+    "language": "Valoda",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Sāciet autovadītāja darbu Nīderlandē — Mēs parūpēsimies par pārējo.",
+    "tagline": "1 komanda · 1 misija",
+    "mission_words": [
+      "KOMANDA",
+      "MISIJA"
+    ],
+    "cta_primary": "Sazinieties ar mums",
+    "cta_secondary": "Mūsu pakalpojumi",
+    "cta_whatsapp": "WhatsApp",
+    "stats_clients": "Apmierinātu klientu",
+    "stats_years": "Gadi pieredzes",
+    "stats_available": "Pieejams",
+    "partners_label": "Mūsu partneri",
+    "badge": "Šoferu pieņemšana darbā · Amsterdam, NL",
+    "stats_partners": "Galvenie partneri",
+    "trust_line": "Nav pieredzes ar holandiešu birokrātiju? Nekas — mēs jūs vadām soli pa solim."
+  },
+  "services": {
+    "title": "Mūsu Pakalpojumi",
+    "transport": {
+      "title": "Transports",
+      "description": "Uzticams un ātrs transports visā Eiropā."
+    },
+    "logistics": {
+      "title": "Loģistika",
+      "description": "Pilnīgi loģistikas risinājumi, kas pielāgoti jūsu uzņēmumam."
+    },
+    "cargo": {
+      "title": "Krava",
+      "description": "Drošs un efektīvs kravu pārvadājums jebkura veida kravai."
+    },
+    "what_we_do": "Ko mēs darām",
+    "items": [
+      {
+        "title": "Vadītāju iekārtošana darbā",
+        "desc": "Mēs savienojam vadītājus ar piegādes darbiem uzticamos loģistikas uzņēmumos Amsterdamā un apkārtnē."
+      },
+      {
+        "title": "Dokumentu atbalsts",
+        "desc": "Mēs palīdzam kārtot visus nepieciešamos dokumentus legālai darbam Nīderlandē."
+      },
+      {
+        "title": "Izmitināšana",
+        "desc": "Mēs nodrošinām mājokļa iespējas (koplietošanas istabas vai dzīvokļi) atkarībā no jūsu līguma."
+      },
+      {
+        "title": "Pastāvīgs atbalsts",
+        "desc": "Mēs esam pieejami, lai palīdzētu pirms un pēc darba uzsākšanas."
+      },
+      {
+        "title": "Uzticamas iespējas",
+        "desc": "Mēs sadarbojamies ar iedibinātiem loģistikas partneriem, piedāvājot stabilas, ilgtermiņa darbavietas."
+      },
+      {
+        "title": "Amsterdamas reģions",
+        "desc": "Mēs koncentrējamies uz darba piedāvājumiem Amsterdamā un tuvējās pilsētās."
+      }
+    ]
+  },
+  "about": {
+    "title": "Par Team Cargo",
+    "description": "Team Cargo ir šoferu vervēšanas aģentūra ar mītnesvietu Amsterdamā, Nīderlandē. Mēs saistām vietējos un starptautiskos šoferus ar stabilām darbavietām vadošajos loģistikas uzņēmumos Amsterdamas reģionā.",
+    "values_title": "Mūsu vērtības",
+    "values": [
+      "Uzticamība",
+      "Efektivitāte",
+      "Klientorientācija",
+      "Drošība"
+    ],
+    "label": "Par mums",
+    "description2": "Mēs sadarbojamies ar uzticamiem partneriem, piemēram, GLS, FedEx, Amazon un DPD, palīdzot šoferiem ātri un uzticami atrast darbu. No pieteikuma līdz iestāšanās posmam mēs nodrošinām pilnu atbalstu — tostarp dokumentu palīdzību un izmitināšanu šoferiem, kas pārceļas no ārzemēm.",
+    "drivers_placed": "500+ iekārtoti vadītāji",
+    "years_active": "Gadi aktīvi"
+  },
+  "contact": {
+    "title": "Kontakti",
+    "name": "Vārds",
+    "email": "E-pasts",
+    "message": "Ziņojums",
+    "send": "Sūtīt",
+    "success": "Jūsu ziņojums ir nosūtīts!",
+    "subtitle": "Sazinieties ar mums, lai saņemtu piedāvājumu vai papildinformāciju.",
+    "success_subtitle": "Mēs sazināsimies ar jums pēc iespējas ātrāk."
+  },
+  "auth": {
+    "login_title": "Ieiet",
+    "register_title": "Izveidot kontu",
+    "email": "E-pasta adrese",
+    "password": "Parole",
+    "login_btn": "Ieiet",
+    "register_btn": "Reģistrēties",
+    "or": "vai",
+    "continue_google": "Turpināt ar Google",
+    "continue_apple": "Turpināt ar Apple",
+    "no_account": "Vēl nav konta?",
+    "have_account": "Jau ir konts?",
+    "welcome_login": "Laipni atgriežaties Team Cargo",
+    "welcome_register": "Izveidot jaunu kontu",
+    "loading": "Ielādē...",
+    "error_generic": "Radās kļūda",
+    "confirm_password": "Apstipriniet paroli",
+    "passwords_no_match": "Paroles nesakrīt",
+    "password_too_short": "Parolei jābūt vismaz 8 rakstzīmes garai",
+    "forgot_password": "Aizmirsāt paroli?",
+    "forgot_title": "Atiestatīt paroli",
+    "forgot_desc": "Ievadiet savu e-pastu un mēs nosūtīsim saiti.",
+    "send_reset_link": "Nosūtīt saiti",
+    "sending": "Nosūta...",
+    "reset_sent_desc": "Ja tas e-pasts ir reģistrēts, mēs nosūtījām saiti. Pārbaudiet iesūtni.",
+    "back_to_login": "Atpakaļ uz pieteikšanos",
+    "resend_email": "Atkārtoti nosūtīt e-pastu",
+    "verify_email_title": "Pārbaudiet savu iesūtni",
+    "verify_email_desc": "Mēs nosūtījām verifikācijas e-pastu. Lūdzu, verificējiet e-pastu pirms pieteikšanās.",
+    "first_name": "Vards",
+    "last_name": "Uzvards",
+    "verify_email_desc_short": "Parbaudiet iesutni, lai aktivizetu kontu",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Pakalpojumi",
+    "col_company": "Uzņēmums",
+    "col_legal": "Juridiskais",
+    "privacy": "Privātuma politika",
+    "cookies": "Sīkdatņu politika",
+    "tagline": "1 komanda · 1 misija",
+    "rights": "Visas tiesības aizsargātas.",
+    "terms": "Noteikumi un nosacījumi",
+    "tagline_sub": "Šoferu rekrutēšana — Amsterdama"
+  },
+  "housing": {
+    "label": "Pārvietojošajiem šoferiem",
+    "title": "Mēs arī palīdzam atrast mājokli",
+    "description": "Pārceļaties uz Nīderlandi no ārvalstīm? Mēs noorganizējam tīru, komfortablu mājokli jums — lai varētu koncentrēties uz jauno darbu, neuztraucoties par nakšņošanas vietu. Bez slēptajām izmaksām, bez stresa.",
+    "perks": [
+      "Pilnībā iekārtots dzīvoklis iekļauts",
+      "Internets un komunālie pakalpojumi segti",
+      "Koplietojamā virtuve un dzīvojamā telpa",
+      "Netālu no jūsu darba depo"
+    ],
+    "cta": "Jautājiet par mājokļa iespējām"
+  },
+  "cookie_banner": {
+    "title": "Mēs izmantojam sīkdatnes",
+    "description": "Mēs izmantojam būtiskas un analītiskas sīkdatnes, lai uzlabotu jūsu pieredzi. Noklikšķinot uz Pieņemt, jūs piekrītat sīkdatņu izmantošanai.",
+    "accept": "Pieņemt visu",
+    "reject": "Noraidīt izvēles",
+    "cookie_policy_link": "Sīkdatņu politika",
+    "privacy_policy_link": "Privātuma politika"
+  },
+  "privacy": {
+    "label": "Juridisks",
+    "title": "Privātuma politika",
+    "last_updated": "Pēdējo reizi atjaunināts: 2026. gada aprīlis",
+    "s1_title": "1. Kas mēs esam",
+    "s1_p": "Team Cargo ir vadītāju vervēšanas aģentūra, kas atrodas Amsterdamā, Nīderlandē. Mēs savienojam vadītājus ar loģistikas uzņēmumiem un atbalstām tos darba izvietošanā, dokumentācijā un izmitināšanā.",
+    "s1_email": "E-pasts:",
+    "s2_title": "2. Kādus datus mēs vācam",
+    "s2_intro": "Mēs varam apkopot šādus personas datus:",
+    "s2_items": [
+      "Pilns vārds",
+      "E-pasta adrese",
+      "Tālruņa numurs (ieskaitot WhatsApp)",
+      "CV / darba pieredze",
+      "Identifikācija vai dokumentācija (ja nepieciešams nodarbinātībai)",
+      "Atrašanās vieta vai dzīvesvietas valsts"
+    ],
+    "s3_title": "3. Kā mēs izmantojam jūsu datus",
+    "s3_intro": "Mēs izmantojam jūsu datus, lai:",
+    "s3_items": [
+      "Apstrādātu jūsu darba pieteikumu",
+      "Saskaņotu jūs ar piemērotām darba iespējām",
+      "Sazinātos ar jums par jūsu pieteikumu",
+      "Palīdzētu ar dokumentāciju un integrāciju",
+      "Uzlabotu mūsu pakalpojumus"
+    ],
+    "s4_title": "4. Juridiskais pamats (VDAR)",
+    "s4_intro": "Mēs apstrādājam jūsu datus, pamatojoties uz:",
+    "s4_items": [
+      "Jūsu piekrišanu (kad jūs piesakāties vai sazināties ar mums)",
+      "Līgumisko nepieciešamību (darba izvietošanas process)",
+      "Juridiskajiem pienākumiem"
+    ],
+    "s5_title": "5. Datu kopīgošana",
+    "s5_intro": "Mēs varam kopīgot jūsu datus ar:",
+    "s5_items": [
+      "Partneruzņēmumiem loģistikas nozarē (piem., GLS, FedEx, Amazon, DPD — darba izvietošanai)",
+      "Valdības vai tiesībaizsardzības iestādēm (ja to pieprasa likums)"
+    ],
+    "s5_no_sell": "Mēs nepārdodam jūsu personas datus.",
+    "s6_title": "6. Datu glabāšana",
+    "s6_p": "Mēs glabājam jūsu datus tikai tik ilgi, cik nepieciešams vervēšanas mērķiem vai kā to nosaka likums.",
+    "s7_title": "7. Jūsu tiesības",
+    "s7_intro": "Saskaņā ar VDAR jums ir tiesības:",
+    "s7_items": [
+      "Piekļūt saviem datiem",
+      "Labot neprecīzus datus",
+      "Pieprasīt dzēšanu (\"tiesības tikt aizmirstam\")",
+      "Jebkurā laikā atsaukt piekrišanu",
+      "Iesniegt sūdzību Nīderlandes Datu aizsardzības iestādei (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Datu drošība",
+    "s8_p": "Mēs veicam atbilstošus tehniskos un organizatoriskos pasākumus, lai aizsargātu jūsu personas datus pret nesankcionētu piekļuvi, zaudēšanu vai ļaunprātīgu izmantošanu.",
+    "s9_title": "9. Kontakti",
+    "s9_intro": "Ja jums ir jautājumi vai pieprasījumi par šo Privātuma politiku, lūdzu, sazinieties ar mums:",
+    "s10_title": "10. Atjauninājumi",
+    "s10_p": "Mēs laiku pa laikam varam atjaunināt šo Privātuma politiku. Lūdzu, regulāri pārbaudiet šo lapu, lai redzētu jaunāko versiju."
+  },
+  "cookies_page": {
+    "label": "Juridisks",
+    "title": "Sīkdatņu politika",
+    "last_updated": "Pēdējo reizi atjaunināts: 2026. gada aprīlis",
+    "s1_title": "1. Kas ir sīkdatnes?",
+    "s1_p": "Sīkdatnes ir mazi teksta faili, kas tiek saglabāti jūsu ierīcē, kad apmeklējat vietni. Tās palīdz mums uzlabot jūsu pieredzi un ļauj dažām vietnes funkcijām darboties pareizi.",
+    "s2_title": "2. Sīkdatņu veidi, ko mēs izmantojam",
+    "s2_essential_title": "Galvenās sīkdatnes",
+    "s2_essential_p": "Nepieciešamas vietnes pareizai darbībai — piemēram, navigācijai, veidlapām un sesiju pārvaldībai. Tās nevar atspējot.",
+    "s2_analytics_title": "Analītiskās sīkdatnes",
+    "s2_analytics_p": "Palīdz mums saprast, kā apmeklētāji izmanto mūsu vietni (piemēram, apmeklētās lapas, pavadītais laiks). Mēs to izmantojam vietnes uzlabošanai.",
+    "s2_functional_title": "Funkcionālās sīkdatnes",
+    "s2_functional_p": "Atceras jūsu preferences — piemēram, valodas izvēli — lai jums nebūtu tās jāizvēlas no jauna katrā apmeklējumā.",
+    "s3_title": "3. Kā mēs izmantojam sīkdatnes",
+    "s3_intro": "Mēs izmantojam sīkdatnes, lai:",
+    "s3_items": [
+      "Nodrošinātu vietnes pareizu darbību",
+      "Uzlabotu vietnes veiktspēju un lietotāja pieredzi",
+      "Saprastu, kā lietotāji mijiedarbojas ar mūsu saturu",
+      "Atcerētos valodas un attēlojuma preferences"
+    ],
+    "s4_title": "4. Sīkdatņu pārvaldība",
+    "s4_p1": "Sīkdatnes var kontrolēt vai atspējot pārlūkprogrammas iestatījumos. Ņemiet vērā, ka noteiktu sīkdatņu atspējošana var ietekmēt mūsu vietnes funkcionalitāti.",
+    "s4_p2": "Lielākā daļa pārlūkprogrammu ļauj: skatīt saglabātās sīkdatnes, dzēst sīkdatnes un bloķēt sīkdatnes no konkrētām vai visām vietnēm. Norādījumus skatiet pārlūkprogrammas palīdzības dokumentācijā.",
+    "s5_title": "5. Trešo pušu sīkdatnes",
+    "s5_p": "Mēs varam izmantot trešo pušu pakalpojumus (piemēram, analītikas rīkus), kas ievieto savas sīkdatnes jūsu ierīcē. Uz tām attiecas to pašu privātuma un sīkdatņu politika.",
+    "s6_title": "6. Jūsu piekrišana",
+    "s6_p": "Kad pirmo reizi apmeklējat mūsu vietni, lūdzam jūsu piekrišanu neessenciālo sīkdatņu izmantošanai. Jūs varat mainīt savas preferences jebkurā laikā, dzēšot pārlūkprogrammas sīkdatnes un atkārtoti apmeklējot vietni.",
+    "s7_title": "7. Kontakti",
+    "s7_intro": "Jautājumi par mūsu sīkdatņu politiku?",
+    "s8_title": "8. Atjauninājumi",
+    "s8_p": "Mēs laiku pa laikam varam atjaunināt šo sīkdatņu politiku. Izmaiņas tiks publicētas šajā lapā."
+  },
+  "terms_page": {
+    "label": "Juridisks",
+    "title": "Lietošanas noteikumi",
+    "last_updated": "Pēdējo reizi atjaunināts: 2026. gada aprīlis",
+    "intro": "Laipni lūdzam Team Cargo. Piekļūstot mūsu vietnei un pakalpojumiem vai izmantojot tos, jūs piekrītat šādiem Lietošanas noteikumiem.",
+    "s1_title": "1. Par mums",
+    "s1_p": "Team Cargo ir personāla atlases aģentūra ar galveno biroju Amsterdamā, Nīderlandē. Mēs specializējamies vadītāju savienošanā ar loģistikas uzņēmumiem un atbalstām viņus visā nolīgšanas un pārcelšanās procesā.",
+    "s2_title": "2. Mūsu pakalpojumi",
+    "s2_intro": "Mēs sniedzam:",
+    "s2_items": [
+      "Vadītāju darba iekārtošanu partneru loģistikas uzņēmumos (GLS, FedEx, Amazon, DPD)",
+      "Palīdzību ar dokumentāciju un ievadapmācību",
+      "Mājokļa atbalstu (atkarībā no līguma)"
+    ],
+    "s2_note": "Mēs negarantējam darba iekārtošanu visos gadījumos. Nodarbinātība ir atkarīga no partneru uzņēmumu prasībām un kandidāta kvalifikācijas.",
+    "s3_title": "3. Lietotāja pienākumi",
+    "s3_intro": "Izmantojot mūsu pakalpojumus, jūs piekrītat:",
+    "s3_items": [
+      "Sniegt precīzu un patiesu informāciju",
+      "Iesniegt derīgus dokumentus, kad tas tiek pieprasīts",
+      "Ievērot Nīderlandes likumus un nodarbinātības noteikumus",
+      "Sekot partneru uzņēmumu norādījumiem nodarbinātības laikā"
+    ],
+    "s4_title": "4. Pieteikšanās un atlases process",
+    "s4_items": [
+      "Pieteikuma iesniegšana negarantē nodarbinātību",
+      "Galīgos lēmumus par pieņemšanu darbā pieņem partneru uzņēmumi",
+      "Darba piedāvājumi var atšķirties atkarībā no pieejamības un kvalifikācijas"
+    ],
+    "s5_title": "5. Mājoklis",
+    "s5_items": [
+      "Mājokli var nodrošināt atkarībā no darba līguma",
+      "Dzīves apstākļi, izmaksas un noteikumi tiks noteikti jūsu līgumā",
+      "Jūs esat atbildīgs par dzīves noteikumu ievērošanu un īpašuma aizsardzību"
+    ],
+    "s6_title": "6. Atbildība",
+    "s6_intro": "Team Cargo nav atbildīga par:",
+    "s6_items": [
+      "Partneru uzņēmumu pieņemtajiem lēmumiem",
+      "Darba apstākļu izmaiņām pēc iekārtošanas",
+      "Zaudējumiem vai bojājumiem nodarbinātības vai mājokļa laikā"
+    ],
+    "s6_note": "Team Cargo darbojas kā starpnieks starp kandidātiem un darba devējiem.",
+    "s7_title": "7. Maksājumi un komisijas maksas",
+    "s7_items": [
+      "Visas komisijas maksas vai izmaksas (ja piemērojamas) tiks skaidri paziņotas avansā",
+      "Team Cargo neaprēķina kandidātiem slēptās komisijas maksas"
+    ],
+    "s8_title": "8. Intelektuālais īpašums",
+    "s8_p": "Viss saturs šajā vietnē — ieskaitot tekstu, zīmolu un logotipu — pieder Team Cargo un to nedrīkst reproducēt vai izmantot bez rakstiskas atļaujas.",
+    "s9_title": "9. Pakalpojumu izbeigšana",
+    "s9_intro": "Mēs paturam tiesības atteikt vai izbeigt pakalpojumus, ja:",
+    "s9_items": [
+      "Tiek sniegta nepatiesa vai maldinoša informācija",
+      "Tiek pārkāpti šie noteikumi",
+      "Nodarbinātības vai mājokļa laikā notiek nepiemērota rīcība"
+    ],
+    "s10_title": "10. Privātums",
+    "s10_p": "Jūsu personiskā informācija tiek apstrādāta saskaņā ar mūsu",
+    "s10_link": "Privātuma politiku",
+    "s11_title": "11. Piemērojamais likums",
+    "s11_p": "Šie noteikumi tiek regulēti ar Nīderlandes likumiem. Jebkuri strīdi tiek risināti Amsterdamas kompetento tiesu jurisdikcijā.",
+    "s12_title": "12. Kontakti",
+    "s12_intro": "Jautājumiem par šiem Lietošanas noteikumiem:",
+    "s13_title": "13. Atjauninājumi",
+    "s13_p": "Mēs laiku pa laikam varam atjaunināt šos Lietošanas noteikumus. Mūsu pakalpojumu turpmāka izmantošana pēc izmaiņu publicēšanas nozīmē, ka jūs piekrītat atjauninātajiem noteikumiem."
+  }
+}

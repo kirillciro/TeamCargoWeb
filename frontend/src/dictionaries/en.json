@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "admin_dashboard": "Admin Dashboard",
+    "language": "Language",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Start Your Driving Job in the Netherlands — We Handle the Rest.",
+    "tagline": "1 team · 1 mission",
+    "mission_words": [
+      "TEAM",
+      "MISSION"
+    ],
+    "cta_primary": "Get in touch",
+    "cta_secondary": "Our services",
+    "cta_whatsapp": "WhatsApp us",
+    "stats_clients": "Happy clients",
+    "stats_years": "Years experience",
+    "stats_available": "Available",
+    "partners_label": "Our partners",
+    "badge": "Driver Recruitment · Amsterdam, NL",
+    "stats_partners": "Top partners",
+    "trust_line": "No experience with Dutch paperwork? No problem — we guide you step by step."
+  },
+  "services": {
+    "title": "Our Services",
+    "transport": {
+      "title": "Transport",
+      "description": "Reliable and fast transport across Europe."
+    },
+    "logistics": {
+      "title": "Logistics",
+      "description": "Complete logistics solutions tailored to your business."
+    },
+    "cargo": {
+      "title": "Cargo",
+      "description": "Safe and efficient cargo transport for any type of load."
+    },
+    "what_we_do": "What we do",
+    "items": [
+      {
+        "title": "Driver Job Placement",
+        "desc": "We connect drivers with delivery jobs at trusted logistics companies in Amsterdam and surrounding areas."
+      },
+      {
+        "title": "Documents Support",
+        "desc": "We help you handle all necessary paperwork to legally work in the Netherlands."
+      },
+      {
+        "title": "Accommodation",
+        "desc": "We provide housing options (shared rooms or apartments) depending on your contract."
+      },
+      {
+        "title": "Ongoing Support",
+        "desc": "We stay available to assist you before and after you start working."
+      },
+      {
+        "title": "Reliable Opportunities",
+        "desc": "We work with established logistics partners to offer stable, long-term jobs."
+      },
+      {
+        "title": "Amsterdam Region",
+        "desc": "We focus on job placements in Amsterdam and nearby cities across the region."
+      }
+    ]
+  },
+  "about": {
+    "title": "About Team Cargo",
+    "description": "Team Cargo is a driver recruitment agency based in Amsterdam, Netherlands. We connect local and international drivers with stable jobs at leading logistics companies in the Amsterdam region.",
+    "values_title": "Our values",
+    "values": [
+      "Reliability",
+      "Efficiency",
+      "Customer focus",
+      "Safety"
+    ],
+    "label": "About us",
+    "description2": "We work with trusted partners such as GLS, FedEx, Amazon, and DPD, helping drivers secure employment quickly and reliably. From application to onboarding, we provide full support — including document guidance and accommodation for drivers relocating from abroad.",
+    "drivers_placed": "500+ Drivers placed",
+    "years_active": "Years active"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "success": "Your message has been sent!",
+    "subtitle": "Get in touch for a quote or more information.",
+    "success_subtitle": "We will contact you as soon as possible."
+  },
+  "auth": {
+    "login_title": "Login",
+    "register_title": "Create account",
+    "email": "Email address",
+    "password": "Password",
+    "login_btn": "Login",
+    "register_btn": "Register",
+    "or": "or",
+    "continue_google": "Continue with Google",
+    "continue_apple": "Continue with Apple",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "welcome_login": "Welcome back to Team Cargo",
+    "welcome_register": "Create a new account",
+    "loading": "Loading...",
+    "error_generic": "An error occurred",
+    "confirm_password": "Confirm password",
+    "passwords_no_match": "Passwords do not match",
+    "password_too_short": "Password must be at least 8 characters",
+    "forgot_password": "Forgot password?",
+    "forgot_title": "Reset your password",
+    "forgot_desc": "Enter your email and we'll send you a reset link.",
+    "send_reset_link": "Send reset link",
+    "sending": "Sending...",
+    "reset_sent_desc": "If that email is registered, we've sent a reset link. Check your inbox.",
+    "back_to_login": "Back to sign in",
+    "resend_email": "Resend email",
+    "verify_email_title": "Check your inbox",
+    "verify_email_desc": "We've sent a verification email. Please verify your email before signing in.",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "verify_email_desc_short": "Check your inbox to activate your account",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "tagline": "1 team · 1 mission",
+    "rights": "All rights reserved.",
+    "col_services": "Services",
+    "col_company": "Company",
+    "col_legal": "Legal",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "terms": "Terms & Conditions",
+    "tagline_sub": "Driver recruitment — Amsterdam"
+  },
+  "housing": {
+    "label": "For relocating drivers",
+    "title": "We also help you find housing",
+    "description": "Moving to the Netherlands from abroad? We arrange clean, comfortable housing for you — so you can focus on your new job without worrying about where to sleep. No hidden costs, no stress.",
+    "perks": [
+      "Fully furnished apartment included",
+      "Internet & utilities covered",
+      "Shared kitchen and living space",
+      "Located close to your work depot"
+    ],
+    "cta": "Ask about housing options"
+  },
+  "cookie_banner": {
+    "title": "We use cookies",
+    "description": "We use essential and analytics cookies to improve your experience. By clicking Accept, you consent to our use of cookies.",
+    "accept": "Accept all",
+    "reject": "Reject optional",
+    "cookie_policy_link": "Cookie Policy",
+    "privacy_policy_link": "Privacy Policy"
+  },
+  "privacy": {
+    "label": "Legal",
+    "title": "Privacy Policy",
+    "last_updated": "Last updated: April 2026",
+    "s1_title": "1. Who We Are",
+    "s1_p": "Team Cargo is a driver recruitment agency based in Amsterdam, Netherlands. We connect drivers with logistics companies and support them with job placement, documentation, and accommodation.",
+    "s1_email": "Email:",
+    "s2_title": "2. What Data We Collect",
+    "s2_intro": "We may collect the following personal data:",
+    "s2_items": [
+      "Full name",
+      "Email address",
+      "Phone number (including WhatsApp)",
+      "CV / work experience",
+      "Identification or documentation (if required for employment)",
+      "Location or country of residence"
+    ],
+    "s3_title": "3. How We Use Your Data",
+    "s3_intro": "We use your data to:",
+    "s3_items": [
+      "Process your job application",
+      "Match you with suitable job opportunities",
+      "Contact you regarding your application",
+      "Assist with documentation and onboarding",
+      "Improve our services"
+    ],
+    "s4_title": "4. Legal Basis (GDPR)",
+    "s4_intro": "We process your data based on:",
+    "s4_items": [
+      "Your consent (when you apply or contact us)",
+      "Contractual necessity (job placement process)",
+      "Legal obligations"
+    ],
+    "s5_title": "5. Data Sharing",
+    "s5_intro": "We may share your data with:",
+    "s5_items": [
+      "Partner logistics companies (e.g. GLS, FedEx, Amazon, DPD — for job placement)",
+      "Government or legal authorities (if required by law)"
+    ],
+    "s5_no_sell": "We do not sell your personal data.",
+    "s6_title": "6. Data Retention",
+    "s6_p": "We keep your data only as long as necessary for recruitment purposes or as required by law.",
+    "s7_title": "7. Your Rights",
+    "s7_intro": "Under GDPR, you have the right to:",
+    "s7_items": [
+      "Access your data",
+      "Correct inaccurate data",
+      "Request deletion (\"right to be forgotten\")",
+      "Withdraw consent at any time",
+      "File a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Data Security",
+    "s8_p": "We take appropriate technical and organizational measures to protect your personal data against unauthorized access, loss, or misuse.",
+    "s9_title": "9. Contact",
+    "s9_intro": "If you have questions or requests regarding this Privacy Policy, please contact us:",
+    "s10_title": "10. Updates",
+    "s10_p": "We may update this Privacy Policy from time to time. Please check this page regularly for the latest version."
+  },
+  "cookies_page": {
+    "label": "Legal",
+    "title": "Cookie Policy",
+    "last_updated": "Last updated: April 2026",
+    "s1_title": "1. What Are Cookies?",
+    "s1_p": "Cookies are small text files stored on your device when you visit a website. They help us improve your experience and allow certain website functions to work correctly.",
+    "s2_title": "2. Types of Cookies We Use",
+    "s2_essential_title": "Essential Cookies",
+    "s2_essential_p": "Required for the website to function properly — e.g. navigation, forms, and session management. These cannot be disabled.",
+    "s2_analytics_title": "Analytics Cookies",
+    "s2_analytics_p": "Help us understand how visitors use our website (e.g. pages visited, time spent). We use this to improve the site.",
+    "s2_functional_title": "Functional Cookies",
+    "s2_functional_p": "Remember your preferences — such as your language selection — so you don't have to re-select it each visit.",
+    "s3_title": "3. How We Use Cookies",
+    "s3_intro": "We use cookies to:",
+    "s3_items": [
+      "Ensure the website works correctly",
+      "Improve website performance and user experience",
+      "Understand how users interact with our content",
+      "Remember language and display preferences"
+    ],
+    "s4_title": "4. Managing Cookies",
+    "s4_p1": "You can control or disable cookies through your browser settings. Please note that disabling certain cookies may affect the functionality of our website.",
+    "s4_p2": "Most browsers allow you to: view stored cookies, delete cookies, and block cookies from specific or all websites. Refer to your browser's help documentation for instructions.",
+    "s5_title": "5. Third-Party Cookies",
+    "s5_p": "We may use third-party services (such as analytics tools) that place their own cookies on your device. These are subject to their own privacy and cookie policies.",
+    "s6_title": "6. Your Consent",
+    "s6_p": "When you first visit our website, we ask for your consent to use non-essential cookies. You can change your preferences at any time by clearing your browser cookies and revisiting the site.",
+    "s7_title": "7. Contact",
+    "s7_intro": "Questions about our Cookie Policy?",
+    "s8_title": "8. Updates",
+    "s8_p": "We may update this Cookie Policy from time to time. Changes will be posted on this page."
+  },
+  "terms_page": {
+    "label": "Legal",
+    "title": "Terms & Conditions",
+    "last_updated": "Last updated: April 2026",
+    "intro": "Welcome to Team Cargo. By accessing or using our website and services, you agree to the following Terms & Conditions.",
+    "s1_title": "1. About Us",
+    "s1_p": "Team Cargo is a recruitment agency based in Amsterdam, Netherlands. We specialize in connecting drivers with logistics companies and supporting them throughout the hiring and relocation process.",
+    "s2_title": "2. Our Services",
+    "s2_intro": "We provide:",
+    "s2_items": [
+      "Driver job placement with partner logistics companies (GLS, FedEx, Amazon, DPD)",
+      "Assistance with documentation and onboarding",
+      "Accommodation support (depending on the contract)"
+    ],
+    "s2_note": "We do not guarantee job placement in all cases. Employment depends on partner company requirements and candidate qualifications.",
+    "s3_title": "3. User Responsibilities",
+    "s3_intro": "By using our services, you agree to:",
+    "s3_items": [
+      "Provide accurate and truthful information",
+      "Submit valid documents when requested",
+      "Comply with Dutch laws and employment regulations",
+      "Follow instructions from partner companies during employment"
+    ],
+    "s4_title": "4. Application & Recruitment Process",
+    "s4_items": [
+      "Submitting an application does not guarantee employment",
+      "Final hiring decisions are made by partner companies",
+      "Job offers may vary depending on availability and qualifications"
+    ],
+    "s5_title": "5. Accommodation",
+    "s5_items": [
+      "Accommodation may be provided depending on the job contract",
+      "Housing conditions, costs, and rules will be defined in your agreement",
+      "You are responsible for respecting housing rules and property"
+    ],
+    "s6_title": "6. Liability",
+    "s6_intro": "Team Cargo is not responsible for:",
+    "s6_items": [
+      "Decisions made by partner companies",
+      "Changes in job conditions after placement",
+      "Loss or damages during employment or accommodation"
+    ],
+    "s6_note": "Team Cargo acts as an intermediary between candidates and employers.",
+    "s7_title": "7. Payments & Fees",
+    "s7_items": [
+      "Any fees or costs (if applicable) will be clearly communicated in advance",
+      "Team Cargo does not charge hidden fees to candidates"
+    ],
+    "s8_title": "8. Intellectual Property",
+    "s8_p": "All content on this website — including text, branding, and logo — belongs to Team Cargo and may not be reproduced or used without written permission.",
+    "s9_title": "9. Termination of Services",
+    "s9_intro": "We reserve the right to refuse or terminate services if:",
+    "s9_items": [
+      "False or misleading information is provided",
+      "These Terms are violated",
+      "Misconduct occurs during employment or accommodation"
+    ],
+    "s10_title": "10. Privacy",
+    "s10_p": "Your personal data is handled according to our",
+    "s10_link": "Privacy Policy",
+    "s11_title": "11. Governing Law",
+    "s11_p": "These Terms are governed by the laws of the Netherlands. Any disputes shall be subject to the jurisdiction of the competent courts in Amsterdam.",
+    "s12_title": "12. Contact",
+    "s12_intro": "For questions regarding these Terms & Conditions:",
+    "s13_title": "13. Updates",
+    "s13_p": "We may update these Terms & Conditions at any time. Continued use of our services after changes are posted means you accept the updated Terms."
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Services",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "admin_dashboard": "Tableau de bord admin",
+    "language": "Langue",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Commencez votre emploi de chauffeur aux Pays-Bas — Nous nous occupons du reste.",
+    "tagline": "1 équipe · 1 mission",
+    "mission_words": [
+      "ÉQUIPE",
+      "MISSION"
+    ],
+    "cta_primary": "Nous contacter",
+    "cta_secondary": "Nos services",
+    "cta_whatsapp": "WhatsApp",
+    "stats_clients": "Clients satisfaits",
+    "stats_years": "Ans d'expérience",
+    "stats_available": "Disponible",
+    "partners_label": "Nos partenaires",
+    "badge": "Recrutement de chauffeurs · Amsterdam, NL",
+    "stats_partners": "Partenaires principaux",
+    "trust_line": "Pas d'expérience avec les démarches administratives néerlandaises ? Pas de problème — nous vous guidons étape par étape."
+  },
+  "services": {
+    "title": "Nos Services",
+    "transport": {
+      "title": "Transport",
+      "description": "Transport fiable et rapide à travers toute l'Europe."
+    },
+    "logistics": {
+      "title": "Logistique",
+      "description": "Solutions logistiques complètes adaptées à votre entreprise."
+    },
+    "cargo": {
+      "title": "Cargo",
+      "description": "Transport de marchandises sûr et efficace pour tout type de chargement."
+    },
+    "what_we_do": "Ce que nous faisons",
+    "items": [
+      {
+        "title": "Placement de chauffeurs",
+        "desc": "Nous connectons les chauffeurs avec des emplois de livraison chez des entreprises de confiance à Amsterdam et environs."
+      },
+      {
+        "title": "Aide aux documents",
+        "desc": "Nous vous aidons à gérer toutes les formalités pour travailler légalement aux Pays-Bas."
+      },
+      {
+        "title": "Hébergement",
+        "desc": "Nous proposons des options d'hébergement (chambres partagées ou appartements) selon votre contrat."
+      },
+      {
+        "title": "Assistance continue",
+        "desc": "Nous restons disponibles pour vous aider avant et après votre prise de poste."
+      },
+      {
+        "title": "Opportunités fiables",
+        "desc": "Nous travaillons avec des partenaires logistiques établis pour offrir des emplois stables et durables."
+      },
+      {
+        "title": "Région d'Amsterdam",
+        "desc": "Nous nous concentrons sur les placements à Amsterdam et dans les villes proches de la région."
+      }
+    ]
+  },
+  "about": {
+    "title": "À propos de Team Cargo",
+    "description": "Team Cargo est une agence de recrutement de chauffeurs basée à Amsterdam, Pays-Bas. Nous mettons en relation des chauffeurs locaux et internationaux avec des emplois stables dans les principales entreprises logistiques de la région d'Amsterdam.",
+    "values_title": "Nos valeurs",
+    "values": [
+      "Fiabilité",
+      "Efficacité",
+      "Orientation client",
+      "Sécurité"
+    ],
+    "label": "À propos",
+    "description2": "Nous travaillons avec des partenaires de confiance tels que GLS, FedEx, Amazon et DPD, aidant les chauffeurs à trouver un emploi rapidement et de manière fiable. De la candidature à l'intégration, nous offrons un soutien complet — y compris des conseils documentaires et un hébergement pour les chauffeurs qui s'installent depuis l'étranger.",
+    "drivers_placed": "500+ chauffeurs placés",
+    "years_active": "Ans d'activité"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Nom",
+    "email": "E-mail",
+    "message": "Message",
+    "send": "Envoyer",
+    "success": "Votre message a été envoyé !",
+    "subtitle": "Contactez-nous pour un devis ou plus d'informations.",
+    "success_subtitle": "Nous vous contacterons dans les plus brefs délais."
+  },
+  "auth": {
+    "login_title": "Connexion",
+    "register_title": "Créer un compte",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "login_btn": "Se connecter",
+    "register_btn": "S'inscrire",
+    "or": "ou",
+    "continue_google": "Continuer avec Google",
+    "continue_apple": "Continuer avec Apple",
+    "no_account": "Pas encore de compte ?",
+    "have_account": "Déjà un compte ?",
+    "welcome_login": "Bon retour sur Team Cargo",
+    "welcome_register": "Créer un nouveau compte",
+    "loading": "Chargement...",
+    "error_generic": "Une erreur est survenue",
+    "confirm_password": "Confirmer le mot de passe",
+    "passwords_no_match": "Les mots de passe ne correspondent pas",
+    "password_too_short": "Le mot de passe doit comporter au moins 8 caractères",
+    "forgot_password": "Mot de passe oublié ?",
+    "forgot_title": "Réinitialiser votre mot de passe",
+    "forgot_desc": "Entrez votre email et nous vous enverrons un lien de réinitialisation.",
+    "send_reset_link": "Envoyer le lien",
+    "sending": "Envoi...",
+    "reset_sent_desc": "Si cet email est enregistré, nous avons envoyé un lien. Vérifiez votre boîte de réception.",
+    "back_to_login": "Retour à la connexion",
+    "resend_email": "Renvoyer l'email",
+    "verify_email_title": "Vérifiez votre boîte de réception",
+    "verify_email_desc": "Nous avons envoyé un email de vérification. Veuillez vérifier votre email avant de vous connecter.",
+    "first_name": "Prénom",
+    "last_name": "Nom de famille",
+    "verify_email_desc_short": "Vérifie ta boîte mail pour activer ton compte",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Services",
+    "col_company": "Entreprise",
+    "col_legal": "Légal",
+    "privacy": "Politique de confidentialité",
+    "cookies": "Politique de cookies",
+    "tagline": "1 équipe · 1 mission",
+    "rights": "Tous droits réservés.",
+    "terms": "CGU",
+    "tagline_sub": "Recrutement de chauffeurs — Amsterdam"
+  },
+  "housing": {
+    "label": "Pour les chauffeurs en relocalisation",
+    "title": "Nous vous aidons aussi à trouver un logement",
+    "description": "Vous déménagez aux Pays-Bas depuis l'étranger ? Nous organisons un logement propre et confortable pour vous — afin que vous puissiez vous concentrer sur votre nouvel emploi sans vous soucier d'où dormir. Sans frais cachés, sans stress.",
+    "perks": [
+      "Appartement entièrement meublé inclus",
+      "Internet et charges comprises",
+      "Cuisine et espace de vie partagés",
+      "Situé près de votre dépôt de travail"
+    ],
+    "cta": "Renseignez-vous sur les options de logement"
+  },
+  "cookie_banner": {
+    "title": "Nous utilisons des cookies",
+    "description": "Nous utilisons des cookies essentiels et analytiques pour améliorer votre expérience. En cliquant sur Accepter, vous consentez à notre utilisation des cookies.",
+    "accept": "Tout accepter",
+    "reject": "Refuser les optionnels",
+    "cookie_policy_link": "Politique des cookies",
+    "privacy_policy_link": "Politique de confidentialité"
+  },
+  "privacy": {
+    "label": "Juridique",
+    "title": "Politique de confidentialité",
+    "last_updated": "Dernière mise à jour : avril 2026",
+    "s1_title": "1. Qui sommes-nous",
+    "s1_p": "Team Cargo est une agence de recrutement de chauffeurs basée à Amsterdam, aux Pays-Bas. Nous mettons en relation des chauffeurs avec des entreprises de logistique et les accompagnons dans leur placement, leur documentation et leur hébergement.",
+    "s1_email": "E-mail :",
+    "s2_title": "2. Les données que nous collectons",
+    "s2_intro": "Nous pouvons collecter les données personnelles suivantes :",
+    "s2_items": [
+      "Nom complet",
+      "Adresse e-mail",
+      "Numéro de téléphone (y compris WhatsApp)",
+      "CV / expérience professionnelle",
+      "Pièce d'identité ou documents (si requis pour l'emploi)",
+      "Lieu ou pays de résidence"
+    ],
+    "s3_title": "3. Comment nous utilisons vos données",
+    "s3_intro": "Nous utilisons vos données pour :",
+    "s3_items": [
+      "Traiter votre candidature",
+      "Vous mettre en relation avec des offres d'emploi adaptées",
+      "Vous contacter concernant votre candidature",
+      "Vous aider avec la documentation et l'intégration",
+      "Améliorer nos services"
+    ],
+    "s4_title": "4. Base légale (RGPD)",
+    "s4_intro": "Nous traitons vos données sur la base de :",
+    "s4_items": [
+      "Votre consentement (lorsque vous postulez ou nous contactez)",
+      "Nécessité contractuelle (processus de placement)",
+      "Obligations légales"
+    ],
+    "s5_title": "5. Partage des données",
+    "s5_intro": "Nous pouvons partager vos données avec :",
+    "s5_items": [
+      "Des entreprises partenaires de logistique (ex. GLS, FedEx, Amazon, DPD — pour le placement)",
+      "Les autorités gouvernementales ou judiciaires (si requis par la loi)"
+    ],
+    "s5_no_sell": "Nous ne vendons pas vos données personnelles.",
+    "s6_title": "6. Conservation des données",
+    "s6_p": "Nous conservons vos données uniquement le temps nécessaire aux fins de recrutement ou conformément aux exigences légales.",
+    "s7_title": "7. Vos droits",
+    "s7_intro": "En vertu du RGPD, vous avez le droit de :",
+    "s7_items": [
+      "Accéder à vos données",
+      "Corriger des données inexactes",
+      "Demander la suppression (\"droit à l'oubli\")",
+      "Retirer votre consentement à tout moment",
+      "Déposer une plainte auprès de l'autorité néerlandaise de protection des données (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Sécurité des données",
+    "s8_p": "Nous prenons les mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre tout accès non autorisé, perte ou utilisation abusive.",
+    "s9_title": "9. Contact",
+    "s9_intro": "Pour toute question ou demande concernant cette politique de confidentialité, veuillez nous contacter :",
+    "s10_title": "10. Mises à jour",
+    "s10_p": "Nous pouvons mettre à jour cette politique de confidentialité de temps à autre. Veuillez consulter cette page régulièrement pour la version la plus récente."
+  },
+  "cookies_page": {
+    "label": "Juridique",
+    "title": "Politique de cookies",
+    "last_updated": "Dernière mise à jour : avril 2026",
+    "s1_title": "1. Que sont les cookies ?",
+    "s1_p": "Les cookies sont de petits fichiers texte stockés sur votre appareil lorsque vous visitez un site web. Ils nous aident à améliorer votre expérience et permettent à certaines fonctions du site de fonctionner correctement.",
+    "s2_title": "2. Types de cookies que nous utilisons",
+    "s2_essential_title": "Cookies essentiels",
+    "s2_essential_p": "Nécessaires au bon fonctionnement du site web — par ex. navigation, formulaires et gestion des sessions. Ceux-ci ne peuvent pas être désactivés.",
+    "s2_analytics_title": "Cookies d'analyse",
+    "s2_analytics_p": "Nous aident à comprendre comment les visiteurs utilisent notre site (ex. pages visitées, temps passé). Nous les utilisons pour améliorer le site.",
+    "s2_functional_title": "Cookies fonctionnels",
+    "s2_functional_p": "Mémorisent vos préférences — comme votre sélection de langue — pour que vous n'ayez pas à les resélectionner à chaque visite.",
+    "s3_title": "3. Comment nous utilisons les cookies",
+    "s3_intro": "Nous utilisons les cookies pour :",
+    "s3_items": [
+      "Garantir le bon fonctionnement du site web",
+      "Améliorer les performances du site et l'expérience utilisateur",
+      "Comprendre comment les utilisateurs interagissent avec notre contenu",
+      "Mémoriser les préférences de langue et d'affichage"
+    ],
+    "s4_title": "4. Gestion des cookies",
+    "s4_p1": "Vous pouvez contrôler ou désactiver les cookies via les paramètres de votre navigateur. Veuillez noter que la désactivation de certains cookies peut affecter les fonctionnalités de notre site.",
+    "s4_p2": "La plupart des navigateurs vous permettent de : consulter les cookies stockés, supprimer les cookies et bloquer les cookies de sites spécifiques ou de tous les sites. Consultez la documentation d'aide de votre navigateur pour obtenir des instructions.",
+    "s5_title": "5. Cookies tiers",
+    "s5_p": "Nous pouvons utiliser des services tiers (comme des outils d'analyse) qui placent leurs propres cookies sur votre appareil. Ceux-ci sont soumis à leurs propres politiques de confidentialité et de cookies.",
+    "s6_title": "6. Votre consentement",
+    "s6_p": "Lors de votre première visite sur notre site, nous vous demandons votre consentement pour utiliser des cookies non essentiels. Vous pouvez modifier vos préférences à tout moment en effaçant les cookies de votre navigateur et en revisitant le site.",
+    "s7_title": "7. Contact",
+    "s7_intro": "Des questions sur notre politique de cookies ?",
+    "s8_title": "8. Mises à jour",
+    "s8_p": "Nous pouvons mettre à jour cette politique de cookies de temps à autre. Les modifications seront publiées sur cette page."
+  },
+  "terms_page": {
+    "label": "Juridique",
+    "title": "Conditions générales",
+    "last_updated": "Dernière mise à jour : avril 2026",
+    "intro": "Bienvenue chez Team Cargo. En accédant à notre site web et à nos services ou en les utilisant, vous acceptez les Conditions générales suivantes.",
+    "s1_title": "1. À propos de nous",
+    "s1_p": "Team Cargo est une agence de recrutement basée à Amsterdam, aux Pays-Bas. Nous sommes spécialisés dans la mise en relation de chauffeurs avec des entreprises de logistique et les accompagnons tout au long du processus d'embauche et de relocalisation.",
+    "s2_title": "2. Nos services",
+    "s2_intro": "Nous fournissons :",
+    "s2_items": [
+      "Placement de chauffeurs auprès d'entreprises partenaires de logistique (GLS, FedEx, Amazon, DPD)",
+      "Assistance avec la documentation et l'intégration",
+      "Soutien à l'hébergement (selon le contrat)"
+    ],
+    "s2_note": "Nous ne garantissons pas le placement dans tous les cas. L'emploi dépend des exigences des sociétés partenaires et des qualifications du candidat.",
+    "s3_title": "3. Responsabilités de l'utilisateur",
+    "s3_intro": "En utilisant nos services, vous acceptez de :",
+    "s3_items": [
+      "Fournir des informations exactes et véridiques",
+      "Soumettre des documents valides lorsque cela est demandé",
+      "Respecter les lois néerlandaises et les réglementations du travail",
+      "Suivre les instructions des entreprises partenaires pendant l'emploi"
+    ],
+    "s4_title": "4. Processus de candidature et de recrutement",
+    "s4_items": [
+      "Soumettre une candidature ne garantit pas l'emploi",
+      "Les décisions finales d'embauche sont prises par les entreprises partenaires",
+      "Les offres d'emploi peuvent varier selon la disponibilité et les qualifications"
+    ],
+    "s5_title": "5. Hébergement",
+    "s5_items": [
+      "L'hébergement peut être fourni selon le contrat de travail",
+      "Les conditions de logement, les coûts et les règles seront définis dans votre accord",
+      "Vous êtes responsable du respect des règles du logement et des biens"
+    ],
+    "s6_title": "6. Responsabilité",
+    "s6_intro": "Team Cargo n'est pas responsable de :",
+    "s6_items": [
+      "Les décisions prises par les entreprises partenaires",
+      "Les changements de conditions de travail après le placement",
+      "Les pertes ou dommages pendant l'emploi ou l'hébergement"
+    ],
+    "s6_note": "Team Cargo agit en tant qu'intermédiaire entre les candidats et les employeurs.",
+    "s7_title": "7. Paiements et frais",
+    "s7_items": [
+      "Tous les frais ou coûts (le cas échéant) seront clairement communiqués à l'avance",
+      "Team Cargo ne facture pas de frais cachés aux candidats"
+    ],
+    "s8_title": "8. Propriété intellectuelle",
+    "s8_p": "Tout le contenu de ce site web — y compris le texte, la marque et le logo — appartient à Team Cargo et ne peut être reproduit ou utilisé sans autorisation écrite.",
+    "s9_title": "9. Résiliation des services",
+    "s9_intro": "Nous nous réservons le droit de refuser ou de résilier les services si :",
+    "s9_items": [
+      "Des informations fausses ou trompeuses sont fournies",
+      "Ces Conditions sont violées",
+      "Un comportement inapproprié se produit pendant l'emploi ou l'hébergement"
+    ],
+    "s10_title": "10. Confidentialité",
+    "s10_p": "Vos données personnelles sont traitées conformément à notre",
+    "s10_link": "Politique de confidentialité",
+    "s11_title": "11. Droit applicable",
+    "s11_p": "Ces Conditions sont régies par le droit néerlandais. Tout litige sera soumis à la compétence des tribunaux compétents d'Amsterdam.",
+    "s12_title": "12. Contact",
+    "s12_intro": "Pour toute question concernant ces Conditions générales :",
+    "s13_title": "13. Mises à jour",
+    "s13_p": "Nous pouvons mettre à jour ces Conditions générales à tout moment. L'utilisation continue de nos services après la publication des modifications signifie que vous acceptez les Conditions mises à jour."
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Servicii",
+    "about": "Despre noi",
+    "contact": "Contact",
+    "login": "Autentificare",
+    "register": "Înregistrare",
+    "admin_dashboard": "Panou de administrare",
+    "language": "Limbă",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Începe-ți cariera de șofer în Olanda — Noi ne ocupăm de rest.",
+    "tagline": "1 echipă · 1 misiune",
+    "mission_words": [
+      "ECHIPĂ",
+      "MISIUNE"
+    ],
+    "cta_primary": "Contactează-ne",
+    "cta_secondary": "Serviciile noastre",
+    "cta_whatsapp": "Trimite WhatsApp",
+    "stats_clients": "Clienți mulțumiți",
+    "stats_years": "Ani de experiență",
+    "stats_available": "Disponibili",
+    "partners_label": "Partenerii noștri",
+    "badge": "Recrutare șoferi · Amsterdam, NL",
+    "stats_partners": "Parteneri principali",
+    "trust_line": "Fără experiență cu actele olandeze? Nicio problemă — te ghidăm pas cu pas."
+  },
+  "services": {
+    "title": "Serviciile Noastre",
+    "transport": {
+      "title": "Transport",
+      "description": "Transport fiabil și rapid în toată Europa."
+    },
+    "logistics": {
+      "title": "Logistică",
+      "description": "Soluții logistice complete adaptate afacerii tale."
+    },
+    "cargo": {
+      "title": "Cargo",
+      "description": "Transport de marfă sigur și eficient pentru orice tip de încărcătură."
+    },
+    "what_we_do": "Ce facem",
+    "items": [
+      {
+        "title": "Plasare șoferi",
+        "desc": "Conectăm șoferii cu locuri de muncă în livrare la companii logistice de încredere din Amsterdam și împrejurimi."
+      },
+      {
+        "title": "Suport documente",
+        "desc": "Vă ajutăm să gestionați toate documentele necesare pentru a lucra legal în Olanda."
+      },
+      {
+        "title": "Cazare",
+        "desc": "Oferim opțiuni de cazare (camere comune sau apartamente) în funcție de contractul dvs."
+      },
+      {
+        "title": "Suport continuu",
+        "desc": "Rămânem disponibili pentru a vă ajuta înainte și după ce începeți să lucrați."
+      },
+      {
+        "title": "Oportunități de încredere",
+        "desc": "Lucrăm cu parteneri logistici stabiliți pentru a oferi locuri de muncă stabile, pe termen lung."
+      },
+      {
+        "title": "Regiunea Amsterdam",
+        "desc": "Ne concentrăm pe plasamente de locuri de muncă în Amsterdam și orașele apropiate din regiune."
+      }
+    ]
+  },
+  "about": {
+    "title": "Despre Team Cargo",
+    "description": "Team Cargo este o agenție de recrutare a șoferilor cu sediul în Amsterdam, Olanda. Conectăm șoferi locali și internaționali cu locuri de muncă stabile la companiile de logistică de top din regiunea Amsterdam.",
+    "values_title": "Valorile noastre",
+    "values": [
+      "Fiabilitate",
+      "Eficiență",
+      "Orientare către client",
+      "Siguranță"
+    ],
+    "label": "Despre noi",
+    "description2": "Lucrăm cu parteneri de încredere precum GLS, FedEx, Amazon și DPD, ajutând șoferii să găsească angajare rapid și fiabil. De la aplicare până la integrare, oferim suport complet — inclusiv orientare documentară și cazare pentru șoferii care se mută din străinătate.",
+    "drivers_placed": "500+ șoferi plasați",
+    "years_active": "Ani de activitate"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Nume",
+    "email": "E-mail",
+    "message": "Mesaj",
+    "send": "Trimite",
+    "success": "Mesajul tău a fost trimis!",
+    "subtitle": "Contactează-ne pentru o ofertă sau mai multe informații.",
+    "success_subtitle": "Vă vom contacta cât mai curând posibil."
+  },
+  "auth": {
+    "login_title": "Autentificare",
+    "register_title": "Creează un cont",
+    "email": "Adresă de e-mail",
+    "password": "Parolă",
+    "login_btn": "Autentificare",
+    "register_btn": "Înregistrare",
+    "or": "sau",
+    "continue_google": "Continuă cu Google",
+    "continue_apple": "Continuă cu Apple",
+    "no_account": "Nu ai cont încă?",
+    "have_account": "Ai deja cont?",
+    "welcome_login": "Bun venit inapoi la Team Cargo",
+    "welcome_register": "Creati un cont nou",
+    "loading": "Se incarca...",
+    "error_generic": "A aparut o eroare",
+    "confirm_password": "Confirma parola",
+    "passwords_no_match": "Parolele nu se potrivesc",
+    "password_too_short": "Parola trebuie sa aiba cel putin 8 caractere",
+    "forgot_password": "Ai uitat parola?",
+    "forgot_title": "Reseteaza parola",
+    "forgot_desc": "Introdu email-ul tau si iti vom trimite un link de resetare.",
+    "send_reset_link": "Trimite link",
+    "sending": "Se trimite...",
+    "reset_sent_desc": "Daca acel email este inregistrat, am trimis un link. Verifica inbox-ul.",
+    "back_to_login": "Inapoi la autentificare",
+    "resend_email": "Retrimite email",
+    "verify_email_title": "Verifica inbox-ul",
+    "verify_email_desc": "Am trimis un email de verificare. Verifica email-ul inainte de a te autentifica.",
+    "first_name": "Prenume",
+    "last_name": "Nume de familie",
+    "verify_email_desc_short": "Verifica-ti casuta de e-mail pentru a activa contul",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Servicii",
+    "col_company": "Companie",
+    "col_legal": "Legal",
+    "privacy": "Politica de confidențialitate",
+    "cookies": "Politica de cookie-uri",
+    "tagline": "1 echipă · 1 misiune",
+    "rights": "Toate drepturile rezervate.",
+    "terms": "Termeni și Condiții",
+    "tagline_sub": "Recrutare șoferi — Amsterdam"
+  },
+  "housing": {
+    "label": "Pentru șoferi care se mută",
+    "title": "Te ajutăm și să găsești locuință",
+    "description": "Te muți în Olanda din străinătate? Organizăm cazare curată și confortabilă pentru tine — pentru a te putea concentra pe noul tău loc de muncă fără să te îngrijorezi unde să dormi. Fără costuri ascunse, fără stres.",
+    "perks": [
+      "Apartament complet mobilat inclus",
+      "Internet și utilități acoperite",
+      "Bucătărie și spațiu de locuit comun",
+      "Situat aproape de depoul tău de lucru"
+    ],
+    "cta": "Întreabă despre opțiunile de cazare"
+  },
+  "cookie_banner": {
+    "title": "Folosim cookie-uri",
+    "description": "Folosim cookie-uri esențiale și analitice pentru a îmbunătăți experiența dvs. Făcând clic pe Acceptă, consimțiți la utilizarea cookie-urilor.",
+    "accept": "Acceptă tot",
+    "reject": "Respinge opționale",
+    "cookie_policy_link": "Politica de cookie-uri",
+    "privacy_policy_link": "Politica de confidențialitate"
+  },
+  "privacy": {
+    "label": "Legal",
+    "title": "Politica de confidențialitate",
+    "last_updated": "Ultima actualizare: aprilie 2026",
+    "s1_title": "1. Cine suntem",
+    "s1_p": "Team Cargo este o agenție de recrutare a șoferilor cu sediul în Amsterdam, Olanda. Conectăm șoferii cu companiile de logistică și îi sprijinim cu plasarea locurilor de muncă, documentația și cazarea.",
+    "s1_email": "Email:",
+    "s2_title": "2. Ce date colectăm",
+    "s2_intro": "Putem colecta următoarele date cu caracter personal:",
+    "s2_items": [
+      "Nume complet",
+      "Adresă de email",
+      "Număr de telefon (inclusiv WhatsApp)",
+      "CV / experiență profesională",
+      "Identificare sau documentație (dacă este necesară pentru angajare)",
+      "Locație sau țara de reședință"
+    ],
+    "s3_title": "3. Cum folosim datele dvs.",
+    "s3_intro": "Folosim datele dvs. pentru:",
+    "s3_items": [
+      "A procesa cererea dvs. de angajare",
+      "A vă potrivi cu oportunități de muncă adecvate",
+      "A vă contacta cu privire la cererea dvs.",
+      "A acorda asistență pentru documentație și integrare",
+      "A îmbunătăți serviciile noastre"
+    ],
+    "s4_title": "4. Baza legală (GDPR)",
+    "s4_intro": "Procesăm datele dvs. pe baza:",
+    "s4_items": [
+      "Consimțământului dvs. (când aplicați sau ne contactați)",
+      "Necesității contractuale (procesul de plasare a locului de muncă)",
+      "Obligațiilor legale"
+    ],
+    "s5_title": "5. Partajarea datelor",
+    "s5_intro": "Putem partaja datele dvs. cu:",
+    "s5_items": [
+      "Companii partenere de logistică (ex. GLS, FedEx, Amazon, DPD — pentru plasarea locurilor de muncă)",
+      "Autorități guvernamentale sau juridice (dacă este cerut de lege)"
+    ],
+    "s5_no_sell": "Nu vindem datele dvs. personale.",
+    "s6_title": "6. Retenția datelor",
+    "s6_p": "Păstrăm datele dvs. doar atât timp cât este necesar în scopuri de recrutare sau conform cerințelor legale.",
+    "s7_title": "7. Drepturile dvs.",
+    "s7_intro": "Conform GDPR, aveți dreptul să:",
+    "s7_items": [
+      "Accesați datele dvs.",
+      "Corectați datele incorecte",
+      "Solicitați ștergerea (\"dreptul de a fi uitat\")",
+      "Retrageți consimțământul în orice moment",
+      "Depuneți o plângere la Autoritatea Olandeză pentru Protecția Datelor (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Securitatea datelor",
+    "s8_p": "Luăm măsuri tehnice și organizatorice adecvate pentru a proteja datele dvs. personale împotriva accesului neautorizat, pierderii sau utilizării abuzive.",
+    "s9_title": "9. Contact",
+    "s9_intro": "Dacă aveți întrebări sau solicitări referitoare la această Politică de confidențialitate, contactați-ne:",
+    "s10_title": "10. Actualizări",
+    "s10_p": "Putem actualiza această Politică de confidențialitate din când în când. Vă rugăm să verificați această pagină regulat pentru cea mai recentă versiune."
+  },
+  "cookies_page": {
+    "label": "Legal",
+    "title": "Politica de cookie-uri",
+    "last_updated": "Ultima actualizare: aprilie 2026",
+    "s1_title": "1. Ce sunt cookie-urile?",
+    "s1_p": "Cookie-urile sunt fișiere text mici stocate pe dispozitivul dvs. când vizitați un site web. Ne ajută să îmbunătățim experiența dvs. și permit anumitor funcții ale site-ului să funcționeze corect.",
+    "s2_title": "2. Tipuri de cookie-uri pe care le folosim",
+    "s2_essential_title": "Cookie-uri esențiale",
+    "s2_essential_p": "Necesare pentru funcționarea corectă a site-ului — ex. navigare, formulare și gestionarea sesiunilor. Acestea nu pot fi dezactivate.",
+    "s2_analytics_title": "Cookie-uri analitice",
+    "s2_analytics_p": "Ne ajută să înțelegem cum folosesc vizitatorii site-ul nostru (ex. paginile vizitate, timpul petrecut). Le folosim pentru a îmbunătăți site-ul.",
+    "s2_functional_title": "Cookie-uri funcționale",
+    "s2_functional_p": "Rețin preferințele dvs. — cum ar fi selecția limbii — astfel încât să nu trebuiască să le reselectați la fiecare vizită.",
+    "s3_title": "3. Cum folosim cookie-urile",
+    "s3_intro": "Folosim cookie-uri pentru:",
+    "s3_items": [
+      "A asigura funcționarea corectă a site-ului",
+      "A îmbunătăți performanța site-ului și experiența utilizatorului",
+      "A înțelege cum interacționează utilizatorii cu conținutul nostru",
+      "A reține preferințele de limbă și afișare"
+    ],
+    "s4_title": "4. Gestionarea cookie-urilor",
+    "s4_p1": "Puteți controla sau dezactiva cookie-urile prin setările browserului dvs. Rețineți că dezactivarea anumitor cookie-uri poate afecta funcționalitatea site-ului nostru.",
+    "s4_p2": "Majoritatea browserelor vă permit să: vizualizați cookie-urile stocate, să ștergeți cookie-urile și să blocați cookie-urile de pe site-uri specifice sau de pe toate site-urile. Consultați documentația de ajutor a browserului dvs. pentru instrucțiuni.",
+    "s5_title": "5. Cookie-uri terțe",
+    "s5_p": "Putem folosi servicii terțe (cum ar fi instrumente de analiză) care plasează propriile cookie-uri pe dispozitivul dvs. Acestea sunt supuse propriilor politici de confidențialitate și cookie-uri.",
+    "s6_title": "6. Consimțământul dvs.",
+    "s6_p": "Când vizitați site-ul nostru pentru prima dată, vă solicităm consimțământul pentru utilizarea cookie-urilor non-esențiale. Vă puteți schimba preferințele oricând ștergând cookie-urile browserului și revenind pe site.",
+    "s7_title": "7. Contact",
+    "s7_intro": "Întrebări despre politica noastră de cookie-uri?",
+    "s8_title": "8. Actualizări",
+    "s8_p": "Putem actualiza această politică de cookie-uri din când în când. Modificările vor fi postate pe această pagină."
+  },
+  "terms_page": {
+    "label": "Legal",
+    "title": "Termeni și Condiții",
+    "last_updated": "Ultima actualizare: aprilie 2026",
+    "intro": "Bun venit la Team Cargo. Prin accesarea sau utilizarea site-ului și serviciilor noastre, acceptați următorii Termeni și Condiții.",
+    "s1_title": "1. Despre noi",
+    "s1_p": "Team Cargo este o agenție de recrutare cu sediul în Amsterdam, Olanda. Suntem specializați în conectarea șoferilor cu companii de logistică și în susținerea acestora pe tot parcursul procesului de angajare și relocare.",
+    "s2_title": "2. Serviciile noastre",
+    "s2_intro": "Oferim:",
+    "s2_items": [
+      "Plasarea șoferilor la companii partenere de logistică (GLS, FedEx, Amazon, DPD)",
+      "Asistență cu documentația și integrarea",
+      "Sprijin pentru cazare (în funcție de contract)"
+    ],
+    "s2_note": "Nu garantăm plasarea locurilor de muncă în toate cazurile. Angajarea depinde de cerințele companiilor partenere și de calificările candidatului.",
+    "s3_title": "3. Responsabilitățile utilizatorului",
+    "s3_intro": "Prin utilizarea serviciilor noastre, acceptați să:",
+    "s3_items": [
+      "Furnizați informații precise și adevărate",
+      "Trimiteți documente valide când este solicitat",
+      "Respectați legile olandeze și reglementările de muncă",
+      "Urmați instrucțiunile companiilor partenere în timpul angajării"
+    ],
+    "s4_title": "4. Procesul de aplicare și recrutare",
+    "s4_items": [
+      "Depunerea unei cereri nu garantează angajarea",
+      "Deciziile finale de angajare sunt luate de companiile partenere",
+      "Ofertele de muncă pot varia în funcție de disponibilitate și calificări"
+    ],
+    "s5_title": "5. Cazare",
+    "s5_items": [
+      "Cazarea poate fi asigurată în funcție de contractul de muncă",
+      "Condițiile de locuire, costurile și regulile vor fi definite în acordul dvs.",
+      "Ești responsabil de respectarea regulilor de locuire și a proprietății"
+    ],
+    "s6_title": "6. Răspundere",
+    "s6_intro": "Team Cargo nu este responsabilă pentru:",
+    "s6_items": [
+      "Decizii luate de companiile partenere",
+      "Modificări ale condițiilor de muncă după plasare",
+      "Pierderi sau daune în timpul angajării sau cazării"
+    ],
+    "s6_note": "Team Cargo acționează ca intermediar între candidați și angajatori.",
+    "s7_title": "7. Plăți și taxe",
+    "s7_items": [
+      "Orice taxe sau costuri (dacă este cazul) vor fi comunicate clar în prealabil",
+      "Team Cargo nu percepe taxe ascunse candidaților"
+    ],
+    "s8_title": "8. Proprietate intelectuală",
+    "s8_p": "Tot conținutul de pe acest site — inclusiv text, brand și logo — aparține Team Cargo și nu poate fi reprodus sau utilizat fără permisiune scrisă.",
+    "s9_title": "9. Încetarea serviciilor",
+    "s9_intro": "Ne rezervăm dreptul de a refuza sau de a înceta serviciile dacă:",
+    "s9_items": [
+      "Se furnizează informații false sau înșelătoare",
+      "Acești Termeni sunt încălcați",
+      "Apare o conduită necorespunzătoare în timpul angajării sau cazării"
+    ],
+    "s10_title": "10. Confidențialitate",
+    "s10_p": "Datele dvs. personale sunt gestionate conform",
+    "s10_link": "Politicii de confidențialitate",
+    "s11_title": "11. Legea aplicabilă",
+    "s11_p": "Acești Termeni sunt guvernați de legile Olandei. Orice dispute vor fi supuse jurisdicției instanțelor competente din Amsterdam.",
+    "s12_title": "12. Contact",
+    "s12_intro": "Pentru întrebări referitoare la acești Termeni și Condiții:",
+    "s13_title": "13. Actualizări",
+    "s13_p": "Putem actualiza acești Termeni și Condiții oricând. Utilizarea continuată a serviciilor noastre după publicarea modificărilor înseamnă că acceptați Termenii actualizați."
+  }
+}

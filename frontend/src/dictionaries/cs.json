@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Služby",
+    "about": "O nás",
+    "contact": "Kontakt",
+    "login": "Přihlásit se",
+    "register": "Registrovat se",
+    "admin_dashboard": "Administrátorský panel",
+    "language": "Jazyk",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Začněte svou řidičskou kariéru v Nizozemsku — Postaráme se o zbytek.",
+    "tagline": "1 tým · 1 mise",
+    "mission_words": [
+      "TÝM",
+      "MISE"
+    ],
+    "cta_primary": "Kontaktujte nás",
+    "cta_secondary": "Naše služby",
+    "cta_whatsapp": "Napište nám na WhatsApp",
+    "stats_clients": "Spokojených klientů",
+    "stats_years": "Let zkušeností",
+    "stats_available": "Dostupní",
+    "partners_label": "Naši partneři",
+    "badge": "Nábor řidičů · Amsterdam, NL",
+    "stats_partners": "Hlavní partneři",
+    "trust_line": "Žádné zkušenosti s nizozemskou byrokracií? Žádný problém — provedeme vás krok za krokem."
+  },
+  "services": {
+    "title": "Naše Služby",
+    "transport": {
+      "title": "Doprava",
+      "description": "Spolehlivá a rychlá přeprava po celé Evropě."
+    },
+    "logistics": {
+      "title": "Logistika",
+      "description": "Kompletní logistická řešení přizpůsobená vaší firmě."
+    },
+    "cargo": {
+      "title": "Náklad",
+      "description": "Bezpečná a efektivní přeprava nákladu pro jakýkoliv typ zboží."
+    },
+    "what_we_do": "Co děláme",
+    "items": [
+      {
+        "title": "Umísťování řidičů",
+        "desc": "Propojujeme řidiče s doručovacími místy u důvěryhodných logistických společností v Amsterdamu a okolí."
+      },
+      {
+        "title": "Podpora s dokumenty",
+        "desc": "Pomáháme vám se všemi nezbytnými dokumenty pro legální práci v Nizozemsku."
+      },
+      {
+        "title": "Ubytování",
+        "desc": "Nabízíme možnosti ubytování (sdílené pokoje nebo byty) podle vaší smlouvy."
+      },
+      {
+        "title": "Průběžná podpora",
+        "desc": "Zůstáváme k dispozici, abychom vám pomohli před i po zahájení práce."
+      },
+      {
+        "title": "Spolehlivé příležitosti",
+        "desc": "Spolupracujeme se zavedenými logistickými partnery a nabízíme stabilní dlouhodobá místa."
+      },
+      {
+        "title": "Oblast Amsterdamu",
+        "desc": "Zaměřujeme se na umísťování pracovních míst v Amsterdamu a blízkých městech regionu."
+      }
+    ]
+  },
+  "about": {
+    "title": "O Team Cargo",
+    "description": "Team Cargo je agentura pro nábor řidičů se sídlem v Amsterdamu, Nizozemsko. Propojujeme místní a mezinárodní řidiče se stabilními pracovními místy u předních logistických společností v regionu Amsterdam.",
+    "values_title": "Naše hodnoty",
+    "values": [
+      "Spolehlivost",
+      "Efektivita",
+      "Zaměření na zákazníka",
+      "Bezpečnost"
+    ],
+    "label": "O nás",
+    "description2": "Spolupracujeme s důvěryhodnými partnery, jako jsou GLS, FedEx, Amazon a DPD, a pomáháme řidičům rychle a spolehlivě najít zaměstnání. Od podání žádosti až po nástup do práce poskytujeme úplnou podporu — včetně pomoci s dokumenty a ubytování pro řidiče přesouvající se ze zahraničí.",
+    "drivers_placed": "500+ umístěných řidičů",
+    "years_active": "Let aktivní"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "name": "Jméno",
+    "email": "E-mail",
+    "message": "Zpráva",
+    "send": "Odeslat",
+    "success": "Vaše zpráva byla odeslána!",
+    "subtitle": "Kontaktujte nás pro nabídku nebo více informací.",
+    "success_subtitle": "Ozveme se vám co nejdříve."
+  },
+  "auth": {
+    "login_title": "Přihlásit se",
+    "register_title": "Vytvořit účet",
+    "email": "E-mailová adresa",
+    "password": "Heslo",
+    "login_btn": "Přihlásit se",
+    "register_btn": "Registrovat se",
+    "or": "nebo",
+    "continue_google": "Pokračovat přes Google",
+    "continue_apple": "Pokračovat přes Apple",
+    "no_account": "Ještě nemáte účet?",
+    "have_account": "Máte již účet?",
+    "welcome_login": "Vítejte zpet v Team Cargo",
+    "welcome_register": "Vytvorit nový úcet",
+    "loading": "Nacítání...",
+    "error_generic": "Doslo k chybe",
+    "confirm_password": "Potvrdit heslo",
+    "passwords_no_match": "Hesla se neshodují",
+    "password_too_short": "Heslo musí mít alespoň 8 znaků",
+    "forgot_password": "Zapomněli jste heslo?",
+    "forgot_title": "Obnovit heslo",
+    "forgot_desc": "Zadejte svůj email a zašleme vám odkaz na obnovu.",
+    "send_reset_link": "Odeslat odkaz",
+    "sending": "Odesílání...",
+    "reset_sent_desc": "Pokud je tento email registrován, zaslali jsme odkaz. Zkontrolujte svou schránku.",
+    "back_to_login": "Zpět na přihlášení",
+    "resend_email": "Znovu odeslat email",
+    "verify_email_title": "Zkontrolujte svou schránku",
+    "verify_email_desc": "Zaslali jsme ověřovací email. Ověřte svůj email před přihlášením.",
+    "first_name": "Jmeno",
+    "last_name": "Prijmeni",
+    "verify_email_desc_short": "Zkontrolujte dorucenu postu a aktivujte ucet",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Služby",
+    "col_company": "Společnost",
+    "col_legal": "Právní",
+    "privacy": "Zásady ochrany osobních údajů",
+    "cookies": "Zásady cookies",
+    "tagline": "1 tým · 1 mise",
+    "rights": "Všechna práva vyhrazena.",
+    "terms": "Obchodní podmínky",
+    "tagline_sub": "Nábor řidičů — Amsterdam"
+  },
+  "housing": {
+    "label": "Pro stěhující se řidiče",
+    "title": "Pomůžeme vám také najít ubytování",
+    "description": "Stěhujete se do Nizozemska ze zahraničí? Zajišťujeme pro vás čisté, pohodlné ubytování — abyste se mohli soustředit na novou práci bez obav o místo spaní. Žádné skryté náklady, žádný stres.",
+    "perks": [
+      "Plně zařízený apartmán v ceně",
+      "Internet a energie zahrnuty",
+      "Sdílená kuchyně a obývací prostor",
+      "V blízkosti vašeho pracovního depa"
+    ],
+    "cta": "Zeptejte se na možnosti ubytování"
+  },
+  "cookie_banner": {
+    "title": "Používáme cookies",
+    "description": "Používáme základní a analytické cookies pro zlepšení vašeho zážitku. Kliknutím na Přijmout souhlasíte s naším používáním cookies.",
+    "accept": "Přijmout vše",
+    "reject": "Odmítnout volitelné",
+    "cookie_policy_link": "Zásady cookies",
+    "privacy_policy_link": "Zásady ochrany soukromí"
+  },
+  "privacy": {
+    "label": "Právní",
+    "title": "Zásady ochrany osobních údajů",
+    "last_updated": "Poslední aktualizace: duben 2026",
+    "s1_title": "1. Kdo jsme",
+    "s1_p": "Team Cargo je agentura pro nábor řidičů se sídlem v Amsterdamu, Nizozemsko. Propojujeme řidiče s logistickými společnostmi a podporujeme je při umisťování pracovních míst, dokumentaci a ubytování.",
+    "s1_email": "E-mail:",
+    "s2_title": "2. Jaké údaje shromažďujeme",
+    "s2_intro": "Můžeme shromažďovat následující osobní údaje:",
+    "s2_items": [
+      "Celé jméno",
+      "E-mailová adresa",
+      "Telefonní číslo (včetně WhatsApp)",
+      "Životopis / pracovní zkušenosti",
+      "Identifikace nebo dokumentace (pokud je vyžadována pro zaměstnání)",
+      "Místo nebo země bydliště"
+    ],
+    "s3_title": "3. Jak používáme vaše údaje",
+    "s3_intro": "Vaše údaje používáme k:",
+    "s3_items": [
+      "Zpracování vaší žádosti o zaměstnání",
+      "Párování s vhodnými pracovními příležitostmi",
+      "Kontaktování ohledně vaší žádosti",
+      "Pomoci s dokumentací a nástupem",
+      "Zlepšování našich služeb"
+    ],
+    "s4_title": "4. Právní základ (GDPR)",
+    "s4_intro": "Vaše údaje zpracováváme na základě:",
+    "s4_items": [
+      "Vašeho souhlasu (když žádáte nebo nás kontaktujete)",
+      "Smluvní nutnosti (proces umisťování pracovních míst)",
+      "Zákonných povinností"
+    ],
+    "s5_title": "5. Sdílení údajů",
+    "s5_intro": "Vaše údaje můžeme sdílet s:",
+    "s5_items": [
+      "Partnerskými logistickými společnostmi (např. GLS, FedEx, Amazon, DPD — pro umisťování pracovních míst)",
+      "Vládními nebo právními orgány (pokud to vyžaduje zákon)"
+    ],
+    "s5_no_sell": "Vaše osobní údaje neprodáváme.",
+    "s6_title": "6. Uchovávání údajů",
+    "s6_p": "Vaše údaje uchovávame pouze po dobu nezbytnou pro účely náboru nebo jak vyžaduje zákon.",
+    "s7_title": "7. Vaše práva",
+    "s7_intro": "Podle GDPR máte právo:",
+    "s7_items": [
+      "Přistupovat ke svým údajům",
+      "Opravit nepřesné údaje",
+      "Požádat o vymazání (\"právo být zapomenut\")",
+      "Kdykoli odvolat souhlas",
+      "Podat stížnost k nizozemskému úřadu pro ochranu osobních údajů (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Zabezpečení údajů",
+    "s8_p": "Přijímáme vhodná technická a organizační opatření k ochraně vašich osobních údajů před neoprávněným přístupem, ztrátou nebo zneužitím.",
+    "s9_title": "9. Kontakt",
+    "s9_intro": "Pokud máte dotazy nebo žádosti ohledně těchto Zásad ochrany osobních údajů, kontaktujte nás:",
+    "s10_title": "10. Aktualizace",
+    "s10_p": "Tyto Zásady ochrany osobních údajů můžeme čas od času aktualizovat. Pravidelně kontrolujte tuto stránku, abyste viděli nejnovější verzi."
+  },
+  "cookies_page": {
+    "label": "Právní",
+    "title": "Zásady používání cookies",
+    "last_updated": "Poslední aktualizace: duben 2026",
+    "s1_title": "1. Co jsou cookies?",
+    "s1_p": "Cookies jsou malé textové soubory uložené na vašem zařízení při návštěvě webové stránky. Pomáhají nám zlepšovat váš zážitek a umožňují správné fungování určitých funkcí webu.",
+    "s2_title": "2. Typy cookies, které používáme",
+    "s2_essential_title": "Nezbytné cookies",
+    "s2_essential_p": "Nutné pro správné fungování webu — např. navigace, formuláře a správa relací. Tyto nelze deaktivovat.",
+    "s2_analytics_title": "Analytické cookies",
+    "s2_analytics_p": "Pomáhají nám pochopit, jak návštěvníci používají náš web (např. navštívené stránky, strávený čas). Používáme je ke zlepšení webu.",
+    "s2_functional_title": "Funkční cookies",
+    "s2_functional_p": "Pamatují si vaše preference — jako je výběr jazyka — abyste je nemuseli znovu vybírat při každé návštěvě.",
+    "s3_title": "3. Jak používáme cookies",
+    "s3_intro": "Cookies používáme, abychom:",
+    "s3_items": [
+      "Zajistili správné fungování webu",
+      "Zlepšili výkon webu a uživatelský zážitek",
+      "Pochopili, jak uživatelé pracují s naším obsahem",
+      "Zapamatovali si jazykové a zobrazovací preference"
+    ],
+    "s4_title": "4. Správa cookies",
+    "s4_p1": "Cookies můžete spravovat nebo deaktivovat v nastavení prohlížeče. Upozorňujeme, že deaktivace určitých cookies může ovlivnit funkčnost našeho webu.",
+    "s4_p2": "Většina prohlížečů umožňuje: zobrazit uložené cookies, smazat cookies a blokovat cookies z konkrétních nebo všech webů. Pokyny najdete v dokumentaci nápovědy vašeho prohlížeče.",
+    "s5_title": "5. Cookies třetích stran",
+    "s5_p": "Můžeme používat služby třetích stran (jako jsou analytické nástroje), které umísťují vlastní cookies na vaše zařízení. Tyto podléhají jejich vlastním zásadám ochrany soukromí a cookies.",
+    "s6_title": "6. Váš souhlas",
+    "s6_p": "Při první návštěvě našeho webu vás žádáme o souhlas s používáním nezbytných cookies. Své preference můžete kdykoli změnit vymazáním cookies prohlížeče a opětovnou návštěvou webu.",
+    "s7_title": "7. Kontakt",
+    "s7_intro": "Dotazy k našim zásadám používání cookies?",
+    "s8_title": "8. Aktualizace",
+    "s8_p": "Tyto zásady cookies můžeme čas od času aktualizovat. Změny budou zveřejněny na této stránce."
+  },
+  "terms_page": {
+    "label": "Právní",
+    "title": "Obchodní podmínky",
+    "last_updated": "Poslední aktualizace: duben 2026",
+    "intro": "Vítejte u Team Cargo. Přístupem na naše webové stránky nebo používáním našich služeb souhlasíte s následujícími obchodními podmínkami.",
+    "s1_title": "1. O nás",
+    "s1_p": "Team Cargo je personální agentura se sídlem v Amsterdamu, Nizozemsko. Specializujeme se na propojování řidičů s logistickými společnostmi a jejich podporu během procesu náboru a přestěhování.",
+    "s2_title": "2. Naše služby",
+    "s2_intro": "Poskytujeme:",
+    "s2_items": [
+      "Zprostředkování práce řidičů u partnerských logistických firem (GLS, FedEx, Amazon, DPD)",
+      "Pomoc s dokumentací a nástupem",
+      "Ubytovací podporu (v závislosti na smlouvě)"
+    ],
+    "s2_note": "V žádném případě nezaručujeme zprostředkování práce. Zaměstnání závisí na požadavcích partnerských firem a kvalifikaci kandidáta.",
+    "s3_title": "3. Povinnosti uživatele",
+    "s3_intro": "Používáním našich služeb souhlasíte s tím, že:",
+    "s3_items": [
+      "Poskytnete přesné a pravdivé informace",
+      "Na žádost předložíte platné dokumenty",
+      "Budete dodržovat nizozemské zákony a předpisy o zaměstnání",
+      "Budete dodržovat pokyny partnerských firem během zaměstnání"
+    ],
+    "s4_title": "4. Proces přihlášení a náboru",
+    "s4_items": [
+      "Podání přihlášky nezaručuje zaměstnání",
+      "Konečná rozhodnutí o náboru přijímají partnerské firmy",
+      "Pracovní nabídky se mohou lišit v závislosti na dostupnosti a kvalifikacích"
+    ],
+    "s5_title": "5. Ubytování",
+    "s5_items": [
+      "Ubytování může být poskytnuto v závislosti na pracovní smlouvě",
+      "Podmínky bydlení, náklady a pravidla budou definovány ve vaší smlouvě",
+      "Jste zodpovědní za dodržování pravidel bydlení a ochranu majetku"
+    ],
+    "s6_title": "6. Odpovědnost",
+    "s6_intro": "Team Cargo není zodpovědná za:",
+    "s6_items": [
+      "Rozhodnutí partnerských firem",
+      "Změny pracovních podmínek po umístění",
+      "Ztráty nebo škody během zaměstnání nebo ubytování"
+    ],
+    "s6_note": "Team Cargo vystupuje jako zprostředkovatel mezi kandidáty a zaměstnavateli.",
+    "s7_title": "7. Platby a poplatky",
+    "s7_items": [
+      "Veškeré poplatky nebo náklady (pokud jsou relevantní) budou předem jasně sděleny",
+      "Team Cargo neúčtuje kandidátům skryté poplatky"
+    ],
+    "s8_title": "8. Duševní vlastnictví",
+    "s8_p": "Veškerý obsah na těchto webových stránkách — včetně textu, značky a loga — patří Team Cargo a nesmí být reprodukován ani používán bez písemného souhlasu.",
+    "s9_title": "9. Ukončení služeb",
+    "s9_intro": "Vyhrazujeme si právo odmítnout nebo ukončit služby, pokud:",
+    "s9_items": [
+      "Jsou poskytnuty nepravdivé nebo zavádějící informace",
+      "Jsou porušeny tyto podmínky",
+      "Dojde k nevhodnému chování během zaměstnání nebo ubytování"
+    ],
+    "s10_title": "10. Ochrana soukromí",
+    "s10_p": "Vaše osobní údaje jsou zpracovávány v souladu s našimi",
+    "s10_link": "Zásadami ochrany osobních údajů",
+    "s11_title": "11. Rozhodné právo",
+    "s11_p": "Tyto podmínky se řídí nizozemským právem. Jakékoli spory podléhají jurisdikci příslušných soudů v Amsterdamu.",
+    "s12_title": "12. Kontakt",
+    "s12_intro": "Pro dotazy týkající se těchto obchodních podmínek:",
+    "s13_title": "13. Aktualizace",
+    "s13_p": "Tyto obchodní podmínky můžeme kdykoli aktualizovat. Pokračující používání našich služeb po zveřejnění změn znamená, že aktualizované podmínky přijímáte."
+  }
+}

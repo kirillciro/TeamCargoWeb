@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Palvelut",
+    "about": "Meistä",
+    "contact": "Yhteystiedot",
+    "login": "Kirjaudu sisään",
+    "register": "Rekisteröidy",
+    "admin_dashboard": "Hallintapaneeli",
+    "language": "Kieli",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Aloita kuskin työ Hollannissa — Hoidamme loput.",
+    "tagline": "1 tiimi · 1 missio",
+    "mission_words": [
+      "TIIMI",
+      "MISSIO"
+    ],
+    "cta_primary": "Ota yhteyttä",
+    "cta_secondary": "Palvelumme",
+    "cta_whatsapp": "WhatsApp meille",
+    "stats_clients": "Tyytyväistä asiakasta",
+    "stats_years": "Vuotta kokemusta",
+    "stats_available": "Tavoitettavissa",
+    "partners_label": "Kumppanimme",
+    "badge": "Kuljettajien rekrytointi · Amsterdam, NL",
+    "stats_partners": "Pääkumppanit",
+    "trust_line": "Ei kokemusta hollantilaisesta byrokratiasta? Ei ongelmaa — opastamme sinut askel askeleelta."
+  },
+  "services": {
+    "title": "Palvelumme",
+    "transport": {
+      "title": "Kuljetus",
+      "description": "Luotettava ja nopea kuljetus kaikkialle Eurooppaan."
+    },
+    "logistics": {
+      "title": "Logistiikka",
+      "description": "Täydelliset logistiikkaratkaisut yrityksesi tarpeisiin."
+    },
+    "cargo": {
+      "title": "Rahti",
+      "description": "Turvallinen ja tehokas rahtikuljetus kaikenlaiselle lastille."
+    },
+    "what_we_do": "Mitä teemme",
+    "items": [
+      {
+        "title": "Kuljettajien työnvälitys",
+        "desc": "Yhdistämme kuljettajat toimitustöihin luotettavissa logistiikkayrityksissä Amsterdamissa ja ympäristössä."
+      },
+      {
+        "title": "Asiakirjatuki",
+        "desc": "Autamme sinua hoitamaan kaikki tarvittavat paperityöt lailliseen työskentelyyn Alankomaissa."
+      },
+      {
+        "title": "Majoitus",
+        "desc": "Tarjoamme majoitusvaihtoehtoja (jaetut huoneet tai asunnot) sopimuksesta riippuen."
+      },
+      {
+        "title": "Jatkuva tuki",
+        "desc": "Olemme käytettävissäsi ennen ja jälkeen työn aloittamisen."
+      },
+      {
+        "title": "Luotettavat mahdollisuudet",
+        "desc": "Teemme yhteistyötä vakiintuneiden logistiikkakumppaneiden kanssa tarjotaksemme vakaita, pitkäaikaisia töitä."
+      },
+      {
+        "title": "Amsterdamin alue",
+        "desc": "Keskitymme työnvälitykseen Amsterdamissa ja lähikunnissa."
+      }
+    ]
+  },
+  "about": {
+    "title": "Tietoa Team Cargosta",
+    "description": "Team Cargo on Amsterdamissa, Alankomaissa sijaitseva kuljettajien rekrytointitoimisto. Yhdistämme paikalliset ja kansainväliset kuljettajat vakaisiin töihin Amsterdamin alueen johtavissa logistiikkayrityksissä.",
+    "values_title": "Arvomme",
+    "values": [
+      "Luotettavuus",
+      "Tehokkuus",
+      "Asiakaskeskeisyys",
+      "Turvallisuus"
+    ],
+    "label": "Meistä",
+    "description2": "Teemme yhteistyötä luotettavien kumppaneiden, kuten GLS:n, FedExin, Amazonin ja DPD:n kanssa, auttaen kuljettajia löytämään työtä nopeasti ja luotettavasti. Hakemuksesta perehdytykseen tarjoamme täyden tuen — mukaan lukien asiakirjaohjauksen ja majoituksen ulkomailta muuttaville kuljettajille.",
+    "drivers_placed": "500+ sijoitettua kuljettajaa",
+    "years_active": "Vuotta toiminnassa"
+  },
+  "contact": {
+    "title": "Yhteystiedot",
+    "name": "Nimi",
+    "email": "Sähköposti",
+    "message": "Viesti",
+    "send": "Lähetä",
+    "success": "Viestisi on lähetetty!",
+    "subtitle": "Ota yhteyttä saadaksesi tarjouksen tai lisätietoja.",
+    "success_subtitle": "Otamme teihin yhteyttä mahdollisimman pian."
+  },
+  "auth": {
+    "login_title": "Kirjaudu sisään",
+    "register_title": "Luo tili",
+    "email": "Sähköpostiosoite",
+    "password": "Salasana",
+    "login_btn": "Kirjaudu sisään",
+    "register_btn": "Rekisteröidy",
+    "or": "tai",
+    "continue_google": "Jatka Googlella",
+    "continue_apple": "Jatka Applella",
+    "no_account": "Ei vielä tiliä?",
+    "have_account": "Onko sinulla jo tili?",
+    "welcome_login": "Tervetuloa takaisin Team Cargoon",
+    "welcome_register": "Luo uusi tili",
+    "loading": "Ladataan...",
+    "error_generic": "Tapahtui virhe",
+    "confirm_password": "Vahvista salasana",
+    "passwords_no_match": "Salasanat eivät täsmää",
+    "password_too_short": "Salasanan on oltava vähintään 8 merkkiä pitkä",
+    "forgot_password": "Unohditko salasanasi?",
+    "forgot_title": "Palauta salasana",
+    "forgot_desc": "Syötä sähköpostisi ja lähetämme sinulle palautuslinkin.",
+    "send_reset_link": "Lähetä linkki",
+    "sending": "Lähetetään...",
+    "reset_sent_desc": "Jos tuo sähköposti on rekisteröity, lähetimme linkin. Tarkista postilaatikkosi.",
+    "back_to_login": "Takaisin kirjautumiseen",
+    "resend_email": "Lähetä sähköposti uudelleen",
+    "verify_email_title": "Tarkista postilaatikkosi",
+    "verify_email_desc": "Lähetimme vahvistussähköpostin. Vahvista sähköpostisi ennen kirjautumista.",
+    "first_name": "Etunimi",
+    "last_name": "Sukunimi",
+    "verify_email_desc_short": "Tarkasta postilaatikko aktivoidaksesi tilin",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Palvelut",
+    "col_company": "Yritys",
+    "col_legal": "Oikeudellinen",
+    "privacy": "Tietosuojakäytäntö",
+    "cookies": "Evästekäytäntö",
+    "tagline": "1 tiimi · 1 missio",
+    "rights": "Kaikki oikeudet pidätetään.",
+    "terms": "Käyttöehdot",
+    "tagline_sub": "Kuljettajien rekrytointi — Amsterdam"
+  },
+  "housing": {
+    "label": "Muuttaville kuljettajille",
+    "title": "Autamme myös löytämään asunnon",
+    "description": "Muutatteko Alankomaihin ulkomailta? Järjestämme teille puhtaan, mukavan asumisen — jotta voitte keskittyä uuteen työhönne ilman huolia nukkumapaikasta. Ei piilokustannuksia, ei stressiä.",
+    "perks": [
+      "Täysin kalustettu asunto mukana",
+      "Internet ja sähkölaskut katettuna",
+      "Jaettu keittiö ja oleskelutila",
+      "Lähellä työdepotasi"
+    ],
+    "cta": "Kysy asumismahdollisuuksista"
+  },
+  "cookie_banner": {
+    "title": "Käytämme evästeitä",
+    "description": "Käytämme välttämättömiä ja analyyttisiä evästeitä käyttökokemuksesi parantamiseksi. Napsauttamalla Hyväksy annat suostumuksesi evästeiden käyttöön.",
+    "accept": "Hyväksy kaikki",
+    "reject": "Hylkää valinnaiset",
+    "cookie_policy_link": "Evästekäytäntö",
+    "privacy_policy_link": "Tietosuojakäytäntö"
+  },
+  "privacy": {
+    "label": "Oikeudellinen",
+    "title": "Tietosuojakäytäntö",
+    "last_updated": "Viimeksi päivitetty: huhtikuu 2026",
+    "s1_title": "1. Keitä olemme",
+    "s1_p": "Team Cargo on Amsterdamissa, Alankomaissa toimiva kuljettajien rekrytointitoimisto. Yhdistämme kuljettajia logistiikkayrityksiin ja tuemme heitä työnsijoituksessa, dokumentaatiossa ja majoituksessa.",
+    "s1_email": "Sähköposti:",
+    "s2_title": "2. Mitä tietoja keräämme",
+    "s2_intro": "Saatamme kerätä seuraavia henkilötietoja:",
+    "s2_items": [
+      "Koko nimi",
+      "Sähköpostiosoite",
+      "Puhelinnumero (mukaan lukien WhatsApp)",
+      "CV / työkokemus",
+      "Henkilöllisyystodistus tai dokumentaatio (jos työllistyminen sitä vaatii)",
+      "Sijainti tai asuinmaa"
+    ],
+    "s3_title": "3. Miten käytämme tietojasi",
+    "s3_intro": "Käytämme tietojasi:",
+    "s3_items": [
+      "Työnhakemuksesi käsittelemiseen",
+      "Sopivien työmahdollisuuksien löytämiseen",
+      "Yhteydenottoon hakemuksesi suhteen",
+      "Avustamiseen dokumentaatiossa ja perehdytyksessä",
+      "Palvelujemme parantamiseen"
+    ],
+    "s4_title": "4. Oikeudellinen perusta (GDPR)",
+    "s4_intro": "Käsittelemme tietojasi perustuen:",
+    "s4_items": [
+      "Suostumukseesi (kun haet työtä tai otat meihin yhteyttä)",
+      "Sopimusvelvollisuuteen (työnsijoitusprosessi)",
+      "Lakisääteisiin velvollisuuksiin"
+    ],
+    "s5_title": "5. Tietojen jakaminen",
+    "s5_intro": "Saatamme jakaa tietojasi:",
+    "s5_items": [
+      "Logistiikkakumppaniyrityksille (esim. GLS, FedEx, Amazon, DPD — työnsijoitusta varten)",
+      "Viranomaisille tai oikeusviranomaisille (jos laki sitä vaatii)"
+    ],
+    "s5_no_sell": "Emme myy henkilötietojasi.",
+    "s6_title": "6. Tietojen säilyttäminen",
+    "s6_p": "Säilytämme tietojasi vain niin kauan kuin rekrytointitarkoituksiin on tarpeen tai laki sitä vaatii.",
+    "s7_title": "7. Oikeutesi",
+    "s7_intro": "GDPR:n nojalla sinulla on oikeus:",
+    "s7_items": [
+      "Saada pääsy tietoihisi",
+      "Korjata virheellisiä tietoja",
+      "Pyytää poistamista (\"oikeus tulla unohdetuksi\")",
+      "Peruuttaa suostumus milloin tahansa",
+      "Tehdä valitus Alankomaiden tietosuojaviranomaiselle (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Tietoturva",
+    "s8_p": "Toteutamme asianmukaiset tekniset ja organisatoriset toimenpiteet suojataksemme henkilötietojasi luvattomalta käytöltä, katoamiselta tai väärinkäytöltä.",
+    "s9_title": "9. Yhteystiedot",
+    "s9_intro": "Jos sinulla on kysymyksiä tai pyyntöjä tästä tietosuojakäytännöstä, ota meihin yhteyttä:",
+    "s10_title": "10. Päivitykset",
+    "s10_p": "Saatamme päivittää tätä tietosuojakäytäntöä ajoittain. Tarkasta tämä sivu säännöllisesti uusimman version saamiseksi."
+  },
+  "cookies_page": {
+    "label": "Oikeudellinen",
+    "title": "Evästekäytäntö",
+    "last_updated": "Viimeksi päivitetty: huhtikuu 2026",
+    "s1_title": "1. Mitä ovat evästeet?",
+    "s1_p": "Evästeet ovat pieniä tekstitiedostoja, jotka tallennetaan laitteellesi, kun vierailet verkkosivustolla. Ne auttavat meitä parantamaan käyttökokemustasi ja mahdollistavat tiettyjen verkkosivuston toimintojen oikean toiminnan.",
+    "s2_title": "2. Käyttämämme evästetyypit",
+    "s2_essential_title": "Välttämättömät evästeet",
+    "s2_essential_p": "Tarvitaan verkkosivuston asianmukaiseen toimintaan — esim. navigointi, lomakkeet ja istunnon hallinta. Näitä ei voi poistaa käytöstä.",
+    "s2_analytics_title": "Analyyttiset evästeet",
+    "s2_analytics_p": "Auttavat meitä ymmärtämään, miten kävijät käyttävät verkkosivustoamme (esim. vieraillut sivut, käytetty aika). Käytämme tätä sivuston parantamiseen.",
+    "s2_functional_title": "Toiminnalliset evästeet",
+    "s2_functional_p": "Muistavat mieltymyksesi — kuten kielivalintasi — jotta sinun ei tarvitse valita niitä uudelleen joka käynnillä.",
+    "s3_title": "3. Miten käytämme evästeitä",
+    "s3_intro": "Käytämme evästeitä:",
+    "s3_items": [
+      "Verkkosivuston oikean toiminnan varmistamiseen",
+      "Sivuston suorituskyvyn ja käyttökokemuksen parantamiseen",
+      "Ymmärtämään, miten käyttäjät ovat vuorovaikutuksessa sisältömme kanssa",
+      "Kieli- ja näyttöasetusten muistamiseen"
+    ],
+    "s4_title": "4. Evästeiden hallinta",
+    "s4_p1": "Voit hallita tai poistaa evästeitä käytöstä selaimesi asetuksista. Huomaa, että tiettyjen evästeiden poistaminen käytöstä voi vaikuttaa verkkosivustomme toiminnallisuuteen.",
+    "s4_p2": "Useimmat selaimet sallivat: tallennettujen evästeiden tarkastelun, evästeiden poistamisen ja evästeiden estämisen tietyiltä tai kaikilta verkkosivustoilta. Katso selaimesi ohjedokumentaatiosta ohjeet.",
+    "s5_title": "5. Kolmannen osapuolen evästeet",
+    "s5_p": "Saatamme käyttää kolmannen osapuolen palveluita (kuten analytiikkatyökaluja), jotka sijoittavat omia evästeitään laitteellesi. Nämä ovat niiden omien tietosuoja- ja evästekäytäntöjen alaisia.",
+    "s6_title": "6. Suostumuksesi",
+    "s6_p": "Kun vierailet verkkosivustollamme ensimmäistä kertaa, pyydämme suostumustasi muiden kuin välttämättömien evästeiden käyttöön. Voit muuttaa mieltymyksiäsi milloin tahansa tyhjentämällä selaimen evästeet ja vierailemalla sivustolla uudelleen.",
+    "s7_title": "7. Yhteystiedot",
+    "s7_intro": "Kysymyksiä evästekäytännöstämme?",
+    "s8_title": "8. Päivitykset",
+    "s8_p": "Saatamme päivittää tätä evästekäytäntöä ajoittain. Muutokset julkaistaan tällä sivulla."
+  },
+  "terms_page": {
+    "label": "Oikeudellinen",
+    "title": "Käyttöehdot",
+    "last_updated": "Viimeksi päivitetty: huhtikuu 2026",
+    "intro": "Tervetuloa Team Cargoon. Käyttämällä verkkosivustoamme ja palveluitamme hyväksyt seuraavat Käyttöehdot.",
+    "s1_title": "1. Meistä",
+    "s1_p": "Team Cargo on Amsterdamissa, Alankomaissa toimiva rekrytointitoimisto. Olemme erikoistuneet kuljettajien yhdistämiseen logistiikkayritysten kanssa ja tukemiseen rekrytointi- ja muuttoprosessin aikana.",
+    "s2_title": "2. Palvelumme",
+    "s2_intro": "Tarjoamme:",
+    "s2_items": [
+      "Kuljettajien työnsijoituksen kumppanilogistiikkayrityksiin (GLS, FedEx, Amazon, DPD)",
+      "Apua dokumentaatiossa ja perehdytyksessä",
+      "Majoitustukea (sopimuksen mukaan)"
+    ],
+    "s2_note": "Emme takaa työnsijoitusta kaikissa tapauksissa. Työllistyminen riippuu kumppaniyritysten vaatimuksista ja ehdokkaan pätevyyksistä.",
+    "s3_title": "3. Käyttäjän vastuut",
+    "s3_intro": "Käyttämällä palveluitamme sitoudut:",
+    "s3_items": [
+      "Antamaan tarkkoja ja totuudenmukaisia tietoja",
+      "Toimittamaan voimassa olevat asiakirjat pyydettäessä",
+      "Noudattamaan Hollannin lakeja ja työllistymissääntöjä",
+      "Noudattamaan kumppaniyritysten ohjeita työsuhteen aikana"
+    ],
+    "s4_title": "4. Haku- ja rekrytointiprosessi",
+    "s4_items": [
+      "Hakemuksen jättäminen ei takaa työllistymistä",
+      "Lopulliset rekrytointipäätökset tekevät kumppaniyritykset",
+      "Työtarjoukset voivat vaihdella saatavuuden ja pätevyyksien mukaan"
+    ],
+    "s5_title": "5. Majoitus",
+    "s5_items": [
+      "Majoitusta voidaan tarjota työsopimuksen mukaan",
+      "Asumisehdot, kustannukset ja säännöt määritellään sopimuksessasi",
+      "Olet vastuussa asumissääntöjen ja omaisuuden kunnioittamisesta"
+    ],
+    "s6_title": "6. Vastuu",
+    "s6_intro": "Team Cargo ei ole vastuussa seuraavista:",
+    "s6_items": [
+      "Kumppaniyritysten tekemät päätökset",
+      "Muutokset työolosuhtissa sijoituksen jälkeen",
+      "Menetykset tai vahingot työsuhteen tai majoituksen aikana"
+    ],
+    "s6_note": "Team Cargo toimii välittäjänä hakijoiden ja työnantajien välillä.",
+    "s7_title": "7. Maksut ja palkkiot",
+    "s7_items": [
+      "Mahdolliset palkkiot tai kustannukset (tarvittaessa) ilmoitetaan selkeästi etukäteen",
+      "Team Cargo ei veloita hakijoilta piilomaksuja"
+    ],
+    "s8_title": "8. Henkinen omaisuus",
+    "s8_p": "Kaikki tämän verkkosivuston sisältö — mukaan lukien teksti, brändi ja logo — kuuluu Team Cargolle, eikä sitä saa reproduksoida tai käyttää ilman kirjallista lupaa.",
+    "s9_title": "9. Palveluiden lopettaminen",
+    "s9_intro": "Pidätämme oikeuden kieltäytyä tai lopettaa palvelut, jos:",
+    "s9_items": [
+      "Annetaan vääriä tai harhaanjohtavia tietoja",
+      "Näitä Ehtoja rikotaan",
+      "Työsuhteen tai majoituksen aikana ilmenee sopimaton käyttäytyminen"
+    ],
+    "s10_title": "10. Yksityisyys",
+    "s10_p": "Henkilötietojasi käsitellään",
+    "s10_link": "Tietosuojakäytäntömme mukaisesti",
+    "s11_title": "11. Sovellettava laki",
+    "s11_p": "Nämä ehdot ovat Alankomaiden lainsäädännön alaisia. Mahdolliset riidat kuuluvat Amsterdamin toimivaltaisten tuomioistuinten tuomiovallan alaisiksi.",
+    "s12_title": "12. Yhteystiedot",
+    "s12_intro": "Kysymyksiä koskien näitä Käyttöehtoja:",
+    "s13_title": "13. Päivitykset",
+    "s13_p": "Saatamme päivittää näitä Käyttöehtoja milloin tahansa. Palveluidemme jatkuva käyttö muutosten julkaisemisen jälkeen tarkoittaa, että hyväksyt päivitetyt Ehdot."
+  }
+}

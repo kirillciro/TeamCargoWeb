@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Servizi",
+    "about": "Chi siamo",
+    "contact": "Contatto",
+    "login": "Accedi",
+    "register": "Registrati",
+    "admin_dashboard": "Pannello amministratore",
+    "language": "Lingua",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Inizia il tuo lavoro da autista nei Paesi Bassi — Ci occupiamo noi del resto.",
+    "tagline": "1 team · 1 missione",
+    "mission_words": [
+      "TEAM",
+      "MISSIONE"
+    ],
+    "cta_primary": "Contattaci",
+    "cta_secondary": "I nostri servizi",
+    "cta_whatsapp": "Scrivici su WhatsApp",
+    "stats_clients": "Clienti soddisfatti",
+    "stats_years": "Anni di esperienza",
+    "stats_available": "Disponibile",
+    "partners_label": "I nostri partner",
+    "badge": "Reclutamento autisti · Amsterdam, NL",
+    "stats_partners": "Partner principali",
+    "trust_line": "Nessuna esperienza con la burocrazia olandese? Nessun problema — ti guidiamo passo dopo passo."
+  },
+  "services": {
+    "title": "I Nostri Servizi",
+    "transport": {
+      "title": "Trasporto",
+      "description": "Trasporto affidabile e veloce in tutta Europa."
+    },
+    "logistics": {
+      "title": "Logistica",
+      "description": "Soluzioni logistiche complete su misura per la tua azienda."
+    },
+    "cargo": {
+      "title": "Cargo",
+      "description": "Trasporto merci sicuro ed efficiente per ogni tipo di carico."
+    },
+    "what_we_do": "Cosa facciamo",
+    "items": [
+      {
+        "title": "Collocamento autisti",
+        "desc": "Colleghiamo gli autisti con lavori di consegna presso aziende logistiche affidabili ad Amsterdam e dintorni."
+      },
+      {
+        "title": "Supporto documenti",
+        "desc": "Ti aiutiamo a gestire tutte le pratiche burocratiche necessarie per lavorare legalmente nei Paesi Bassi."
+      },
+      {
+        "title": "Alloggio",
+        "desc": "Forniamo opzioni abitative (stanze condivise o appartamenti) in base al tuo contratto."
+      },
+      {
+        "title": "Supporto continuo",
+        "desc": "Restiamo disponibili per assisterti prima e dopo l'inizio del lavoro."
+      },
+      {
+        "title": "Opportunità affidabili",
+        "desc": "Lavoriamo con partner logistici consolidati per offrire lavori stabili e a lungo termine."
+      },
+      {
+        "title": "Regione di Amsterdam",
+        "desc": "Ci concentriamo sulle offerte di lavoro ad Amsterdam e nelle città vicine della regione."
+      }
+    ]
+  },
+  "about": {
+    "title": "Chi è Team Cargo",
+    "description": "Team Cargo è un'agenzia di reclutamento autisti con sede ad Amsterdam, Paesi Bassi. Mettiamo in contatto autisti locali e internazionali con lavori stabili presso le principali aziende logistiche nella regione di Amsterdam.",
+    "values_title": "I nostri valori",
+    "values": [
+      "Affidabilità",
+      "Efficienza",
+      "Orientamento al cliente",
+      "Sicurezza"
+    ],
+    "label": "Chi siamo",
+    "description2": "Lavoriamo con partner affidabili come GLS, FedEx, Amazon e DPD, aiutando gli autisti a trovare lavoro in modo rapido e affidabile. Dalla domanda all'inserimento, forniamo supporto completo — inclusa la guida documentale e l'alloggio per i conducenti che si trasferiscono dall'estero.",
+    "drivers_placed": "500+ autisti inseriti",
+    "years_active": "Anni di attività"
+  },
+  "contact": {
+    "title": "Contatto",
+    "name": "Nome",
+    "email": "E-mail",
+    "message": "Messaggio",
+    "send": "Invia",
+    "success": "Il tuo messaggio è stato inviato!",
+    "subtitle": "Contattaci per un preventivo o ulteriori informazioni.",
+    "success_subtitle": "Ti contatteremo il prima possibile."
+  },
+  "auth": {
+    "login_title": "Accedi",
+    "register_title": "Crea un account",
+    "email": "Indirizzo e-mail",
+    "password": "Password",
+    "login_btn": "Accedi",
+    "register_btn": "Registrati",
+    "or": "oppure",
+    "continue_google": "Continua con Google",
+    "continue_apple": "Continua con Apple",
+    "no_account": "Non hai ancora un account?",
+    "have_account": "Hai già un account?",
+    "welcome_login": "Bentornato su Team Cargo",
+    "welcome_register": "Crea un nuovo account",
+    "loading": "Caricamento...",
+    "error_generic": "Si è verificato un errore",
+    "confirm_password": "Conferma password",
+    "passwords_no_match": "Le password non corrispondono",
+    "password_too_short": "La password deve essere di almeno 8 caratteri",
+    "forgot_password": "Password dimenticata?",
+    "forgot_title": "Reimposta la tua password",
+    "forgot_desc": "Inserisci la tua email e ti invieremo un link di reimpostazione.",
+    "send_reset_link": "Invia link",
+    "sending": "Invio...",
+    "reset_sent_desc": "Se quell'email è registrata, abbiamo inviato un link. Controlla la tua casella di posta.",
+    "back_to_login": "Torna al login",
+    "resend_email": "Reinvia email",
+    "verify_email_title": "Controlla la tua casella di posta",
+    "verify_email_desc": "Abbiamo inviato un'email di verifica. Verifica la tua email prima di accedere.",
+    "first_name": "Nome",
+    "last_name": "Cognome",
+    "verify_email_desc_short": "Controlla la casella di posta per attivare l'account",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Servizi",
+    "col_company": "Azienda",
+    "col_legal": "Legale",
+    "privacy": "Informativa sulla privacy",
+    "cookies": "Informativa sui cookie",
+    "tagline": "1 team · 1 missione",
+    "rights": "Tutti i diritti riservati.",
+    "terms": "Termini e Condizioni",
+    "tagline_sub": "Reclutamento autisti — Amsterdam"
+  },
+  "housing": {
+    "label": "Per i conducenti che si trasferiscono",
+    "title": "Ti aiutiamo anche a trovare un alloggio",
+    "description": "Ti trasferisci nei Paesi Bassi dall'estero? Organizziamo un alloggio pulito e confortevole per te — così puoi concentrarti sul tuo nuovo lavoro senza preoccuparti di dove dormire. Nessun costo nascosto, nessuno stress.",
+    "perks": [
+      "Appartamento completamente arredato incluso",
+      "Internet e utenze incluse",
+      "Cucina e spazio comune condivisi",
+      "Situato vicino al tuo deposito di lavoro"
+    ],
+    "cta": "Chiedi delle opzioni di alloggio"
+  },
+  "cookie_banner": {
+    "title": "Utilizziamo i cookie",
+    "description": "Utilizziamo cookie essenziali e analitici per migliorare la tua esperienza. Cliccando su Accetta, acconsenti all'uso dei cookie.",
+    "accept": "Accetta tutto",
+    "reject": "Rifiuta opzionali",
+    "cookie_policy_link": "Informativa sui cookie",
+    "privacy_policy_link": "Informativa sulla privacy"
+  },
+  "privacy": {
+    "label": "Legale",
+    "title": "Informativa sulla privacy",
+    "last_updated": "Ultimo aggiornamento: aprile 2026",
+    "s1_title": "1. Chi siamo",
+    "s1_p": "Team Cargo è un'agenzia di reclutamento di autisti con sede ad Amsterdam, Paesi Bassi. Mettiamo in contatto autisti con aziende di logistica e li supportiamo con l'inserimento lavorativo, la documentazione e l'alloggio.",
+    "s1_email": "Email:",
+    "s2_title": "2. Dati che raccogliamo",
+    "s2_intro": "Potremmo raccogliere i seguenti dati personali:",
+    "s2_items": [
+      "Nome completo",
+      "Indirizzo email",
+      "Numero di telefono (incluso WhatsApp)",
+      "CV / esperienza lavorativa",
+      "Identificazione o documentazione (se richiesta per l'impiego)",
+      "Luogo o paese di residenza"
+    ],
+    "s3_title": "3. Come utilizziamo i tuoi dati",
+    "s3_intro": "Utilizziamo i tuoi dati per:",
+    "s3_items": [
+      "Elaborare la tua candidatura",
+      "Abbinarti a opportunità lavorative adeguate",
+      "Contattarti riguardo alla tua candidatura",
+      "Assistere con documentazione e onboarding",
+      "Migliorare i nostri servizi"
+    ],
+    "s4_title": "4. Base giuridica (GDPR)",
+    "s4_intro": "Trattiamo i tuoi dati in base a:",
+    "s4_items": [
+      "Il tuo consenso (quando fai domanda o ci contatti)",
+      "Necessità contrattuale (processo di inserimento lavorativo)",
+      "Obblighi legali"
+    ],
+    "s5_title": "5. Condivisione dei dati",
+    "s5_intro": "Potremmo condividere i tuoi dati con:",
+    "s5_items": [
+      "Aziende di logistica partner (es. GLS, FedEx, Amazon, DPD — per l'inserimento lavorativo)",
+      "Autorità governative o legali (se richiesto dalla legge)"
+    ],
+    "s5_no_sell": "Non vendiamo i tuoi dati personali.",
+    "s6_title": "6. Conservazione dei dati",
+    "s6_p": "Conserviamo i tuoi dati solo per il tempo necessario ai fini di reclutamento o come richiesto dalla legge.",
+    "s7_title": "7. I tuoi diritti",
+    "s7_intro": "Ai sensi del GDPR, hai il diritto di:",
+    "s7_items": [
+      "Accedere ai tuoi dati",
+      "Correggere dati inesatti",
+      "Richiedere la cancellazione (\"diritto all'oblio\")",
+      "Revocare il consenso in qualsiasi momento",
+      "Presentare un reclamo all'Autorità olandese per la protezione dei dati (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Sicurezza dei dati",
+    "s8_p": "Adottiamo misure tecniche e organizzative appropriate per proteggere i tuoi dati personali contro accessi non autorizzati, perdite o usi impropri.",
+    "s9_title": "9. Contatto",
+    "s9_intro": "Per domande o richieste riguardanti questa Informativa sulla privacy, contattaci:",
+    "s10_title": "10. Aggiornamenti",
+    "s10_p": "Potremmo aggiornare questa Informativa sulla privacy di tanto in tanto. Controlla regolarmente questa pagina per la versione più recente."
+  },
+  "cookies_page": {
+    "label": "Legale",
+    "title": "Informativa sui cookie",
+    "last_updated": "Ultimo aggiornamento: aprile 2026",
+    "s1_title": "1. Cosa sono i cookie?",
+    "s1_p": "I cookie sono piccoli file di testo memorizzati sul tuo dispositivo quando visiti un sito web. Ci aiutano a migliorare la tua esperienza e consentono a determinate funzioni del sito di funzionare correttamente.",
+    "s2_title": "2. Tipi di cookie che utilizziamo",
+    "s2_essential_title": "Cookie essenziali",
+    "s2_essential_p": "Necessari per il corretto funzionamento del sito web — ad es. navigazione, moduli e gestione delle sessioni. Non possono essere disabilitati.",
+    "s2_analytics_title": "Cookie analitici",
+    "s2_analytics_p": "Ci aiutano a capire come i visitatori utilizzano il nostro sito web (ad es. pagine visitate, tempo trascorso). Li usiamo per migliorare il sito.",
+    "s2_functional_title": "Cookie funzionali",
+    "s2_functional_p": "Ricordano le tue preferenze — come la selezione della lingua — in modo che tu non debba selezionarle nuovamente ad ogni visita.",
+    "s3_title": "3. Come utilizziamo i cookie",
+    "s3_intro": "Utilizziamo i cookie per:",
+    "s3_items": [
+      "Garantire il corretto funzionamento del sito web",
+      "Migliorare le prestazioni del sito e l'esperienza utente",
+      "Capire come gli utenti interagiscono con i nostri contenuti",
+      "Ricordare le preferenze di lingua e visualizzazione"
+    ],
+    "s4_title": "4. Gestione dei cookie",
+    "s4_p1": "Puoi controllare o disabilitare i cookie tramite le impostazioni del browser. Tieni presente che la disabilitazione di alcuni cookie potrebbe influire sulla funzionalità del nostro sito web.",
+    "s4_p2": "La maggior parte dei browser ti consente di: visualizzare i cookie memorizzati, eliminare i cookie e bloccare i cookie da siti specifici o da tutti i siti. Consulta la documentazione di aiuto del tuo browser per le istruzioni.",
+    "s5_title": "5. Cookie di terze parti",
+    "s5_p": "Potremmo utilizzare servizi di terze parti (come strumenti di analisi) che inseriscono i propri cookie sul tuo dispositivo. Questi sono soggetti alle loro politiche sulla privacy e sui cookie.",
+    "s6_title": "6. Il tuo consenso",
+    "s6_p": "Quando visiti il nostro sito per la prima volta, chiediamo il tuo consenso per utilizzare cookie non essenziali. Puoi modificare le tue preferenze in qualsiasi momento cancellando i cookie del browser e rivisitando il sito.",
+    "s7_title": "7. Contatto",
+    "s7_intro": "Hai domande sulla nostra informativa sui cookie?",
+    "s8_title": "8. Aggiornamenti",
+    "s8_p": "Potremmo aggiornare questa informativa sui cookie di tanto in tanto. Le modifiche saranno pubblicate su questa pagina."
+  },
+  "terms_page": {
+    "label": "Legale",
+    "title": "Termini e Condizioni",
+    "last_updated": "Ultimo aggiornamento: aprile 2026",
+    "intro": "Benvenuto su Team Cargo. Accedendo o utilizzando il nostro sito web e i nostri servizi, accetti i seguenti Termini e Condizioni.",
+    "s1_title": "1. Chi siamo",
+    "s1_p": "Team Cargo è un'agenzia di reclutamento con sede ad Amsterdam, Paesi Bassi. Siamo specializzati nel collegare autisti con aziende di logistica e nel supportarli durante il processo di assunzione e trasferimento.",
+    "s2_title": "2. I nostri servizi",
+    "s2_intro": "Forniamo:",
+    "s2_items": [
+      "Inserimento lavorativo di autisti presso aziende logistiche partner (GLS, FedEx, Amazon, DPD)",
+      "Assistenza con documentazione e onboarding",
+      "Supporto alloggiativo (a seconda del contratto)"
+    ],
+    "s2_note": "Non garantiamo l'inserimento lavorativo in tutti i casi. L'impiego dipende dai requisiti delle aziende partner e dalle qualifiche del candidato.",
+    "s3_title": "3. Responsabilità dell'utente",
+    "s3_intro": "Utilizzando i nostri servizi, accetti di:",
+    "s3_items": [
+      "Fornire informazioni accurate e veritiere",
+      "Presentare documenti validi quando richiesto",
+      "Rispettare le leggi olandesi e le normative sul lavoro",
+      "Seguire le istruzioni delle aziende partner durante l'impiego"
+    ],
+    "s4_title": "4. Processo di candidatura e reclutamento",
+    "s4_items": [
+      "La presentazione di una candidatura non garantisce l'impiego",
+      "Le decisioni finali di assunzione spettano alle aziende partner",
+      "Le offerte di lavoro possono variare a seconda della disponibilità e delle qualifiche"
+    ],
+    "s5_title": "5. Alloggio",
+    "s5_items": [
+      "L'alloggio può essere fornito a seconda del contratto di lavoro",
+      "Le condizioni abitative, i costi e le regole saranno definiti nel tuo accordo",
+      "Sei responsabile del rispetto delle regole abitative e della proprietà"
+    ],
+    "s6_title": "6. Responsabilità",
+    "s6_intro": "Team Cargo non è responsabile per:",
+    "s6_items": [
+      "Decisioni prese dalle aziende partner",
+      "Modifiche alle condizioni lavorative dopo l'inserimento",
+      "Perdite o danni durante l'impiego o l'alloggio"
+    ],
+    "s6_note": "Team Cargo agisce come intermediario tra candidati e datori di lavoro.",
+    "s7_title": "7. Pagamenti e commissioni",
+    "s7_items": [
+      "Eventuali commissioni o costi (se applicabili) saranno comunicati chiaramente in anticipo",
+      "Team Cargo non addebita commissioni nascoste ai candidati"
+    ],
+    "s8_title": "8. Proprietà intellettuale",
+    "s8_p": "Tutti i contenuti di questo sito web — inclusi testo, marchio e logo — appartengono a Team Cargo e non possono essere riprodotti o utilizzati senza autorizzazione scritta.",
+    "s9_title": "9. Risoluzione dei servizi",
+    "s9_intro": "Ci riserviamo il diritto di rifiutare o terminare i servizi se:",
+    "s9_items": [
+      "Vengono fornite informazioni false o fuorvianti",
+      "Questi Termini vengono violati",
+      "Si verifica una cattiva condotta durante l'impiego o l'alloggio"
+    ],
+    "s10_title": "10. Privacy",
+    "s10_p": "I tuoi dati personali vengono trattati secondo la nostra",
+    "s10_link": "Informativa sulla privacy",
+    "s11_title": "11. Legge applicabile",
+    "s11_p": "Questi Termini sono regolati dalle leggi dei Paesi Bassi. Qualsiasi controversia sarà soggetta alla giurisdizione dei tribunali competenti di Amsterdam.",
+    "s12_title": "12. Contatto",
+    "s12_intro": "Per domande riguardanti questi Termini e Condizioni:",
+    "s13_title": "13. Aggiornamenti",
+    "s13_p": "Potremmo aggiornare questi Termini e Condizioni in qualsiasi momento. L'uso continuato dei nostri servizi dopo la pubblicazione delle modifiche significa che accetti i Termini aggiornati."
+  }
+}

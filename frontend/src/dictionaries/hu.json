@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Szolgáltatások",
+    "about": "Rólunk",
+    "contact": "Kapcsolat",
+    "login": "Bejelentkezés",
+    "register": "Regisztráció",
+    "admin_dashboard": "Admin irányítópult",
+    "language": "Nyelv",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Kezdje el sofőrmunkáját Hollandiában — A többiről mi gondoskodunk.",
+    "tagline": "1 csapat · 1 misszió",
+    "mission_words": [
+      "CSAPAT",
+      "MISSZIÓ"
+    ],
+    "cta_primary": "Lépjen kapcsolatba",
+    "cta_secondary": "Szolgáltatásaink",
+    "cta_whatsapp": "WhatsApp nekünk",
+    "stats_clients": "Elégedett ügyfelek",
+    "stats_years": "Év tapasztalat",
+    "stats_available": "Elérhető",
+    "partners_label": "Partnereink",
+    "badge": "Sofőr toborzás · Amsterdam, NL",
+    "stats_partners": "Fő partnerek",
+    "trust_line": "Nincs tapasztalata a holland ügyintézéssel? Semmi gond — lépésről lépésre végigvezetjük."
+  },
+  "services": {
+    "title": "Szolgáltatásaink",
+    "transport": {
+      "title": "Szállítás",
+      "description": "Megbízható és gyors szállítás egész Európában."
+    },
+    "logistics": {
+      "title": "Logisztika",
+      "description": "Teljes körű logisztikai megoldások az Ön vállalkozásához igazítva."
+    },
+    "cargo": {
+      "title": "Rakomány",
+      "description": "Biztonságos és hatékony rakományszállítás minden típusú árura."
+    },
+    "what_we_do": "Mit csinálunk",
+    "items": [
+      {
+        "title": "Sofőr elhelyezés",
+        "desc": "Sofőröket kapcsolunk össze megbízható logisztikai cégek amszterdami és környéki kiszállítási állásaival."
+      },
+      {
+        "title": "Dokumentumok segítség",
+        "desc": "Segítünk az összes szükséges papírmunka intézésében a hollandiai legális munkavállaláshoz."
+      },
+      {
+        "title": "Szállás",
+        "desc": "Szálláslehetőségeket kínálunk (megosztott szobák vagy lakások) a szerződéstől függően."
+      },
+      {
+        "title": "Folyamatos támogatás",
+        "desc": "A munkakezdés előtt és után is rendelkezésre állunk."
+      },
+      {
+        "title": "Megbízható lehetőségek",
+        "desc": "Elismert logisztikai partnerekkel dolgozunk, stabil, hosszú távú állásokat kínálva."
+      },
+      {
+        "title": "Amszterdam régió",
+        "desc": "Amszterdami és közeli városokban összpontosítjuk az elhelyezési lehetőségeket."
+      }
+    ]
+  },
+  "about": {
+    "title": "A Team Cargoról",
+    "description": "A Team Cargo egy amszterdami székhelyű sofőr-toborzó ügynökség Hollandiában. Helyi és nemzetközi sofőröket kötünk össze stabil állásokkal az amszterdami régió vezető logisztikai vállalatainál.",
+    "values_title": "Értékeink",
+    "values": [
+      "Megbízhatóság",
+      "Hatékonyság",
+      "Ügyfélközpontúság",
+      "Biztonság"
+    ],
+    "label": "Rólunk",
+    "description2": "Megbízható partnerekkel, például a GLS, FedEx, Amazon és DPD vállalatokkal dolgozunk, segítve a sofőröket, hogy gyorsan és megbízhatóan találjanak munkát. A jelentkezéstől az onboardingig teljes támogatást nyújtunk — beleértve a dokumentációs tanácsadást és a külföldről érkezők elhelyezését.",
+    "drivers_placed": "500+ elhelyezett sofőr",
+    "years_active": "Év tapasztalat"
+  },
+  "contact": {
+    "title": "Kapcsolat",
+    "name": "Név",
+    "email": "E-mail",
+    "message": "Üzenet",
+    "send": "Küldés",
+    "success": "Üzenete elküldve!",
+    "subtitle": "Lépjen kapcsolatba velünk ajánlatért vagy további információkért.",
+    "success_subtitle": "Mihamarabb felvesszük Önnel a kapcsolatot."
+  },
+  "auth": {
+    "login_title": "Bejelentkezés",
+    "register_title": "Fiók létrehozása",
+    "email": "E-mail cím",
+    "password": "Jelszó",
+    "login_btn": "Bejelentkezés",
+    "register_btn": "Regisztráció",
+    "or": "vagy",
+    "continue_google": "Folytatás Google-lal",
+    "continue_apple": "Folytatás Apple-lal",
+    "no_account": "Még nincs fiókja?",
+    "have_account": "Már van fiókja?",
+    "welcome_login": "Üdvözöljük vissza a Team Cargo-nál",
+    "welcome_register": "Új fiók létrehozása",
+    "loading": "Betöltés...",
+    "error_generic": "Hiba történt",
+    "confirm_password": "Jelszó megerősítése",
+    "passwords_no_match": "A jelszavak nem egyeznek",
+    "password_too_short": "A jelszónak legalább 8 karakternek kell lennie",
+    "forgot_password": "Elfelejtette jelszavát?",
+    "forgot_title": "Jelszó visszaállítása",
+    "forgot_desc": "Adja meg email-jét és küldünk egy visszaállító linket.",
+    "send_reset_link": "Link küldése",
+    "sending": "Küldés...",
+    "reset_sent_desc": "Ha az email regisztrált, küldtünk egy linket. Ellenőrizze postaládáját.",
+    "back_to_login": "Vissza a bejelentkezéshez",
+    "resend_email": "Email újraküldése",
+    "verify_email_title": "Ellenőrizze postaládáját",
+    "verify_email_desc": "Elküldtük az ellenőrző emailt. Kérjük erősítse meg email-jét bejelentkezés előtt.",
+    "first_name": "Keresztnev",
+    "last_name": "Vezeteknev",
+    "verify_email_desc_short": "Ellenorizze postaladajat a fiok aktivalasahoz",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Szolgáltatások",
+    "col_company": "Cég",
+    "col_legal": "Jogi",
+    "privacy": "Adatvédelmi irányelvek",
+    "cookies": "Cookie-szabályzat",
+    "tagline": "1 csapat · 1 misszió",
+    "rights": "Minden jog fenntartva.",
+    "terms": "Általános Szerződési Feltételek",
+    "tagline_sub": "Sofőr toborzás — Amsterdam"
+  },
+  "housing": {
+    "label": "Átköltöző sofőrök számára",
+    "title": "Segítünk szállást is találni",
+    "description": "Hollandiába költözik külföldről? Tiszta, kényelmes szállást szervezünk önnek — hogy az új munkájára összpontosíthasson anélkül, hogy aggódnia kellene az alvóhely miatt. Rejtett költségek nincsenek, stressz nincs.",
+    "perks": [
+      "Teljesen berendezett lakás beleértve",
+      "Internet és közüzemi szolgáltatások fedezve",
+      "Közös konyha és nappali",
+      "Munkadepó közelében"
+    ],
+    "cta": "Érdeklődjön a szállásopcióról"
+  },
+  "cookie_banner": {
+    "title": "Sütiket használunk",
+    "description": "Alapvető és analitikai sütiket használunk az élmény javítása érdekében. Az Elfogadás gombra kattintva hozzájárul a sütik használatához.",
+    "accept": "Összes elfogadása",
+    "reject": "Opcionálisak elutasítása",
+    "cookie_policy_link": "Cookie szabályzat",
+    "privacy_policy_link": "Adatvédelmi szabályzat"
+  },
+  "privacy": {
+    "label": "Jogi",
+    "title": "Adatvédelmi irányelvek",
+    "last_updated": "Utoljára frissítve: 2026. április",
+    "s1_title": "1. Kik vagyunk",
+    "s1_p": "A Team Cargo egy amszterdami székhelyű sofőr-toborzó ügynökség, Hollandiában. Sofőröket kötünk össze logisztikai vállalatokkal, és segítünk nekik az elhelyezkedésben, a dokumentációban és a szállásban.",
+    "s1_email": "E-mail:",
+    "s2_title": "2. Milyen adatokat gyűjtünk",
+    "s2_intro": "A következő személyes adatokat gyűjthetjük:",
+    "s2_items": [
+      "Teljes név",
+      "E-mail cím",
+      "Telefonszám (beleértve a WhatsApp-ot is)",
+      "Önéletrajz / munkatapasztalat",
+      "Azonosítás vagy dokumentáció (ha foglalkoztatáshoz szükséges)",
+      "Tartózkodási hely vagy ország"
+    ],
+    "s3_title": "3. Hogyan használjuk adatait",
+    "s3_intro": "Adatait a következőkre használjuk:",
+    "s3_items": [
+      "Álláspályázatának feldolgozása",
+      "Megfelelő álláslehetőségekhez való párosítás",
+      "Kapcsolatfelvétel a pályázattal kapcsolatban",
+      "Segítség a dokumentációban és a beilleszkedésben",
+      "Szolgáltatásaink fejlesztése"
+    ],
+    "s4_title": "4. Jogalap (GDPR)",
+    "s4_intro": "Adatait a következők alapján dolgozzuk fel:",
+    "s4_items": [
+      "Az Ön hozzájárulása (amikor jelentkezik vagy kapcsolatba lép velünk)",
+      "Szerződéses szükségesség (állásközvetítési folyamat)",
+      "Jogi kötelezettségek"
+    ],
+    "s5_title": "5. Adatmegosztás",
+    "s5_intro": "Adatait megoszthatjuk:",
+    "s5_items": [
+      "Partner logisztikai vállalatokkal (pl. GLS, FedEx, Amazon, DPD — állásközvetítés céljából)",
+      "Kormányzati vagy jogi hatóságokkal (ha a törvény megköveteli)"
+    ],
+    "s5_no_sell": "Nem adjuk el személyes adatait.",
+    "s6_title": "6. Adatmegőrzés",
+    "s6_p": "Adatait csak addig őrizzük meg, ameddig a toborzási célok szükségessé teszik, vagy a törvény előírja.",
+    "s7_title": "7. Az Ön jogai",
+    "s7_intro": "A GDPR értelmében Önnek joga van:",
+    "s7_items": [
+      "Hozzáférni adataihoz",
+      "Pontatlan adatok helyesbítéséhez",
+      "Törlést kérni (\"elfeledtetés joga\")",
+      "Bármikor visszavonni hozzájárulását",
+      "Panaszt benyújtani a holland adatvédelmi hatósághoz (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Adatbiztonság",
+    "s8_p": "Megfelelő technikai és szervezési intézkedéseket teszünk személyes adatainak jogosulatlan hozzáféréssel, elvesztéssel vagy visszaéléssel szemben való megvédése érdekében.",
+    "s9_title": "9. Kapcsolat",
+    "s9_intro": "Ha kérdése vagy kérése van ezzel az Adatvédelmi irányelvvel kapcsolatban, kérjük, lépjen kapcsolatba velünk:",
+    "s10_title": "10. Frissítések",
+    "s10_p": "Időről időre frissíthetjük ezt az Adatvédelmi irányelvet. Kérjük, rendszeresen ellenőrizze ezt az oldalt a legújabb verzió megtekintéséhez."
+  },
+  "cookies_page": {
+    "label": "Jogi",
+    "title": "Cookie-szabályzat",
+    "last_updated": "Utoljára frissítve: 2026. április",
+    "s1_title": "1. Mik azok a sütik?",
+    "s1_p": "A sütik (cookie-k) kis szövegfájlok, amelyek a weboldal látogatásakor kerülnek tárolásra az Ön eszközén. Segítenek javítani az élményt, és lehetővé teszik bizonyos webhelyfunkciók helyes működését.",
+    "s2_title": "2. Az általunk használt sütitípusok",
+    "s2_essential_title": "Alapvető sütik",
+    "s2_essential_p": "A webhely megfelelő működéséhez szükségesek — pl. navigáció, űrlapok és munkamenet-kezelés. Ezek nem tilthatók le.",
+    "s2_analytics_title": "Analitikai sütik",
+    "s2_analytics_p": "Segítenek megérteni, hogyan használják a látogatók weboldalunkat (pl. meglátogatott oldalak, eltöltött idő). Ezt a webhely fejlesztésére használjuk.",
+    "s2_functional_title": "Funkcionális sütik",
+    "s2_functional_p": "Megjegyzik az Ön beállításait — például a nyelvválasztást — hogy ne kelljen azokat minden látogatáskor újra kiválasztani.",
+    "s3_title": "3. Hogyan használjuk a sütiket",
+    "s3_intro": "A sütiket a következőkre használjuk:",
+    "s3_items": [
+      "A webhely megfelelő működésének biztosítása",
+      "A webhely teljesítményének és a felhasználói élmény javítása",
+      "A felhasználók tartalmunkkal való interakciójának megértése",
+      "Nyelvi és megjelenítési beállítások megjegyzése"
+    ],
+    "s4_title": "4. Sütik kezelése",
+    "s4_p1": "A sütiket a böngésző beállításain keresztül kezelheti vagy letilthatja. Kérjük, vegye figyelembe, hogy bizonyos sütik letiltása hatással lehet weboldalunk funkcionalitására.",
+    "s4_p2": "A legtöbb böngésző lehetővé teszi: a tárolt sütik megtekintését, törlését és az egyes vagy összes webhelyről érkező sütik blokkolását. Az utasításokért tekintse meg böngészője súgódokumentációját.",
+    "s5_title": "5. Harmadik fél sütijei",
+    "s5_p": "Harmadik fél szolgáltatásokat (például elemzőeszközöket) is használhatunk, amelyek saját sütiket helyeznek el az Ön eszközén. Ezekre a saját adatvédelmi és cookie-szabályzatuk vonatkozik.",
+    "s6_title": "6. Az Ön hozzájárulása",
+    "s6_p": "Amikor először látogatja meg weboldalunkat, hozzájárulását kérjük a nem alapvető sütik használatához. Beállításait bármikor megváltoztathatja böngészője sütijeinek törlésével és az oldal újralátogatásával.",
+    "s7_title": "7. Kapcsolat",
+    "s7_intro": "Kérdései vannak a cookie-szabályzatunkról?",
+    "s8_title": "8. Frissítések",
+    "s8_p": "Időről időre frissíthetjük ezt a cookie-szabályzatot. A módosítások ezen az oldalon kerülnek közzétételre."
+  },
+  "terms_page": {
+    "label": "Jogi",
+    "title": "Általános Szerződési Feltételek",
+    "last_updated": "Utoljára frissítve: 2026. április",
+    "intro": "Üdvözöljük a Team Cargónál. Weboldalunk és szolgáltatásaink elérésével vagy használatával elfogadja az alábbi Általános Szerződési Feltételeket.",
+    "s1_title": "1. Rólunk",
+    "s1_p": "A Team Cargo egy amszterdami székhelyű toborzó ügynökség, Hollandiában. Sofőröket kötünk össze logisztikai vállalatokkal, és támogatjuk őket a felvételi és áttelepülési folyamat során.",
+    "s2_title": "2. Szolgáltatásaink",
+    "s2_intro": "Nyújtunk:",
+    "s2_items": [
+      "Sofőrök elhelyezését partner logisztikai vállalatoknál (GLS, FedEx, Amazon, DPD)",
+      "Segítség a dokumentációban és a beilleszkedésben",
+      "Szállásszolgáltatás (a szerződéstől függően)"
+    ],
+    "s2_note": "Nem garantálunk állásközvetítést minden esetben. A foglalkoztatás a partnervállalatoknak és a jelölt képesítéseinek követelményeitől függ.",
+    "s3_title": "3. Felhasználói felelősségek",
+    "s3_intro": "Szolgáltatásaink igénybevételével Ön hozzájárul ahhoz, hogy:",
+    "s3_items": [
+      "Pontos és valóságos információkat nyújtson",
+      "Érvényes dokumentumokat nyújtson be kérésre",
+      "Betartja a holland jogszabályokat és foglalkoztatási előírásokat",
+      "Követi a partnervállalatoknak a foglalkoztatás során adott utasításait"
+    ],
+    "s4_title": "4. Pályázati és toborzási folyamat",
+    "s4_items": [
+      "A pályázat benyújtása nem garantálja a foglalkoztatást",
+      "A végső felvételi döntéseket a partneretek hozzák",
+      "A munkaakaratok a rendelkezésre állástól és a képesítéstől függően változhatnak"
+    ],
+    "s5_title": "5. Szállás",
+    "s5_items": [
+      "A szállást a munkaszerződéstől függően biztosíthatjuk",
+      "A lakhatási feltételek, költségek és szabályok az Ön megállapodásában kerülnek meghatározásra",
+      "Ön felelős a lakhatási szabályok és a tulajdon tiszteletben tartásáért"
+    ],
+    "s6_title": "6. Felelősség",
+    "s6_intro": "A Team Cargo nem felelős a következőkért:",
+    "s6_items": [
+      "A partnervállalatoknak meghozott döntések",
+      "A munkakörülmények elhelyezés utáni változásai",
+      "A foglalkoztatás vagy szállás során bekövetkező veszteségek vagy károk"
+    ],
+    "s6_note": "A Team Cargo közvetítőként jár el a jelöltek és a munkáltatók között.",
+    "s7_title": "7. Kifizetések és díjak",
+    "s7_items": [
+      "Az esetleges díjakat vagy költségeket (ha alkalmazható) előre egyértelműen közöljük",
+      "A Team Cargo nem számít fel rejtett díjakat a jelöltektől"
+    ],
+    "s8_title": "8. Szellemi tulajdon",
+    "s8_p": "Az ezen a weboldalon található összes tartalom — beleértve a szöveget, a márkajelzést és a logót — a Team Cargo tulajdona, és írásbeli engedély nélkül nem reprodukálható vagy használható fel.",
+    "s9_title": "9. Szolgáltatások megszüntetése",
+    "s9_intro": "Fenntartjuk a jogot a szolgáltatások megtagadására vagy megszüntetésére, ha:",
+    "s9_items": [
+      "Hamis vagy megtévesztő információkat adnak meg",
+      "Megsértik ezeket a Feltételeket",
+      "Nem megfelelő magatartás történik a foglalkoztatás vagy szállás alatt"
+    ],
+    "s10_title": "10. Adatvédelem",
+    "s10_p": "Személyes adatait az",
+    "s10_link": "Adatvédelmi irányelvünknek",
+    "s11_title": "11. Irányadó jog",
+    "s11_p": "Ezek a Feltételek Hollandia jogszabályai szerint értelmezendők. Az esetleges viták az amszterdami illetékes bíróságok joghatósága alá tartoznak.",
+    "s12_title": "12. Kapcsolat",
+    "s12_intro": "A jelen Általános Szerződési Feltételekkel kapcsolatos kérdések esetén:",
+    "s13_title": "13. Frissítések",
+    "s13_p": "A jelen Általános Szerződési Feltételeket bármikor frissíthetjük. Szolgáltatásaink folyamatos használata a módosítások közzétételét követően azt jelenti, hogy elfogadja a frissített Feltételeket."
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Servicios",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "admin_dashboard": "Panel de administrador",
+    "language": "Idioma",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Empieza tu trabajo de conductor en los Países Bajos — Nosotros nos encargamos del resto.",
+    "tagline": "1 equipo · 1 misión",
+    "mission_words": [
+      "EQUIPO",
+      "MISIÓN"
+    ],
+    "cta_primary": "Contáctanos",
+    "cta_secondary": "Nuestros servicios",
+    "cta_whatsapp": "Escríbenos por WhatsApp",
+    "stats_clients": "Clientes satisfechos",
+    "stats_years": "Años de experiencia",
+    "stats_available": "Disponible",
+    "partners_label": "Nuestros socios",
+    "badge": "Reclutamiento de conductores · Amsterdam, NL",
+    "stats_partners": "Socios principales",
+    "trust_line": "¿Sin experiencia con el papeleo holandés? Sin problema — te guiamos paso a paso."
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "transport": {
+      "title": "Transporte",
+      "description": "Transporte fiable y rápido por toda Europa."
+    },
+    "logistics": {
+      "title": "Logística",
+      "description": "Soluciones logísticas completas adaptadas a tu empresa."
+    },
+    "cargo": {
+      "title": "Carga",
+      "description": "Transporte de carga seguro y eficiente para todo tipo de mercancía."
+    },
+    "what_we_do": "Lo que hacemos",
+    "items": [
+      {
+        "title": "Colocación de conductores",
+        "desc": "Conectamos conductores con trabajos de reparto en empresas logísticas de confianza en Ámsterdam y alrededores."
+      },
+      {
+        "title": "Apoyo con documentos",
+        "desc": "Le ayudamos a gestionar todos los trámites necesarios para trabajar legalmente en los Países Bajos."
+      },
+      {
+        "title": "Alojamiento",
+        "desc": "Ofrecemos opciones de alojamiento (habitaciones compartidas o apartamentos) según su contrato."
+      },
+      {
+        "title": "Apoyo continuo",
+        "desc": "Permanecemos disponibles para ayudarle antes y después de comenzar a trabajar."
+      },
+      {
+        "title": "Oportunidades fiables",
+        "desc": "Trabajamos con socios logísticos establecidos para ofrecer empleos estables y a largo plazo."
+      },
+      {
+        "title": "Región de Ámsterdam",
+        "desc": "Nos centramos en colocaciones de empleo en Ámsterdam y ciudades cercanas de la región."
+      }
+    ]
+  },
+  "about": {
+    "title": "Sobre Team Cargo",
+    "description": "Team Cargo es una agencia de contratación de conductores con sede en Ámsterdam, Países Bajos. Conectamos a conductores locales e internacionales con empleos estables en las principales empresas de logística de la región de Ámsterdam.",
+    "values_title": "Nuestros valores",
+    "values": [
+      "Fiabilidad",
+      "Eficiencia",
+      "Orientación al cliente",
+      "Seguridad"
+    ],
+    "label": "Sobre nosotros",
+    "description2": "Trabajamos con socios de confianza como GLS, FedEx, Amazon y DPD, ayudando a los conductores a conseguir empleo de forma rápida y fiable. Desde la solicitud hasta la incorporación, brindamos apoyo completo — incluyendo orientación documental y alojamiento para conductores que se trasladan desde el extranjero.",
+    "drivers_placed": "500+ conductores colocados",
+    "years_active": "Años activos"
+  },
+  "contact": {
+    "title": "Contacto",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "send": "Enviar",
+    "success": "¡Tu mensaje ha sido enviado!",
+    "subtitle": "Contáctanos para un presupuesto o más información.",
+    "success_subtitle": "Nos pondremos en contacto contigo lo antes posible."
+  },
+  "auth": {
+    "login_title": "Iniciar sesión",
+    "register_title": "Crear una cuenta",
+    "email": "Dirección de correo electrónico",
+    "password": "Contraseña",
+    "login_btn": "Iniciar sesión",
+    "register_btn": "Registrarse",
+    "or": "o",
+    "continue_google": "Continuar con Google",
+    "continue_apple": "Continuar con Apple",
+    "no_account": "¿No tienes cuenta?",
+    "have_account": "¿Ya tienes cuenta?",
+    "welcome_login": "Bienvenido de nuevo a Team Cargo",
+    "welcome_register": "Crear una nueva cuenta",
+    "loading": "Cargando...",
+    "error_generic": "Se ha producido un error",
+    "confirm_password": "Confirmar contraseña",
+    "passwords_no_match": "Las contraseñas no coinciden",
+    "password_too_short": "La contraseña debe tener al menos 8 caracteres",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "forgot_title": "Restablecer tu contraseña",
+    "forgot_desc": "Ingresa tu correo y te enviaremos un enlace de restablecimiento.",
+    "send_reset_link": "Enviar enlace",
+    "sending": "Enviando...",
+    "reset_sent_desc": "Si ese correo está registrado, hemos enviado un enlace. Revisa tu bandeja de entrada.",
+    "back_to_login": "Volver al inicio de sesión",
+    "resend_email": "Reenviar correo",
+    "verify_email_title": "Revisa tu bandeja de entrada",
+    "verify_email_desc": "Hemos enviado un correo de verificación. Verifica tu correo antes de iniciar sesión.",
+    "first_name": "Nombre",
+    "last_name": "Apellido",
+    "verify_email_desc_short": "Revisa tu bandeja de entrada para activar tu cuenta",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Servicios",
+    "col_company": "Empresa",
+    "col_legal": "Legal",
+    "privacy": "Política de privacidad",
+    "cookies": "Política de cookies",
+    "tagline": "1 equipo · 1 misión",
+    "rights": "Todos los derechos reservados.",
+    "terms": "Términos y Condiciones",
+    "tagline_sub": "Reclutamiento de conductores — Amsterdam"
+  },
+  "housing": {
+    "label": "Para conductores que se reubican",
+    "title": "También te ayudamos a encontrar alojamiento",
+    "description": "¿Te mudas a los Países Bajos desde el extranjero? Organizamos alojamiento limpio y cómodo para ti — para que puedas concentrarte en tu nuevo trabajo sin preocuparte por dónde dormir. Sin costes ocultos, sin estrés.",
+    "perks": [
+      "Apartamento totalmente amueblado incluido",
+      "Internet y servicios cubiertos",
+      "Cocina y sala de estar compartidas",
+      "Cerca de tu depósito de trabajo"
+    ],
+    "cta": "Pregunta sobre opciones de alojamiento"
+  },
+  "cookie_banner": {
+    "title": "Usamos cookies",
+    "description": "Usamos cookies esenciales y analíticas para mejorar tu experiencia. Al hacer clic en Aceptar, consientes el uso de cookies.",
+    "accept": "Aceptar todo",
+    "reject": "Rechazar opcionales",
+    "cookie_policy_link": "Política de cookies",
+    "privacy_policy_link": "Política de privacidad"
+  },
+  "privacy": {
+    "label": "Legal",
+    "title": "Política de privacidad",
+    "last_updated": "Última actualización: abril de 2026",
+    "s1_title": "1. Quiénes somos",
+    "s1_p": "Team Cargo es una agencia de contratación de conductores con sede en Ámsterdam, Países Bajos. Conectamos conductores con empresas de logística y les ayudamos con la colocación laboral, documentación y alojamiento.",
+    "s1_email": "Correo electrónico:",
+    "s2_title": "2. Qué datos recopilamos",
+    "s2_intro": "Podemos recopilar los siguientes datos personales:",
+    "s2_items": [
+      "Nombre completo",
+      "Dirección de correo electrónico",
+      "Número de teléfono (incluyendo WhatsApp)",
+      "CV / experiencia laboral",
+      "Identificación o documentación (si se requiere para el empleo)",
+      "Ubicación o país de residencia"
+    ],
+    "s3_title": "3. Cómo usamos sus datos",
+    "s3_intro": "Usamos sus datos para:",
+    "s3_items": [
+      "Procesar su solicitud de empleo",
+      "Conectarle con oportunidades laborales adecuadas",
+      "Contactarle sobre su solicitud",
+      "Ayudar con la documentación e incorporación",
+      "Mejorar nuestros servicios"
+    ],
+    "s4_title": "4. Base legal (RGPD)",
+    "s4_intro": "Procesamos sus datos en base a:",
+    "s4_items": [
+      "Su consentimiento (cuando solicita empleo o nos contacta)",
+      "Necesidad contractual (proceso de colocación laboral)",
+      "Obligaciones legales"
+    ],
+    "s5_title": "5. Compartir datos",
+    "s5_intro": "Podemos compartir sus datos con:",
+    "s5_items": [
+      "Empresas de logística asociadas (p. ej. GLS, FedEx, Amazon, DPD — para colocación laboral)",
+      "Autoridades gubernamentales o legales (si lo requiere la ley)"
+    ],
+    "s5_no_sell": "No vendemos sus datos personales.",
+    "s6_title": "6. Retención de datos",
+    "s6_p": "Conservamos sus datos solo durante el tiempo necesario para fines de contratación o según lo exija la ley.",
+    "s7_title": "7. Sus derechos",
+    "s7_intro": "Bajo el RGPD, tiene derecho a:",
+    "s7_items": [
+      "Acceder a sus datos",
+      "Corregir datos inexactos",
+      "Solicitar la eliminación (\"derecho al olvido\")",
+      "Retirar su consentimiento en cualquier momento",
+      "Presentar una queja ante la Autoridad Neerlandesa de Protección de Datos (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Seguridad de los datos",
+    "s8_p": "Tomamos las medidas técnicas y organizativas adecuadas para proteger sus datos personales contra el acceso no autorizado, la pérdida o el uso indebido.",
+    "s9_title": "9. Contacto",
+    "s9_intro": "Si tiene preguntas o solicitudes sobre esta Política de privacidad, contáctenos:",
+    "s10_title": "10. Actualizaciones",
+    "s10_p": "Podemos actualizar esta Política de privacidad de vez en cuando. Consulte esta página regularmente para obtener la versión más reciente."
+  },
+  "cookies_page": {
+    "label": "Legal",
+    "title": "Política de cookies",
+    "last_updated": "Última actualización: abril de 2026",
+    "s1_title": "1. ¿Qué son las cookies?",
+    "s1_p": "Las cookies son pequeños archivos de texto almacenados en su dispositivo cuando visita un sitio web. Nos ayudan a mejorar su experiencia y permiten que ciertas funciones del sitio web funcionen correctamente.",
+    "s2_title": "2. Tipos de cookies que usamos",
+    "s2_essential_title": "Cookies esenciales",
+    "s2_essential_p": "Necesarias para el correcto funcionamiento del sitio web — p. ej. navegación, formularios y gestión de sesiones. Estas no se pueden desactivar.",
+    "s2_analytics_title": "Cookies analíticas",
+    "s2_analytics_p": "Nos ayudan a entender cómo los visitantes usan nuestro sitio web (p. ej. páginas visitadas, tiempo dedicado). Las usamos para mejorar el sitio.",
+    "s2_functional_title": "Cookies funcionales",
+    "s2_functional_p": "Recuerdan sus preferencias — como su selección de idioma — para que no tenga que volver a seleccionarlas en cada visita.",
+    "s3_title": "3. Cómo usamos las cookies",
+    "s3_intro": "Usamos cookies para:",
+    "s3_items": [
+      "Garantizar que el sitio web funcione correctamente",
+      "Mejorar el rendimiento del sitio y la experiencia del usuario",
+      "Entender cómo los usuarios interactúan con nuestro contenido",
+      "Recordar las preferencias de idioma y visualización"
+    ],
+    "s4_title": "4. Gestión de cookies",
+    "s4_p1": "Puede controlar o deshabilitar las cookies a través de la configuración de su navegador. Tenga en cuenta que deshabilitar ciertas cookies puede afectar la funcionalidad de nuestro sitio web.",
+    "s4_p2": "La mayoría de los navegadores le permiten: ver las cookies almacenadas, eliminar cookies y bloquear cookies de sitios específicos o de todos los sitios. Consulte la documentación de ayuda de su navegador para obtener instrucciones.",
+    "s5_title": "5. Cookies de terceros",
+    "s5_p": "Podemos usar servicios de terceros (como herramientas de análisis) que colocan sus propias cookies en su dispositivo. Estas están sujetas a sus propias políticas de privacidad y cookies.",
+    "s6_title": "6. Su consentimiento",
+    "s6_p": "Cuando visita nuestro sitio web por primera vez, le pedimos su consentimiento para usar cookies no esenciales. Puede cambiar sus preferencias en cualquier momento borrando las cookies de su navegador y volviendo a visitar el sitio.",
+    "s7_title": "7. Contacto",
+    "s7_intro": "¿Preguntas sobre nuestra política de cookies?",
+    "s8_title": "8. Actualizaciones",
+    "s8_p": "Podemos actualizar esta política de cookies de vez en cuando. Los cambios se publicarán en esta página."
+  },
+  "terms_page": {
+    "label": "Legal",
+    "title": "Términos y Condiciones",
+    "last_updated": "Última actualización: abril de 2026",
+    "intro": "Bienvenido a Team Cargo. Al acceder o usar nuestro sitio web y servicios, acepta los siguientes Términos y Condiciones.",
+    "s1_title": "1. Sobre nosotros",
+    "s1_p": "Team Cargo es una agencia de contratación con sede en Ámsterdam, Países Bajos. Nos especializamos en conectar conductores con empresas de logística y apoyarlos durante el proceso de contratación y reubicación.",
+    "s2_title": "2. Nuestros servicios",
+    "s2_intro": "Proporcionamos:",
+    "s2_items": [
+      "Colocación de conductores en empresas de logística asociadas (GLS, FedEx, Amazon, DPD)",
+      "Asistencia con documentación e incorporación",
+      "Apoyo de alojamiento (según el contrato)"
+    ],
+    "s2_note": "No garantizamos la colocación laboral en todos los casos. El empleo depende de los requisitos de las empresas asociadas y las calificaciones del candidato.",
+    "s3_title": "3. Responsabilidades del usuario",
+    "s3_intro": "Al usar nuestros servicios, acepta:",
+    "s3_items": [
+      "Proporcionar información precisa y veraz",
+      "Enviar documentos válidos cuando se soliciten",
+      "Cumplir con las leyes neerlandesas y las regulaciones laborales",
+      "Seguir las instrucciones de las empresas asociadas durante el empleo"
+    ],
+    "s4_title": "4. Proceso de solicitud y contratación",
+    "s4_items": [
+      "Enviar una solicitud no garantiza el empleo",
+      "Las decisiones finales de contratación las toman las empresas asociadas",
+      "Las ofertas de trabajo pueden variar según la disponibilidad y las calificaciones"
+    ],
+    "s5_title": "5. Alojamiento",
+    "s5_items": [
+      "El alojamiento puede proporcionarse según el contrato de trabajo",
+      "Las condiciones de vivienda, los costos y las reglas se definirán en su acuerdo",
+      "Usted es responsable de respetar las reglas de vivienda y la propiedad"
+    ],
+    "s6_title": "6. Responsabilidad",
+    "s6_intro": "Team Cargo no es responsable de:",
+    "s6_items": [
+      "Decisiones tomadas por empresas asociadas",
+      "Cambios en las condiciones laborales después de la colocación",
+      "Pérdidas o daños durante el empleo o el alojamiento"
+    ],
+    "s6_note": "Team Cargo actúa como intermediario entre candidatos y empleadores.",
+    "s7_title": "7. Pagos y tarifas",
+    "s7_items": [
+      "Cualquier tarifa o costo (si corresponde) se comunicará claramente con anticipación",
+      "Team Cargo no cobra tarifas ocultas a los candidatos"
+    ],
+    "s8_title": "8. Propiedad intelectual",
+    "s8_p": "Todo el contenido de este sitio web — incluidos el texto, la marca y el logo — pertenece a Team Cargo y no puede reproducirse ni utilizarse sin permiso escrito.",
+    "s9_title": "9. Terminación de servicios",
+    "s9_intro": "Nos reservamos el derecho de rechazar o terminar servicios si:",
+    "s9_items": [
+      "Se proporciona información falsa o engañosa",
+      "Se violan estos Términos",
+      "Se produce una conducta inapropiada durante el empleo o el alojamiento"
+    ],
+    "s10_title": "10. Privacidad",
+    "s10_p": "Sus datos personales se gestionan de acuerdo con nuestra",
+    "s10_link": "Política de privacidad",
+    "s11_title": "11. Ley aplicable",
+    "s11_p": "Estos Términos se rigen por las leyes de los Países Bajos. Cualquier disputa estará sujeta a la jurisdicción de los tribunales competentes de Ámsterdam.",
+    "s12_title": "12. Contacto",
+    "s12_intro": "Para preguntas sobre estos Términos y Condiciones:",
+    "s13_title": "13. Actualizaciones",
+    "s13_p": "Podemos actualizar estos Términos y Condiciones en cualquier momento. El uso continuado de nuestros servicios después de que se publiquen los cambios significa que acepta los Términos actualizados."
+  }
+}

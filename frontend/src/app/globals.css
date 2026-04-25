@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Offset anchor targets to clear the fixed header + add a small visual gap */
+section[id] {
+  scroll-margin-top: 72px;
+}
+
+@media (min-width: 640px) {
+  section[id] {
+    scroll-margin-top: 88px;
+  }
+}
+
+:root {
+  --brand-green: #36b347;
+  --brand-mid: #079441;
+  --brand-dark: #006637;
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-green: var(--brand-green);
+  --color-brand-mid: var(--brand-mid);
+  --color-brand-dark: var(--brand-dark);
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a,
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 1.025rem;
+  letter-spacing: 0.02em;
+  line-height: 1.65;
+}
+
+/* ── Marquee (partner logos ticker) ─────────────────────── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 60s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Light dot-grid pattern for white/gray sections ─────── */
+.bg-pattern {
+  background-image: radial-gradient(
+    circle,
+    rgba(30, 90, 50, 0.12) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Usługi",
+    "about": "O nas",
+    "contact": "Kontakt",
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "admin_dashboard": "Panel administratora",
+    "language": "Język",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Zacznij pracę kierowcy w Holandii — My zajmujemy się resztą.",
+    "tagline": "1 zespół · 1 misja",
+    "mission_words": [
+      "ZESPÓŁ",
+      "MISJA"
+    ],
+    "cta_primary": "Skontaktuj się",
+    "cta_secondary": "Nasze usługi",
+    "cta_whatsapp": "Napisz na WhatsApp",
+    "stats_clients": "Zadowolonych klientów",
+    "stats_years": "Lat doświadczenia",
+    "stats_available": "Dostępni",
+    "partners_label": "Nasi partnerzy",
+    "badge": "Rekrutacja kierowców · Amsterdam, NL",
+    "stats_partners": "Główni partnerzy",
+    "trust_line": "Brak doświadczenia z holenderską biurokracją? Żaden problem — prowadzimy cię krok po kroku."
+  },
+  "services": {
+    "title": "Nasze Usługi",
+    "transport": {
+      "title": "Transport",
+      "description": "Niezawodny i szybki transport w całej Europie."
+    },
+    "logistics": {
+      "title": "Logistyka",
+      "description": "Kompleksowe rozwiązania logistyczne dopasowane do Twojej firmy."
+    },
+    "cargo": {
+      "title": "Cargo",
+      "description": "Bezpieczny i efektywny transport ładunków każdego rodzaju."
+    },
+    "what_we_do": "Co robimy",
+    "items": [
+      {
+        "title": "Rekrutacja kierowców",
+        "desc": "Łączymy kierowców z pracą kurierską w zaufanych firmach logistycznych w Amsterdamie i okolicach."
+      },
+      {
+        "title": "Pomoc z dokumentami",
+        "desc": "Pomagamy w załatwieniu wszystkich niezbędnych formalności do legalnej pracy w Holandii."
+      },
+      {
+        "title": "Zakwaterowanie",
+        "desc": "Oferujemy opcje zakwaterowania (pokoje dzielone lub apartamenty) zależnie od umowy."
+      },
+      {
+        "title": "Stałe wsparcie",
+        "desc": "Jesteśmy dostępni, aby pomagać przed i po rozpoczęciu pracy."
+      },
+      {
+        "title": "Wiarygodne oferty",
+        "desc": "Współpracujemy z uznanymi partnerami logistycznymi, oferując stabilne, długoterminowe miejsca pracy."
+      },
+      {
+        "title": "Region Amsterdamu",
+        "desc": "Skupiamy się na ofertach pracy w Amsterdamie i pobliskich miastach regionu."
+      }
+    ]
+  },
+  "about": {
+    "title": "O Team Cargo",
+    "description": "Team Cargo to agencja rekrutacji kierowców z siedzibą w Amsterdamie, w Holandii. Łączymy lokalnych i międzynarodowych kierowców ze stabilnymi miejscami pracy w wiodących firmach logistycznych w regionie Amsterdamu.",
+    "values_title": "Nasze wartości",
+    "values": [
+      "Niezawodność",
+      "Efektywność",
+      "Orientacja na klienta",
+      "Bezpieczeństwo"
+    ],
+    "label": "O nas",
+    "description2": "Współpracujemy z zaufanymi partnerami, takimi jak GLS, FedEx, Amazon i DPD, pomagając kierowcom szybko i niezawodnie znaleźć zatrudnienie. Od aplikacji do onboardingu zapewniamy pełne wsparcie — w tym pomoc dokumentacyjną i zakwaterowanie dla kierowców przeprowadzających się z zagranicy.",
+    "drivers_placed": "500+ kierowców zatrudnionych",
+    "years_active": "Lat działalności"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "name": "Imię i nazwisko",
+    "email": "E-mail",
+    "message": "Wiadomość",
+    "send": "Wyślij",
+    "success": "Twoja wiadomość została wysłana!",
+    "subtitle": "Skontaktuj się z nami w sprawie wyceny lub uzyskaj więcej informacji.",
+    "success_subtitle": "Skontaktujemy się z Tobą tak szybko jak to możliwe."
+  },
+  "auth": {
+    "login_title": "Zaloguj się",
+    "register_title": "Utwórz konto",
+    "email": "Adres e-mail",
+    "password": "Hasło",
+    "login_btn": "Zaloguj się",
+    "register_btn": "Zarejestruj się",
+    "or": "lub",
+    "continue_google": "Kontynuuj przez Google",
+    "continue_apple": "Kontynuuj przez Apple",
+    "no_account": "Nie masz jeszcze konta?",
+    "have_account": "Masz już konto?",
+    "welcome_login": "Witaj z powrotem w Team Cargo",
+    "welcome_register": "Utwórz nowe konto",
+    "loading": "Ladowanie...",
+    "error_generic": "Wystapil blad",
+    "confirm_password": "Potwierdz haslo",
+    "passwords_no_match": "Hasla nie sa zgodne",
+    "password_too_short": "Haslo musi miec co najmniej 8 znakow",
+    "forgot_password": "Zapomniales hasla?",
+    "forgot_title": "Zresetuj swoje haslo",
+    "forgot_desc": "Podaj swoj email, a wyslem Ci link do resetowania.",
+    "send_reset_link": "Wyslij link",
+    "sending": "Wysylanie...",
+    "reset_sent_desc": "Jesli ten email jest zarejestrowany, wyslalismy link. Sprawdz skrzynke odbiorczą.",
+    "back_to_login": "Powrot do logowania",
+    "resend_email": "Wyslij ponownie",
+    "verify_email_title": "Sprawdz swoja skrzynke",
+    "verify_email_desc": "Wyslalismy email weryfikacyjny. Zweryfikuj swoj email przed zalogowaniem.",
+    "first_name": "Imie",
+    "last_name": "Nazwisko",
+    "verify_email_desc_short": "Sprawdz skrzynke, aby aktywowac konto",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Usługi",
+    "col_company": "Firma",
+    "col_legal": "Prawne",
+    "privacy": "Polityka prywatności",
+    "cookies": "Polityka cookies",
+    "tagline": "1 zespół · 1 misja",
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "terms": "Regulamin",
+    "tagline_sub": "Rekrutacja kierowców — Amsterdam"
+  },
+  "housing": {
+    "label": "Dla kierowców przeprowadzających się",
+    "title": "Pomagamy również znaleźć zakwaterowanie",
+    "description": "Przeprowadzasz się do Holandii z zagranicy? Organizujemy dla Ciebie czyste, komfortowe zakwaterowanie — abyś mógł skupić się na nowej pracy bez martwienia się o nocleg. Bez ukrytych kosztów, bez stresu.",
+    "perks": [
+      "W pełni umeblowane mieszkanie w cenie",
+      "Internet i media w cenie",
+      "Wspólna kuchnia i salon",
+      "W pobliżu Twojego magazynu pracy"
+    ],
+    "cta": "Zapytaj o opcje zakwaterowania"
+  },
+  "cookie_banner": {
+    "title": "Używamy plików cookie",
+    "description": "Używamy niezbędnych i analitycznych plików cookie, aby poprawić Twoje doświadczenia. Klikając Akceptuj, wyrażasz zgodę na używanie przez nas plików cookie.",
+    "accept": "Zaakceptuj wszystkie",
+    "reject": "Odrzuć opcjonalne",
+    "cookie_policy_link": "Polityka cookies",
+    "privacy_policy_link": "Polityka prywatności"
+  },
+  "privacy": {
+    "label": "Prawne",
+    "title": "Polityka prywatności",
+    "last_updated": "Ostatnia aktualizacja: kwiecień 2026",
+    "s1_title": "1. Kim jesteśmy",
+    "s1_p": "Team Cargo to agencja rekrutacji kierowców z siedzibą w Amsterdamie, Holandia. Łączymy kierowców z firmami logistycznymi i wspieramy ich w zakresie zatrudnienia, dokumentacji i zakwaterowania.",
+    "s1_email": "E-mail:",
+    "s2_title": "2. Jakie dane zbieramy",
+    "s2_intro": "Możemy zbierać następujące dane osobowe:",
+    "s2_items": [
+      "Imię i nazwisko",
+      "Adres e-mail",
+      "Numer telefonu (w tym WhatsApp)",
+      "CV / doświadczenie zawodowe",
+      "Dowód tożsamości lub dokumentacja (jeśli wymagane do zatrudnienia)",
+      "Miejsce zamieszkania lub kraj pobytu"
+    ],
+    "s3_title": "3. Jak używamy Twoich danych",
+    "s3_intro": "Używamy Twoich danych, aby:",
+    "s3_items": [
+      "Przetworzyć Twoją aplikację o pracę",
+      "Dopasować Cię do odpowiednich ofert pracy",
+      "Skontaktować się z Tobą w sprawie Twojej aplikacji",
+      "Pomóc z dokumentacją i wdrożeniem",
+      "Ulepszać nasze usługi"
+    ],
+    "s4_title": "4. Podstawa prawna (RODO)",
+    "s4_intro": "Przetwarzamy Twoje dane na podstawie:",
+    "s4_items": [
+      "Twojej zgody (gdy aplikujesz lub kontaktujesz się z nami)",
+      "Konieczności umownej (proces pośrednictwa pracy)",
+      "Obowiązków prawnych"
+    ],
+    "s5_title": "5. Udostępnianie danych",
+    "s5_intro": "Możemy udostępniać Twoje dane:",
+    "s5_items": [
+      "Partnerskim firmom logistycznym (np. GLS, FedEx, Amazon, DPD — w celu pośrednictwa pracy)",
+      "Organom rządowym lub prawnym (jeśli wymagane przez prawo)"
+    ],
+    "s5_no_sell": "Nie sprzedajemy Twoich danych osobowych.",
+    "s6_title": "6. Przechowywanie danych",
+    "s6_p": "Przechowujemy Twoje dane tylko tak długo, jak jest to konieczne do celów rekrutacyjnych lub wymagane przez prawo.",
+    "s7_title": "7. Twoje prawa",
+    "s7_intro": "Na mocy RODO masz prawo do:",
+    "s7_items": [
+      "Dostępu do swoich danych",
+      "Poprawienia niedokładnych danych",
+      "Żądania usunięcia (\"prawo do bycia zapomnianym\")",
+      "Wycofania zgody w dowolnym momencie",
+      "Złożenia skargi do holenderskiego organu ochrony danych (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Bezpieczeństwo danych",
+    "s8_p": "Stosujemy odpowiednie środki techniczne i organizacyjne, aby chronić Twoje dane osobowe przed nieuprawnionym dostępem, utratą lub nadużyciem.",
+    "s9_title": "9. Kontakt",
+    "s9_intro": "W razie pytań lub próśb dotyczących tej Polityki prywatności prosimy o kontakt:",
+    "s10_title": "10. Aktualizacje",
+    "s10_p": "Możemy od czasu do czasu aktualizować tę Politykę prywatności. Regularnie sprawdzaj tę stronę, aby zobaczyć najnowszą wersję."
+  },
+  "cookies_page": {
+    "label": "Prawne",
+    "title": "Polityka cookies",
+    "last_updated": "Ostatnia aktualizacja: kwiecień 2026",
+    "s1_title": "1. Czym są pliki cookies?",
+    "s1_p": "Pliki cookies to małe pliki tekstowe przechowywane na urządzeniu podczas odwiedzania strony internetowej. Pomagają nam ulepszyć Twoje doświadczenie i umożliwiają prawidłowe działanie określonych funkcji witryny.",
+    "s2_title": "2. Rodzaje plików cookies, których używamy",
+    "s2_essential_title": "Niezbędne pliki cookies",
+    "s2_essential_p": "Wymagane do prawidłowego funkcjonowania strony — np. nawigacja, formularze i zarządzanie sesjami. Nie można ich wyłączyć.",
+    "s2_analytics_title": "Analityczne pliki cookies",
+    "s2_analytics_p": "Pomagają nam zrozumieć, jak odwiedzający korzystają z naszej strony (np. odwiedzone strony, czas spędzony). Używamy ich do ulepszania witryny.",
+    "s2_functional_title": "Funkcjonalne pliki cookies",
+    "s2_functional_p": "Zapamiętują Twoje preferencje — takie jak wybór języka — abyś nie musiał ich ponownie wybierać przy każdej wizycie.",
+    "s3_title": "3. Jak używamy plików cookies",
+    "s3_intro": "Używamy plików cookies, aby:",
+    "s3_items": [
+      "Zapewnić prawidłowe działanie strony",
+      "Poprawić wydajność strony i doświadczenie użytkownika",
+      "Zrozumieć, jak użytkownicy wchodzą w interakcję z naszymi treściami",
+      "Zapamiętać preferencje językowe i dotyczące wyświetlania"
+    ],
+    "s4_title": "4. Zarządzanie plikami cookies",
+    "s4_p1": "Możesz kontrolować lub wyłączać pliki cookies poprzez ustawienia przeglądarki. Należy pamiętać, że wyłączenie niektórych plików cookies może wpłynąć na funkcjonalność naszej strony.",
+    "s4_p2": "Większość przeglądarek umożliwia: przeglądanie przechowywanych plików cookies, usuwanie plików cookies i blokowanie plików cookies z określonych lub wszystkich stron. Instrukcje znajdziesz w dokumentacji pomocy swojej przeglądarki.",
+    "s5_title": "5. Pliki cookies podmiotów trzecich",
+    "s5_p": "Możemy korzystać z usług podmiotów trzecich (takich jak narzędzia analityczne), które umieszczają własne pliki cookies na Twoim urządzeniu. Podlegają one własnym zasadom prywatności i plików cookies.",
+    "s6_title": "6. Twoja zgoda",
+    "s6_p": "Podczas pierwszej wizyty na naszej stronie prosimy o zgodę na używanie niezbędnych plików cookies. Możesz zmienić swoje preferencje w dowolnym momencie, usuwając pliki cookies przeglądarki i ponownie odwiedzając stronę.",
+    "s7_title": "7. Kontakt",
+    "s7_intro": "Pytania dotyczące naszej polityki cookies?",
+    "s8_title": "8. Aktualizacje",
+    "s8_p": "Możemy od czasu do czasu aktualizować tę politykę cookies. Zmiany będą publikowane na tej stronie."
+  },
+  "terms_page": {
+    "label": "Prawne",
+    "title": "Regulamin",
+    "last_updated": "Ostatnia aktualizacja: kwiecień 2026",
+    "intro": "Witamy w Team Cargo. Korzystając z naszej strony internetowej i usług, zgadzasz się na poniższy Regulamin.",
+    "s1_title": "1. O nas",
+    "s1_p": "Team Cargo to agencja rekrutacyjna z siedzibą w Amsterdamie, Holandia. Specjalizujemy się w łączeniu kierowców z firmami logistycznymi i wspieraniu ich podczas procesu zatrudnienia i relokacji.",
+    "s2_title": "2. Nasze usługi",
+    "s2_intro": "Świadczymy:",
+    "s2_items": [
+      "Pośrednictwo pracy dla kierowców w partnerskich firmach logistycznych (GLS, FedEx, Amazon, DPD)",
+      "Pomoc przy dokumentacji i wdrożeniu",
+      "Wsparcie w zakwaterowaniu (w zależności od umowy)"
+    ],
+    "s2_note": "Nie gwarantujemy pośrednictwa pracy we wszystkich przypadkach. Zatrudnienie zależy od wymagań firm partnerskich i kwalifikacji kandydata.",
+    "s3_title": "3. Obowiązki użytkownika",
+    "s3_intro": "Korzystając z naszych usług, zgadzasz się:",
+    "s3_items": [
+      "Podawać dokładne i prawdziwe informacje",
+      "Składać ważne dokumenty na żądanie",
+      "Przestrzegać prawa holenderskiego i przepisów dotyczących zatrudnienia",
+      "Stosować się do instrukcji firm partnerskich podczas zatrudnienia"
+    ],
+    "s4_title": "4. Proces aplikacji i rekrutacji",
+    "s4_items": [
+      "Złożenie aplikacji nie gwarantuje zatrudnienia",
+      "Ostateczne decyzje o zatrudnieniu podejmują firmy partnerskie",
+      "Oferty pracy mogą się różnić w zależności od dostępności i kwalifikacji"
+    ],
+    "s5_title": "5. Zakwaterowanie",
+    "s5_items": [
+      "Zakwaterowanie może być zapewnione w zależności od umowy o pracę",
+      "Warunki mieszkaniowe, koszty i zasady zostaną określone w Twojej umowie",
+      "Jesteś odpowiedzialny za przestrzeganie zasad mieszkaniowych i poszanowanie mienia"
+    ],
+    "s6_title": "6. Odpowiedzialność",
+    "s6_intro": "Team Cargo nie ponosi odpowiedzialności za:",
+    "s6_items": [
+      "Decyzje podejmowane przez firmy partnerskie",
+      "Zmiany warunków pracy po zatrudnieniu",
+      "Straty lub szkody podczas zatrudnienia lub zakwaterowania"
+    ],
+    "s6_note": "Team Cargo działa jako pośrednik między kandydatami a pracodawcami.",
+    "s7_title": "7. Płatności i opłaty",
+    "s7_items": [
+      "Wszelkie opłaty lub koszty (jeśli dotyczy) zostaną wyraźnie zakomunikowane z wyprzedzeniem",
+      "Team Cargo nie pobiera ukrytych opłat od kandydatów"
+    ],
+    "s8_title": "8. Własność intelektualna",
+    "s8_p": "Wszelkie treści na tej stronie — w tym tekst, marka i logo — są własnością Team Cargo i nie mogą być reprodukowane ani używane bez pisemnej zgody.",
+    "s9_title": "9. Zakończenie usług",
+    "s9_intro": "Zastrzegamy sobie prawo do odmowy lub zakończenia usług, jeśli:",
+    "s9_items": [
+      "Podane zostaną fałszywe lub wprowadzające w błąd informacje",
+      "Niniejszy Regulamin zostanie naruszony",
+      "Dojdzie do niewłaściwego zachowania podczas zatrudnienia lub zakwaterowania"
+    ],
+    "s10_title": "10. Prywatność",
+    "s10_p": "Twoje dane osobowe są przetwarzane zgodnie z naszą",
+    "s10_link": "Polityką prywatności",
+    "s11_title": "11. Prawo właściwe",
+    "s11_p": "Niniejszy Regulamin podlega prawu holenderskiemu. Wszelkie spory podlegają jurysdykcji właściwych sądów w Amsterdamie.",
+    "s12_title": "12. Kontakt",
+    "s12_intro": "W razie pytań dotyczących niniejszego Regulaminu:",
+    "s13_title": "13. Aktualizacje",
+    "s13_p": "Możemy aktualizować niniejszy Regulamin w dowolnym momencie. Dalsze korzystanie z naszych usług po opublikowaniu zmian oznacza akceptację zaktualizowanego Regulaminu."
+  }
+}

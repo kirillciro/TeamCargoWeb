@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Tjenester",
+    "about": "Om os",
+    "contact": "Kontakt",
+    "login": "Log ind",
+    "register": "Registrer",
+    "admin_dashboard": "Adminpanel",
+    "language": "Sprog",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Start dit kørerjob i Holland — Vi klarer resten.",
+    "tagline": "1 team · 1 mission",
+    "mission_words": [
+      "TEAM",
+      "MISSION"
+    ],
+    "cta_primary": "Kontakt os",
+    "cta_secondary": "Vores tjenester",
+    "cta_whatsapp": "WhatsApp os",
+    "stats_clients": "Tilfredse kunder",
+    "stats_years": "Års erfaring",
+    "stats_available": "Tilgængelig",
+    "partners_label": "Vores partnere",
+    "badge": "Chaufførrekruttering · Amsterdam, NL",
+    "stats_partners": "Toppartnere",
+    "trust_line": "Ingen erfaring med hollandsk bureaukrati? Intet problem — vi guider dig trin for trin."
+  },
+  "services": {
+    "title": "Vores Tjenester",
+    "transport": {
+      "title": "Transport",
+      "description": "Pålidelig og hurtig transport over hele Europa."
+    },
+    "logistics": {
+      "title": "Logistik",
+      "description": "Komplette logistikløsninger tilpasset din virksomhed."
+    },
+    "cargo": {
+      "title": "Fragt",
+      "description": "Sikker og effektiv fragttransport for alle typer last."
+    },
+    "what_we_do": "Hvad vi gør",
+    "items": [
+      {
+        "title": "Chaufførplacering",
+        "desc": "Vi forbinder chauffører med leveringsjob hos pålidelige logistikvirksomheder i Amsterdam og omegn."
+      },
+      {
+        "title": "Dokumentsupport",
+        "desc": "Vi hjælper dig med at håndtere alle nødvendige papirer for lovligt at arbejde i Holland."
+      },
+      {
+        "title": "Indkvartering",
+        "desc": "Vi tilbyder indkvarteringsmuligheder (delte værelser eller lejligheder) afhængigt af din kontrakt."
+      },
+      {
+        "title": "Løbende støtte",
+        "desc": "Vi er tilgængelige for at hjælpe dig før og efter, at du starter arbejdet."
+      },
+      {
+        "title": "Pålidelige muligheder",
+        "desc": "Vi arbejder med etablerede logistikpartnere for at tilbyde stabile, langsigtede job."
+      },
+      {
+        "title": "Amsterdam-regionen",
+        "desc": "Vi fokuserer på jobplacering i Amsterdam og nærliggende byer i regionen."
+      }
+    ]
+  },
+  "about": {
+    "title": "Om Team Cargo",
+    "description": "Team Cargo er et rekrutteringsbureau for chauffører med base i Amsterdam, Holland. Vi forbinder lokale og internationale chauffører med stabile jobs hos førende logistikvirksomheder i Amsterdamregionen.",
+    "values_title": "Vores værdier",
+    "values": [
+      "Pålidelighed",
+      "Effektivitet",
+      "Kundefokus",
+      "Sikkerhed"
+    ],
+    "label": "Om os",
+    "description2": "Vi samarbejder med pålidelige partnere som GLS, FedEx, Amazon og DPD og hjælper chauffører med at finde beskæftigelse hurtigt og pålideligt. Fra ansøgning til onboarding tilbyder vi fuld support — herunder dokumentvejledning og indkvartering for chauffører, der flytter fra udlandet.",
+    "drivers_placed": "500+ anbragte chauffører",
+    "years_active": "År aktive"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "name": "Navn",
+    "email": "E-mail",
+    "message": "Besked",
+    "send": "Send",
+    "success": "Din besked er blevet sendt!",
+    "subtitle": "Kontakt os for et tilbud eller mere information.",
+    "success_subtitle": "Vi kontakter dig hurtigst muligt."
+  },
+  "auth": {
+    "login_title": "Log ind",
+    "register_title": "Opret en konto",
+    "email": "E-mailadresse",
+    "password": "Adgangskode",
+    "login_btn": "Log ind",
+    "register_btn": "Registrer",
+    "or": "eller",
+    "continue_google": "Fortsæt med Google",
+    "continue_apple": "Fortsæt med Apple",
+    "no_account": "Ingen konto endnu?",
+    "have_account": "Har du allerede en konto?",
+    "welcome_login": "Velkommen tilbage til Team Cargo",
+    "welcome_register": "Opret en ny konto",
+    "loading": "Indlaεser...",
+    "error_generic": "Der opstod en fejl",
+    "confirm_password": "Bekræft adgangskode",
+    "passwords_no_match": "Adgangskoderne matcher ikke",
+    "password_too_short": "Adgangskoden skal være mindst 8 tegn",
+    "forgot_password": "Glemt adgangskode?",
+    "forgot_title": "Nulstil din adgangskode",
+    "forgot_desc": "Indtast din e-mail, og vi sender dig et nulstillingslink.",
+    "send_reset_link": "Send link",
+    "sending": "Sender...",
+    "reset_sent_desc": "Hvis den e-mail er registreret, har vi sendt et link. Tjek din indbakke.",
+    "back_to_login": "Tilbage til login",
+    "resend_email": "Send e-mail igen",
+    "verify_email_title": "Tjek din indbakke",
+    "verify_email_desc": "Vi har sendt en bekræftelses-e-mail. Bekræft din e-mail før du logger ind.",
+    "first_name": "Fornavn",
+    "last_name": "Efternavn",
+    "verify_email_desc_short": "Tiek indbakken for at aktivere kontoen",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Tjenester",
+    "col_company": "Virksomhed",
+    "col_legal": "Juridisk",
+    "privacy": "Privatlivspolitik",
+    "cookies": "Cookiepolitik",
+    "tagline": "1 team · 1 mission",
+    "rights": "Alle rettigheder forbeholdes.",
+    "terms": "Vilkår og betingelser",
+    "tagline_sub": "Chaufførrekruttering — Amsterdam"
+  },
+  "housing": {
+    "label": "For chauffører der flytter",
+    "title": "Vi hjælper dig også med at finde bolig",
+    "description": "Flytter du til Holland fra udlandet? Vi arrangerer ren, behagelig bolig til dig — så du kan fokusere på dit nye job uden at bekymre dig om, hvor du skal sove. Ingen skjulte omkostninger, ingen stress.",
+    "perks": [
+      "Fuldt møbleret lejlighed inkluderet",
+      "Internet og forsyninger dækket",
+      "Delt køkken og stue",
+      "Tæt på dit arbejdsdepot"
+    ],
+    "cta": "Spørg om boligmuligheder"
+  },
+  "cookie_banner": {
+    "title": "Vi bruger cookies",
+    "description": "Vi bruger nødvendige og analytiske cookies for at forbedre din oplevelse. Ved at klikke Accepter giver du samtykke til vores brug af cookies.",
+    "accept": "Accepter alle",
+    "reject": "Afvis valgfrie",
+    "cookie_policy_link": "Cookiepolitik",
+    "privacy_policy_link": "Privatlivspolitik"
+  },
+  "privacy": {
+    "label": "Juridisk",
+    "title": "Privatlivspolitik",
+    "last_updated": "Sidst opdateret: april 2026",
+    "s1_title": "1. Hvem vi er",
+    "s1_p": "Team Cargo er et chaufførrekrutteringsbureau med base i Amsterdam, Holland. Vi forbinder chauffører med logistikvirksomheder og støtter dem med jobplacering, dokumentation og indkvartering.",
+    "s1_email": "E-mail:",
+    "s2_title": "2. Hvilke data vi indsamler",
+    "s2_intro": "Vi kan indsamle følgende personoplysninger:",
+    "s2_items": [
+      "Fulde navn",
+      "E-mailadresse",
+      "Telefonnummer (inkl. WhatsApp)",
+      "CV / erhvervserfaring",
+      "Identifikation eller dokumentation (hvis det kræves til ansættelse)",
+      "Sted eller bopælsland"
+    ],
+    "s3_title": "3. Hvordan vi bruger dine data",
+    "s3_intro": "Vi bruger dine data til at:",
+    "s3_items": [
+      "Behandle din jobansøgning",
+      "Matche dig med passende jobmuligheder",
+      "Kontakte dig vedrørende din ansøgning",
+      "Hjælpe med dokumentation og onboarding",
+      "Forbedre vores tjenester"
+    ],
+    "s4_title": "4. Retsgrundlag (GDPR)",
+    "s4_intro": "Vi behandler dine data baseret på:",
+    "s4_items": [
+      "Dit samtykke (når du ansøger eller kontakter os)",
+      "Kontraktmæssig nødvendighed (jobplaceringsprocess)",
+      "Juridiske forpligtelser"
+    ],
+    "s5_title": "5. Datadeling",
+    "s5_intro": "Vi kan dele dine data med:",
+    "s5_items": [
+      "Partner-logistikvirksomheder (f.eks. GLS, FedEx, Amazon, DPD — til jobplacering)",
+      "Offentlige eller juridiske myndigheder (hvis loven kræver det)"
+    ],
+    "s5_no_sell": "Vi sælger ikke dine personoplysninger.",
+    "s6_title": "6. Dataopbevaring",
+    "s6_p": "Vi opbevarer dine data kun så længe som nødvendigt til rekrutteringsformål eller som krævet ved lov.",
+    "s7_title": "7. Dine rettigheder",
+    "s7_intro": "I henhold til GDPR har du ret til at:",
+    "s7_items": [
+      "Få adgang til dine data",
+      "Rette unøjagtige data",
+      "Anmode om sletning (\"retten til at blive glemt\")",
+      "Trække samtykke tilbage til enhver tid",
+      "Indgive en klage til den hollandske databeskyttelsesmyndighed (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Datasikkerhed",
+    "s8_p": "Vi tager passende tekniske og organisatoriske foranstaltninger for at beskytte dine personoplysninger mod uautoriseret adgang, tab eller misbrug.",
+    "s9_title": "9. Kontakt",
+    "s9_intro": "Hvis du har spørgsmål eller anmodninger vedrørende denne privatlivspolitik, bedes du kontakte os:",
+    "s10_title": "10. Opdateringer",
+    "s10_p": "Vi kan opdatere denne privatlivspolitik fra tid til anden. Tjek venligst denne side regelmæssigt for den nyeste version."
+  },
+  "cookies_page": {
+    "label": "Juridisk",
+    "title": "Cookiepolitik",
+    "last_updated": "Sidst opdateret: april 2026",
+    "s1_title": "1. Hvad er cookies?",
+    "s1_p": "Cookies er små tekstfiler, der gemmes på din enhed, når du besøger en hjemmeside. De hjælper os med at forbedre din oplevelse og gør det muligt for visse hjemmesidefunktioner at fungere korrekt.",
+    "s2_title": "2. Typer af cookies vi bruger",
+    "s2_essential_title": "Nødvendige cookies",
+    "s2_essential_p": "Kræves til korrekt funktionering af hjemmesiden — f.eks. navigation, formularer og sessionsstyring. Disse kan ikke deaktiveres.",
+    "s2_analytics_title": "Analytiske cookies",
+    "s2_analytics_p": "Hjælper os med at forstå, hvordan besøgende bruger vores hjemmeside (f.eks. besøgte sider, tid brugt). Vi bruger dette til at forbedre siden.",
+    "s2_functional_title": "Funktionelle cookies",
+    "s2_functional_p": "Husker dine præferencer — f.eks. dit sprogvalg — så du ikke behøver at vælge det igen ved hvert besøg.",
+    "s3_title": "3. Hvordan vi bruger cookies",
+    "s3_intro": "Vi bruger cookies til at:",
+    "s3_items": [
+      "Sikre at hjemmesiden fungerer korrekt",
+      "Forbedre hjemmesidens ydeevne og brugeroplevelse",
+      "Forstå, hvordan brugere interagerer med vores indhold",
+      "Huske sprog- og visningspræferencer"
+    ],
+    "s4_title": "4. Håndtering af cookies",
+    "s4_p1": "Du kan styre eller deaktivere cookies via dine browserindstillinger. Bemærk, at deaktivering af visse cookies kan påvirke funktionaliteten på vores hjemmeside.",
+    "s4_p2": "De fleste browsere giver dig mulighed for at: se gemte cookies, slette cookies og blokere cookies fra specifikke eller alle hjemmesider. Se din browsers hjælpedokumentation for instruktioner.",
+    "s5_title": "5. Tredjeparts cookies",
+    "s5_p": "Vi kan bruge tredjepartstjenester (som analyseværktøjer), der placerer egne cookies på din enhed. Disse er underlagt deres egne privatlivs- og cookiepolitikker.",
+    "s6_title": "6. Dit samtykke",
+    "s6_p": "Når du besøger vores hjemmeside for første gang, beder vi om dit samtykke til at bruge ikke-nødvendige cookies. Du kan ændre dine præferencer til enhver tid ved at rydde dine browsercookies og gense siden.",
+    "s7_title": "7. Kontakt",
+    "s7_intro": "Spørgsmål om vores cookiepolitik?",
+    "s8_title": "8. Opdateringer",
+    "s8_p": "Vi kan opdatere denne cookiepolitik fra tid til anden. Ændringer vil blive offentliggjort på denne side."
+  },
+  "terms_page": {
+    "label": "Juridisk",
+    "title": "Vilkår og Betingelser",
+    "last_updated": "Sidst opdateret: april 2026",
+    "intro": "Velkommen til Team Cargo. Ved at tilgå eller bruge vores hjemmeside og tjenester accepterer du følgende Vilkår og Betingelser.",
+    "s1_title": "1. Om os",
+    "s1_p": "Team Cargo er et rekrutteringsbureau med base i Amsterdam, Holland. Vi specialiserer os i at forbinde chauffører med logistikvirksomheder og støtte dem gennem ansættelses- og relokeringsprocessen.",
+    "s2_title": "2. Vores tjenester",
+    "s2_intro": "Vi leverer:",
+    "s2_items": [
+      "Jobplacering af chauffører hos partner-logistikvirksomheder (GLS, FedEx, Amazon, DPD)",
+      "Hjælp til dokumentation og onboarding",
+      "Indkvarteringsstøtte (afhængigt af kontrakten)"
+    ],
+    "s2_note": "Vi garanterer ikke jobplacering i alle tilfælde. Ansættelse afhænger af partnernes krav og kandidatens kvalifikationer.",
+    "s3_title": "3. Brugeransvar",
+    "s3_intro": "Ved at bruge vores tjenester accepterer du at:",
+    "s3_items": [
+      "Give nøjagtige og sandfærdige oplysninger",
+      "Indsende gyldige dokumenter, når det anmodes",
+      "Overholde hollandske love og beskæftigelsesregler",
+      "Følge instruktioner fra partnervirksomheder under ansættelse"
+    ],
+    "s4_title": "4. Ansøgnings- og rekrutteringsproces",
+    "s4_items": [
+      "Indsendelse af en ansøgning garanterer ikke ansættelse",
+      "Endelige ansættelsesbeslutninger træffes af partnervirksomheder",
+      "Jobtilbud kan variere afhængigt af tilgængelighed og kvalifikationer"
+    ],
+    "s5_title": "5. Indkvartering",
+    "s5_items": [
+      "Indkvartering kan leveres afhængigt af arbejdskontrakten",
+      "Boligforhold, omkostninger og regler vil blive defineret i din aftale",
+      "Du er ansvarlig for at respektere boligregler og ejendom"
+    ],
+    "s6_title": "6. Ansvar",
+    "s6_intro": "Team Cargo er ikke ansvarlig for:",
+    "s6_items": [
+      "Beslutninger truffet af partnervirksomheder",
+      "Ændringer i arbejdsvilkår efter placering",
+      "Tab eller skader under ansættelse eller indkvartering"
+    ],
+    "s6_note": "Team Cargo fungerer som mellemmand mellem kandidater og arbejdsgivere.",
+    "s7_title": "7. Betalinger og gebyrer",
+    "s7_items": [
+      "Eventuelle gebyrer eller omkostninger (hvis relevant) kommunikeres tydeligt på forhånd",
+      "Team Cargo opkræver ikke skjulte gebyrer fra kandidater"
+    ],
+    "s8_title": "8. Intellektuel ejendomsret",
+    "s8_p": "Alt indhold på denne hjemmeside — herunder tekst, branding og logo — tilhører Team Cargo og må ikke reproduceres eller bruges uden skriftlig tilladelse.",
+    "s9_title": "9. Ophør af tjenester",
+    "s9_intro": "Vi forbeholder os retten til at nægte eller afslutte tjenester, hvis:",
+    "s9_items": [
+      "Falske eller vildledende oplysninger gives",
+      "Disse Vilkår overtrædes",
+      "Upassende adfærd opstår under ansættelse eller indkvartering"
+    ],
+    "s10_title": "10. Privatliv",
+    "s10_p": "Dine personoplysninger håndteres i overensstemmelse med vores",
+    "s10_link": "Privatlivspolitik",
+    "s11_title": "11. Gældende lov",
+    "s11_p": "Disse Vilkår er underlagt hollandsk ret. Eventuelle tvister afgøres af de kompetente domstole i Amsterdam.",
+    "s12_title": "12. Kontakt",
+    "s12_intro": "For spørgsmål vedrørende disse Vilkår og Betingelser:",
+    "s13_title": "13. Opdateringer",
+    "s13_p": "Vi kan opdatere disse Vilkår og Betingelser til enhver tid. Fortsat brug af vores tjenester efter offentliggørelse af ændringer betyder, at du accepterer de opdaterede Vilkår."
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Diensten",
+    "about": "Over ons",
+    "contact": "Contact",
+    "login": "Inloggen",
+    "register": "Registreren",
+    "admin_dashboard": "Beheerdersdashboard",
+    "language": "Taal",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Begin je rijbaan in Nederland — wij regelen de rest.",
+    "tagline": "1 team · 1 missie",
+    "mission_words": [
+      "TEAM",
+      "MISSIE"
+    ],
+    "cta_primary": "Neem contact op",
+    "cta_secondary": "Onze diensten",
+    "cta_whatsapp": "WhatsApp ons",
+    "stats_clients": "Tevreden klanten",
+    "stats_years": "Jaar ervaring",
+    "stats_available": "Bereikbaar",
+    "partners_label": "Onze partners",
+    "badge": "Chauffeur Recruitment · Amsterdam, NL",
+    "stats_partners": "Toppartners",
+    "trust_line": "Geen ervaring met Nederlandse papieren? Geen probleem — wij begeleiden je stap voor stap."
+  },
+  "services": {
+    "title": "Onze Diensten",
+    "transport": {
+      "title": "Transport",
+      "description": "Betrouwbaar en snel transport door heel Europa."
+    },
+    "logistics": {
+      "title": "Logistiek",
+      "description": "Volledige logistieke oplossingen op maat van uw bedrijf."
+    },
+    "cargo": {
+      "title": "Cargo",
+      "description": "Veilig en efficiënt cargovervoer voor elk type lading."
+    },
+    "what_we_do": "Wat we doen",
+    "items": [
+      {
+        "title": "Vacatures voor chauffeurs",
+        "desc": "Wij verbinden chauffeurs met bezorgvacatures bij betrouwbare logistieke bedrijven in Amsterdam en omgeving."
+      },
+      {
+        "title": "Documenten ondersteuning",
+        "desc": "Wij helpen u met alle benodigde papieren om legaal in Nederland te werken."
+      },
+      {
+        "title": "Accommodatie",
+        "desc": "Wij bieden huisvestingsopties (gedeelde kamers of appartementen) afhankelijk van uw contract."
+      },
+      {
+        "title": "Doorlopende ondersteuning",
+        "desc": "Wij blijven beschikbaar om u te helpen voor en na uw werkstart."
+      },
+      {
+        "title": "Betrouwbare kansen",
+        "desc": "Wij werken samen met gevestigde logistieke partners om stabiele, langdurige banen aan te bieden."
+      },
+      {
+        "title": "Amsterdam Regio",
+        "desc": "Wij richten ons op vacatures in Amsterdam en nabijgelegen steden in de regio."
+      }
+    ]
+  },
+  "about": {
+    "title": "Over Team Cargo",
+    "description": "Team Cargo is een wervingsbureau voor chauffeurs gevestigd in Amsterdam, Nederland. Wij verbinden lokale en internationale chauffeurs met stabiele banen bij toonaangevende logistieke bedrijven in de regio Amsterdam.",
+    "values_title": "Onze waarden",
+    "values": [
+      "Betrouwbaarheid",
+      "Efficiëntie",
+      "Klantgerichtheid",
+      "Veiligheid"
+    ],
+    "label": "Over ons",
+    "description2": "Wij werken samen met vertrouwde partners zoals GLS, FedEx, Amazon en DPD, en helpen chauffeurs snel en betrouwbaar aan werk. Van sollicitatie tot onboarding bieden wij volledige ondersteuning — inclusief documentbegeleiding en accommodatie voor chauffeurs die vanuit het buitenland komen.",
+    "drivers_placed": "500+ chauffeurs geplaatst",
+    "years_active": "Jaar actief"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Naam",
+    "email": "E-mail",
+    "message": "Bericht",
+    "send": "Versturen",
+    "success": "Uw bericht is verzonden!",
+    "subtitle": "Neem contact op voor een offerte of meer informatie.",
+    "success_subtitle": "Wij nemen zo snel mogelijk contact met u op."
+  },
+  "auth": {
+    "login_title": "Inloggen",
+    "register_title": "Account aanmaken",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "login_btn": "Inloggen",
+    "register_btn": "Registreren",
+    "or": "of",
+    "continue_google": "Doorgaan met Google",
+    "continue_apple": "Doorgaan met Apple",
+    "no_account": "Nog geen account?",
+    "have_account": "Al een account?",
+    "welcome_login": "Welkom terug bij Team Cargo",
+    "welcome_register": "Maak een nieuw account aan",
+    "loading": "Bezig...",
+    "error_generic": "Er is een fout opgetreden",
+    "confirm_password": "Wachtwoord bevestigen",
+    "passwords_no_match": "Wachtwoorden komen niet overeen",
+    "password_too_short": "Wachtwoord moet minimaal 8 tekens bevatten",
+    "forgot_password": "Wachtwoord vergeten?",
+    "forgot_title": "Wachtwoord opnieuw instellen",
+    "forgot_desc": "Voer uw e-mailadres in en we sturen u een resetlink.",
+    "send_reset_link": "Resetlink versturen",
+    "sending": "Versturen...",
+    "reset_sent_desc": "Als dat e-mailadres is geregistreerd, hebben we een resetlink verzonden. Controleer uw inbox.",
+    "back_to_login": "Terug naar inloggen",
+    "resend_email": "E-mail opnieuw versturen",
+    "verify_email_title": "Controleer uw inbox",
+    "verify_email_desc": "We hebben een verificatie-e-mail verzonden. Verifieer uw e-mailadres voordat u inlogt.",
+    "first_name": "Voornaam",
+    "last_name": "Achternaam",
+    "verify_email_desc_short": "Controleer je inbox om je account te activeren",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "tagline": "1 team · 1 missie",
+    "rights": "Alle rechten voorbehouden.",
+    "col_services": "Diensten",
+    "col_company": "Bedrijf",
+    "col_legal": "Legaal",
+    "privacy": "Privacybeleid",
+    "cookies": "Cookiebeleid",
+    "terms": "Algemene Voorwaarden",
+    "tagline_sub": "Chauffeurs recruitment — Amsterdam"
+  },
+  "housing": {
+    "label": "Voor chauffeurs die verhuizen",
+    "title": "We helpen u ook woonruimte te vinden",
+    "description": "Verhuist u vanuit het buitenland naar Nederland? Wij regelen schone, comfortabele woonruimte voor u — zodat u zich kunt concentreren op uw nieuwe baan zonder zorgen over een slaapplek. Geen verborgen kosten, geen stress.",
+    "perks": [
+      "Volledig gemeubileerd appartement inbegrepen",
+      "Internet en nutsvoorzieningen inbegrepen",
+      "Gedeelde keuken en woonruimte",
+      "Dicht bij uw werkdepot"
+    ],
+    "cta": "Vraag naar woonopties"
+  },
+  "cookie_banner": {
+    "title": "Wij gebruiken cookies",
+    "description": "Wij gebruiken essentiële en analytische cookies om uw ervaring te verbeteren. Door op Accepteren te klikken, stemt u in met ons gebruik van cookies.",
+    "accept": "Alles accepteren",
+    "reject": "Optioneel weigeren",
+    "cookie_policy_link": "Cookiebeleid",
+    "privacy_policy_link": "Privacybeleid"
+  },
+  "privacy": {
+    "label": "Juridisch",
+    "title": "Privacybeleid",
+    "last_updated": "Laatst bijgewerkt: april 2026",
+    "s1_title": "1. Wie zijn wij",
+    "s1_p": "Team Cargo is een chauffeurswervingsbureau gevestigd in Amsterdam, Nederland. Wij verbinden chauffeurs met logistieke bedrijven en ondersteunen hen bij plaatsing, documentatie en accommodatie.",
+    "s1_email": "E-mail:",
+    "s2_title": "2. Welke gegevens verzamelen wij",
+    "s2_intro": "Wij kunnen de volgende persoonsgegevens verzamelen:",
+    "s2_items": [
+      "Volledige naam",
+      "E-mailadres",
+      "Telefoonnummer (inclusief WhatsApp)",
+      "CV / werkervaring",
+      "Identificatie of documentatie (indien vereist voor tewerkstelling)",
+      "Locatie of land van verblijf"
+    ],
+    "s3_title": "3. Hoe gebruiken wij uw gegevens",
+    "s3_intro": "Wij gebruiken uw gegevens om:",
+    "s3_items": [
+      "Uw sollicitatie te verwerken",
+      "U te koppelen aan passende vacatures",
+      "Contact met u op te nemen over uw sollicitatie",
+      "Te helpen met documentatie en onboarding",
+      "Onze diensten te verbeteren"
+    ],
+    "s4_title": "4. Wettelijke grondslag (AVG)",
+    "s4_intro": "Wij verwerken uw gegevens op basis van:",
+    "s4_items": [
+      "Uw toestemming (wanneer u solliciteert of contact opneemt)",
+      "Contractuele noodzaak (het plaatsingsproces)",
+      "Wettelijke verplichtingen"
+    ],
+    "s5_title": "5. Gegevensdeling",
+    "s5_intro": "Wij kunnen uw gegevens delen met:",
+    "s5_items": [
+      "Partner logistieke bedrijven (bijv. GLS, FedEx, Amazon, DPD — voor baanplaatsing)",
+      "Overheidsinstanties of juridische autoriteiten (indien wettelijk vereist)"
+    ],
+    "s5_no_sell": "Wij verkopen uw persoonsgegevens niet.",
+    "s6_title": "6. Bewaartermin",
+    "s6_p": "Wij bewaren uw gegevens alleen zo lang als nodig voor wervingsdoeleinden of zoals vereist door de wet.",
+    "s7_title": "7. Uw rechten",
+    "s7_intro": "Onder de AVG heeft u het recht om:",
+    "s7_items": [
+      "Uw gegevens in te zien",
+      "Onjuiste gegevens te corrigeren",
+      "Verwijdering te verzoeken (\"recht op vergetelheid\")",
+      "Toestemming op elk moment in te trekken",
+      "Een klacht in te dienen bij de Autoriteit Persoonsgegevens"
+    ],
+    "s8_title": "8. Gegevensbeveiliging",
+    "s8_p": "Wij nemen passende technische en organisatorische maatregelen om uw persoonsgegevens te beschermen tegen ongeoorloofde toegang, verlies of misbruik.",
+    "s9_title": "9. Contact",
+    "s9_intro": "Heeft u vragen of verzoeken over dit Privacybeleid, neem dan contact met ons op:",
+    "s10_title": "10. Updates",
+    "s10_p": "Wij kunnen dit Privacybeleid van tijd tot tijd bijwerken. Controleer deze pagina regelmatig voor de meest recente versie."
+  },
+  "cookies_page": {
+    "label": "Juridisch",
+    "title": "Cookiebeleid",
+    "last_updated": "Laatst bijgewerkt: april 2026",
+    "s1_title": "1. Wat zijn cookies?",
+    "s1_p": "Cookies zijn kleine tekstbestanden die op uw apparaat worden opgeslagen wanneer u een website bezoekt. Ze helpen ons uw ervaring te verbeteren en maken bepaalde websitefuncties mogelijk.",
+    "s2_title": "2. Soorten cookies die wij gebruiken",
+    "s2_essential_title": "Essentiële cookies",
+    "s2_essential_p": "Vereist voor het correct functioneren van de website — bijv. navigatie, formulieren en sessiebeheer. Deze kunnen niet worden uitgeschakeld.",
+    "s2_analytics_title": "Analytische cookies",
+    "s2_analytics_p": "Helpen ons te begrijpen hoe bezoekers onze website gebruiken (bijv. bezochte pagina's, bestede tijd). We gebruiken dit om de site te verbeteren.",
+    "s2_functional_title": "Functionele cookies",
+    "s2_functional_p": "Onthouden uw voorkeuren — zoals uw taalkeuze — zodat u deze niet opnieuw hoeft in te stellen bij elk bezoek.",
+    "s3_title": "3. Hoe wij cookies gebruiken",
+    "s3_intro": "Wij gebruiken cookies om:",
+    "s3_items": [
+      "Te zorgen dat de website correct werkt",
+      "De websiteprestaties en gebruikerservaring te verbeteren",
+      "Te begrijpen hoe gebruikers omgaan met onze inhoud",
+      "Taal- en weergavevoorkeuren te onthouden"
+    ],
+    "s4_title": "4. Cookies beheren",
+    "s4_p1": "U kunt cookies beheren of uitschakelen via uw browserinstellingen. Houd er rekening mee dat het uitschakelen van bepaalde cookies de functionaliteit van onze website kan beïnvloeden.",
+    "s4_p2": "De meeste browsers bieden de mogelijkheid om: opgeslagen cookies te bekijken, cookies te verwijderen en cookies van specifieke of alle websites te blokkeren. Raadpleeg de helpdocumentatie van uw browser voor instructies.",
+    "s5_title": "5. Cookies van derden",
+    "s5_p": "We kunnen diensten van derden gebruiken (zoals analysetools) die hun eigen cookies op uw apparaat plaatsen. Deze vallen onder hun eigen privacy- en cookiebeleid.",
+    "s6_title": "6. Uw toestemming",
+    "s6_p": "Wanneer u onze website voor het eerst bezoekt, vragen wij uw toestemming voor het gebruik van niet-essentiële cookies. U kunt uw voorkeuren op elk moment wijzigen door uw browsercookies te wissen en de site opnieuw te bezoeken.",
+    "s7_title": "7. Contact",
+    "s7_intro": "Vragen over ons Cookiebeleid?",
+    "s8_title": "8. Updates",
+    "s8_p": "We kunnen dit Cookiebeleid van tijd tot tijd bijwerken. Wijzigingen worden op deze pagina geplaatst."
+  },
+  "terms_page": {
+    "label": "Juridisch",
+    "title": "Algemene Voorwaarden",
+    "last_updated": "Laatst bijgewerkt: april 2026",
+    "intro": "Welkom bij Team Cargo. Door gebruik te maken van onze website en diensten, gaat u akkoord met de volgende Algemene Voorwaarden.",
+    "s1_title": "1. Over ons",
+    "s1_p": "Team Cargo is een wervingsbureau gevestigd in Amsterdam, Nederland. Wij zijn gespecialiseerd in het verbinden van chauffeurs met logistieke bedrijven en ondersteunen hen tijdens het aanwervings- en relocatieproces.",
+    "s2_title": "2. Onze diensten",
+    "s2_intro": "Wij bieden:",
+    "s2_items": [
+      "Baanavbemiddeling voor chauffeurs bij partner logistiekbedrijven (GLS, FedEx, Amazon, DPD)",
+      "Hulp bij documentatie en onboarding",
+      "Accommodatieondersteuning (afhankelijk van het contract)"
+    ],
+    "s2_note": "Wij garanderen geen baanplaatsing in alle gevallen. Tewerkstelling is afhankelijk van de eisen van partnerbedrijven en de kwalificaties van de kandidaat.",
+    "s3_title": "3. Verantwoordelijkheden van de gebruiker",
+    "s3_intro": "Door gebruik te maken van onze diensten gaat u akkoord met:",
+    "s3_items": [
+      "Het verstrekken van nauwkeurige en eerlijke informatie",
+      "Het indienen van geldige documenten wanneer gevraagd",
+      "Het naleven van de Nederlandse wet- en arbeidsregelgeving",
+      "Het opvolgen van instructies van partnerbedrijven tijdens het dienstverband"
+    ],
+    "s4_title": "4. Sollicitatie- en wervingsprocedure",
+    "s4_items": [
+      "Het indienen van een sollicitatie garandeert geen tewerkstelling",
+      "Definitieve aanwervingsbeslissingen worden genomen door partnerbedrijven",
+      "Jobaanbiedingen kunnen variëren afhankelijk van beschikbaarheid en kwalificaties"
+    ],
+    "s5_title": "5. Accommodatie",
+    "s5_items": [
+      "Accommodatie kan worden verstrekt afhankelijk van het arbeidscontract",
+      "Huisvestingsomstandigheden, kosten en regels worden vastgesteld in uw overeenkomst",
+      "U bent verantwoordelijk voor het respecteren van de huisvestingsregels en het eigendom"
+    ],
+    "s6_title": "6. Aansprakelijkheid",
+    "s6_intro": "Team Cargo is niet verantwoordelijk voor:",
+    "s6_items": [
+      "Beslissingen genomen door partnerbedrijven",
+      "Wijzigingen in arbeidsomstandigheden na plaatsing",
+      "Verlies of schade tijdens tewerkstelling of accommodatie"
+    ],
+    "s6_note": "Team Cargo treedt op als tussenpersoon tussen kandidaten en werkgevers.",
+    "s7_title": "7. Betalingen en kosten",
+    "s7_items": [
+      "Eventuele kosten (indien van toepassing) worden vooraf duidelijk gecommuniceerd",
+      "Team Cargo brengt geen verborgen kosten in rekening bij kandidaten"
+    ],
+    "s8_title": "8. Intellectueel eigendom",
+    "s8_p": "Alle inhoud op deze website — inclusief tekst, huisstijl en logo — behoort toe aan Team Cargo en mag niet worden gereproduceerd of gebruikt zonder schriftelijke toestemming.",
+    "s9_title": "9. Beëindiging van diensten",
+    "s9_intro": "Wij behouden ons het recht voor om diensten te weigeren of te beëindigen als:",
+    "s9_items": [
+      "Valse of misleidende informatie wordt verstrekt",
+      "Deze Voorwaarden worden geschonden",
+      "Wangedrag plaatsvindt tijdens tewerkstelling of accommodatie"
+    ],
+    "s10_title": "10. Privacy",
+    "s10_p": "Uw persoonsgegevens worden verwerkt in overeenstemming met ons",
+    "s10_link": "Privacybeleid",
+    "s11_title": "11. Toepasselijk recht",
+    "s11_p": "Deze Voorwaarden zijn onderworpen aan het Nederlands recht. Geschillen zijn onderworpen aan de bevoegde rechtbanken in Amsterdam.",
+    "s12_title": "12. Contact",
+    "s12_intro": "Voor vragen over deze Algemene Voorwaarden:",
+    "s13_title": "13. Updates",
+    "s13_p": "Wij kunnen deze Algemene Voorwaarden op elk moment bijwerken. Voortgezet gebruik van onze diensten na het plaatsen van wijzigingen betekent dat u de bijgewerkte Voorwaarden accepteert."
+  }
+}

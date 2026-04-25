@@ -1,0 +1,324 @@
+{
+  "nav": {
+    "services": "Teenused",
+    "about": "Meist",
+    "contact": "Kontakt",
+    "login": "Logi sisse",
+    "register": "Registreeri",
+    "admin_dashboard": "Administraatori paneel",
+    "language": "Keel",
+    "logout": "Logout",
+    "my_profile": "My Profile"
+  },
+  "hero": {
+    "slogan": "Alusta oma juhi tööd Hollandis — Meie hoolitseme ülejäänu eest.",
+    "tagline": "1 meeskond · 1 missioon",
+    "mission_words": [
+      "MEESKOND",
+      "MISSIOON"
+    ],
+    "cta_primary": "Võta ühendust",
+    "cta_secondary": "Meie teenused",
+    "cta_whatsapp": "WhatsApp meile",
+    "stats_clients": "Rahul kliente",
+    "stats_years": "Aastat kogemust",
+    "stats_available": "Kättesaadav",
+    "partners_label": "Meie partnerid",
+    "badge": "Juhtide värbamine · Amsterdam, NL",
+    "stats_partners": "Peamised partnerid",
+    "trust_line": "Pole kogemust Hollandi bürokraatiaga? Pole probleemi — juhendame sind samm-sammult."
+  },
+  "services": {
+    "title": "Meie Teenused",
+    "transport": {
+      "title": "Transport",
+      "description": "Usaldusväärne ja kiire transport üle kogu Euroopa."
+    },
+    "logistics": {
+      "title": "Logistika",
+      "description": "Täielikud logistikalahendused, mis on kohandatud teie ettevõttele."
+    },
+    "cargo": {
+      "title": "Kaup",
+      "description": "Ohutu ja tõhus kaubavedude teenus igat tüüpi lastile."
+    },
+    "what_we_do": "Mida me teeme",
+    "items": [
+      {
+        "title": "Juhtide tööle paigutamine",
+        "desc": "Ühendame juhte kohaletoimetamistöödega usaldusväärsetes logistikafirmades Amsterdamis ja ümbruses."
+      },
+      {
+        "title": "Dokumentide tugi",
+        "desc": "Aitame korraldada kõiki vajalikke dokumente Hollandis legaalseks töötamiseks."
+      },
+      {
+        "title": "Majutus",
+        "desc": "Pakume majutusvõimalusi (jagatud toad või korterid) sõltuvalt teie lepingust."
+      },
+      {
+        "title": "Pidev tugi",
+        "desc": "Oleme kättesaadavad, et aidata enne ja pärast töö alustamist."
+      },
+      {
+        "title": "Usaldusväärsed võimalused",
+        "desc": "Teeme koostööd väljakujunenud logistikapartneritega, pakkudes stabiilseid pikaajalisi töökohti."
+      },
+      {
+        "title": "Amsterdami piirkond",
+        "desc": "Keskendume töökohtade vahendamisele Amsterdamis ja lähimates linnades."
+      }
+    ]
+  },
+  "about": {
+    "title": "Team Cargo-st",
+    "description": "Team Cargo on Hollandis Amsterdamis asuv juhi värbamisagentuur. Ühendame kohalikud ja rahvusvahelised juhid stabiilsete töökohtadega Amsterdami piirkonna juhtivates logistikaettevõtetes.",
+    "values_title": "Meie väärtused",
+    "values": [
+      "Usaldusväärsus",
+      "Tõhusus",
+      "Kliendikesksus",
+      "Ohutus"
+    ],
+    "label": "Meist",
+    "description2": "Teeme koostööd usaldusväärsete partneritega nagu GLS, FedEx, Amazon ja DPD, aidates juhtidel leida tööd kiiresti ja usaldusväärselt. Avaldusest kuni tööle asumiseni pakume täielikku tuge — sealhulgas dokumendinõustamist ja majutust välismaalt saabuvate juhtide jaoks.",
+    "drivers_placed": "500+ paigutatud juhti",
+    "years_active": "Aastat tegutsenud"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "name": "Nimi",
+    "email": "E-post",
+    "message": "Sõnum",
+    "send": "Saada",
+    "success": "Teie sõnum on saadetud!",
+    "subtitle": "Võtke meiega ühendust pakkumise või lisateabe saamiseks.",
+    "success_subtitle": "Võtame teiega niipea kui võimalik ühendust."
+  },
+  "auth": {
+    "login_title": "Logi sisse",
+    "register_title": "Loo konto",
+    "email": "E-posti aadress",
+    "password": "Parool",
+    "login_btn": "Logi sisse",
+    "register_btn": "Registreeri",
+    "or": "või",
+    "continue_google": "Jätka Google'iga",
+    "continue_apple": "Jätka Apple'iga",
+    "no_account": "Pole veel kontot?",
+    "have_account": "On juba konto?",
+    "welcome_login": "Tere tulemast tagasi Team Cargo",
+    "welcome_register": "Loo uus konto",
+    "loading": "Laadimine...",
+    "error_generic": "Ilmnes viga",
+    "confirm_password": "Kinnita parool",
+    "passwords_no_match": "Paroolid ei kattu",
+    "password_too_short": "Parool peab olema vähemalt 8 tähemärki",
+    "forgot_password": "Unustasid parooli?",
+    "forgot_title": "Lähtesta parool",
+    "forgot_desc": "Sisesta oma e-post ja saadame sulle lähtestamislingi.",
+    "send_reset_link": "Saada link",
+    "sending": "Saatmine...",
+    "reset_sent_desc": "Kui see e-post on registreeritud, saatsime lingi. Kontrolli oma postkasti.",
+    "back_to_login": "Tagasi sisselogimisele",
+    "resend_email": "Saada e-post uuesti",
+    "verify_email_title": "Kontrolli oma postkasti",
+    "verify_email_desc": "Saatsime kinnitusmeili. Palun kinnita oma e-post enne sisselogimist.",
+    "first_name": "Eesnimi",
+    "last_name": "Perekonnanimi",
+    "verify_email_desc_short": "Kontrollige postkasti konto aktiveerimiseks",
+    "verified_success": "Email verified! You can now sign in.",
+    "verified_expired": "Verification link expired. Please request a new one.",
+    "verified_invalid": "Invalid verification link.",
+    "verified_already": "Email already verified. You can sign in."
+  },
+  "footer": {
+    "col_services": "Teenused",
+    "col_company": "Ettevõte",
+    "col_legal": "Juriidiline",
+    "privacy": "Privaatsuspoliitika",
+    "cookies": "Küpsisepoliitika",
+    "tagline": "1 meeskond · 1 missioon",
+    "rights": "Kõik õigused kaitstud.",
+    "terms": "Tingimused",
+    "tagline_sub": "Juhtide värbamine — Amsterdam"
+  },
+  "housing": {
+    "label": "Kolimist plaanivatele juhtidele",
+    "title": "Aitame leida ka eluaseme",
+    "description": "Kolite Hollandisse välismaalt? Korraldame teile puhta ja mugava eluaseme — et saaksite keskenduda uuele tööle, muretsemata magamiskoha pärast. Varjatud kulusid ei ole, stressi ei ole.",
+    "perks": [
+      "Täielikult sisustatud korter kaasas",
+      "Internet ja kommunaalteenused kaetud",
+      "Ühine köök ja elutuba",
+      "Töödepoost lähedal"
+    ],
+    "cta": "Küsige eluasemevõimaluste kohta"
+  },
+  "cookie_banner": {
+    "title": "Kasutame küpsiseid",
+    "description": "Kasutame olulisi ja analüütilisi küpsiseid teie kogemuse parandamiseks. Klõpsates Nõustu, annate nõusoleku küpsiste kasutamiseks.",
+    "accept": "Nõustu kõigega",
+    "reject": "Keeldu valikulistest",
+    "cookie_policy_link": "Küpsiste poliitika",
+    "privacy_policy_link": "Privaatsuspoliitika"
+  },
+  "privacy": {
+    "label": "Juriidiline",
+    "title": "Privaatsuspoliitika",
+    "last_updated": "Viimati uuendatud: aprill 2026",
+    "s1_title": "1. Kes me oleme",
+    "s1_p": "Team Cargo on juhivärbamisagentuur, mille asukoht on Amsterdamis, Hollandis. Ühendame juhid logistikaettevõtetega ning toetame neid töökoha leidmisel, dokumentatsioonis ja majutuses.",
+    "s1_email": "E-post:",
+    "s2_title": "2. Milliseid andmeid me kogume",
+    "s2_intro": "Võime koguda järgmisi isikuandmeid:",
+    "s2_items": [
+      "Täisnimi",
+      "E-posti aadress",
+      "Telefoninumber (sh WhatsApp)",
+      "CV / töökogemus",
+      "Isikutuvastus või dokumentatsioon (kui töölevõtmiseks nõutakse)",
+      "Asukoht või elukohariik"
+    ],
+    "s3_title": "3. Kuidas me teie andmeid kasutame",
+    "s3_intro": "Kasutame teie andmeid järgmiseks:",
+    "s3_items": [
+      "Teie töötaotluse töötlemine",
+      "Sobivate töövõimalustega sobitamine",
+      "Teiega töötaotluse osas ühendust võtmine",
+      "Abi dokumentatsiooni ja sisseelamise osas",
+      "Meie teenuste parandamine"
+    ],
+    "s4_title": "4. Õiguslik alus (GDPR)",
+    "s4_intro": "Töötleme teie andmeid järgmise alusel:",
+    "s4_items": [
+      "Teie nõusolek (kui esitate taotluse või võtate meiega ühendust)",
+      "Lepinguline vajadus (töökoha vahendamise protsess)",
+      "Seaduslikud kohustused"
+    ],
+    "s5_title": "5. Andmete jagamine",
+    "s5_intro": "Võime jagada teie andmeid:",
+    "s5_items": [
+      "Partnerlogistikaettevõtetega (nt GLS, FedEx, Amazon, DPD — töökoha vahendamiseks)",
+      "Valitsus- või õigusasutustega (kui seadus seda nõuab)"
+    ],
+    "s5_no_sell": "Me ei müü teie isikuandmeid.",
+    "s6_title": "6. Andmete säilitamine",
+    "s6_p": "Säilitame teie andmeid ainult nii kaua, kui see on värbamise eesmärkidel vajalik või seadusega nõutud.",
+    "s7_title": "7. Teie õigused",
+    "s7_intro": "GDPR-i alusel on teil õigus:",
+    "s7_items": [
+      "Pääseda ligi oma andmetele",
+      "Parandada ebatäpseid andmeid",
+      "Taotleda kustutamist (\"õigus olla unustatud\")",
+      "Võtta nõusolek igal ajal tagasi",
+      "Esitada kaebus Hollandi andmekaitseasutusele (Autoriteit Persoonsgegevens)"
+    ],
+    "s8_title": "8. Andmeturve",
+    "s8_p": "Võtame asjakohaseid tehnilisi ja organisatsioonilisi meetmeid teie isikuandmete kaitsmiseks loata juurdepääsu, kaotuse või väärkasutuse eest.",
+    "s9_title": "9. Kontakt",
+    "s9_intro": "Kui teil on küsimusi või taotlusi selle privaatsuspoliitika kohta, võtke meiega ühendust:",
+    "s10_title": "10. Uuendused",
+    "s10_p": "Võime seda privaatsuspoliitikat aeg-ajalt uuendada. Kontrollige seda lehte regulaarselt uusima versiooni saamiseks."
+  },
+  "cookies_page": {
+    "label": "Juriidiline",
+    "title": "Küpsiste poliitika",
+    "last_updated": "Viimati uuendatud: aprill 2026",
+    "s1_title": "1. Mis on küpsised?",
+    "s1_p": "Küpsised on väikesed tekstifailid, mis salvestatakse teie seadmesse, kui külastate veebisaiti. Need aitavad meil parandada teie kogemust ja võimaldavad teatud veebisaidi funktsioonidel õigesti töötada.",
+    "s2_title": "2. Meie kasutatavad küpsiste tüübid",
+    "s2_essential_title": "Vajalikud küpsised",
+    "s2_essential_p": "Vajalikud veebisaidi nõuetekohaseks toimimiseks — nt navigatsioon, vormid ja sesioonihaldus. Neid ei saa keelata.",
+    "s2_analytics_title": "Analüütilised küpsised",
+    "s2_analytics_p": "Aitavad meil mõista, kuidas külastajad meie veebisaiti kasutavad (nt külastatud lehed, kulutatud aeg). Kasutame seda saidi parendamiseks.",
+    "s2_functional_title": "Funktsionaalsed küpsised",
+    "s2_functional_p": "Mäletavad teie eelistusi — näiteks keelevalikut — et te ei peaks neid igal külastusel uuesti valima.",
+    "s3_title": "3. Kuidas me küpsiseid kasutame",
+    "s3_intro": "Kasutame küpsiseid järgmiseks:",
+    "s3_items": [
+      "Veebisaidi õige toimimise tagamine",
+      "Veebisaidi jõudluse ja kasutajakogemuse parandamine",
+      "Kasutajate meie sisuga suhtlemise mõistmine",
+      "Keele- ja kuvamiseelistuste meelespidamine"
+    ],
+    "s4_title": "4. Küpsiste haldamine",
+    "s4_p1": "Saate küpsiseid juhtida või keelata brauseri seadete kaudu. Pange tähele, et teatud küpsiste keelamine võib mõjutada meie veebisaidi funktsionaalsust.",
+    "s4_p2": "Enamik brausereid võimaldab: vaadata salvestatud küpsiseid, kustutada küpsiseid ja blokeerida küpsiseid konkreetsetelt või kõigilt veebisaitidelt. Juhiste saamiseks vaadake oma brauseri abidokumentatsiooni.",
+    "s5_title": "5. Kolmandate osapoolte küpsised",
+    "s5_p": "Võime kasutada kolmandate osapoolte teenuseid (nt analüütikakorriistu), mis paigutavad oma küpsiseid teie seadmesse. Need kuuluvad nende enda privaatsus- ja küpsisepoliitika alla.",
+    "s6_title": "6. Teie nõusolek",
+    "s6_p": "Kui külastate meie veebisaiti esimest korda, küsime teie nõusolekut mittekohustuslike küpsiste kasutamiseks. Oma eelistusi saate igal ajal muuta, kustutades brauseri küpsised ja saiti uuesti külastades.",
+    "s7_title": "7. Kontakt",
+    "s7_intro": "Küsimused meie küpsisepoliitika kohta?",
+    "s8_title": "8. Uuendused",
+    "s8_p": "Võime seda küpsisepoliitikat aeg-ajalt uuendada. Muudatused avaldatakse sellel lehel."
+  },
+  "terms_page": {
+    "label": "Juriidiline",
+    "title": "Kasutustingimused",
+    "last_updated": "Viimati uuendatud: aprill 2026",
+    "intro": "Tere tulemast Team Cargole. Meie veebisaidile või teenustele juurde pääsedes või neid kasutades nõustute järgmiste kasutustingimustega.",
+    "s1_title": "1. Meist",
+    "s1_p": "Team Cargo on värbamisagentuur, mille asukoht on Amsterdamis, Hollandis. Oleme spetsialiseerunud juhide ühendamisele logistikaettevõtetega ja nende toetamisele kogu värbamis- ja ümberkolimisprotsessi vältel.",
+    "s2_title": "2. Meie teenused",
+    "s2_intro": "Pakume:",
+    "s2_items": [
+      "Juhide töökoha vahendamine partnerlogistikaettevõtetes (GLS, FedEx, Amazon, DPD)",
+      "Abi dokumentatsiooni ja sisseelamisega",
+      "Majutustoetus (sõltuvalt lepingust)"
+    ],
+    "s2_note": "Me ei garanteeri töökoha vahendamist kõigil juhtudel. Tööhõive sõltub partnerettevõtete nõuetest ja kandidaadi kvalifikatsioonist.",
+    "s3_title": "3. Kasutaja kohustused",
+    "s3_intro": "Meie teenuseid kasutades nõustute:",
+    "s3_items": [
+      "Esitama täpseid ja tõeseid andmeid",
+      "Esitama kehtivaid dokumente nõudmisel",
+      "Järgima Hollandi seadusi ja tööhõive eeskirju",
+      "Järgima partnerettevõtete juhiseid töötamise ajal"
+    ],
+    "s4_title": "4. Kandideerimis- ja värbamisprotsess",
+    "s4_items": [
+      "Avalduse esitamine ei garanteeri tööhõivet",
+      "Lõplikud värbamisotsused teevad partnerettevõtted",
+      "Töökohad võivad varieeruda sõltuvalt saadavusest ja kvalifikatsioonist"
+    ],
+    "s5_title": "5. Majutus",
+    "s5_items": [
+      "Majutust võib pakkuda sõltuvalt töölepingust",
+      "Elamistingimused, kulud ja reeglid määratletakse teie lepingus",
+      "Olete vastutav elamiseeskirjade austamise ja vara kaitsmise eest"
+    ],
+    "s6_title": "6. Vastutus",
+    "s6_intro": "Team Cargo ei vastuta:",
+    "s6_items": [
+      "Partnerrettevõtete langetatud otsuste eest",
+      "Töötingimuste muutuste eest pärast tööle asumist",
+      "Kaotuste ega kahjude eest töötamise või majutuse ajal"
+    ],
+    "s6_note": "Team Cargo tegutseb vahendajana kandidaatide ja tööandjate vahel.",
+    "s7_title": "7. Maksed ja tasud",
+    "s7_items": [
+      "Kõik tasud või kulud (vastavalt vajadusele) teatatakse selgelt ette",
+      "Team Cargo ei nõua kandidaatidelt varjatud tasusid"
+    ],
+    "s8_title": "8. Intellektuaalomand",
+    "s8_p": "Kogu selle veebisaidi sisu — sealhulgas tekst, bränding ja logo — kuulub Team Cargole ja seda ei tohi ilma kirjaliku loata paljundada ega kasutada.",
+    "s9_title": "9. Teenuste lõpetamine",
+    "s9_intro": "Jätame endale õiguse teenuseid keelduda või lõpetada, kui:",
+    "s9_items": [
+      "Esitatakse valesid või eksitavaid andmeid",
+      "Rikutakse neid tingimusi",
+      "Esineb sobimatu käitumine töötamise või majutuse ajal"
+    ],
+    "s10_title": "10. Privaatsus",
+    "s10_p": "Teie isikuandmeid töödeldakse vastavalt meie",
+    "s10_link": "Privaatsuspoliitikale",
+    "s11_title": "11. Kohaldatav õigus",
+    "s11_p": "Need tingimused on reguleeritud Hollandi seadustega. Kõik vaidlused alluvad Amsterdami pädevate kohtute jurisdiktsioonile.",
+    "s12_title": "12. Kontakt",
+    "s12_intro": "Küsimuste korral nende kasutustingimuste kohta:",
+    "s13_title": "13. Uuendused",
+    "s13_p": "Võime neid kasutustingimusi igal ajal uuendada. Meie teenuste jätkuv kasutamine pärast muudatuste avaldamist tähendab, et nõustute uuendatud tingimustega."
+  }
+}
