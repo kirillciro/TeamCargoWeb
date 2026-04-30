@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import crypto from "crypto";
+import multer from "multer";
 import { z } from "zod";
 import { OAuth2Client } from "google-auth-library";
 import { pool } from "./db.js";
@@ -18,6 +20,21 @@ import type { SafeUser } from "./types.js";
 import { syncAllFolders, imapDeleteEmails } from "./email-sync.js";
 import { extractFromPdfBuffer, type CargoData } from "./ai-extract.js";
 import { sendCargoWhatsApp } from "./whatsapp.js";
+import {
+  translateHeroTexts,
+  type HeroTexts,
+  type HeroTranslations,
+} from "./hero-translate.js";
+import {
+  translateServicesTexts,
+  type ServicesTexts,
+  type ServicesTranslations,
+} from "./services-translate.js";
+import {
+  translateAboutTexts,
+  type AboutTexts,
+  type AboutTranslations,
+} from "./about-translate.js";
 
 const app = express();
 
@@ -1160,14 +1177,21 @@ app.post(
       return;
     }
 
-    const sid = await sendCargoWhatsApp(row.extracted_json, row.subject);
-    await pool.query(
-      `UPDATE cargo_extractions
-       SET status = 'sent', whatsapp_message_sid = $1, whatsapp_sent_at = NOW(), updated_at = NOW()
-       WHERE id = $2`,
-      [sid, extractionId],
-    );
-    res.json({ success: true, messageSid: sid });
+    try {
+      const sid = await sendCargoWhatsApp(row.extracted_json, row.subject);
+      await pool.query(
+        `UPDATE cargo_extractions
+         SET status = 'sent', whatsapp_message_sid = $1, whatsapp_sent_at = NOW(), updated_at = NOW()
+         WHERE id = $2`,
+        [sid, extractionId],
+      );
+      res.json({ success: true, messageSid: sid });
+    } catch (err) {
+      console.error("[send-whatsapp]", err);
+      const message =
+        err instanceof Error ? err.message : "WhatsApp send failed.";
+      res.status(500).json({ message });
+    }
   },
 );
 
@@ -1264,7 +1288,467 @@ app.delete(
   },
 );
 
-// ── Start server ───────────────────────────────────────────────────────────
+// ── Meta WhatsApp Webhooks ─────────────────────────────────────────────────
+
+// Verification handshake — Meta sends a GET to confirm the endpoint
+app.get("/webhooks/whatsapp", (req, res) => {
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
+
+  if (
+    mode === "subscribe" &&
+    token === process.env.META_WA_WEBHOOK_VERIFY_TOKEN
+  ) {
+    console.log("[webhook] WhatsApp webhook verified");
+    res.status(200).send(challenge);
+  } else {
+    res.sendStatus(403);
+  }
+});
+
+// Incoming events — message status updates, inbound messages, etc.
+app.post("/webhooks/whatsapp", (req, res) => {
+  // Always respond 200 immediately so Meta doesn't retry
+  res.sendStatus(200);
+
+  const body = req.body as {
+    object?: string;
+    entry?: {
+      changes?: {
+        value?: {
+          statuses?: { id: string; status: string; timestamp: string }[];
+          messages?: {
+            from: string;
+            id: string;
+            type: string;
+            text?: { body: string };
+          }[];
+        };
+      }[];
+    }[];
+  };
+
+  if (body.object !== "whatsapp_business_account") return;
+
+  for (const entry of body.entry ?? []) {
+    for (const change of entry.changes ?? []) {
+      const value = change.value;
+      // Log message status updates (sent / delivered / read / failed)
+      for (const status of value?.statuses ?? []) {
+        console.log(`[webhook] message ${status.id} → ${status.status}`);
+      }
+      // Log inbound messages (optional — useful for future two-way support)
+      for (const msg of value?.messages ?? []) {
+        console.log(
+          `[webhook] inbound from ${msg.from}: ${msg.text?.body ?? `(${msg.type})`}`,
+        );
+      }
+    }
+  }
+});
+
+// ── Start server ─────────────────────────────────────────────────────
+
+// Ensure app_settings table exists
+void pool.query(`
+  CREATE TABLE IF NOT EXISTS app_settings (
+    key        TEXT PRIMARY KEY,
+    value      JSONB NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  )
+`);
+
+// ── Hero customisation ──────────────────────────────────────────────────
+
+// Admin saves hero texts → save immediately, translate in background
+app.post(
+  "/admin/customization/hero",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    try {
+      const { source } = req.body as { source: HeroTexts };
+      if (!source || typeof source !== "object") {
+        res.status(400).json({ message: "source texts required" });
+        return;
+      }
+      // 1. Save source immediately so data is never lost
+      await pool.query(
+        `INSERT INTO app_settings (key, value, updated_at)
+         VALUES ('hero_overrides', $1, NOW())
+         ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+        [JSON.stringify({ source, translations: {} })],
+      );
+      // 2. Respond immediately — don't keep client waiting for AI
+      res.json({ ok: true, translating: true });
+      // 3. Translate in background and update DB
+      void (async () => {
+        try {
+          const translations = await translateHeroTexts(source);
+          await pool.query(
+            `UPDATE app_settings SET value = $1, updated_at = NOW()
+             WHERE key = 'hero_overrides'`,
+            [JSON.stringify({ source, translations })],
+          );
+          console.log("[hero-translate-bg] done");
+        } catch (err) {
+          console.error("[hero-translate-bg] error:", err);
+        }
+      })();
+    } catch (err) {
+      console.error("[hero-customization] error:", err);
+      res.status(500).json({ message: "Save failed" });
+    }
+  },
+);
+
+// Public endpoint — returns translated hero overrides for the given lang
+app.get("/hero-overrides/:lang", async (req, res) => {
+  try {
+    const { lang } = req.params;
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'hero_overrides'",
+    );
+    if (result.rows.length === 0) {
+      res.json({});
+      return;
+    }
+    const data = result.rows[0].value as {
+      source: HeroTexts;
+      translations: HeroTranslations;
+    };
+    // Prefer exact lang, fall back to English, then source
+    const langTexts =
+      data.translations[lang] ?? data.translations["en"] ?? data.source ?? {};
+    // Merge non-translatable visual overrides from source so all clients get them
+    const src = data.source as Record<string, unknown>;
+    const visualOverrides: Record<string, unknown> = {};
+    for (const key of [
+      "trustBg",
+      "partnersBg",
+      "partners",
+      "heroImgDesktop",
+      "heroImgMobile",
+    ]) {
+      if (src[key] !== undefined) visualOverrides[key] = src[key];
+    }
+    res.json({
+      ...langTexts,
+      ...visualOverrides,
+      _hasTranslations: Object.keys(data.translations ?? {}).length > 0,
+    });
+  } catch (err) {
+    console.error("[hero-overrides] error:", err);
+    res.json({});
+  }
+});
+
+// Admin: delete hero overrides
+app.delete(
+  "/admin/customization/hero",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    await pool.query("DELETE FROM app_settings WHERE key = 'hero_overrides'");
+    res.json({ ok: true });
+  },
+);
+
+// ── Services customization ───────────────────────────────────────────────────
+// Admin saves services texts → save immediately, translate in background
+app.post(
+  "/admin/customization/services",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    try {
+      const { source } = req.body as { source: ServicesTexts };
+      if (!source || typeof source !== "object") {
+        res.status(400).json({ message: "source texts required" });
+        return;
+      }
+      // 1. Save source immediately so data is never lost
+      await pool.query(
+        `INSERT INTO app_settings (key, value, updated_at)
+         VALUES ('services_overrides', $1, NOW())
+         ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+        [JSON.stringify({ source, translations: {} })],
+      );
+      // 2. Respond immediately — don't keep client waiting for AI
+      res.json({ ok: true, translating: true });
+      // 3. Translate in background and update DB
+      void (async () => {
+        try {
+          const translations = await translateServicesTexts(source);
+          await pool.query(
+            `UPDATE app_settings SET value = $1, updated_at = NOW()
+             WHERE key = 'services_overrides'`,
+            [JSON.stringify({ source, translations })],
+          );
+          console.log("[services-translate-bg] done");
+        } catch (err) {
+          console.error("[services-translate-bg] error:", err);
+        }
+      })();
+    } catch (err) {
+      console.error("[services-customization] error:", err);
+      res.status(500).json({ message: "Save failed" });
+    }
+  },
+);
+
+// Public endpoint — returns translated services overrides for the given lang
+app.get("/services-overrides/:lang", async (req, res) => {
+  try {
+    const { lang } = req.params;
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'services_overrides'",
+    );
+    if (result.rows.length === 0) {
+      res.json({});
+      return;
+    }
+    const data = result.rows[0].value as {
+      source: ServicesTexts;
+      translations: ServicesTranslations;
+    };
+    const langTexts =
+      data.translations[lang] ?? data.translations["en"] ?? data.source ?? {};
+    // Merge non-translatable image overrides from source
+    const src = data.source as Record<string, unknown>;
+    const imageOverrides: Record<string, unknown> = {};
+    for (const key of ["img0", "img1", "img2", "img3", "img4", "img5"]) {
+      if (src[key] !== undefined) imageOverrides[key] = src[key];
+    }
+    res.json({
+      ...langTexts,
+      ...imageOverrides,
+      _hasTranslations: Object.keys(data.translations ?? {}).length > 0,
+    });
+  } catch (err) {
+    console.error("[services-overrides] error:", err);
+    res.json({});
+  }
+});
+
+// Admin: delete services overrides
+app.delete(
+  "/admin/customization/services",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    await pool.query(
+      "DELETE FROM app_settings WHERE key = 'services_overrides'",
+    );
+    res.json({ ok: true });
+  },
+);
+
+// ── Cloudinary partner logo upload ───────────────────────────────────────────
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+app.post(
+  "/admin/cloudinary/upload",
+  requireAuth,
+  requireAdmin,
+  upload.single("file"),
+  async (req: AuthedRequest, res) => {
+    const file = (req as express.Request & { file?: Express.Multer.File }).file;
+    if (!file) {
+      res.status(400).json({ message: "No file provided" });
+      return;
+    }
+
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME ?? "";
+    const apiKey = process.env.CLOUDINARY_API_KEY ?? "";
+    const apiSecret = process.env.CLOUDINARY_API_SECRET ?? "";
+
+    if (!cloudName || !apiKey || !apiSecret) {
+      res.status(500).json({ message: "Cloudinary not configured" });
+      return;
+    }
+
+    // Build signed upload params
+    const timestamp = String(Math.floor(Date.now() / 1000));
+    const folder =
+      ((req.body as Record<string, unknown>).folder as string | undefined) ??
+      "tc-partners";
+    // Params sorted alphabetically (must match exactly what we send)
+    const signingStr = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+    const signature = crypto
+      .createHash("sha1")
+      .update(signingStr)
+      .digest("hex");
+
+    // Forward to Cloudinary via multipart upload
+    const formData = new FormData();
+    formData.append(
+      "file",
+      new Blob([new Uint8Array(file.buffer)], { type: file.mimetype }),
+      file.originalname,
+    );
+    formData.append("api_key", apiKey);
+    formData.append("timestamp", timestamp);
+    formData.append("signature", signature);
+    formData.append("folder", folder);
+
+    const cldRes = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      { method: "POST", body: formData },
+    );
+
+    if (!cldRes.ok) {
+      const err = (await cldRes.json().catch(() => ({}))) as {
+        error?: { message?: string };
+      };
+      const errMsg = err?.error?.message ?? "Cloudinary upload failed";
+      console.error("[cloudinary] upload error:", errMsg, "cloud:", cloudName);
+      res.status(502).json({ message: errMsg });
+      return;
+    }
+
+    const data = (await cldRes.json()) as { secure_url: string };
+    res.json({ url: data.secure_url });
+  },
+);
+
+// ── Cloudinary delete ─────────────────────────────────────────────────────────
+app.delete(
+  "/admin/cloudinary/delete",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const { publicId } = req.body as { publicId?: string };
+    if (!publicId) {
+      res.status(400).json({ message: "publicId required" });
+      return;
+    }
+
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME ?? "";
+    const apiKey = process.env.CLOUDINARY_API_KEY ?? "";
+    const apiSecret = process.env.CLOUDINARY_API_SECRET ?? "";
+
+    if (!cloudName || !apiKey || !apiSecret) {
+      res.status(500).json({ message: "Cloudinary not configured" });
+      return;
+    }
+
+    const timestamp = String(Math.floor(Date.now() / 1000));
+    const signingStr = `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+    const signature = crypto
+      .createHash("sha1")
+      .update(signingStr)
+      .digest("hex");
+
+    const form = new FormData();
+    form.append("public_id", publicId);
+    form.append("api_key", apiKey);
+    form.append("timestamp", timestamp);
+    form.append("signature", signature);
+
+    const cldRes = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`,
+      { method: "POST", body: form },
+    );
+
+    const result = (await cldRes.json().catch(() => ({}))) as {
+      result?: string;
+      error?: { message?: string };
+    };
+    if (!cldRes.ok || result.result === "not found") {
+      console.warn("[cloudinary] delete warning:", result);
+    }
+    res.json({ ok: true });
+  },
+);
+
+// ── About customization ─────────────────────────────────────────────────────
+// Admin saves about texts → save immediately, translate in background
+app.post(
+  "/admin/customization/about",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    try {
+      const { source } = req.body as { source: AboutTexts };
+      if (!source || typeof source !== "object") {
+        res.status(400).json({ message: "source texts required" });
+        return;
+      }
+      await pool.query(
+        `INSERT INTO app_settings (key, value, updated_at)
+         VALUES ('about_overrides', $1, NOW())
+         ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+        [JSON.stringify({ source, translations: {} })],
+      );
+      res.json({ ok: true, translating: true });
+      void (async () => {
+        try {
+          const translations = await translateAboutTexts(source);
+          await pool.query(
+            `UPDATE app_settings SET value = $1, updated_at = NOW()
+             WHERE key = 'about_overrides'`,
+            [JSON.stringify({ source, translations })],
+          );
+          console.log("[about-translate-bg] done");
+        } catch (err) {
+          console.error("[about-translate-bg] error:", err);
+        }
+      })();
+    } catch (err) {
+      console.error("[about-customization] error:", err);
+      res.status(500).json({ message: "Save failed" });
+    }
+  },
+);
+
+// Public endpoint — returns translated about overrides for the given lang
+app.get("/about-overrides/:lang", async (req, res) => {
+  try {
+    const { lang } = req.params;
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'about_overrides'",
+    );
+    if (result.rows.length === 0) {
+      res.json({});
+      return;
+    }
+    const data = result.rows[0].value as {
+      source: AboutTexts;
+      translations: AboutTranslations;
+    };
+    const langTexts =
+      data.translations[lang] ?? data.translations["en"] ?? data.source ?? {};
+    const src = data.source as Record<string, unknown>;
+    const imageOverrides: Record<string, unknown> = {};
+    for (const key of ["imgLeft", "imgTopRight", "imgBottomRight"]) {
+      if (src[key] !== undefined) imageOverrides[key] = src[key];
+    }
+    res.json({
+      ...langTexts,
+      ...imageOverrides,
+      _hasTranslations: Object.keys(data.translations ?? {}).length > 0,
+    });
+  } catch (err) {
+    console.error("[about-overrides] error:", err);
+    res.json({});
+  }
+});
+
+// Admin: delete about overrides
+app.delete(
+  "/admin/customization/about",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    await pool.query("DELETE FROM app_settings WHERE key = 'about_overrides'");
+    res.json({ ok: true });
+  },
+);
 
 const PORT = Number(process.env.PORT ?? 4000);
 app.listen(PORT, () => {

@@ -17,8 +17,8 @@ export default async function LandingPage({
   return (
     <>
       <HeroSection dict={dict} lang={lang} />
-      <ServicesSection dict={dict} />
-      <AboutSection dict={dict} />
+      <ServicesSection dict={dict} lang={lang} />
+      <AboutSection dict={dict} lang={lang} />
       <HousingSection dict={dict} />
       <ContactSection dict={dict} />
       <Footer lang={lang} dict={dict} />

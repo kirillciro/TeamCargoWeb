@@ -75,7 +75,11 @@ export async function fetchWithAuth(
   const makeHeaders = (t: string | null) => {
     const h = new Headers(options.headers);
     if (t) h.set("Authorization", `Bearer ${t}`);
-    h.set("Content-Type", "application/json");
+    // Do NOT set Content-Type for FormData — the browser must set it with
+    // the multipart boundary. Only force JSON for everything else.
+    if (!(options.body instanceof FormData)) {
+      h.set("Content-Type", "application/json");
+    }
     return h;
   };
 

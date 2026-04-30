@@ -2,7 +2,56 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Phone, Mail, Shield } from "lucide-react";
+import {
+  Phone,
+  Mail,
+  Shield,
+  ShieldCheck,
+  BadgeCheck,
+  CheckCircle2,
+  Award,
+  Medal,
+  Trophy,
+  Star,
+  CircleStar,
+  Crown,
+  Sparkles,
+  Zap,
+  Flame,
+  Target,
+  Goal,
+  Users,
+  UserCheck,
+  UsersRound,
+  Handshake,
+  HeartHandshake,
+  HandHelping,
+  ThumbsUp,
+  HardHat,
+  Briefcase,
+  PersonStanding,
+  TrendingUp,
+  Activity,
+  Rocket,
+  Timer,
+  CircleGauge,
+  Truck,
+  Car,
+  Route,
+  Navigation,
+  Compass,
+  Globe,
+  MapPin,
+  Flag,
+  Milestone,
+  Wrench,
+  Fuel,
+  Waypoints,
+  TrafficCone,
+  Plane,
+  Ship,
+  type LucideIcon,
+} from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
 function useCountUp(target: number, duration = 5000, start = false) {
@@ -21,6 +70,54 @@ function useCountUp(target: number, duration = 5000, start = false) {
   return count;
 }
 
+const TRUST_ICON_MAP: Record<string, LucideIcon> = {
+  shield: Shield,
+  "shield-check": ShieldCheck,
+  "badge-check": BadgeCheck,
+  "check-circle-2": CheckCircle2,
+  award: Award,
+  medal: Medal,
+  trophy: Trophy,
+  star: Star,
+  "circle-star": CircleStar,
+  crown: Crown,
+  sparkles: Sparkles,
+  zap: Zap,
+  flame: Flame,
+  target: Target,
+  goal: Goal,
+  users: Users,
+  "user-check": UserCheck,
+  "users-round": UsersRound,
+  handshake: Handshake,
+  "heart-handshake": HeartHandshake,
+  "hand-helping": HandHelping,
+  "thumbs-up": ThumbsUp,
+  "hard-hat": HardHat,
+  briefcase: Briefcase,
+  "person-standing": PersonStanding,
+  "trending-up": TrendingUp,
+  activity: Activity,
+  rocket: Rocket,
+  timer: Timer,
+  "circle-gauge": CircleGauge,
+  truck: Truck,
+  car: Car,
+  route: Route,
+  navigation: Navigation,
+  compass: Compass,
+  globe: Globe,
+  "map-pin": MapPin,
+  flag: Flag,
+  milestone: Milestone,
+  wrench: Wrench,
+  fuel: Fuel,
+  waypoints: Waypoints,
+  "traffic-cone": TrafficCone,
+  plane: Plane,
+  ship: Ship,
+};
+
 const PARTNERS = [
   { name: "Amazon", logo: "/partners/amazon_logo.svg" },
   { name: "FedEx", logo: "/partners/fedex_logo.svg" },
@@ -31,14 +128,66 @@ const PARTNERS = [
 
 const PARTNERS_LOOP = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
 
+type HeroOverrides = {
+  slogan?: string;
+  badge?: string;
+  trustLine?: string;
+  trustIcon?: string;
+  trustBg?: string;
+  partnersBg?: string;
+  heroImgDesktop?: string;
+  heroImgMobile?: string;
+  partners?: { name: string; logo: string }[];
+  stat1Value?: string;
+  stat1Label?: string;
+  stat2Value?: string;
+  stat2Label?: string;
+  stat3Value?: string;
+  stat3Label?: string;
+  stat4Value?: string;
+  stat4Label?: string;
+};
+
 export default function HeroSection({
   dict,
+  lang = "nl",
 }: {
   dict: Dictionary;
   lang?: string;
 }) {
   const revealRef = useRef<HTMLDivElement>(null);
   const [counting, setCounting] = useState(false);
+  const [overrides, setOverrides] = useState<HeroOverrides>({});
+
+  // Derive the active partner list — override list when set, else hardcoded defaults
+  const activePartners = overrides.partners?.length
+    ? overrides.partners
+    : PARTNERS;
+  const partnersLoop = [
+    ...activePartners,
+    ...activePartners,
+    ...activePartners,
+    ...activePartners,
+  ];
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(`/api/hero-overrides/${lang}`);
+        if (res.ok) {
+          const data = (await res.json()) as HeroOverrides;
+          setOverrides(data);
+        }
+      } catch {
+        setOverrides({});
+      }
+    };
+    void load();
+    // Re-fetch when admin saves new overrides (same tab/window)
+    const onUpdate = () => void load();
+    window.addEventListener("tc:hero-updated", onUpdate);
+    return () => window.removeEventListener("tc:hero-updated", onUpdate);
+  }, [lang]);
 
   useEffect(() => {
     const el = revealRef.current;
@@ -54,27 +203,36 @@ export default function HeroSection({
   const c12 = useCountUp(7, 5000, counting);
   const c5 = useCountUp(5, 5000, counting);
 
+  const TrustIcon: LucideIcon =
+    (overrides.trustIcon && TRUST_ICON_MAP[overrides.trustIcon]) || Shield;
+
   return (
     <section className="relative h-dvh flex flex-col overflow-hidden">
       {/* Background photo */}
       <div className="absolute inset-0">
         {/* Desktop image (md+) */}
         <Image
-          src="/teamCargo-trans-webP/cargo-trans-horizontal-3.webp"
+          src={
+            overrides.heroImgDesktop ||
+            "/teamCargo-trans-webP/cargo-trans-horizontal-3.webp"
+          }
           alt="Team Cargo couriers — hero background"
           fill
           className="hidden md:block object-cover object-center brightness-110"
           priority
-          sizes="100vw"
+          sizes="(max-width: 767px) 0vw, 100vw"
         />
         {/* Mobile image (< md) */}
         <Image
-          src="/teamCargo-trans-webP/cargo-trans-vertical-3.webp"
+          src={
+            overrides.heroImgMobile ||
+            "/teamCargo-trans-webP/cargo-trans-vertical-3.webp"
+          }
           alt="Logistics workers uploading parcels"
           fill
           className="block md:hidden object-cover object-center brightness-105"
           priority
-          sizes="100vw"
+          sizes="(max-width: 767px) 100vw, 0vw"
         />
         {/* Left-to-right gradient: solid left → steps down 40→30→20→10 after 50% */}
         <div
@@ -95,7 +253,7 @@ export default function HeroSection({
         <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-10 w-fit -mt-6">
           <span className="w-2 h-2 rounded-full bg-[#4dc95e] animate-pulse shrink-0" />
           <span className="text-white/90 text-xs font-bold uppercase tracking-[0.2em]">
-            {dict.hero.badge}
+            {overrides.badge || dict.hero.badge}
           </span>
         </div>
 
@@ -108,7 +266,7 @@ export default function HeroSection({
               letterSpacing: "0.04em",
             }}
           >
-            {dict.hero.slogan}
+            {overrides.slogan || dict.hero.slogan}
           </h1>
 
           {/* 1 TEAM · 1 MISSION — styled */}
@@ -126,7 +284,7 @@ export default function HeroSection({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 bg-[#36B347] hover:bg-[#079441] text-white font-bold rounded-xl transition-all shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
+              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-all shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
               style={{ width: "40%" }}
             >
               <Phone className="w-4 h-4" />
@@ -146,10 +304,22 @@ export default function HeroSection({
         {/* Stats */}
         <div className="mt-8 flex flex-wrap gap-x-10 gap-y-3 border-t border-white/10 pt-6">
           {[
-            { display: `${c500}+`, label: dict.hero.stats_clients },
-            { display: `${c12}+`, label: dict.hero.stats_years },
-            { display: "24/7", label: dict.hero.stats_available },
-            { display: `${c5}`, label: dict.hero.stats_partners },
+            {
+              display: overrides.stat1Value || `${c500}+`,
+              label: overrides.stat1Label || dict.hero.stats_clients,
+            },
+            {
+              display: overrides.stat2Value || `${c12}+`,
+              label: overrides.stat2Label || dict.hero.stats_years,
+            },
+            {
+              display: overrides.stat3Value || "24/7",
+              label: overrides.stat3Label || dict.hero.stats_available,
+            },
+            {
+              display: overrides.stat4Value || `${c5}`,
+              label: overrides.stat4Label || dict.hero.stats_partners,
+            },
           ].map((s) => (
             <div key={s.label} className="flex flex-col">
               <span
@@ -169,15 +339,25 @@ export default function HeroSection({
       </div>
 
       {/* Trust line bar */}
-      <div className="relative z-10 flex items-center justify-center gap-2.5 bg-[#0d3d1e] px-4 py-3 shrink-0">
-        <Shield className="w-5 h-5 text-[#4dc95e] shrink-0" />
+      <div
+        className="relative z-10 flex items-center justify-center gap-2.5 px-4 py-3 shrink-0"
+        style={{
+          backgroundColor: overrides.trustBg ?? "var(--brand-trust-bg)",
+        }}
+      >
+        <TrustIcon className="w-5 h-5 text-[#4dc95e] shrink-0" />
         <p className="text-white/90 text-sm leading-relaxed tracking-wide text-center">
-          {dict.hero.trust_line}
+          {overrides.trustLine || dict.hero.trust_line}
         </p>
       </div>
 
-      {/* Partner strip — pure white background, logos fully visible and big */}
-      <div className="relative z-10 bg-white border-t border-gray-100 shrink-0">
+      {/* Partner strip — configurable background */}
+      <div
+        className="relative z-10 border-t border-gray-100 shrink-0"
+        style={{
+          backgroundColor: overrides.partnersBg ?? "var(--brand-partner-bg)",
+        }}
+      >
         <p className="text-center text-gray-400 text-[10px] font-bold uppercase tracking-[0.3em] pt-4 pb-3">
           {dict.hero.partners_label}
         </p>
@@ -191,7 +371,7 @@ export default function HeroSection({
           }}
         >
           <div className="marquee-track">
-            {PARTNERS_LOOP.map((partner, i) => (
+            {partnersLoop.map((partner, i) => (
               <div
                 key={i}
                 className="flex items-center justify-center mx-5 sm:mx-9 shrink-0 h-8 sm:h-14 w-24 sm:w-40"

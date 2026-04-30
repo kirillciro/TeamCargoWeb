@@ -194,7 +194,7 @@ function AuthModalInner({
                   onClick={() => switchTab(t)}
                   className={`flex-1 py-1.5 rounded-md text-sm font-bold transition-colors ${
                     tab === t
-                      ? "bg-white text-[#006637]"
+                      ? "bg-white text-[var(--brand-dark)]"
                       : "text-white/80 hover:text-white"
                   }`}
                 >
@@ -288,14 +288,14 @@ function AuthModalInner({
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.target.value)}
                       placeholder={a.email}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                     />
                   </div>
                 </label>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-[#36B347] hover:bg-[#079441] text-white font-bold rounded-xl transition-colors disabled:opacity-60 text-sm"
+                  className="w-full py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-colors disabled:opacity-60 text-sm"
                 >
                   {loading ? a.sending : a.send_reset_link}
                 </button>
@@ -366,7 +366,7 @@ function AuthModalInner({
                       type="email"
                       required
                       placeholder={a.email}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -395,7 +395,7 @@ function AuthModalInner({
                       required
                       minLength={6}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -403,7 +403,7 @@ function AuthModalInner({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-[#36B347] hover:bg-[#079441] text-white font-bold rounded-xl transition-colors disabled:opacity-60 text-sm tracking-wide"
+                  className="w-full py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-colors disabled:opacity-60 text-sm tracking-wide"
                 >
                   {loading ? a.loading : a.login_btn}
                 </button>
@@ -428,7 +428,7 @@ function AuthModalInner({
                       type="text"
                       required
                       placeholder={a.first_name}
-                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -443,7 +443,7 @@ function AuthModalInner({
                       type="text"
                       required
                       placeholder={a.last_name}
-                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -460,7 +460,7 @@ function AuthModalInner({
                     type="email"
                     required
                     placeholder={a.email}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                   />
                 </div>
               </label>
@@ -477,7 +477,7 @@ function AuthModalInner({
                     required
                     minLength={8}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                   />
                 </div>
               </label>
@@ -494,7 +494,7 @@ function AuthModalInner({
                     required
                     minLength={8}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                   />
                 </div>
               </label>
@@ -502,7 +502,7 @@ function AuthModalInner({
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 bg-[#36B347] hover:bg-[#079441] text-white font-bold rounded-xl transition-colors disabled:opacity-60 text-sm tracking-wide"
+                className="w-full py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-colors disabled:opacity-60 text-sm tracking-wide"
               >
                 {loading ? a.loading : a.register_btn}
               </button>

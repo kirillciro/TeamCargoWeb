@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Truck,
@@ -10,7 +13,9 @@ import {
 } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
-const IMGS = [
+const lsServices = (lang: string) => `tc_services_overrides_${lang}`;
+
+const DEFAULT_IMGS = [
   "/images/gls_vans_webP.webp",
   "/images/fedex_courier_2_webP.webp",
   "/images/dpd_courier_2_webP.webp",
@@ -19,19 +24,93 @@ const IMGS = [
   "/images/gls_courier_webP.webp",
 ];
 
-// Per-card image position — override specific cards as needed
-const IMG_POSITIONS: string[] = [
-  "object-center", // Driver Job Placement
-  "object-center", // Documents Support
-  "object-center", // Accommodation
-  "object-center", // Ongoing Support
-  "object-center", // Reliable Opportunities
-  "object-center", // Amsterdam Region
-];
-
 const ICONS: LucideIcon[] = [Truck, FileText, Home, Clock, Handshake, MapPin];
 
-export default function ServicesSection({ dict }: { dict: Dictionary }) {
+type ServicesOverrides = {
+  title?: string;
+  label?: string;
+  item0Title?: string;
+  item0Desc?: string;
+  item1Title?: string;
+  item1Desc?: string;
+  item2Title?: string;
+  item2Desc?: string;
+  item3Title?: string;
+  item3Desc?: string;
+  item4Title?: string;
+  item4Desc?: string;
+  item5Title?: string;
+  item5Desc?: string;
+  img0?: string;
+  img1?: string;
+  img2?: string;
+  img3?: string;
+  img4?: string;
+  img5?: string;
+};
+
+export default function ServicesSection({
+  dict,
+  lang = "nl",
+}: {
+  dict: Dictionary;
+  lang?: string;
+}) {
+  const [overrides, setOverrides] = useState<ServicesOverrides>({});
+
+  useEffect(() => {
+    let pollTimer: ReturnType<typeof setTimeout> | null = null;
+    let cancelled = false;
+    const deadline = Date.now() + 120_000;
+
+    const fetchOverrides = async () => {
+      // Instant paint from lang-scoped cache (avoids cross-language bleed)
+      try {
+        const cached = localStorage.getItem(lsServices(lang));
+        setOverrides(cached ? (JSON.parse(cached) as ServicesOverrides) : {});
+      } catch {
+        /* ignore */
+      }
+
+      try {
+        const res = await fetch(`/api/services-overrides/${lang}`);
+        if (res.ok) {
+          const data = (await res.json()) as ServicesOverrides & {
+            _hasTranslations?: boolean;
+          };
+          const { _hasTranslations, ...rest } = data;
+          setOverrides(rest as ServicesOverrides);
+          localStorage.setItem(lsServices(lang), JSON.stringify(rest));
+          // Poll until translations are ready (background AI job may still be running)
+          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
+            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+    void fetchOverrides();
+
+    const handler = () => void fetchOverrides();
+    window.addEventListener("tc:services-updated", handler);
+    return () => {
+      cancelled = true;
+      if (pollTimer) clearTimeout(pollTimer);
+      window.removeEventListener("tc:services-updated", handler);
+    };
+  }, [lang]);
+
+  const o = overrides as Record<string, string>;
+
+  const effectiveTitle = overrides.title || dict.services.title;
+  const effectiveLabel = overrides.label || dict.services.what_we_do;
+  const effectiveItems = dict.services.items.map((item, i) => ({
+    title: o[`item${i}Title`] || item.title,
+    desc: o[`item${i}Desc`] || item.desc,
+    img: o[`img${i}`] || DEFAULT_IMGS[i % DEFAULT_IMGS.length],
+  }));
+
   return (
     <section
       id="services"
@@ -41,34 +120,35 @@ export default function ServicesSection({ dict }: { dict: Dictionary }) {
         {/* Header */}
         <div className="text-center mb-8 shrink-0">
           <span className="text-[#36B347] text-xs font-bold uppercase tracking-[0.25em]">
-            {dict.services.what_we_do}
+            {effectiveLabel}
           </span>
           <h2
             className="text-gray-900 font-extrabold tracking-tight mt-2"
             style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
           >
-            {dict.services.title}
+            {effectiveTitle}
           </h2>
           <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-[#36B347]" />
         </div>
 
-        {/* 6-card grid — fixed height cards on mobile, fills viewport on desktop */}
+        {/* 6-card grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 lg:flex-1 lg:min-h-0 pb-8 lg:pb-12">
-          {dict.services.items.map((svc, i) => {
+          {effectiveItems.map((svc, i) => {
             const Icon = ICONS[i % ICONS.length];
             return (
               <div
-                key={svc.title}
+                key={i}
                 className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-default"
                 style={{ minHeight: "220px" }}
               >
                 {/* Background photo */}
                 <Image
-                  src={IMGS[i % IMGS.length]}
+                  src={svc.img}
                   alt={svc.title}
                   fill
-                  className={`object-cover ${IMG_POSITIONS[i % IMG_POSITIONS.length]} group-hover:scale-105 transition-transform duration-700`}
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  unoptimized={svc.img.startsWith("http")}
                 />
                 {/* Dark gradient overlay */}
                 <div

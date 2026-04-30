@@ -27,8 +27,8 @@ export default async function LangRootPage({
       <Header lang={resolvedLang} dict={dict} />
       <main className="flex-1">
         <HeroSection dict={dict} lang={resolvedLang} />
-        <ServicesSection dict={dict} />
-        <AboutSection dict={dict} />
+        <ServicesSection dict={dict} lang={resolvedLang} />
+        <AboutSection dict={dict} lang={resolvedLang} />
         <HousingSection dict={dict} />
         <ContactSection dict={dict} />
         <Footer lang={resolvedLang} dict={dict} />

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchWithAuth } from "@/lib/auth-client";
+import type { Dictionary } from "@/lib/getDictionary";
 import {
   Loader2,
   RefreshCw,
@@ -28,9 +29,11 @@ type ModalState =
 function AppModal({
   modal,
   onClose,
+  dict,
 }: {
   modal: ModalState;
   onClose: () => void;
+  dict: Dictionary;
 }) {
   if (!modal) return null;
   return (
@@ -50,7 +53,7 @@ function AppModal({
               </span>
               <div>
                 <p className="text-sm font-semibold text-slate-800">
-                  Are you sure?
+                  {dict.admin.modal_are_you_sure}
                 </p>
                 <p className="mt-1 text-sm text-slate-500">{modal.message}</p>
               </div>
@@ -60,7 +63,7 @@ function AppModal({
                 onClick={onClose}
                 className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
               >
-                Cancel
+                {dict.admin.cancel}
               </button>
               <button
                 onClick={() => {
@@ -69,7 +72,7 @@ function AppModal({
                 }}
                 className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
               >
-                Delete
+                {dict.admin.modal_delete}
               </button>
             </div>
           </>
@@ -81,7 +84,7 @@ function AppModal({
               </span>
               <div>
                 <p className="text-sm font-semibold text-slate-800">
-                  Something went wrong
+                  {dict.admin.modal_something_went_wrong}
                 </p>
                 <p className="mt-1 text-sm text-slate-500">{modal.message}</p>
               </div>
@@ -91,7 +94,7 @@ function AppModal({
                 onClick={onClose}
                 className="rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 transition-colors"
               >
-                OK
+                {dict.admin.modal_ok}
               </button>
             </div>
           </>
@@ -207,27 +210,45 @@ function formatDate(iso: string) {
 
 const FOLDER_META: {
   key: Folder;
-  label: string;
+  labelKey: keyof Dictionary["admin"];
   Icon: React.ElementType;
   color: string;
 }[] = [
-  { key: "INBOX", label: "Inbox", Icon: Inbox, color: "text-blue-600" },
-  { key: "SPAM", label: "Spam", Icon: ShieldAlert, color: "text-orange-500" },
-  { key: "TRASH", label: "Trash", Icon: Trash2, color: "text-slate-500" },
+  {
+    key: "INBOX",
+    labelKey: "folder_inbox",
+    Icon: Inbox,
+    color: "text-blue-600",
+  },
+  {
+    key: "SPAM",
+    labelKey: "folder_spam",
+    Icon: ShieldAlert,
+    color: "text-orange-500",
+  },
+  {
+    key: "TRASH",
+    labelKey: "folder_trash",
+    Icon: Trash2,
+    color: "text-slate-500",
+  },
 ];
 
 function FolderSidebar({
   active,
   counts,
   onSelect,
+  dict,
 }: {
   active: Folder;
   counts: FolderCounts;
   onSelect: (f: Folder) => void;
+  dict: Dictionary;
 }) {
   return (
     <nav className="flex flex-col gap-0.5 p-2">
-      {FOLDER_META.map(({ key, label, Icon, color }) => {
+      {FOLDER_META.map(({ key, labelKey, Icon, color }) => {
+        const label = dict.admin[labelKey] as string;
         const unread = counts[key]?.unread ?? 0;
         const total = counts[key]?.total ?? 0;
         const isActive = active === key;
@@ -276,12 +297,14 @@ function EmailListItem({
   checked,
   onToggle,
   onClick,
+  dict,
 }: {
   email: EmailSummary;
   selected: boolean;
   checked: boolean;
   onToggle: (id: number) => void;
   onClick: () => void;
+  dict: Dictionary;
 }) {
   const sender = email.from_name || email.from_address;
   return (
@@ -329,7 +352,7 @@ function EmailListItem({
               !email.is_read ? "text-slate-700" : "text-slate-400"
             }`}
           >
-            {email.subject || "(no subject)"}
+            {email.subject || dict.admin.no_subject}
           </span>
           {email.attachment_count > 0 && (
             <Paperclip className="w-3 h-3 text-slate-400 shrink-0" />
@@ -344,19 +367,45 @@ function EmailListItem({
 
 function ExtractionBadge({
   status,
+  dict,
 }: {
   status: Extraction["status"] | "none";
+  dict: Dictionary;
 }) {
   const map: Record<
     string,
-    { label: string; cls: string; Icon: React.ElementType }
+    {
+      labelKey: keyof Dictionary["admin"];
+      cls: string;
+      Icon: React.ElementType;
+    }
   > = {
-    none: { label: "Not extracted", cls: "text-slate-400", Icon: Clock },
-    pending: { label: "Pending", cls: "text-yellow-500", Icon: Clock },
-    extracting: { label: "Extracting…", cls: "text-blue-500", Icon: Loader2 },
-    extracted: { label: "Extracted", cls: "text-green-600", Icon: CheckCircle },
-    failed: { label: "Failed", cls: "text-red-500", Icon: XCircle },
-    sent: { label: "Sent ✓", cls: "text-emerald-600", Icon: CheckCircle },
+    none: {
+      labelKey: "extract_not_extracted",
+      cls: "text-slate-400",
+      Icon: Clock,
+    },
+    pending: {
+      labelKey: "extract_pending",
+      cls: "text-yellow-500",
+      Icon: Clock,
+    },
+    extracting: {
+      labelKey: "extract_extracting",
+      cls: "text-blue-500",
+      Icon: Loader2,
+    },
+    extracted: {
+      labelKey: "extract_extracted",
+      cls: "text-green-600",
+      Icon: CheckCircle,
+    },
+    failed: { labelKey: "extract_failed", cls: "text-red-500", Icon: XCircle },
+    sent: {
+      labelKey: "extract_sent",
+      cls: "text-emerald-600",
+      Icon: CheckCircle,
+    },
   };
   const m = map[status] ?? map.none;
   const Icon = m.Icon;
@@ -367,14 +416,14 @@ function ExtractionBadge({
       <Icon
         className={`w-3.5 h-3.5 ${status === "extracting" ? "animate-spin" : ""}`}
       />
-      {m.label}
+      {dict.admin[m.labelKey] as string}
     </span>
   );
 }
 
 // ── Extraction data grid ──────────────────────────────────────────────────────
 
-function ExtractionGrid({ data }: { data: CargoData }) {
+function ExtractionGrid({ data, dict }: { data: CargoData; dict: Dictionary }) {
   const rows: [string, string | number | null | undefined][] = [
     // Route / dispatch — shown first
     ["Route", data.route],
@@ -409,7 +458,7 @@ function ExtractionGrid({ data }: { data: CargoData }) {
   if (rows.length === 0) {
     return (
       <p className="text-xs text-slate-400 italic">
-        No data could be extracted from this document.
+        {dict.admin.extract_no_data}
       </p>
     );
   }
@@ -437,17 +486,20 @@ function AttachmentRow({
   attachment,
   existingExtraction,
   onExtractionUpdate,
+  dict,
 }: {
   emailId: number;
   attachment: Attachment;
   existingExtraction: Extraction | undefined;
   onExtractionUpdate: (e: Extraction) => void;
+  dict: Dictionary;
 }) {
   const [extraction, setExtraction] = useState<Extraction | undefined>(
     existingExtraction,
   );
   const [extracting, setExtracting] = useState(false);
   const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const stopPolling = useCallback(() => {
@@ -512,15 +564,25 @@ function AttachmentRow({
   const handleSendWA = async () => {
     if (!extraction) return;
     setSending(true);
+    setSendError(null);
     try {
       const res = await fetchWithAuth(
         `/api/admin/extractions/${extraction.id}/send-whatsapp`,
         { method: "POST" },
       );
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        const body = (await res.json().catch(() => ({}))) as {
+          message?: string;
+        };
+        throw new Error(body.message ?? "Failed to send WhatsApp message.");
+      }
       const updated: Extraction = { ...extraction, status: "sent" };
       setExtraction(updated);
       onExtractionUpdate(updated);
+    } catch (err) {
+      setSendError(
+        err instanceof Error ? err.message : "Failed to send WhatsApp message.",
+      );
     } finally {
       setSending(false);
     }
@@ -546,7 +608,9 @@ function AttachmentRow({
         </div>
 
         <div className="flex items-center gap-2">
-          {extraction && <ExtractionBadge status={extraction.status} />}
+          {extraction && (
+            <ExtractionBadge status={extraction.status} dict={dict} />
+          )}
 
           {(!extraction || extraction.status === "failed") && (
             <button
@@ -555,7 +619,7 @@ function AttachmentRow({
               className="inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-60"
             >
               {extracting && <Loader2 className="w-3 h-3 animate-spin" />}
-              Extract with AI
+              {dict.admin.extract_with_ai}
             </button>
           )}
 
@@ -567,13 +631,13 @@ function AttachmentRow({
               className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 disabled:opacity-60"
             >
               {extracting && <Loader2 className="w-3 h-3 animate-spin" />}
-              Re-extract
+              {dict.admin.re_extract}
             </button>
           )}
 
           {extraction?.status === "extracting" && (
             <span className="text-xs text-blue-500 animate-pulse">
-              Processing…
+              {dict.admin.processing}
             </span>
           )}
         </div>
@@ -582,7 +646,7 @@ function AttachmentRow({
       {/* Extracted data */}
       {(extraction?.status === "extracted" || extraction?.status === "sent") &&
         extraction.extracted_json && (
-          <ExtractionGrid data={extraction.extracted_json} />
+          <ExtractionGrid data={extraction.extracted_json} dict={dict} />
         )}
 
       {extraction?.status === "extracted" && (
@@ -597,13 +661,15 @@ function AttachmentRow({
           ) : (
             <Send className="w-4 h-4" />
           )}
-          {sending ? "Sending…" : "Send to WhatsApp"}
+          {sending ? dict.admin.sending : dict.admin.send_to_whatsapp}
         </button>
       )}
 
+      {sendError && <p className="text-xs text-red-600">{sendError}</p>}
+
       {extraction?.status === "sent" && (
         <p className="text-xs text-emerald-600 font-medium">
-          ✓ Sent to WhatsApp
+          {dict.admin.sent_to_whatsapp}
         </p>
       )}
 
@@ -621,9 +687,11 @@ function AttachmentRow({
 function EmailDetailPanel({
   emailId,
   onBack,
+  dict,
 }: {
   emailId: number;
   onBack: () => void;
+  dict: Dictionary;
 }) {
   const [detail, setDetail] = useState<EmailDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -663,7 +731,7 @@ function EmailDetailPanel({
         onClick={onBack}
         className="flex items-center gap-1 px-4 py-3 text-sm text-slate-500 hover:text-slate-700 md:hidden border-b border-slate-100"
       >
-        <ChevronLeft className="w-4 h-4" /> Back
+        <ChevronLeft className="w-4 h-4" /> {dict.admin.back}
       </button>
 
       {loading && (
@@ -677,7 +745,7 @@ function EmailDetailPanel({
           {/* Email header */}
           <div className="border-b border-slate-100 pb-3 space-y-0.5">
             <h2 className="text-lg font-semibold text-slate-800">
-              {detail.email.subject || "(no subject)"}
+              {detail.email.subject || dict.admin.no_subject}
             </h2>
             <p className="text-sm text-slate-600">
               <span className="font-medium">
@@ -702,7 +770,9 @@ function EmailDetailPanel({
                 {detail.email.body_text}
               </pre>
             ) : (
-              <p className="text-sm text-slate-400 italic">No message body.</p>
+              <p className="text-sm text-slate-400 italic">
+                {dict.admin.no_message_body}
+              </p>
             )}
           </div>
 
@@ -710,7 +780,7 @@ function EmailDetailPanel({
           {detail.attachments.length > 0 && (
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wide">
-                PDF Attachments ({detail.attachments.length})
+                {dict.admin.pdf_attachments} ({detail.attachments.length})
               </h3>
               {detail.attachments.map((att) => (
                 <AttachmentRow
@@ -721,6 +791,7 @@ function EmailDetailPanel({
                     (e) => e.attachment_id === att.id,
                   )}
                   onExtractionUpdate={handleExtractionUpdate}
+                  dict={dict}
                 />
               ))}
             </div>
@@ -733,7 +804,7 @@ function EmailDetailPanel({
 
 // ── AdminEmailsTab (root) ─────────────────────────────────────────────────────
 
-export default function AdminEmailsTab() {
+export default function AdminEmailsTab({ dict }: { dict: Dictionary }) {
   const [folder, setFolder] = useState<Folder>("INBOX");
   const [counts, setCounts] = useState<FolderCounts>({});
   const [emails, setEmails] = useState<EmailSummary[]>([]);
@@ -851,9 +922,10 @@ export default function AdminEmailsTab() {
     const isFolder = deleteAll || selectAllFolder;
     const idsSnapshot = Array.from(checkedIds);
     const count = selectAllFolder ? total : idsSnapshot.length;
+    const folderLabel = folder.charAt(0) + folder.slice(1).toLowerCase();
     const message = isFolder
-      ? `All emails in ${folder.charAt(0) + folder.slice(1).toLowerCase()} will be permanently deleted. This cannot be undone.`
-      : `${count} selected email${count === 1 ? "" : "s"} will be permanently deleted. This cannot be undone.`;
+      ? dict.admin.delete_confirm_all.replace("{folder}", folderLabel)
+      : dict.admin.delete_confirm_selected.replace("{count}", String(count));
     setModal({
       type: "confirm",
       message,
@@ -888,11 +960,16 @@ export default function AdminEmailsTab() {
       });
       const data = (await res.json()) as { newEmails?: number; error?: string };
       if (data.error) throw new Error(data.error);
-      setSyncMsg(`Sync complete — ${data.newEmails ?? 0} new email(s).`);
+      setSyncMsg(
+        dict.admin.sync_complete.replace(
+          "{count}",
+          String(data.newEmails ?? 0),
+        ),
+      );
       setPage(1);
       setRefreshKey((k) => k + 1);
     } catch (err) {
-      setSyncMsg(err instanceof Error ? err.message : "Sync failed.");
+      setSyncMsg(err instanceof Error ? err.message : dict.admin.sync_failed);
     } finally {
       setSyncing(false);
     }
@@ -911,14 +988,14 @@ export default function AdminEmailsTab() {
 
   return (
     <>
-      <AppModal modal={modal} onClose={() => setModal(null)} />
+      <AppModal modal={modal} onClose={() => setModal(null)} dict={dict} />
       <div className="relative flex h-[calc(100vh-180px)] min-h-96 rounded-xl border border-slate-200 overflow-hidden bg-white">
         {/* ── Sync overlay ── */}
         {syncing && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-white/70 backdrop-blur-sm rounded-xl pointer-events-all">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
             <p className="text-sm font-medium text-slate-600">
-              Syncing emails…
+              {dict.admin.syncing_emails}
             </p>
           </div>
         )}
@@ -933,7 +1010,7 @@ export default function AdminEmailsTab() {
               <RefreshCw
                 className={`w-3.5 h-3.5 ${syncing ? "animate-spin" : ""}`}
               />
-              {syncing ? "Syncing…" : "Sync inbox"}
+              {syncing ? dict.admin.syncing : dict.admin.sync_inbox}
             </button>
             {syncMsg && (
               <p className="mt-1.5 text-xs text-center text-blue-600">
@@ -945,6 +1022,7 @@ export default function AdminEmailsTab() {
             active={folder}
             counts={counts}
             onSelect={handleFolderChange}
+            dict={dict}
           />
         </div>
 
@@ -964,7 +1042,12 @@ export default function AdminEmailsTab() {
               title={allChecked ? "Deselect all" : "Select all"}
             />
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide flex-1 truncate">
-              {folder.charAt(0) + folder.slice(1).toLowerCase()} · {total}
+              {
+                dict.admin[
+                  `folder_${folder.toLowerCase()}` as keyof typeof dict.admin
+                ] as string
+              }{" "}
+              · {total}
             </p>
             {checkedIds.size > 0 ? (
               <button
@@ -982,7 +1065,7 @@ export default function AdminEmailsTab() {
                   onClick={() => void handleDeleteSelected(true)}
                   disabled={deleting}
                   className="text-red-400 hover:text-red-600 disabled:opacity-60 shrink-0"
-                  title="Delete all in folder"
+                  title={dict.admin.delete_all_in_folder}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -996,7 +1079,10 @@ export default function AdminEmailsTab() {
               {selectAllFolder ? (
                 <>
                   <span className="flex-1">
-                    All <strong>{total}</strong> emails selected.
+                    {dict.admin.all_emails_selected.replace(
+                      "{count}",
+                      String(total),
+                    )}
                   </span>
                   <button
                     onClick={() => {
@@ -1005,17 +1091,19 @@ export default function AdminEmailsTab() {
                     }}
                     className="font-semibold underline hover:text-blue-900 shrink-0"
                   >
-                    Clear
+                    {dict.admin.clear}
                   </button>
                 </>
               ) : (
                 <>
-                  <span className="flex-1">This page selected.</span>
+                  <span className="flex-1">
+                    {dict.admin.this_page_selected}
+                  </span>
                   <button
                     onClick={() => setSelectAllFolder(true)}
                     className="font-semibold underline hover:text-blue-900 shrink-0 whitespace-nowrap"
                   >
-                    Select all {total}
+                    {dict.admin.select_all.replace("{count}", String(total))}
                   </button>
                 </>
               )}
@@ -1029,8 +1117,10 @@ export default function AdminEmailsTab() {
               </div>
             ) : emails.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-32 gap-1">
-                <p className="text-xs text-slate-400">No emails here.</p>
-                <p className="text-xs text-slate-400">Click Sync inbox.</p>
+                <p className="text-xs text-slate-400">{dict.admin.no_emails}</p>
+                <p className="text-xs text-slate-400">
+                  {dict.admin.click_sync}
+                </p>
               </div>
             ) : (
               emails.map((email) => (
@@ -1041,6 +1131,7 @@ export default function AdminEmailsTab() {
                   checked={checkedIds.has(email.id)}
                   onToggle={toggleCheck}
                   onClick={() => handleSelectEmail(email)}
+                  dict={dict}
                 />
               ))
             )}
@@ -1055,7 +1146,7 @@ export default function AdminEmailsTab() {
                 disabled={page === 1}
                 className="text-xs text-slate-500 hover:text-slate-700 disabled:opacity-40"
               >
-                ← Prev
+                {dict.admin.prev}
               </button>
               <span className="text-xs text-slate-400">
                 {page}/{totalPages}
@@ -1067,7 +1158,7 @@ export default function AdminEmailsTab() {
                 disabled={page === totalPages}
                 className="text-xs text-slate-500 hover:text-slate-700 disabled:opacity-40"
               >
-                Next →
+                {dict.admin.next}
               </button>
             </div>
           )}
@@ -1084,11 +1175,12 @@ export default function AdminEmailsTab() {
               key={selectedId}
               emailId={selectedId}
               onBack={() => setSelectedId(null)}
+              dict={dict}
             />
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-2">
               <Inbox className="w-10 h-10 opacity-20" />
-              <p className="text-sm">Select an email to read</p>
+              <p className="text-sm">{dict.admin.select_email}</p>
             </div>
           )}
         </div>

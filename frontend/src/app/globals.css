@@ -19,6 +19,9 @@ section[id] {
   --brand-green: #36b347;
   --brand-mid: #079441;
   --brand-dark: #006637;
+  --brand-btn-text: #ffffff;
+  --brand-trust-bg: #0d3d1e;
+  --brand-partner-bg: #ffffff;
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -29,6 +32,9 @@ section[id] {
   --color-brand-green: var(--brand-green);
   --color-brand-mid: var(--brand-mid);
   --color-brand-dark: var(--brand-dark);
+  --color-brand-btn-text: var(--brand-btn-text);
+  --color-brand-trust-bg: var(--brand-trust-bg);
+  --color-brand-partner-bg: var(--brand-partner-bg);
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 

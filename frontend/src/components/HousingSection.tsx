@@ -32,7 +32,7 @@ export default function HousingSection({ dict }: { dict: Dictionary }) {
                 const Icon = ICONS[i % ICONS.length];
                 return (
                   <li key={i} className="flex items-center gap-3.5">
-                    <div className="w-9 h-9 rounded-lg bg-[#36B347]/20 flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-[var(--brand-green)]/20 flex items-center justify-center shrink-0">
                       <Icon className="w-4 h-4 text-[#4dc95e]" />
                     </div>
                     <span className="text-white/75 text-[0.92rem] font-semibold">
@@ -47,7 +47,7 @@ export default function HousingSection({ dict }: { dict: Dictionary }) {
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-[#36B347] hover:bg-[#079441] text-white font-bold rounded-xl transition-colors text-[0.92rem] tracking-wide shadow-lg shadow-black/30"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-colors text-[0.92rem] tracking-wide shadow-lg shadow-black/30"
             >
               <Phone className="w-4 h-4" />
               {dict.housing.cta}

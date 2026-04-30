@@ -85,7 +85,7 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
                     rel="noopener noreferrer"
                     className="flex items-start gap-4 group"
                   >
-                    <div className="w-11 h-11 rounded-xl bg-[#36B347]/80 group-hover:bg-[#36B347] flex items-center justify-center shrink-0 transition-colors mt-0.5">
+                    <div className="w-11 h-11 rounded-xl bg-[var(--brand-green)]/80 group-hover:bg-[var(--brand-green)] flex items-center justify-center shrink-0 transition-colors mt-0.5">
                       <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -113,8 +113,8 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
           <div className="bg-white px-8 py-12 sm:px-12 sm:py-16">
             {sent ? (
               <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-                <div className="w-14 h-14 rounded-full bg-[#36B347]/10 flex items-center justify-center mb-4">
-                  <Send className="w-6 h-6 text-[#36B347]" />
+                <div className="w-14 h-14 rounded-full bg-[var(--brand-green)]/10 flex items-center justify-center mb-4">
+                  <Send className="w-6 h-6 text-[var(--brand-green)]" />
                 </div>
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
                   {dict.contact.success}
@@ -136,7 +136,7 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
                     type="text"
                     required
                     placeholder="Jan de Vries"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -147,7 +147,7 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
                     type="email"
                     required
                     placeholder="jan@bedrijf.nl"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -158,13 +158,13 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
                     required
                     rows={4}
                     placeholder="Uw bericht..."
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[#36B347] focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent resize-none"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#006637] hover:bg-[#005a2e] text-white font-bold rounded-xl transition-colors disabled:opacity-60 text-[0.92rem] tracking-widest"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-colors disabled:opacity-60 text-[0.92rem] tracking-widest"
                 >
                   {loading ? (
                     "Verzenden..."

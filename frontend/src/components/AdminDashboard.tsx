@@ -17,25 +17,22 @@ import {
   XCircle,
   User,
   LogOut,
+  Palette,
 } from "lucide-react";
 import AdminEmailsTab from "@/components/AdminEmailsTab";
+import AdminCustomizationTab from "@/components/AdminCustomizationTab";
 import { useAuth } from "@/context/AuthContext";
 import { fetchWithAuth, type AuthUser } from "@/lib/auth-client";
 import type { Dictionary } from "@/lib/getDictionary";
 
-type Tab = "overview" | "users" | "emails";
-const TABS: Tab[] = ["overview", "users", "emails"];
+type Tab = "overview" | "users" | "emails" | "customization";
+const TABS: Tab[] = ["overview", "users", "emails", "customization"];
 
 const TAB_ICONS: Record<Tab, React.ElementType> = {
   overview: BarChart3,
   users: Users,
   emails: Mail,
-};
-
-const TAB_LABELS: Record<Tab, string> = {
-  overview: "Overview",
-  users: "Users",
-  emails: "Emails",
+  customization: Palette,
 };
 
 export default function AdminDashboard({
@@ -108,7 +105,9 @@ export default function AdminDashboard({
                 className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Back to site</span>
+                <span className="hidden sm:inline">
+                  {dict.admin.back_to_site}
+                </span>
               </Link>
             </div>
           </div>
@@ -117,6 +116,12 @@ export default function AdminDashboard({
           <div className="flex gap-0 -mb-px overflow-x-auto">
             {TABS.map((key) => {
               const Icon = TAB_ICONS[key];
+              const tabLabel = {
+                overview: dict.admin.tab_overview,
+                users: dict.admin.tab_users,
+                emails: dict.admin.tab_emails,
+                customization: dict.admin.tab_customization,
+              }[key];
               return (
                 <button
                   key={key}
@@ -128,7 +133,7 @@ export default function AdminDashboard({
                   }`}
                 >
                   <Icon className="w-4 h-4" />
-                  {TAB_LABELS[key]}
+                  {tabLabel}
                 </button>
               );
             })}
@@ -138,9 +143,12 @@ export default function AdminDashboard({
 
       {/* ── Content ── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        {active === "overview" && <AdminOverviewTab />}
-        {active === "users" && <AdminUsersTab currentUserId={user.id} />}
-        {active === "emails" && <AdminEmailsTab />}
+        {active === "overview" && <AdminOverviewTab dict={dict} />}
+        {active === "users" && (
+          <AdminUsersTab currentUserId={user.id} dict={dict} />
+        )}
+        {active === "emails" && <AdminEmailsTab dict={dict} />}
+        {active === "customization" && <AdminCustomizationTab dict={dict} />}
       </div>
     </div>
   );
@@ -154,7 +162,7 @@ type Stats = {
   totalUnverified: number;
 };
 
-function AdminOverviewTab() {
+function AdminOverviewTab({ dict }: { dict: Dictionary }) {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -167,12 +175,12 @@ function AdminOverviewTab() {
         const data = (await res.json()) as Stats;
         setStats(data);
       } catch {
-        setError("Could not load stats.");
+        setError(dict.admin.error_load_stats);
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [dict]);
 
   if (loading) {
     return (
@@ -183,30 +191,36 @@ function AdminOverviewTab() {
   }
 
   if (error || !stats) {
-    return <p className="text-red-400 text-sm">{error ?? "Unknown error."}</p>;
+    return (
+      <p className="text-red-400 text-sm">
+        {error ?? dict.admin.error_unknown}
+      </p>
+    );
   }
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-bold text-white">Platform overview</h2>
+      <h2 className="text-lg font-bold text-white">
+        {dict.admin.overview_title}
+      </h2>
       <div className="grid sm:grid-cols-3 gap-4">
         <StatCard
           icon={Users}
-          label="Total users"
+          label={dict.admin.stat_total_users}
           value={stats.totalUsers}
           color="text-blue-400"
           bg="bg-blue-400/10 border-blue-400/20"
         />
         <StatCard
           icon={CheckCircle}
-          label="Verified"
+          label={dict.admin.stat_verified}
           value={stats.totalVerified}
           color="text-green-400"
           bg="bg-green-400/10 border-green-400/20"
         />
         <StatCard
           icon={XCircle}
-          label="Unverified"
+          label={dict.admin.stat_unverified}
           value={stats.totalUnverified}
           color="text-yellow-400"
           bg="bg-yellow-400/10 border-yellow-400/20"
@@ -248,7 +262,13 @@ function StatCard({
 
 // ── Users Tab ────────────────────────────────────────────────────────────────
 
-function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
+function AdminUsersTab({
+  currentUserId,
+  dict,
+}: {
+  currentUserId: number;
+  dict: Dictionary;
+}) {
   const [users, setUsers] = useState<AuthUser[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true); // start as loading — avoids setState in effect
@@ -302,7 +322,9 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
   return (
     <div className="space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-        <h2 className="text-lg font-bold text-white">Users</h2>
+        <h2 className="text-lg font-bold text-white">
+          {dict.admin.users_title}
+        </h2>
         <div className="relative max-w-xs w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
           <input
@@ -314,7 +336,7 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
                 void load(search);
               }
             }}
-            placeholder="Search by name or email…"
+            placeholder={dict.admin.search_placeholder}
             className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
           />
         </div>
@@ -329,16 +351,20 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-800 text-slate-500 text-xs font-semibold uppercase tracking-wider">
-                <th className="px-4 py-3 text-left">User</th>
+                <th className="px-4 py-3 text-left">{dict.admin.col_user}</th>
                 <th className="px-4 py-3 text-left hidden sm:table-cell">
-                  Provider
+                  {dict.admin.col_provider}
                 </th>
                 <th className="px-4 py-3 text-left hidden md:table-cell">
-                  Joined
+                  {dict.admin.col_joined}
                 </th>
-                <th className="px-4 py-3 text-center">Status</th>
-                <th className="px-4 py-3 text-center">Role</th>
-                <th className="px-4 py-3 text-center">Actions</th>
+                <th className="px-4 py-3 text-center">
+                  {dict.admin.col_status}
+                </th>
+                <th className="px-4 py-3 text-center">{dict.admin.col_role}</th>
+                <th className="px-4 py-3 text-center">
+                  {dict.admin.col_actions}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
@@ -348,7 +374,7 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
                     colSpan={6}
                     className="px-4 py-10 text-center text-slate-500"
                   >
-                    No users found.
+                    {dict.admin.no_users_found}
                   </td>
                 </tr>
               )}
@@ -367,7 +393,7 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
                           {`${u.firstName} ${u.lastName}`.trim() || "—"}
                           {u.id === currentUserId && (
                             <span className="ml-1.5 text-[10px] text-slate-500">
-                              (you)
+                              {dict.admin.you}
                             </span>
                           )}
                         </p>
@@ -388,11 +414,13 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
                   <td className="px-4 py-3 text-center">
                     {u.isVerified ? (
                       <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-green-400 bg-green-400/10 border border-green-400/20 rounded-full px-2 py-0.5">
-                        <CheckCircle className="w-3 h-3" /> Verified
+                        <CheckCircle className="w-3 h-3" />{" "}
+                        {dict.admin.badge_verified}
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 rounded-full px-2 py-0.5">
-                        <XCircle className="w-3 h-3" /> Pending
+                        <XCircle className="w-3 h-3" />{" "}
+                        {dict.admin.badge_pending}
                       </span>
                     )}
                   </td>
@@ -407,8 +435,8 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
                       }`}
                       title={
                         u.id === currentUserId
-                          ? "Cannot change your own role"
-                          : "Toggle role"
+                          ? dict.admin.cannot_change_own_role
+                          : dict.admin.toggle_role
                       }
                     >
                       {updatingId === u.id ? (
@@ -418,7 +446,9 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
                       ) : (
                         <ShieldOff className="w-2.5 h-2.5" />
                       )}
-                      {u.role === "admin" ? "Admin" : "User"}
+                      {u.role === "admin"
+                        ? dict.admin.role_admin
+                        : dict.admin.role_user}
                     </button>
                   </td>
                   <td className="px-4 py-3 text-center">
@@ -433,21 +463,21 @@ function AdminUsersTab({ currentUserId }: { currentUserId: number }) {
                             {deletingId === u.id ? (
                               <Loader2 className="w-3.5 h-3.5 animate-spin" />
                             ) : (
-                              "Confirm"
+                              dict.admin.confirm
                             )}
                           </button>
                           <button
                             onClick={() => setConfirmDeleteId(null)}
                             className="text-[11px] text-slate-500 hover:text-slate-300 transition-colors"
                           >
-                            Cancel
+                            {dict.admin.cancel}
                           </button>
                         </div>
                       ) : (
                         <button
                           onClick={() => setConfirmDeleteId(u.id)}
                           className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors"
-                          title="Delete user"
+                          title={dict.admin.delete_user}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>

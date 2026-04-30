@@ -95,7 +95,7 @@ export default function Header({
                 href="https://wa.me/31685352412"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#36B347] hover:bg-[#079441] text-white text-sm font-bold rounded-lg transition-colors shadow-md shadow-black/20"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] text-sm font-bold rounded-lg transition-colors shadow-md shadow-black/20"
               >
                 <Phone className="w-4 h-4" />
                 {dict.hero.cta_whatsapp}

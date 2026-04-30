@@ -1,6 +1,6 @@
 # Team Cargo Web — Project Status
 
-> Last updated: 21 April 2026
+> Last updated: 26 April 2026
 
 ---
 
@@ -9,9 +9,9 @@
 | Layer       | Tech                                                                                          |
 | ----------- | --------------------------------------------------------------------------------------------- |
 | Frontend    | Next.js 16 (App Router), TypeScript, Tailwind CSS v4                                          |
-| Backend     | Express + TypeScript, PostgreSQL, JWT                                                         |
+| Backend     | Express + TypeScript, PostgreSQL, JWT, Twilio (WhatsApp), OpenAI (AI extract)                 |
 | i18n        | 18 JSON dictionaries (en, nl, de, fr, es, it, pt, pl, ro, cs, hu, el, lv, et, fi, sv, da, no) |
-| Auth tokens | Access token → localStorage (`tc_access_token`), Refresh token → httpOnly cookie              |
+| Auth tokens | Access token (in-memory), Refresh token → httpOnly cookie                                     |
 
 ---
 
@@ -65,106 +65,94 @@
 
 | Endpoint                         | Status                                                                                 |
 | -------------------------------- | -------------------------------------------------------------------------------------- |
-| `POST /auth/register`            | ✅ bcrypt hash, JWT pair, refresh cookie                                               |
+| `POST /auth/register`            | ✅ bcrypt hash, JWT pair, refresh cookie, verification email                           |
 | `POST /auth/login`               | ✅ password verify, JWT pair, refresh cookie                                           |
 | `POST /auth/refresh`             | ✅ rotation, reuse detection                                                           |
 | `POST /auth/logout`              | ✅ clears token hash + cookie                                                          |
 | `GET /auth/me`                   | ✅ requires `requireAuth` middleware                                                   |
+| `GET /auth/verify-email`         | ✅ verifies token, sets `is_verified = TRUE`, redirects                                |
+| `POST /auth/resend-verification` | ✅ generates + stores token, sends email, rate-limited                                 |
+| `POST /auth/forgot-password`     | ✅ time-limited token, sends reset email, always 200                                   |
+| `POST /auth/reset-password`      | ✅ verifies token + expiry, bcrypt hash new password, invalidates refresh tokens       |
+| `POST /auth/change-password`     | ✅ requires `requireAuth`, verifies current password, blocks social-only accounts      |
 | `POST /auth/google`              | ✅ verifies Google ID token via `google-auth-library`, upserts user                    |
-| `POST /auth/apple`               | ⚠️ MVP only — decodes JWT payload but **does NOT verify Apple's public key signature** |
-| `POST /auth/forgot-password`     | ❌ **endpoint does not exist yet**                                                     |
-| `POST /auth/resend-verification` | ❌ **endpoint does not exist yet**                                                     |
+| `POST /auth/apple`               | ✅ decodes JWT header, fetches Apple JWKS, verifies RS256 signature                    |
 
-### Backend — Auth helpers (`backend/src/auth.ts`)
+### Backend — Support Modules
 
-- `generateTokens` — access + refresh JWT pair ✅
-- `verifyToken` / `verifyRefreshToken` ✅
-- `hashToken` — SHA-256 for DB storage ✅
+| File                      | Status | Notes                                                                 |
+| ------------------------- | ------ | --------------------------------------------------------------------- |
+| `backend/src/auth.ts`     | ✅     | `generateTokens`, `verifyToken`, `verifyRefreshToken`, `hashToken`    |
+| `backend/src/email.ts`    | ✅     | Resend integration — `sendVerificationEmail`, `sendPasswordResetEmail` |
+| `backend/src/email-sync.ts` | ✅   | IMAP sync via `imapflow` — `syncAllFolders`, `imapDeleteEmails`       |
+| `backend/src/ai-extract.ts` | ✅   | OpenAI PDF cargo-data extraction — `extractFromPdfBuffer`             |
+| `backend/src/whatsapp.ts` | ✅     | Twilio WhatsApp — `sendCargoWhatsApp(cargoData, subject)`             |
+| `backend/src/middleware.ts` | ✅   | `requireAuth`, `requireAdmin`                                         |
+| `backend/src/db.ts`       | ✅     | PostgreSQL pool                                                        |
+| `backend/src/types.ts`    | ✅     | Shared TypeScript types                                                |
 
----
+### Backend — Admin Routes
 
-## ❌ Not Done — Auth (must finish before Admin dash)
-
-### 1. Email service (`backend/src/email.ts` — missing file)
-
-- [ ] Choose provider: **Resend** (recommended) or Nodemailer/SES
-- [ ] `sendPasswordResetEmail(to, resetLink)` helper
-- [ ] `sendVerificationEmail(to, verificationLink)` helper
-
-### 2. `POST /auth/forgot-password`
-
-- [ ] Accept `{ email }`, look up user
-- [ ] Generate a short-lived signed token (e.g. 1-hour JWT or random + DB expiry)
-- [ ] Store `password_reset_token_hash` + `password_reset_expires_at` on user row
-- [ ] Call `sendPasswordResetEmail`
-- [ ] Always return 200 (avoid email enumeration)
-
-### 3. `POST /auth/reset-password`
-
-- [ ] Accept `{ token, newPassword }`
-- [ ] Verify token hash + expiry
-- [ ] bcrypt hash + update `password_hash`, clear reset token fields
-- [ ] Invalidate existing refresh tokens (`refresh_token_hash = NULL`)
-
-### 4. `POST /auth/resend-verification`
-
-- [ ] Accept `{ email }`
-- [ ] Generate + store verification token
-- [ ] Call `sendVerificationEmail`
-- [ ] Rate-limit (e.g. max 3 per hour per email)
-
-### 5. `GET /auth/verify-email?token=…`
-
-- [ ] Verify token, set `is_verified = TRUE`, clear token
-- [ ] Redirect to frontend with `?verified=1`
-
-### 6. Database migrations needed
-
-- [ ] Add columns to `users`: `password_reset_token_hash`, `password_reset_expires_at`, `email_verification_token_hash`, `email_verification_expires_at`
-- [ ] Register currently sets `is_verified = TRUE` — **fix to `FALSE`** once verification email flow is wired
-
-### 7. Apple OAuth — production hardening
-
-- [ ] Replace base64 decode with proper Apple public-key JWT verification (use `apple-signin-auth` or manual JWKS fetch)
-- [ ] Frontend: integrate Apple Sign-In JS SDK and wire `apiAppleAuth` call in AuthModal
-
-### 8. Google OAuth — frontend wiring
-
-- [ ] Add `@react-oauth/google` or load `accounts.google.com/gsi/client` script
-- [ ] Wire `apiGoogleAuth(credential)` to the Google button `onClick` in AuthModal (currently a comment placeholder)
-- [ ] Set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` env var
-
-### 9. AuthContext / session persistence
-
-- [ ] On app load, call `apiMe` (or `refreshAccessToken`) to restore session from cookie
-- [ ] Handle `auth:session-expired` event globally (show login modal or redirect)
-- [ ] `isLoading` state during initial session check to avoid flash of unauthenticated UI
+| Endpoint                                     | Status | Notes                                                         |
+| -------------------------------------------- | ------ | ------------------------------------------------------------- |
+| `GET /admin/emails`                          | ✅     | Paginated, filterable by folder, includes attachment count + extraction status |
+| `GET /admin/emails/counts`                   | ✅     | Unread + total per folder (sidebar badges)                    |
+| `POST /admin/emails/sync`                    | ✅     | Syncs all Gmail folders via IMAP                              |
+| `GET /admin/emails/:id`                      | ✅     | Full email detail + attachments + extractions                 |
+| `PATCH /admin/emails/:id/read`               | ✅     | Mark as read                                                   |
+| `DELETE /admin/emails`                       | ✅     | Bulk delete by IDs or entire folder; saves blocklist to `email_deletions` |
+| `GET /admin/emails/:id/attachment/:aid`      | ✅     | Serve attachment PDF bytes                                    |
+| `POST /admin/emails/:id/extract/:aid`        | ✅     | Trigger AI extraction (async, returns extractionId to poll)   |
+| `GET /admin/extractions/:id`                 | ✅     | Poll extraction status + result JSON                          |
+| `POST /admin/extractions/:id/send-whatsapp`  | ✅     | Send extracted cargo data to WhatsApp via Twilio              |
+| `GET /admin/stats`                           | ✅     | Total/verified/unverified user counts                         |
+| `GET /admin/users`                           | ✅     | Paginated user list with search (first/last name, email)      |
+| `PATCH /admin/users/:id/role`                | ✅     | Change role (user ↔ admin); cannot self-modify                |
+| `DELETE /admin/users/:id`                    | ✅     | Hard delete; cannot self-delete                               |
 
 ---
 
-## 🔲 Next — Admin Dashboard (after auth is complete)
+## Frontend — Pages & Components
 
-### Pages / routing
+| Route / Component             | Status | Notes                                                                      |
+| ----------------------------- | ------ | -------------------------------------------------------------------------- |
+| `[lang]/` (marketing home)    | ✅     | Hero, About, Services, Housing, Contact, Footer, CookieBanner              |
+| `[lang]/(auth)/login`         | ✅     | Login page                                                                 |
+| `[lang]/(auth)/register`      | ✅     | Register page                                                              |
+| `[lang]/admin`                | ✅     | Admin dashboard — email inbox, IMAP sync, AI extract, WhatsApp, user mgmt |
+| `[lang]/profile`              | ✅     | User profile dashboard                                                     |
+| `[lang]/privacy`              | ✅     | Privacy policy page                                                        |
+| `[lang]/terms`                | ✅     | Terms of service page                                                      |
+| `[lang]/cookies`              | ✅     | Cookie policy page                                                         |
+| `AuthModal.tsx`               | ✅     | Login + Register + Forgot password flows, Google button, i18n              |
+| `AdminDashboard.tsx`          | ✅     | Emails tab, users tab, stats — 464 lines                                   |
+| `AdminEmailsTab.tsx`          | ✅     | Folder sidebar, email list, detail panel, AI extract + WhatsApp send       |
+| `ProfileDashboard.tsx`        | ✅     | User profile view + change-password form                                   |
+| `VerifiedBanner.tsx`          | ✅     | Email verification status banner                                           |
+| `AuthContext`                 | ✅     | `login`, `register`, `loginWithGoogle`, `loginWithApple`, `logout`, session restore on load, `auth:session-expired` event |
 
-- [ ] `/[lang]/admin` — protected route, `requireAdmin` on all API calls
-- [ ] Redirect non-admins to homepage
-- [ ] Sidebar nav: Users, Inquiries, Content, Settings
+---
 
-### Features (rough priority order)
+## Database Migrations
 
-1. **Users table** — list, search, promote/demote role, toggle `is_verified`, delete
-2. **Inquiry / contact submissions** — view + respond to contact form entries (need `contacts` DB table)
-3. **Content management** — edit marketing copy stored in DB (already have `content_translations` table from `002_content.sql`?)
-4. **Email log** — view sent emails (if using Resend, use their `list-emails` API)
-5. **Settings** — site-wide config (maintenance mode, feature flags)
+| File                                              | Status | Tables / Columns                                           |
+| ------------------------------------------------- | ------ | ---------------------------------------------------------- |
+| `001_users.sql`                                   | ✅     | `users` (with OAuth, verification, reset token columns)    |
+| `002_shipments.sql`                               | ✅     | `shipments`                                                |
+| `003_emails.sql`                                  | ✅     | `emails`, `email_attachments`, `cargo_extractions`         |
+| `004_emails_folders.sql`                          | ✅     | Adds `folder`, `is_read`, `body_html` to `emails`; adds `raw_text`, `whatsapp_message_sid` to `cargo_extractions` |
+| `005_email_deletions.sql`                         | ✅     | `email_deletions` (blocklist for IMAP re-sync prevention)  |
+| `migrations/004_first_last_name_and_tokens.sql`   | ✅     | Splits `full_name` → `first_name` + `last_name`; adds token/expiry columns |
 
-### Backend
+---
 
-- [ ] `GET /admin/users` — paginated user list
-- [ ] `PATCH /admin/users/:id` — update role / verified status
-- [ ] `DELETE /admin/users/:id` — soft delete or hard delete
-- [ ] `GET /admin/contacts` — list contact submissions
-- [ ] Admin middleware already exists (`requireAdmin` in `middleware.ts`) ✅
+## ❌ Not Done
+
+- **Facebook OAuth** — no `/auth/facebook` endpoint; not listed in original spec for this project
+- **Shipments API** — DB table exists but no REST endpoints built yet
+- **Deployment** — not deployed (Railway/Render for backend, Vercel for frontend)
+- **Apple Sign-In JS SDK** — frontend SDK not wired; `loginWithApple` exists in `AuthContext` but no UI trigger beyond AuthModal placeholder
+- **CI/CD** — no pipeline
 
 ---
 
@@ -179,12 +167,18 @@ JWT_REFRESH_SECRET=
 JWT_ACCESS_EXPIRY=15m
 JWT_REFRESH_EXPIRY=7d
 GOOGLE_CLIENT_ID=
-APPLE_TEAM_ID=          # needed for Apple prod verification
-APPLE_KEY_ID=
-APPLE_PRIVATE_KEY=
-EMAIL_FROM=             # e.g. noreply@teamcargo.eu
-RESEND_API_KEY=         # if using Resend
+RESEND_API_KEY=
+RESEND_FROM=            # e.g. noreply@teamcargo.eu
 FRONTEND_URL=
+OPENAI_API_KEY=         # AI cargo extraction
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_WHATSAPP_FROM=   # e.g. whatsapp:+14155238886
+TWILIO_WHATSAPP_TO=
+IMAP_HOST=
+IMAP_PORT=
+IMAP_USER=
+IMAP_PASS=
 NODE_ENV=
 PORT=4000
 ```
@@ -198,12 +192,9 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=
 
 ---
 
-## Suggested Immediate Next Steps
+## Next Steps (Suggested Order)
 
-1. **Create `backend/src/email.ts`** with Resend (simplest setup, great DX)
-2. **Add DB migration** for reset/verification token columns
-3. **Wire `POST /auth/forgot-password` + `POST /auth/verify-email` + `POST /auth/reset-password`**
-4. **Fix Register endpoint** → set `is_verified = FALSE` + send verification email
-5. **Wire Google button** in AuthModal with `@react-oauth/google`
-6. **Apple OAuth** — production key verification
-7. → Then start Admin Dashboard
+1. **Shipments API** — `GET/POST /shipments`, `GET/PATCH/DELETE /shipments/:id`; wire to admin or user dashboard
+2. **Apple Sign-In** — load Apple JS SDK, wire `loginWithApple` in `AuthModal`
+3. **Deploy** — Railway (backend) + Vercel (frontend)
+4. **CI/CD** — GitHub Actions for lint + build checks
