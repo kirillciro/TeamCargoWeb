@@ -19,7 +19,7 @@ export default async function LandingPage({
       <HeroSection dict={dict} lang={lang} />
       <ServicesSection dict={dict} lang={lang} />
       <AboutSection dict={dict} lang={lang} />
-      <HousingSection dict={dict} />
+      <HousingSection dict={dict} lang={lang} />
       <ContactSection dict={dict} />
       <Footer lang={lang} dict={dict} />
     </>

@@ -75,6 +75,25 @@ import {
   Waypoints,
   Wrench,
   Zap,
+  Wifi,
+  Utensils,
+  BedDouble,
+  Coffee,
+  Bath,
+  DoorOpen,
+  Armchair,
+  Sofa,
+  Sun,
+  Key,
+  Lamp,
+  Lightbulb,
+  Refrigerator,
+  WashingMachine,
+  CookingPot,
+  Wind,
+  Tv,
+  Bed,
+  Heart,
   type LucideIcon,
 } from "lucide-react";
 import { fetchWithAuth } from "@/lib/auth-client";
@@ -85,6 +104,65 @@ const LS_COLORS = "tc_brand_colors";
 const LS_HERO = "tc_hero_overrides";
 const LS_SERVICES = "tc_services_overrides";
 const LS_ABOUT = "tc_about_overrides";
+const LS_HOUSING = "tc_housing_overrides";
+
+// Lucide icon options for housing perk icon pickers — 3 pages × 15 each
+const HOUSING_ICON_OPTS: { id: string; Icon: LucideIcon; label: string }[][] = [
+  // page 0
+  [
+    { id: "home", Icon: Home, label: "Home" },
+    { id: "bed-double", Icon: BedDouble, label: "Bedroom" },
+    { id: "sofa", Icon: Sofa, label: "Living room" },
+    { id: "armchair", Icon: Armchair, label: "Armchair" },
+    { id: "door-open", Icon: DoorOpen, label: "Door" },
+    { id: "key", Icon: Key, label: "Key" },
+    { id: "lightbulb", Icon: Lightbulb, label: "Light" },
+    { id: "lamp", Icon: Lamp, label: "Lamp" },
+    { id: "wifi", Icon: Wifi, label: "WiFi" },
+    { id: "tv", Icon: Tv, label: "TV" },
+    { id: "refrigerator", Icon: Refrigerator, label: "Fridge" },
+    { id: "washing-machine", Icon: WashingMachine, label: "Washer" },
+    { id: "cooking-pot", Icon: CookingPot, label: "Cooking" },
+    { id: "utensils", Icon: Utensils, label: "Kitchen" },
+    { id: "coffee", Icon: Coffee, label: "Coffee" },
+  ],
+  // page 1
+  [
+    { id: "bath", Icon: Bath, label: "Bathroom" },
+    { id: "bed", Icon: Bed, label: "Bed" },
+    { id: "sun", Icon: Sun, label: "Sunny" },
+    { id: "wind", Icon: Wind, label: "Air" },
+    { id: "map-pin", Icon: MapPin, label: "Location" },
+    { id: "route", Icon: Route, label: "Route" },
+    { id: "building", Icon: Building, label: "Building" },
+    { id: "building-2", Icon: Building2, label: "Complex" },
+    { id: "warehouse", Icon: Warehouse, label: "Warehouse" },
+    { id: "truck", Icon: Truck, label: "Truck" },
+    { id: "car", Icon: Car, label: "Car" },
+    { id: "bus", Icon: Bus, label: "Bus" },
+    { id: "bike", Icon: Bike, label: "Bike" },
+    { id: "shield", Icon: Shield, label: "Safe" },
+    { id: "shield-check", Icon: ShieldCheck, label: "Secure" },
+  ],
+  // page 2
+  [
+    { id: "star", Icon: Star, label: "Star" },
+    { id: "award", Icon: Award, label: "Award" },
+    { id: "sparkles", Icon: Sparkles, label: "Premium" },
+    { id: "heart", Icon: Heart, label: "Heart" },
+    { id: "users", Icon: Users, label: "Community" },
+    { id: "check-circle-2", Icon: CheckCircle2, label: "Checked" },
+    { id: "package", Icon: Package, label: "Package" },
+    { id: "briefcase", Icon: Briefcase, label: "Work" },
+    { id: "handshake", Icon: Handshake, label: "Deal" },
+    { id: "thumbs-up", Icon: ThumbsUp, label: "Good" },
+    { id: "zap", Icon: Zap, label: "Fast" },
+    { id: "target", Icon: Target, label: "Target" },
+    { id: "flag", Icon: Flag, label: "Flag" },
+    { id: "mountain", Icon: Mountain, label: "Mountain" },
+    { id: "globe", Icon: Globe, label: "Global" },
+  ],
+];
 
 // Lucide icon options for about badge pickers — 3 pages × 15 each
 const BADGE_ICON_OPTS: Record<
@@ -272,7 +350,7 @@ const COLOR_DEFAULTS = {
 };
 
 type ColorKey = keyof typeof COLOR_DEFAULTS;
-type SubTab = "colors" | "hero" | "services" | "about";
+type SubTab = "colors" | "hero" | "services" | "about" | "housing";
 type SectionKey =
   | "slogan"
   | "badge"
@@ -302,6 +380,14 @@ type AboutSectionKey =
   | "aboutImgLeft"
   | "aboutImgTopRight"
   | "aboutImgBottomRight";
+
+type HousingSectionKey =
+  | "housingHeading"
+  | "housingDescription"
+  | "housingPerks"
+  | "housingCta"
+  | "housingImg1"
+  | "housingImg2";
 
 const DEFAULT_SVC_IMGS = [
   "/images/gls_vans_webP.webp",
@@ -453,6 +539,40 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [aboutAllSaved, setAboutAllSaved] = useState(false);
   const [aboutTranslationPending, setAboutTranslationPending] = useState(false);
 
+  // ── Housing state ─────────────────────────────────────────────────────────
+  const [housingLabel, setHousingLabel] = useState("");
+  const [housingTitle, setHousingTitle] = useState("");
+  const [housingDesc, setHousingDesc] = useState("");
+  const [housingPerks, setHousingPerks] = useState(["", "", "", ""]);
+  const [housingCta, setHousingCta] = useState("");
+  const [housingPerkIcons, setHousingPerkIcons] = useState(["", "", "", ""]);
+  const [housingImg1, setHousingImg1] = useState("");
+  const [housingImg2, setHousingImg2] = useState("");
+  const [housingIconPicker, setHousingIconPicker] = useState<number | null>(
+    null,
+  );
+  const [housingIconPages, setHousingIconPages] = useState([0, 0, 0, 0]);
+  const [housingSectionSaved, setHousingSectionSaved] = useState<
+    Record<HousingSectionKey, boolean>
+  >({
+    housingHeading: false,
+    housingDescription: false,
+    housingPerks: false,
+    housingCta: false,
+    housingImg1: false,
+    housingImg2: false,
+  });
+  const [housingSavingKey, setHousingSavingKey] =
+    useState<HousingSectionKey | null>(null);
+  const [housingTranslating, setHousingTranslating] = useState(false);
+  const [housingTranslateError, setHousingTranslateError] = useState<
+    string | null
+  >(null);
+  const [housingSavingAll, setHousingSavingAll] = useState(false);
+  const [housingAllSaved, setHousingAllSaved] = useState(false);
+  const [housingTranslationPending, setHousingTranslationPending] =
+    useState(false);
+
   // ── Translation-in-progress indicators ───────────────────────────────────
   const [heroTranslationPending, setHeroTranslationPending] = useState(false);
   const [svcTranslationPending, setSvcTranslationPending] = useState(false);
@@ -561,6 +681,32 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
         if (a.imgLeft) setAboutImgLeft(a.imgLeft);
         if (a.imgTopRight) setAboutImgTopRight(a.imgTopRight);
         if (a.imgBottomRight) setAboutImgBottomRight(a.imgBottomRight);
+      }
+    } catch {
+      /* ignore */
+    }
+    try {
+      const saved = localStorage.getItem(LS_HOUSING);
+      if (saved) {
+        const h = JSON.parse(saved) as Record<string, string>;
+        setHousingLabel(h.label ?? "");
+        setHousingTitle(h.title ?? "");
+        setHousingDesc(h.description ?? "");
+        setHousingPerks([
+          h.perk0 ?? "",
+          h.perk1 ?? "",
+          h.perk2 ?? "",
+          h.perk3 ?? "",
+        ]);
+        setHousingCta(h.cta ?? "");
+        setHousingPerkIcons([
+          h.perk0Icon ?? "",
+          h.perk1Icon ?? "",
+          h.perk2Icon ?? "",
+          h.perk3Icon ?? "",
+        ]);
+        if (h.img1) setHousingImg1(h.img1);
+        if (h.img2) setHousingImg2(h.img2);
       }
     } catch {
       /* ignore */
@@ -1042,6 +1188,132 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     }
   };
 
+  // ── Housing helpers ───────────────────────────────────────────────────────
+  const buildHousingSource = () => ({
+    label: housingLabel,
+    title: housingTitle,
+    description: housingDesc,
+    perk0: housingPerks[0],
+    perk1: housingPerks[1],
+    perk2: housingPerks[2],
+    perk3: housingPerks[3],
+    cta: housingCta,
+    perk0Icon: housingPerkIcons[0],
+    perk1Icon: housingPerkIcons[1],
+    perk2Icon: housingPerkIcons[2],
+    perk3Icon: housingPerkIcons[3],
+    img1: housingImg1,
+    img2: housingImg2,
+  });
+
+  const persistHousing = async (
+    source: ReturnType<typeof buildHousingSource>,
+    key: HousingSectionKey,
+  ) => {
+    localStorage.setItem(LS_HOUSING, JSON.stringify(source));
+    setHousingSavingKey(key);
+    setHousingTranslating(true);
+    setHousingTranslateError(null);
+    try {
+      const res = await fetchWithAuth("/api/admin/customization/housing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source }),
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        translating?: boolean;
+        message?: string;
+      };
+      if (!res.ok) throw new Error(body.message ?? "Save failed");
+      window.dispatchEvent(new Event("tc:housing-updated"));
+      if (body.translating) {
+        setHousingTranslationPending(true);
+        startTranslationPoll(
+          "/api/housing-overrides/nl",
+          setHousingTranslationPending,
+          "tc:housing-updated",
+        );
+      }
+      setHousingSectionSaved((prev) => ({ ...prev, [key]: true }));
+      setTimeout(
+        () => setHousingSectionSaved((prev) => ({ ...prev, [key]: false })),
+        2500,
+      );
+    } catch (err) {
+      setHousingTranslateError(
+        err instanceof Error ? err.message : "Save failed",
+      );
+    } finally {
+      setHousingTranslating(false);
+      setHousingSavingKey(null);
+    }
+  };
+
+  const saveAllHousing = async () => {
+    setHousingSavingAll(true);
+    setHousingTranslateError(null);
+    try {
+      const source = buildHousingSource();
+      localStorage.setItem(LS_HOUSING, JSON.stringify(source));
+      const res = await fetchWithAuth("/api/admin/customization/housing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source }),
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        translating?: boolean;
+        message?: string;
+      };
+      if (!res.ok) throw new Error(body.message ?? "Save failed");
+      window.dispatchEvent(new Event("tc:housing-updated"));
+      if (body.translating) {
+        setHousingTranslationPending(true);
+        startTranslationPoll(
+          "/api/housing-overrides/nl",
+          setHousingTranslationPending,
+          "tc:housing-updated",
+        );
+      }
+      setHousingAllSaved(true);
+      setTimeout(() => setHousingAllSaved(false), 2500);
+    } catch (err) {
+      setHousingTranslateError(
+        err instanceof Error ? err.message : "Save failed",
+      );
+    } finally {
+      setHousingSavingAll(false);
+    }
+  };
+
+  const resetAllHousing = async () => {
+    setHousingLabel("");
+    setHousingTitle("");
+    setHousingDesc("");
+    setHousingPerks(["", "", "", ""]);
+    setHousingCta("");
+    setHousingPerkIcons(["", "", "", ""]);
+    setHousingImg1("");
+    setHousingImg2("");
+    localStorage.removeItem(LS_HOUSING);
+    setHousingTranslationPending(false);
+    setHousingSavingAll(true);
+    setHousingTranslateError(null);
+    try {
+      await fetchWithAuth("/api/admin/customization/housing", {
+        method: "DELETE",
+      });
+      window.dispatchEvent(new Event("tc:housing-updated"));
+    } catch (err) {
+      setHousingTranslateError(
+        err instanceof Error ? err.message : "Reset failed",
+      );
+    } finally {
+      setHousingSavingAll(false);
+    }
+  };
+
   // ── Color fields config ───────────────────────────────────────────────────
   const colorFields: { key: ColorKey; label: string; default: string }[] = [
     {
@@ -1079,35 +1351,39 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
 
       {/* ── Sub-tab switcher ── */}
       <div className="flex flex-wrap gap-1 bg-slate-800/60 rounded-xl p-1 w-fit">
-        {(["colors", "hero", "services", "about"] as SubTab[]).map((key) => {
-          const labels: Record<SubTab, string> = {
-            colors: dict.admin.custom_subtab_colors,
-            hero: dict.admin.custom_subtab_hero,
-            services: dict.admin.custom_subtab_services,
-            about: dict.admin.custom_subtab_about,
-          };
-          const Icons: Record<SubTab, typeof Palette> = {
-            colors: Palette,
-            hero: Type,
-            services: LayoutGrid,
-            about: Users,
-          };
-          const Icon = Icons[key];
-          return (
-            <button
-              key={key}
-              onClick={() => setSubTab(key)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                subTab === key
-                  ? "bg-amber-400 text-amber-900"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              {labels[key]}
-            </button>
-          );
-        })}
+        {(["colors", "hero", "services", "about", "housing"] as SubTab[]).map(
+          (key) => {
+            const labels: Record<SubTab, string> = {
+              colors: dict.admin.custom_subtab_colors,
+              hero: dict.admin.custom_subtab_hero,
+              services: dict.admin.custom_subtab_services,
+              about: dict.admin.custom_subtab_about,
+              housing: dict.admin.custom_subtab_housing,
+            };
+            const Icons: Record<SubTab, typeof Palette> = {
+              colors: Palette,
+              hero: Type,
+              services: LayoutGrid,
+              about: Users,
+              housing: Home,
+            };
+            const Icon = Icons[key];
+            return (
+              <button
+                key={key}
+                onClick={() => setSubTab(key)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  subTab === key
+                    ? "bg-amber-400 text-amber-900"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                {labels[key]}
+              </button>
+            );
+          },
+        )}
       </div>
 
       {/* ── Colors panel ── */}
@@ -1354,7 +1630,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                     setHeroTrustIconPicker((v) => !v);
                     setHeroTrustIconPage(0);
                   }}
-                  className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-700 border border-slate-600 hover:border-amber-400/50 transition-colors"
+                  className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-700 border border-slate-600 hover:border-amber-400 transition-colors"
                   title="Pick icon"
                 >
                   {(() => {
@@ -1362,7 +1638,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                       (o) => o.id === heroTrustIcon,
                     );
                     const Ic = opt?.Icon ?? Shield;
-                    return <Ic className="w-4 h-4 text-slate-300" />;
+                    return <Ic className="w-4 h-4 text-amber-400" />;
                   })()}
                 </button>
                 {heroTrustIconPicker && (
@@ -2501,7 +2777,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                       );
                       setAboutDriversIconPage(0);
                     }}
-                    className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-700 border border-slate-600 hover:border-amber-400/50 transition-colors"
+                    className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-700 border border-slate-600 hover:border-amber-400 transition-colors"
                     title="Pick icon"
                   >
                     {(() => {
@@ -2509,7 +2785,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                         .flat()
                         .find((o) => o.id === aboutDriversIcon);
                       const Ic = opt?.Icon ?? Users;
-                      return <Ic className="w-4 h-4 text-slate-300" />;
+                      return <Ic className="w-4 h-4 text-amber-400" />;
                     })()}
                   </button>
                   {aboutIconPicker === "drivers" && (
@@ -2611,7 +2887,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                       );
                       setAboutLocationIconPage(0);
                     }}
-                    className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-700 border border-slate-600 hover:border-amber-400/50 transition-colors"
+                    className="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-700 border border-slate-600 hover:border-amber-400 transition-colors"
                     title="Pick icon"
                   >
                     {(() => {
@@ -2619,7 +2895,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                         .flat()
                         .find((o) => o.id === aboutLocationIcon);
                       const Ic = opt?.Icon ?? MapPin;
-                      return <Ic className="w-4 h-4 text-slate-300" />;
+                      return <Ic className="w-4 h-4 text-amber-400" />;
                     })()}
                   </button>
                   {aboutIconPicker === "location" && (
@@ -2901,6 +3177,451 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
               <button
                 onClick={() => void resetAllAbout()}
                 disabled={aboutSavingAll || aboutTranslating}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-700/60 px-5 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:border-red-500 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Restore all defaults
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Housing panel ── */}
+      {subTab === "housing" && (
+        <div className="space-y-4">
+          {housingTranslateError && (
+            <p className="text-xs text-red-400 bg-red-900/20 border border-red-800 rounded-lg px-4 py-2">
+              {housingTranslateError}
+            </p>
+          )}
+          {housingTranslationPending && (
+            <div className="flex items-center gap-2.5 rounded-xl bg-amber-400/10 border border-amber-400/30 px-4 py-3 text-xs text-amber-300">
+              <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
+              Translating to all 18 languages in the background… This tab will
+              auto-refresh when done.
+            </div>
+          )}
+
+          {/* 1 ── Section label + title */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Section Heading
+            </p>
+            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+              Small label (e.g. &quot;Housing&quot;)
+            </label>
+            <input
+              type="text"
+              value={housingLabel}
+              onChange={(e) => setHousingLabel(e.target.value)}
+              placeholder="Voor chauffeurs die verhuizen"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+              Main title
+            </label>
+            <input
+              type="text"
+              value={housingTitle}
+              onChange={(e) => setHousingTitle(e.target.value)}
+              placeholder="Tijdelijke woonruimte voor chauffeurs"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  void persistHousing(buildHousingSource(), "housingHeading")
+                }
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingKey === "housingHeading" ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : housingSectionSaved.housingHeading ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {housingSectionSaved.housingHeading ? "Saved!" : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setHousingLabel("");
+                  setHousingTitle("");
+                  void persistHousing(
+                    { ...buildHousingSource(), label: "", title: "" },
+                    "housingHeading",
+                  );
+                }}
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-2 text-xs font-medium text-slate-400 hover:text-white hover:border-slate-400 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset to default
+              </button>
+            </div>
+          </div>
+
+          {/* 2 ── Description */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Description
+            </p>
+            <textarea
+              value={housingDesc}
+              onChange={(e) => setHousingDesc(e.target.value)}
+              rows={3}
+              placeholder="Wij helpen chauffeurs die vanuit het buitenland komen…"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
+            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  void persistHousing(
+                    buildHousingSource(),
+                    "housingDescription",
+                  )
+                }
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingKey === "housingDescription" ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : housingSectionSaved.housingDescription ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {housingSectionSaved.housingDescription ? "Saved!" : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setHousingDesc("");
+                  void persistHousing(
+                    { ...buildHousingSource(), description: "" },
+                    "housingDescription",
+                  );
+                }}
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-2 text-xs font-medium text-slate-400 hover:text-white hover:border-slate-400 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset to default
+              </button>
+            </div>
+          </div>
+
+          {/* 3 ── Perks (4 items with icon pickers) */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-4">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Perks (4 items)
+            </p>
+            {housingPerks.map((perkText, i) => {
+              const iconKey = housingPerkIcons[i];
+              const PickedIcon = iconKey
+                ? (HOUSING_ICON_OPTS.flat().find((o) => o.id === iconKey)
+                    ?.Icon ?? Home)
+                : [Home, Wifi, Utensils, MapPin][i];
+              const isPickerOpen = housingIconPicker === i;
+              return (
+                <div key={i} className="space-y-1.5">
+                  <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+                    Perk {i + 1}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    {/* Icon picker button */}
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setHousingIconPicker(isPickerOpen ? null : i)
+                        }
+                        className="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-700 border border-slate-600 hover:border-amber-400 transition-colors shrink-0"
+                        title="Pick icon"
+                      >
+                        <PickedIcon className="w-4 h-4 text-amber-400" />
+                      </button>
+                      {isPickerOpen && (
+                        <div className="absolute left-0 top-11 z-50 bg-slate-800 border border-slate-700 rounded-xl p-3 shadow-2xl w-64">
+                          <div className="grid grid-cols-5 gap-1.5 mb-2">
+                            {HOUSING_ICON_OPTS[housingIconPages[i]].map(
+                              (opt) => (
+                                <button
+                                  key={opt.id}
+                                  type="button"
+                                  title={opt.label}
+                                  onClick={() => {
+                                    setHousingPerkIcons((prev) => {
+                                      const next = [...prev];
+                                      next[i] = opt.id;
+                                      return next;
+                                    });
+                                    setHousingIconPicker(null);
+                                  }}
+                                  className={`flex flex-col items-center gap-0.5 p-1.5 rounded-lg hover:bg-slate-700 transition-colors ${housingPerkIcons[i] === opt.id ? "bg-amber-400/20 ring-1 ring-amber-400" : ""}`}
+                                >
+                                  <opt.Icon className="w-4 h-4 text-slate-300" />
+                                  <span className="text-[9px] text-slate-400 leading-tight truncate w-full text-center">
+                                    {opt.label}
+                                  </span>
+                                </button>
+                              ),
+                            )}
+                          </div>
+                          {/* Pagination */}
+                          <div className="flex items-center justify-between mt-1">
+                            <button
+                              type="button"
+                              disabled={housingIconPages[i] === 0}
+                              onClick={() =>
+                                setHousingIconPages((prev) => {
+                                  const next = [...prev];
+                                  next[i] = Math.max(0, next[i] - 1);
+                                  return next;
+                                })
+                              }
+                              className="px-2 py-1 text-xs text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                            >
+                              ← Prev
+                            </button>
+                            <span className="text-[10px] text-slate-500">
+                              {housingIconPages[i] + 1} /{" "}
+                              {HOUSING_ICON_OPTS.length}
+                            </span>
+                            <button
+                              type="button"
+                              disabled={
+                                housingIconPages[i] >=
+                                HOUSING_ICON_OPTS.length - 1
+                              }
+                              onClick={() =>
+                                setHousingIconPages((prev) => {
+                                  const next = [...prev];
+                                  next[i] = Math.min(
+                                    HOUSING_ICON_OPTS.length - 1,
+                                    next[i] + 1,
+                                  );
+                                  return next;
+                                })
+                              }
+                              className="px-2 py-1 text-xs text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                            >
+                              Next →
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {/* Text input */}
+                    <input
+                      type="text"
+                      value={perkText}
+                      onChange={(e) =>
+                        setHousingPerks((prev) => {
+                          const next = [...prev];
+                          next[i] = e.target.value;
+                          return next;
+                        })
+                      }
+                      placeholder={`Perk ${i + 1} text`}
+                      className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    />
+                  </div>
+                </div>
+              );
+            })}
+            <div className="flex items-center gap-2 pt-1">
+              <button
+                onClick={() =>
+                  void persistHousing(buildHousingSource(), "housingPerks")
+                }
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingKey === "housingPerks" ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : housingSectionSaved.housingPerks ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {housingSectionSaved.housingPerks ? "Saved!" : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setHousingPerks(["", "", "", ""]);
+                  setHousingPerkIcons(["", "", "", ""]);
+                  void persistHousing(
+                    {
+                      ...buildHousingSource(),
+                      perk0: "",
+                      perk1: "",
+                      perk2: "",
+                      perk3: "",
+                      perk0Icon: "",
+                      perk1Icon: "",
+                      perk2Icon: "",
+                      perk3Icon: "",
+                    },
+                    "housingPerks",
+                  );
+                }}
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-2 text-xs font-medium text-slate-400 hover:text-white hover:border-slate-400 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset to default
+              </button>
+            </div>
+          </div>
+
+          {/* 4 ── CTA button */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              CTA Button Text
+            </p>
+            <input
+              type="text"
+              value={housingCta}
+              onChange={(e) => setHousingCta(e.target.value)}
+              placeholder="Neem contact op"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  void persistHousing(buildHousingSource(), "housingCta")
+                }
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingKey === "housingCta" ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : housingSectionSaved.housingCta ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {housingSectionSaved.housingCta ? "Saved!" : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setHousingCta("");
+                  void persistHousing(
+                    { ...buildHousingSource(), cta: "" },
+                    "housingCta",
+                  );
+                }}
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-2 text-xs font-medium text-slate-400 hover:text-white hover:border-slate-400 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset to default
+              </button>
+            </div>
+          </div>
+
+          {/* 5 ── Photo 1 */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Photo 1 (left column)
+            </p>
+            <CloudinaryLogoUpload
+              value={housingImg1 || "/images/living_1_webP.webp"}
+              onChange={(url) => setHousingImg1(url)}
+            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  void persistHousing(buildHousingSource(), "housingImg1")
+                }
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingKey === "housingImg1" ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : housingSectionSaved.housingImg1 ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {housingSectionSaved.housingImg1 ? "Saved!" : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setHousingImg1("");
+                  void persistHousing(
+                    { ...buildHousingSource(), img1: "" },
+                    "housingImg1",
+                  );
+                }}
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-2 text-xs font-medium text-slate-400 hover:text-white hover:border-slate-400 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset to default
+              </button>
+            </div>
+          </div>
+
+          {/* 6 ── Photo 2 */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Photo 2 (right column, offset)
+            </p>
+            <CloudinaryLogoUpload
+              value={housingImg2 || "/images/living_2_webP.webp"}
+              onChange={(url) => setHousingImg2(url)}
+            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  void persistHousing(buildHousingSource(), "housingImg2")
+                }
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingKey === "housingImg2" ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : housingSectionSaved.housingImg2 ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {housingSectionSaved.housingImg2 ? "Saved!" : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setHousingImg2("");
+                  void persistHousing(
+                    { ...buildHousingSource(), img2: "" },
+                    "housingImg2",
+                  );
+                }}
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-2 text-xs font-medium text-slate-400 hover:text-white hover:border-slate-400 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset to default
+              </button>
+            </div>
+          </div>
+
+          {/* Save all / Reset all */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5">
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => void saveAllHousing()}
+                disabled={housingSavingAll || housingTranslating}
+                className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingAll ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : housingAllSaved ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                {housingAllSaved ? "All saved!" : "Save all"}
+              </button>
+              <button
+                onClick={() => void resetAllHousing()}
+                disabled={housingSavingAll || housingTranslating}
                 className="inline-flex items-center gap-2 rounded-lg border border-red-700/60 px-5 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:border-red-500 disabled:opacity-60 transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />

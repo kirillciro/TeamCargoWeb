@@ -411,6 +411,7 @@
     "custom_hero_stat_label_text": "Label text",
     "custom_hero_trust_bg": "Trust Bar Background",
     "custom_subtab_services": "Services Section",
-    "custom_subtab_about": "About Section"
+    "custom_subtab_about": "About Section",
+    "custom_subtab_housing": "Housing Section"
   }
 }

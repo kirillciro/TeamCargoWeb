@@ -35,6 +35,11 @@ import {
   type AboutTexts,
   type AboutTranslations,
 } from "./about-translate.js";
+import {
+  translateHousingTexts,
+  type HousingTexts,
+  type HousingTranslations,
+} from "./housing-translate.js";
 
 const app = express();
 
@@ -1746,6 +1751,100 @@ app.delete(
   requireAdmin,
   async (_req: AuthedRequest, res) => {
     await pool.query("DELETE FROM app_settings WHERE key = 'about_overrides'");
+    res.json({ ok: true });
+  },
+);
+
+// ── Housing customization ──────────────────────────────────────────────────────────────────────────────
+// Admin saves housing texts → save immediately, translate in background
+app.post(
+  "/admin/customization/housing",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    try {
+      const { source } = req.body as { source: HousingTexts };
+      if (!source || typeof source !== "object") {
+        res.status(400).json({ message: "source texts required" });
+        return;
+      }
+      await pool.query(
+        `INSERT INTO app_settings (key, value, updated_at)
+         VALUES ('housing_overrides', $1, NOW())
+         ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+        [JSON.stringify({ source, translations: {} })],
+      );
+      res.json({ ok: true, translating: true });
+      void (async () => {
+        try {
+          const translations = await translateHousingTexts(source);
+          await pool.query(
+            `UPDATE app_settings SET value = $1, updated_at = NOW()
+             WHERE key = 'housing_overrides'`,
+            [JSON.stringify({ source, translations })],
+          );
+          console.log("[housing-translate-bg] done");
+        } catch (err) {
+          console.error("[housing-translate-bg] error:", err);
+        }
+      })();
+    } catch (err) {
+      console.error("[housing-customization] error:", err);
+      res.status(500).json({ message: "Save failed" });
+    }
+  },
+);
+
+// Public endpoint — returns translated housing overrides for the given lang
+app.get("/housing-overrides/:lang", async (req, res) => {
+  try {
+    const { lang } = req.params;
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'housing_overrides'",
+    );
+    if (result.rows.length === 0) {
+      res.json({});
+      return;
+    }
+    const data = result.rows[0].value as {
+      source: HousingTexts;
+      translations: HousingTranslations;
+    };
+    const langTexts =
+      data.translations[lang] ?? data.translations["en"] ?? data.source ?? {};
+    // Merge non-translatable overrides from source
+    const src = data.source as Record<string, unknown>;
+    const nonTranslatable: Record<string, unknown> = {};
+    for (const key of [
+      "perk0Icon",
+      "perk1Icon",
+      "perk2Icon",
+      "perk3Icon",
+      "img1",
+      "img2",
+    ]) {
+      if (src[key] !== undefined) nonTranslatable[key] = src[key];
+    }
+    res.json({
+      ...langTexts,
+      ...nonTranslatable,
+      _hasTranslations: Object.keys(data.translations ?? {}).length > 0,
+    });
+  } catch (err) {
+    console.error("[housing-overrides] error:", err);
+    res.json({});
+  }
+});
+
+// Admin: delete housing overrides
+app.delete(
+  "/admin/customization/housing",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    await pool.query(
+      "DELETE FROM app_settings WHERE key = 'housing_overrides'",
+    );
     res.json({ ok: true });
   },
 );

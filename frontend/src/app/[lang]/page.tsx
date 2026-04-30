@@ -29,7 +29,7 @@ export default async function LangRootPage({
         <HeroSection dict={dict} lang={resolvedLang} />
         <ServicesSection dict={dict} lang={resolvedLang} />
         <AboutSection dict={dict} lang={resolvedLang} />
-        <HousingSection dict={dict} />
+        <HousingSection dict={dict} lang={resolvedLang} />
         <ContactSection dict={dict} />
         <Footer lang={resolvedLang} dict={dict} />
       </main>
