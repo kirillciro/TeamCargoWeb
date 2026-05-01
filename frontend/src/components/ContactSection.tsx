@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Send, Phone, Mail, MapPin } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Smartphone, MessageCircle, AtSign, Inbox, MailOpen, Navigation, Globe, Building, Home, Handshake, HeartHandshake, Compass, type LucideIcon } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
 type ContactOverrides = {
@@ -18,8 +18,31 @@ type ContactOverrides = {
   whatsapp_number?: string;
   email_address?: string;
   map_address?: string;
+  phoneIcon?: string;
+  emailIcon?: string;
+  addressIcon?: string;
   _hasTranslations?: boolean;
 };
+
+const CONTACT_ROW_ICON_MAP: Record<string, LucideIcon> = {
+  phone: Phone,
+  smartphone: Smartphone,
+  "message-circle": MessageCircle,
+  mail: Mail,
+  "at-sign": AtSign,
+  inbox: Inbox,
+  "mail-open": MailOpen,
+  "map-pin": MapPin,
+  navigation: Navigation,
+  globe: Globe,
+  building: Building,
+  home: Home,
+  handshake: Handshake,
+  "heart-handshake": HeartHandshake,
+  compass: Compass,
+};
+
+const DEFAULT_ROW_ICONS: LucideIcon[] = [Phone, Mail, MapPin];
 
 const LS_CONTACT = (lang: string) => `tc_contact_overrides_${lang}`;
 
@@ -125,19 +148,19 @@ export default function ContactSection({
               <div className="space-y-5">
                 {[
                   {
-                    Icon: Phone,
+                    Icon: (o.phoneIcon ? CONTACT_ROW_ICON_MAP[o.phoneIcon] : undefined) ?? DEFAULT_ROW_ICONS[0],
                     label: o.phone || "WhatsApp",
                     value: `+${whatsappNumber.replace(/[^0-9]/g, "").replace(/^31/, "31 ")}`,
                     href: whatsappHref,
                   },
                   {
-                    Icon: Mail,
+                    Icon: (o.emailIcon ? CONTACT_ROW_ICON_MAP[o.emailIcon] : undefined) ?? DEFAULT_ROW_ICONS[1],
                     label: o.email || "E-mail",
                     value: emailAddress,
                     href: emailHref,
                   },
                   {
-                    Icon: MapPin,
+                    Icon: (o.addressIcon ? CONTACT_ROW_ICON_MAP[o.addressIcon] : undefined) ?? DEFAULT_ROW_ICONS[2],
                     label: o.address || "Address",
                     value: mapAddress,
                     href: mapHref,

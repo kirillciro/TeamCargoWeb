@@ -26,6 +26,9 @@ export type ContactTexts = {
   whatsapp_number?: string;
   email_address?: string;
   map_address?: string;
+  phoneIcon?: string;
+  emailIcon?: string;
+  addressIcon?: string;
 };
 
 export type ContactTranslations = Record<string, ContactTexts>;
@@ -51,6 +54,9 @@ const NON_TRANSLATABLE_KEYS: (keyof ContactTexts)[] = [
   "whatsapp_number",
   "email_address",
   "map_address",
+  "phoneIcon",
+  "emailIcon",
+  "addressIcon",
 ];
 
 export async function translateContactTexts(
