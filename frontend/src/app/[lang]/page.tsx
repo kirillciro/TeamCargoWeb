@@ -30,7 +30,7 @@ export default async function LangRootPage({
         <ServicesSection dict={dict} lang={resolvedLang} />
         <AboutSection dict={dict} lang={resolvedLang} />
         <HousingSection dict={dict} lang={resolvedLang} />
-        <ContactSection dict={dict} />
+        <ContactSection dict={dict} lang={resolvedLang} />
         <Footer lang={resolvedLang} dict={dict} />
       </main>
       <AuthModal dict={dict} />

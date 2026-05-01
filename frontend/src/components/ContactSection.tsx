@@ -1,22 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Send, Phone, Mail, MapPin } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
-export default function ContactSection({ dict }: { dict: Dictionary }) {
+type ContactOverrides = {
+  title?: string;
+  subtitle?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  send?: string;
+  success?: string;
+  success_subtitle?: string;
+  img?: string;
+  whatsapp_number?: string;
+  email_address?: string;
+  map_address?: string;
+  _hasTranslations?: boolean;
+};
+
+const LS_CONTACT = (lang: string) => `tc_contact_overrides_${lang}`;
+
+export default function ContactSection({
+  dict,
+  lang = "nl",
+}: {
+  dict: Dictionary;
+  lang?: string;
+}) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [overrides, setOverrides] = useState<ContactOverrides>({});
+
+  useEffect(() => {
+    let pollTimer: ReturnType<typeof setTimeout> | null = null;
+    let cancelled = false;
+    const deadline = Date.now() + 120_000;
+
+    const fetchOverrides = async () => {
+      try {
+        const cached = localStorage.getItem(LS_CONTACT(lang));
+        setOverrides(cached ? (JSON.parse(cached) as ContactOverrides) : {});
+      } catch { /* ignore */ }
+
+      try {
+        const res = await fetch(`/api/contact-overrides/${lang}`);
+        if (res.ok) {
+          const data = (await res.json()) as ContactOverrides;
+          const { _hasTranslations, ...rest } = data;
+          setOverrides(rest);
+          localStorage.setItem(LS_CONTACT(lang), JSON.stringify(rest));
+          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
+            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
+          }
+        }
+      } catch { /* ignore */ }
+    };
+    void fetchOverrides();
+
+    const handler = () => void fetchOverrides();
+    window.addEventListener("tc:contact-updated", handler);
+    return () => {
+      cancelled = true;
+      if (pollTimer) clearTimeout(pollTimer);
+      window.removeEventListener("tc:contact-updated", handler);
+    };
+  }, [lang]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    // Placeholder — wire to email API in a later step
     await new Promise((r) => setTimeout(r, 800));
     setSent(true);
     setLoading(false);
   }
+
+  const o = overrides;
+  const whatsappNumber = o.whatsapp_number || "31685352412";
+  const emailAddress = o.email_address || "info@teamcargo.nl";
+  const mapAddress = o.map_address || "Poortland 146, 1046 BD Amsterdam";
+  const whatsappHref = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}`;
+  const emailHref = `mailto:${emailAddress}`;
+  const mapHref = `https://maps.google.com/?q=${encodeURIComponent(mapAddress)}`;
 
   return (
     <section
@@ -27,15 +94,13 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-2xl">
           {/* Left — image background panel */}
           <div className="relative px-8 py-12 sm:px-12 sm:py-16 flex flex-col justify-between overflow-hidden">
-            {/* Background photo */}
             <Image
-              src="/images/office_webP.webp"
+              src={o.img || "/images/office_webP.webp"}
               alt="Team Cargo office"
               fill
               className="object-cover object-center"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
-            {/* Dark overlay */}
             <div
               className="absolute inset-0"
               style={{
@@ -51,31 +116,31 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
                 className="text-white font-extrabold tracking-tight mb-4 drop-shadow-lg"
                 style={{ fontSize: "clamp(1.8rem, 4vw, 2.6rem)" }}
               >
-                {dict.contact.title}
+                {o.title || dict.contact.title}
               </h2>
               <p className="text-white/80 mb-10 text-base leading-relaxed drop-shadow">
-                {dict.contact.subtitle}
+                {o.subtitle || dict.contact.subtitle}
               </p>
 
               <div className="space-y-5">
                 {[
                   {
                     Icon: Phone,
-                    label: "WhatsApp",
-                    value: "+31 6 85352412",
-                    href: "https://wa.me/31685352412",
+                    label: o.phone || "WhatsApp",
+                    value: `+${whatsappNumber.replace(/[^0-9]/g, "").replace(/^31/, "31 ")}`,
+                    href: whatsappHref,
                   },
                   {
                     Icon: Mail,
-                    label: "E-mail",
-                    value: "info@teamcargo.nl",
-                    href: "mailto:info@teamcargo.nl",
+                    label: o.email || "E-mail",
+                    value: emailAddress,
+                    href: emailHref,
                   },
                   {
                     Icon: MapPin,
-                    label: "Address",
-                    value: "Poortland 146, 1046 BD Amsterdam",
-                    href: "https://maps.google.com/?q=Poortland+146+Amsterdam",
+                    label: o.address || "Address",
+                    value: mapAddress,
+                    href: mapHref,
                   },
                 ].map(({ Icon, label, value, href }) => (
                   <a
@@ -101,7 +166,6 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
               </div>
             </div>
 
-            {/* Bottom accent */}
             <div className="relative z-10 mt-12 pt-8 border-t border-white/10">
               <p className="text-white/30 text-xs font-bold uppercase tracking-widest">
                 Team Cargo &copy; 2026
@@ -117,10 +181,10 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
                   <Send className="w-6 h-6 text-[var(--brand-green)]" />
                 </div>
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  {dict.contact.success}
+                  {o.success || dict.contact.success}
                 </h3>
                 <p className="text-gray-500 text-sm">
-                  {dict.contact.success_subtitle}
+                  {o.success_subtitle || dict.contact.success_subtitle}
                 </p>
               </div>
             ) : (
@@ -171,7 +235,7 @@ export default function ContactSection({ dict }: { dict: Dictionary }) {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      {dict.contact.send}
+                      {o.send || dict.contact.send}
                     </>
                   )}
                 </button>

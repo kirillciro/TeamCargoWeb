@@ -40,6 +40,11 @@ import {
   type HousingTexts,
   type HousingTranslations,
 } from "./housing-translate.js";
+import {
+  translateContactTexts,
+  type ContactTexts,
+  type ContactTranslations,
+} from "./contact-translate.js";
 
 const app = express();
 
@@ -1844,6 +1849,89 @@ app.delete(
   async (_req: AuthedRequest, res) => {
     await pool.query(
       "DELETE FROM app_settings WHERE key = 'housing_overrides'",
+    );
+    res.json({ ok: true });
+  },
+);
+
+// ── Contact customization ──────────────────────────────────────────────────────────────────────────────
+app.post(
+  "/admin/customization/contact",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    try {
+      const { source } = req.body as { source: ContactTexts };
+      if (!source || typeof source !== "object") {
+        res.status(400).json({ message: "source texts required" });
+        return;
+      }
+      await pool.query(
+        `INSERT INTO app_settings (key, value, updated_at)
+         VALUES ('contact_overrides', $1, NOW())
+         ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+        [JSON.stringify({ source, translations: {} })],
+      );
+      res.json({ ok: true, translating: true });
+      void (async () => {
+        try {
+          const translations = await translateContactTexts(source);
+          await pool.query(
+            `UPDATE app_settings SET value = $1, updated_at = NOW()
+             WHERE key = 'contact_overrides'`,
+            [JSON.stringify({ source, translations })],
+          );
+          console.log("[contact-translate-bg] done");
+        } catch (err) {
+          console.error("[contact-translate-bg] error:", err);
+        }
+      })();
+    } catch (err) {
+      console.error("[contact-customization] error:", err);
+      res.status(500).json({ message: "Save failed" });
+    }
+  },
+);
+
+app.get("/contact-overrides/:lang", async (req, res) => {
+  try {
+    const { lang } = req.params;
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'contact_overrides'",
+    );
+    if (result.rows.length === 0) {
+      res.json({});
+      return;
+    }
+    const data = result.rows[0].value as {
+      source: ContactTexts;
+      translations: ContactTranslations;
+    };
+    const langTexts =
+      data.translations[lang] ?? data.translations["en"] ?? data.source ?? {};
+    const src = data.source as Record<string, unknown>;
+    const nonTranslatable: Record<string, unknown> = {};
+    for (const key of ["img", "whatsapp_number", "email_address", "map_address"]) {
+      if (src[key] !== undefined) nonTranslatable[key] = src[key];
+    }
+    res.json({
+      ...langTexts,
+      ...nonTranslatable,
+      _hasTranslations: Object.keys(data.translations ?? {}).length > 0,
+    });
+  } catch (err) {
+    console.error("[contact-overrides] error:", err);
+    res.json({});
+  }
+});
+
+app.delete(
+  "/admin/customization/contact",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    await pool.query(
+      "DELETE FROM app_settings WHERE key = 'contact_overrides'",
     );
     res.json({ ok: true });
   },

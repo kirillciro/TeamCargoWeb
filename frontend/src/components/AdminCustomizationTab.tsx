@@ -94,6 +94,7 @@ import {
   Tv,
   Bed,
   Heart,
+  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { fetchWithAuth } from "@/lib/auth-client";
@@ -350,7 +351,7 @@ const COLOR_DEFAULTS = {
 };
 
 type ColorKey = keyof typeof COLOR_DEFAULTS;
-type SubTab = "colors" | "hero" | "services" | "about" | "housing";
+type SubTab = "colors" | "hero" | "services" | "about" | "housing" | "contact";
 type SectionKey =
   | "slogan"
   | "badge"
@@ -388,6 +389,12 @@ type HousingSectionKey =
   | "housingCta"
   | "housingImg1"
   | "housingImg2";
+
+type ContactSectionKey =
+  | "contactHeading"
+  | "contactDetails"
+  | "contactForm"
+  | "contactImg";
 
 const DEFAULT_SVC_IMGS = [
   "/images/gls_vans_webP.webp",
@@ -573,6 +580,38 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [housingTranslationPending, setHousingTranslationPending] =
     useState(false);
 
+  // ── Contact state ─────────────────────────────────────────────────────────
+  const [contactTitle, setContactTitle] = useState("");
+  const [contactSubtitle, setContactSubtitle] = useState("");
+  const [contactPhoneLabel, setContactPhoneLabel] = useState("");
+  const [contactEmailLabel, setContactEmailLabel] = useState("");
+  const [contactAddressLabel, setContactAddressLabel] = useState("");
+  const [contactSend, setContactSend] = useState("");
+  const [contactSuccess, setContactSuccess] = useState("");
+  const [contactSuccessSubtitle, setContactSuccessSubtitle] = useState("");
+  const [contactWhatsapp, setContactWhatsapp] = useState("");
+  const [contactEmailAddress, setContactEmailAddress] = useState("");
+  const [contactMapAddress, setContactMapAddress] = useState("");
+  const [contactImg, setContactImg] = useState("");
+  const [contactSectionSaved, setContactSectionSaved] = useState<
+    Record<ContactSectionKey, boolean>
+  >({
+    contactHeading: false,
+    contactDetails: false,
+    contactForm: false,
+    contactImg: false,
+  });
+  const [contactSavingKey, setContactSavingKey] =
+    useState<ContactSectionKey | null>(null);
+  const [contactTranslating, setContactTranslating] = useState(false);
+  const [contactTranslateError, setContactTranslateError] = useState<
+    string | null
+  >(null);
+  const [contactSavingAll, setContactSavingAll] = useState(false);
+  const [contactAllSaved, setContactAllSaved] = useState(false);
+  const [contactTranslationPending, setContactTranslationPending] =
+    useState(false);
+
   // ── Translation-in-progress indicators ───────────────────────────────────
   const [heroTranslationPending, setHeroTranslationPending] = useState(false);
   const [svcTranslationPending, setSvcTranslationPending] = useState(false);
@@ -707,6 +746,26 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
         ]);
         if (h.img1) setHousingImg1(h.img1);
         if (h.img2) setHousingImg2(h.img2);
+      }
+    } catch {
+      /* ignore */
+    }
+    try {
+      const saved = localStorage.getItem("tc_contact_overrides");
+      if (saved) {
+        const c = JSON.parse(saved) as Record<string, string>;
+        setContactTitle(c.title ?? "");
+        setContactSubtitle(c.subtitle ?? "");
+        setContactPhoneLabel(c.phone ?? "");
+        setContactEmailLabel(c.email ?? "");
+        setContactAddressLabel(c.address ?? "");
+        setContactSend(c.send ?? "");
+        setContactSuccess(c.success ?? "");
+        setContactSuccessSubtitle(c.success_subtitle ?? "");
+        setContactWhatsapp(c.whatsapp_number ?? "");
+        setContactEmailAddress(c.email_address ?? "");
+        setContactMapAddress(c.map_address ?? "");
+        if (c.img) setContactImg(c.img);
       }
     } catch {
       /* ignore */
@@ -1314,6 +1373,126 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     }
   };
 
+  // ── Contact helpers ─────────────────────────────────────────────────────────────────
+  const buildContactSource = () => ({
+    title: contactTitle,
+    subtitle: contactSubtitle,
+    phone: contactPhoneLabel,
+    email: contactEmailLabel,
+    address: contactAddressLabel,
+    send: contactSend,
+    success: contactSuccess,
+    success_subtitle: contactSuccessSubtitle,
+    whatsapp_number: contactWhatsapp,
+    email_address: contactEmailAddress,
+    map_address: contactMapAddress,
+    img: contactImg,
+  });
+
+  const persistContact = async (
+    source: ReturnType<typeof buildContactSource>,
+    key: ContactSectionKey,
+  ) => {
+    localStorage.setItem("tc_contact_overrides", JSON.stringify(source));
+    setContactSavingKey(key);
+    setContactTranslating(true);
+    setContactTranslateError(null);
+    try {
+      const res = await fetchWithAuth("/api/admin/customization/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source }),
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        translating?: boolean;
+        message?: string;
+      };
+      if (!res.ok) throw new Error(body.message ?? "Save failed");
+      window.dispatchEvent(new Event("tc:contact-updated"));
+      if (body.translating) {
+        setContactTranslationPending(true);
+        startTranslationPoll(
+          "/api/contact-overrides/nl",
+          setContactTranslationPending,
+          "tc:contact-updated",
+        );
+      }
+      setContactSectionSaved((prev) => ({ ...prev, [key]: true }));
+      setTimeout(
+        () => setContactSectionSaved((prev) => ({ ...prev, [key]: false })),
+        2500,
+      );
+    } catch (err) {
+      setContactTranslateError(err instanceof Error ? err.message : "Save failed");
+    } finally {
+      setContactTranslating(false);
+      setContactSavingKey(null);
+    }
+  };
+
+  const saveAllContact = async () => {
+    setContactSavingAll(true);
+    setContactTranslateError(null);
+    try {
+      const source = buildContactSource();
+      localStorage.setItem("tc_contact_overrides", JSON.stringify(source));
+      const res = await fetchWithAuth("/api/admin/customization/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source }),
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        translating?: boolean;
+        message?: string;
+      };
+      if (!res.ok) throw new Error(body.message ?? "Save failed");
+      window.dispatchEvent(new Event("tc:contact-updated"));
+      if (body.translating) {
+        setContactTranslationPending(true);
+        startTranslationPoll(
+          "/api/contact-overrides/nl",
+          setContactTranslationPending,
+          "tc:contact-updated",
+        );
+      }
+      setContactAllSaved(true);
+      setTimeout(() => setContactAllSaved(false), 2500);
+    } catch (err) {
+      setContactTranslateError(err instanceof Error ? err.message : "Save failed");
+    } finally {
+      setContactSavingAll(false);
+    }
+  };
+
+  const resetAllContact = async () => {
+    setContactTitle("");
+    setContactSubtitle("");
+    setContactPhoneLabel("");
+    setContactEmailLabel("");
+    setContactAddressLabel("");
+    setContactSend("");
+    setContactSuccess("");
+    setContactSuccessSubtitle("");
+    setContactWhatsapp("");
+    setContactEmailAddress("");
+    setContactMapAddress("");
+    setContactImg("");
+    localStorage.removeItem("tc_contact_overrides");
+    setContactTranslationPending(false);
+    setContactSavingAll(true);
+    setContactTranslateError(null);
+    try {
+      await fetchWithAuth("/api/admin/customization/contact", { method: "DELETE" });
+      window.dispatchEvent(new Event("tc:contact-updated"));
+    } catch (err) {
+      setContactTranslateError(err instanceof Error ? err.message : "Reset failed");
+    } finally {
+      setContactSavingAll(false);
+    }
+  };
+
   // ── Color fields config ───────────────────────────────────────────────────
   const colorFields: { key: ColorKey; label: string; default: string }[] = [
     {
@@ -1351,7 +1530,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
 
       {/* ── Sub-tab switcher ── */}
       <div className="flex flex-wrap gap-1 bg-slate-800/60 rounded-xl p-1 w-fit">
-        {(["colors", "hero", "services", "about", "housing"] as SubTab[]).map(
+        {(["colors", "hero", "services", "about", "housing", "contact"] as SubTab[]).map(
           (key) => {
             const labels: Record<SubTab, string> = {
               colors: dict.admin.custom_subtab_colors,
@@ -1359,6 +1538,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
               services: dict.admin.custom_subtab_services,
               about: dict.admin.custom_subtab_about,
               housing: dict.admin.custom_subtab_housing,
+              contact: dict.admin.custom_subtab_contact,
             };
             const Icons: Record<SubTab, typeof Palette> = {
               colors: Palette,
@@ -1366,6 +1546,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
               services: LayoutGrid,
               about: Users,
               housing: Home,
+              contact: Mail,
             };
             const Icon = Icons[key];
             return (
@@ -3341,7 +3522,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                         <PickedIcon className="w-4 h-4 text-amber-400" />
                       </button>
                       {isPickerOpen && (
-                        <div className="absolute left-0 top-11 z-50 bg-slate-800 border border-slate-700 rounded-xl p-3 shadow-2xl w-64">
+                        <div className="absolute left-0 bottom-full mb-2 z-50 bg-slate-800 border border-slate-700 rounded-xl p-3 shadow-2xl w-64">
                           <div className="grid grid-cols-5 gap-1.5 mb-2">
                             {HOUSING_ICON_OPTS[housingIconPages[i]].map(
                               (opt) => (
@@ -3628,6 +3809,284 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                 Restore all defaults
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Contact Section ─────────────────────────────────────────────────── */}
+      {subTab === "contact" && (
+        <div className="space-y-6">
+          {/* Translating banner */}
+          {contactTranslationPending && (
+            <div className="flex items-center gap-3 rounded-xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-300">
+              <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+              Translating contact section into all languages&hellip;
+            </div>
+          )}
+          {contactTranslateError && (
+            <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              {contactTranslateError}
+            </div>
+          )}
+
+          {/* Section heading */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-white/70 uppercase tracking-wider">
+              Section Heading
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Title</label>
+                <input
+                  type="text"
+                  value={contactTitle}
+                  onChange={(e) => setContactTitle(e.target.value)}
+                  placeholder="Contact us"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Subtitle</label>
+                <textarea
+                  value={contactSubtitle}
+                  onChange={(e) => setContactSubtitle(e.target.value)}
+                  placeholder="We&apos;re here to help"
+                  rows={2}
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none resize-none"
+                />
+              </div>
+            </div>
+            <button
+              onClick={() => void persistContact(buildContactSource(), "contactHeading")}
+              disabled={contactTranslating}
+              className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 disabled:opacity-60 transition-colors"
+            >
+              {contactSavingKey === "contactHeading" ? (
+                contactSectionSaved.contactHeading ? (
+                  <><Check className="w-4 h-4 text-green-400" /> Saved</>
+                ) : (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Saving&hellip;</>
+                )
+              ) : (
+                <><Save className="w-4 h-4" /> Save &amp; translate</>
+              )}
+            </button>
+          </div>
+
+          {/* Contact details (non-translatable data) */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-white/70 uppercase tracking-wider">
+              Contact Details
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">WhatsApp number</label>
+                <input
+                  type="text"
+                  value={contactWhatsapp}
+                  onChange={(e) => setContactWhatsapp(e.target.value)}
+                  placeholder="31685352412"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Email address</label>
+                <input
+                  type="text"
+                  value={contactEmailAddress}
+                  onChange={(e) => setContactEmailAddress(e.target.value)}
+                  placeholder="info@example.com"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Map / address URL</label>
+                <input
+                  type="text"
+                  value={contactMapAddress}
+                  onChange={(e) => setContactMapAddress(e.target.value)}
+                  placeholder="https://maps.google.com/..."
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+            </div>
+            <p className="text-xs text-slate-500">These values are not translated — they are used directly.</p>
+            <button
+              onClick={() => void persistContact(buildContactSource(), "contactDetails")}
+              disabled={contactTranslating}
+              className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 disabled:opacity-60 transition-colors"
+            >
+              {contactSavingKey === "contactDetails" ? (
+                contactSectionSaved.contactDetails ? (
+                  <><Check className="w-4 h-4 text-green-400" /> Saved</>
+                ) : (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Saving&hellip;</>
+                )
+              ) : (
+                <><Save className="w-4 h-4" /> Save</>
+              )}
+            </button>
+          </div>
+
+          {/* Contact labels (translatable row labels) */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-white/70 uppercase tracking-wider">
+              Row Labels
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Phone / WhatsApp label</label>
+                <input
+                  type="text"
+                  value={contactPhoneLabel}
+                  onChange={(e) => setContactPhoneLabel(e.target.value)}
+                  placeholder="Phone"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Email label</label>
+                <input
+                  type="text"
+                  value={contactEmailLabel}
+                  onChange={(e) => setContactEmailLabel(e.target.value)}
+                  placeholder="Email"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Address label</label>
+                <input
+                  type="text"
+                  value={contactAddressLabel}
+                  onChange={(e) => setContactAddressLabel(e.target.value)}
+                  placeholder="Address"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+            </div>
+            <button
+              onClick={() => void persistContact(buildContactSource(), "contactForm")}
+              disabled={contactTranslating}
+              className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 disabled:opacity-60 transition-colors"
+            >
+              {contactSavingKey === "contactForm" ? (
+                contactSectionSaved.contactForm ? (
+                  <><Check className="w-4 h-4 text-green-400" /> Saved</>
+                ) : (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Saving&hellip;</>
+                )
+              ) : (
+                <><Save className="w-4 h-4" /> Save &amp; translate</>
+              )}
+            </button>
+          </div>
+
+          {/* Form messages */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-white/70 uppercase tracking-wider">
+              Form Messages
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Send button text</label>
+                <input
+                  type="text"
+                  value={contactSend}
+                  onChange={(e) => setContactSend(e.target.value)}
+                  placeholder="Send message"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Success heading</label>
+                <input
+                  type="text"
+                  value={contactSuccess}
+                  onChange={(e) => setContactSuccess(e.target.value)}
+                  placeholder="Message sent!"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Success subtitle</label>
+                <textarea
+                  value={contactSuccessSubtitle}
+                  onChange={(e) => setContactSuccessSubtitle(e.target.value)}
+                  placeholder="We will get back to you shortly."
+                  rows={2}
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/50 focus:outline-none resize-none"
+                />
+              </div>
+            </div>
+            <button
+              onClick={() => void persistContact(buildContactSource(), "contactForm")}
+              disabled={contactTranslating}
+              className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 disabled:opacity-60 transition-colors"
+            >
+              {contactSavingKey === "contactForm" ? (
+                contactSectionSaved.contactForm ? (
+                  <><Check className="w-4 h-4 text-green-400" /> Saved</>
+                ) : (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Saving&hellip;</>
+                )
+              ) : (
+                <><Save className="w-4 h-4" /> Save &amp; translate</>
+              )}
+            </button>
+          </div>
+
+          {/* Background image */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-white/70 uppercase tracking-wider">
+              Background / Side Image
+            </h3>
+            <CloudinaryLogoUpload
+              value={contactImg}
+              onChange={(url: string) => setContactImg(url)}
+              folder="tc-contact"
+            />
+            <button
+              onClick={() => void persistContact(buildContactSource(), "contactImg")}
+              disabled={contactTranslating}
+              className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 disabled:opacity-60 transition-colors"
+            >
+              {contactSavingKey === "contactImg" ? (
+                contactSectionSaved.contactImg ? (
+                  <><Check className="w-4 h-4 text-green-400" /> Saved</>
+                ) : (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Saving&hellip;</>
+                )
+              ) : (
+                <><Save className="w-4 h-4" /> Save</>
+              )}
+            </button>
+          </div>
+
+          {/* Save all / Reset all */}
+          <div className="flex items-center gap-3 pt-2">
+            <button
+              onClick={() => void saveAllContact()}
+              disabled={contactSavingAll || contactTranslating}
+              className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+            >
+              {contactSavingAll ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : contactAllSaved ? (
+                <Check className="w-4 h-4" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              {contactAllSaved ? "All saved!" : "Save all"}
+            </button>
+            <button
+              onClick={() => void resetAllContact()}
+              disabled={contactSavingAll || contactTranslating}
+              className="inline-flex items-center gap-2 rounded-lg border border-red-700/60 px-5 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:border-red-500 disabled:opacity-60 transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Restore all defaults
+            </button>
           </div>
         </div>
       )}

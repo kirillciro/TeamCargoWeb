@@ -11,71 +11,51 @@ function getOpenAI(): OpenAI {
   return _openai;
 }
 
-/** Text fields stored per-language. Images are non-translatable. */
-export type HousingTexts = {
-  label?: string;
+/** Text fields stored per-language. Image is non-translatable. */
+export type ContactTexts = {
   title?: string;
-  description?: string;
-  perk0?: string;
-  perk1?: string;
-  perk2?: string;
-  perk3?: string;
-  cta?: string;
-  // Non-translatable overrides (same value across all languages)
-  perk0Icon?: string;
-  perk1Icon?: string;
-  perk2Icon?: string;
-  perk3Icon?: string;
-  img1?: string;
-  img2?: string;
+  subtitle?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  send?: string;
+  success?: string;
+  success_subtitle?: string;
+  // Non-translatable
+  img?: string;
+  whatsapp_number?: string;
+  email_address?: string;
+  map_address?: string;
 };
 
-export type HousingTranslations = Record<string, HousingTexts>;
+export type ContactTranslations = Record<string, ContactTexts>;
 
 const LANGS = [
-  "nl",
-  "en",
-  "de",
-  "fr",
-  "it",
-  "es",
-  "pt",
-  "pl",
-  "ro",
-  "et",
-  "lv",
-  "fi",
-  "sv",
-  "da",
-  "no",
-  "cs",
-  "hu",
-  "el",
+  "nl", "en", "de", "fr", "it", "es", "pt", "pl", "ro",
+  "et", "lv", "fi", "sv", "da", "no", "cs", "hu", "el",
 ];
 
-const TRANSLATABLE_KEYS: (keyof HousingTexts)[] = [
-  "label",
+const TRANSLATABLE_KEYS: (keyof ContactTexts)[] = [
   "title",
-  "description",
-  "perk0",
-  "perk1",
-  "perk2",
-  "perk3",
-  "cta",
+  "subtitle",
+  "phone",
+  "email",
+  "address",
+  "send",
+  "success",
+  "success_subtitle",
 ];
 
-const NON_TRANSLATABLE_KEYS: (keyof HousingTexts)[] = [
-  "perk0Icon",
-  "perk1Icon",
-  "perk2Icon",
-  "perk3Icon",
-  "img1",
-  "img2",
+const NON_TRANSLATABLE_KEYS: (keyof ContactTexts)[] = [
+  "img",
+  "whatsapp_number",
+  "email_address",
+  "map_address",
 ];
 
-export async function translateHousingTexts(
-  source: HousingTexts,
-): Promise<HousingTranslations> {
+export async function translateContactTexts(
+  source: ContactTexts,
+): Promise<ContactTranslations> {
   const toTranslate = Object.fromEntries(
     TRANSLATABLE_KEYS.filter(
       (k) => source[k] && (source[k] as string).trim(),
@@ -83,8 +63,7 @@ export async function translateHousingTexts(
   ) as Record<string, string>;
 
   if (Object.keys(toTranslate).length === 0) {
-    // Nothing to translate (only non-translatable fields changed) — mark as done
-    const done: HousingTranslations = {};
+    const done: ContactTranslations = {};
     for (const lang of LANGS) done[lang] = {};
     return done;
   }
@@ -94,7 +73,7 @@ export async function translateHousingTexts(
 Rules:
 - Keep the same tone: professional, concise, clear
 - Preserve formatting, punctuation, and capitalization style
-- Do NOT translate proper nouns, brand names, or city names (e.g. Amsterdam, Netherlands)
+- Do NOT translate proper nouns, brand names, or city names (e.g. Amsterdam, Netherlands, Team Cargo)
 - Return ONLY a valid JSON object where top-level keys are language codes and values are objects with the same field keys as the input
 
 Target language codes: ${LANGS.join(", ")}
@@ -108,7 +87,7 @@ ${JSON.stringify(toTranslate, null, 2)}`;
     if (attempt > 0) {
       const delay = Math.min(5000 * Math.pow(2, attempt - 1), 40_000);
       console.log(
-        `[housing-translate] retry ${attempt}/${MAX_ATTEMPTS - 1} after ${delay}ms…`,
+        `[contact-translate] retry ${attempt}/${MAX_ATTEMPTS - 1} after ${delay}ms…`,
       );
       await new Promise((r) => setTimeout(r, delay));
     }
@@ -123,10 +102,10 @@ ${JSON.stringify(toTranslate, null, 2)}`;
 
       const translated = JSON.parse(
         response.choices[0].message.content ?? "{}",
-      ) as HousingTranslations;
+      ) as ContactTranslations;
 
       // Merge non-translatable overrides into every language
-      const nonTranslatable: Partial<HousingTexts> = {};
+      const nonTranslatable: Partial<ContactTexts> = {};
       NON_TRANSLATABLE_KEYS.forEach((k) => {
         if (source[k]) nonTranslatable[k] = source[k];
       });
@@ -141,7 +120,7 @@ ${JSON.stringify(toTranslate, null, 2)}`;
     } catch (err) {
       lastErr = err;
       console.warn(
-        `[housing-translate] attempt ${attempt + 1} failed:`,
+        `[contact-translate] attempt ${attempt + 1} failed:`,
         err instanceof Error ? err.message : err,
       );
     }
