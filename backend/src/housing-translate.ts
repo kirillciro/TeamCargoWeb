@@ -28,6 +28,7 @@ export type HousingTexts = {
   perk3Icon?: string;
   img1?: string;
   img2?: string;
+  bg?: string;
 };
 
 export type HousingTranslations = Record<string, HousingTexts>;
@@ -71,6 +72,7 @@ const NON_TRANSLATABLE_KEYS: (keyof HousingTexts)[] = [
   "perk3Icon",
   "img1",
   "img2",
+  "bg",
 ];
 
 export async function translateHousingTexts(

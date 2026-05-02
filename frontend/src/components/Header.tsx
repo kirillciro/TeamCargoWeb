@@ -54,10 +54,9 @@ export default function Header({
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-[#040f08]/98 shadow-lg shadow-black/30 backdrop-blur-sm"
-            : "bg-[#040f08]"
+          scrolled ? "shadow-lg shadow-black/30 backdrop-blur-sm" : ""
         }`}
+        style={{ backgroundColor: "var(--brand-header-bg)" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16 sm:h-20">
@@ -165,10 +164,13 @@ export default function Header({
       {/* Panel — slides in from right */}
       <div
         ref={panelRef}
-        className={`fixed top-0 right-0 z-100 h-full bg-[#040f08] shadow-2xl flex flex-col transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 right-0 z-100 h-full shadow-2xl flex flex-col transition-transform duration-300 ease-in-out md:hidden ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
-        style={{ width: "min(300px, 82vw)" }}
+        style={{
+          width: "min(300px, 82vw)",
+          backgroundColor: "var(--brand-header-bg)",
+        }}
         aria-modal="true"
         role="dialog"
       >

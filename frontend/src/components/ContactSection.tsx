@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useScroll, useTransform, motion } from "framer-motion";
 import {
-  Send,
   Phone,
   Mail,
   MapPin,
@@ -36,6 +36,7 @@ type ContactOverrides = {
   whatsapp_number?: string;
   email_address?: string;
   map_address?: string;
+  map_pin?: string;
   phoneIcon?: string;
   emailIcon?: string;
   addressIcon?: string;
@@ -71,9 +72,43 @@ export default function ContactSection({
   dict: Dictionary;
   lang?: string;
 }) {
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const [overrides, setOverrides] = useState<ContactOverrides>({});
+  // mapSrc is locked in after the first successful load so the iframe never
+  // reloads mid-animation due to overrides arriving late.
+  const [mapSrc, setMapSrc] = useState<string | null>(null);
+
+  // ── Scroll-driven animation setup ──────────────────────────────────────────
+  // scrollYProgress: 0 = section top enters viewport bottom (first pixel visible)
+  //                  1 = section top reaches viewport center (animation fully done)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start center"],
+  });
+
+  // Left panel — heading slides in from left (starts immediately)
+  const headingX = useTransform(scrollYProgress, [0, 0.4], [-60, 0]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
+  // Left panel — subtitle, tiny delay
+  const subtitleX = useTransform(scrollYProgress, [0.05, 0.45], [-60, 0]);
+  const subtitleOpacity = useTransform(scrollYProgress, [0.05, 0.45], [0, 1]);
+  // Left panel — contact rows slide up, staggered
+  const row0Opacity = useTransform(scrollYProgress, [0.1, 0.5], [0, 1]);
+  const row0Y = useTransform(scrollYProgress, [0.1, 0.5], [28, 0]);
+  const row1Opacity = useTransform(scrollYProgress, [0.2, 0.6], [0, 1]);
+  const row1Y = useTransform(scrollYProgress, [0.2, 0.6], [28, 0]);
+  const row2Opacity = useTransform(scrollYProgress, [0.3, 0.7], [0, 1]);
+  const row2Y = useTransform(scrollYProgress, [0.3, 0.7], [28, 0]);
+  // Right panel — map fades + slides in from right
+  const mapX = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
+  const mapOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+
+  // Convenience arrays
+  const rowStyles = [
+    { opacity: row0Opacity, y: row0Y },
+    { opacity: row1Opacity, y: row1Y },
+    { opacity: row2Opacity, y: row2Y },
+  ];
 
   useEffect(() => {
     let pollTimer: ReturnType<typeof setTimeout> | null = null;
@@ -94,6 +129,16 @@ export default function ContactSection({
           const data = (await res.json()) as ContactOverrides;
           const { _hasTranslations, ...rest } = data;
           setOverrides(rest);
+          // Lock in the map src from the authoritative API response.
+          // Using the functional updater so we only ever set it once — the
+          // first API response wins and subsequent polling won't reload the iframe.
+          const q =
+            rest.map_pin ||
+            rest.map_address ||
+            "Poortland 146, 1046 BD Amsterdam";
+          setMapSrc(
+            `https://maps.google.com/maps?q=${encodeURIComponent(q)}&output=embed&z=15`,
+          );
           localStorage.setItem(LS_CONTACT(lang), JSON.stringify(rest));
           if (!_hasTranslations && !cancelled && Date.now() < deadline) {
             pollTimer = setTimeout(() => void fetchOverrides(), 5000);
@@ -114,14 +159,6 @@ export default function ContactSection({
     };
   }, [lang]);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setSent(true);
-    setLoading(false);
-  }
-
   const o = overrides;
   const whatsappNumber = o.whatsapp_number || "31685352412";
   const emailAddress = o.email_address || "info@teamcargo.nl";
@@ -130,14 +167,42 @@ export default function ContactSection({
   const emailHref = `mailto:${emailAddress}`;
   const mapHref = `https://maps.google.com/?q=${encodeURIComponent(mapAddress)}`;
 
+  const contactRows = [
+    {
+      Icon:
+        (o.phoneIcon ? CONTACT_ROW_ICON_MAP[o.phoneIcon] : undefined) ??
+        DEFAULT_ROW_ICONS[0],
+      label: o.phone || "WhatsApp",
+      value: `+${whatsappNumber.replace(/[^0-9]/g, "").replace(/^31/, "31 ")}`,
+      href: whatsappHref,
+    },
+    {
+      Icon:
+        (o.emailIcon ? CONTACT_ROW_ICON_MAP[o.emailIcon] : undefined) ??
+        DEFAULT_ROW_ICONS[1],
+      label: o.email || "E-mail",
+      value: emailAddress,
+      href: emailHref,
+    },
+    {
+      Icon:
+        (o.addressIcon ? CONTACT_ROW_ICON_MAP[o.addressIcon] : undefined) ??
+        DEFAULT_ROW_ICONS[2],
+      label: o.address || "Adres",
+      value: mapAddress,
+      href: mapHref,
+    },
+  ];
+
   return (
     <section
+      ref={sectionRef}
       id="contact"
       className="bg-gray-50 py-20 sm:py-28 min-h-screen flex flex-col justify-center"
     >
       <div className="w-[90%] mx-auto max-w-7xl lg:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-2xl">
-          {/* Left — image background panel */}
+          {/* ── Left — image panel, scroll-animated ── */}
           <div className="relative px-8 py-12 sm:px-12 sm:py-16 flex flex-col justify-between overflow-hidden">
             <Image
               src={o.img || "/images/office_webP.webp"}
@@ -153,58 +218,41 @@ export default function ContactSection({
                   "linear-gradient(to right, rgba(2,20,10,0.95) 0%, rgba(2,20,10,0.90) 17%, rgba(2,20,10,0.80) 33%, rgba(2,20,10,0.70) 50%, rgba(2,20,10,0.10) 100%)",
               }}
             />
-            <div className="relative z-10">
-              <span className="inline-block text-[#4dc95e] text-xs font-bold uppercase tracking-[0.25em] mb-3">
-                Contact
-              </span>
-              <h2
-                className="text-white font-extrabold tracking-tight mb-4 drop-shadow-lg"
-                style={{ fontSize: "clamp(1.8rem, 4vw, 2.6rem)" }}
-              >
-                {o.title || dict.contact.title}
-              </h2>
-              <p className="text-white/80 mb-10 text-base leading-relaxed drop-shadow">
-                {o.subtitle || dict.contact.subtitle}
-              </p>
 
+            <div className="relative z-10">
+              {/* Heading — slides in from left */}
+              <motion.div style={{ x: headingX, opacity: headingOpacity }}>
+                <span className="inline-block text-[#4dc95e] text-xs font-bold uppercase tracking-[0.25em] mb-3">
+                  Contact
+                </span>
+                <h2
+                  className="text-white font-extrabold tracking-tight mb-4 drop-shadow-lg"
+                  style={{ fontSize: "clamp(1.8rem, 4vw, 2.6rem)" }}
+                >
+                  {o.title || dict.contact.title}
+                </h2>
+              </motion.div>
+
+              {/* Subtitle — slides in from left, delayed */}
+              <motion.p
+                style={{ x: subtitleX, opacity: subtitleOpacity }}
+                className="text-white/80 mb-10 text-base leading-relaxed drop-shadow"
+              >
+                {o.subtitle || dict.contact.subtitle}
+              </motion.p>
+
+              {/* Contact rows — each slides up, staggered */}
               <div className="space-y-5">
-                {[
-                  {
-                    Icon:
-                      (o.phoneIcon
-                        ? CONTACT_ROW_ICON_MAP[o.phoneIcon]
-                        : undefined) ?? DEFAULT_ROW_ICONS[0],
-                    label: o.phone || "WhatsApp",
-                    value: `+${whatsappNumber.replace(/[^0-9]/g, "").replace(/^31/, "31 ")}`,
-                    href: whatsappHref,
-                  },
-                  {
-                    Icon:
-                      (o.emailIcon
-                        ? CONTACT_ROW_ICON_MAP[o.emailIcon]
-                        : undefined) ?? DEFAULT_ROW_ICONS[1],
-                    label: o.email || "E-mail",
-                    value: emailAddress,
-                    href: emailHref,
-                  },
-                  {
-                    Icon:
-                      (o.addressIcon
-                        ? CONTACT_ROW_ICON_MAP[o.addressIcon]
-                        : undefined) ?? DEFAULT_ROW_ICONS[2],
-                    label: o.address || "Address",
-                    value: mapAddress,
-                    href: mapHref,
-                  },
-                ].map(({ Icon, label, value, href }) => (
-                  <a
+                {contactRows.map(({ Icon, label, value, href }, i) => (
+                  <motion.a
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    style={rowStyles[i]}
                     className="flex items-start gap-4 group"
                   >
-                    <div className="w-11 h-11 rounded-xl bg-[var(--brand-green)]/80 group-hover:bg-[var(--brand-green)] flex items-center justify-center shrink-0 transition-colors mt-0.5">
+                    <div className="w-11 h-11 rounded-xl bg-(--brand-green)/80 group-hover:bg-brand-green flex items-center justify-center shrink-0 transition-colors mt-0.5">
                       <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -215,7 +263,7 @@ export default function ContactSection({
                         {value}
                       </p>
                     </div>
-                  </a>
+                  </motion.a>
                 ))}
               </div>
             </div>
@@ -227,75 +275,41 @@ export default function ContactSection({
             </div>
           </div>
 
-          {/* Right — form */}
-          <div className="bg-white px-8 py-12 sm:px-12 sm:py-16">
-            {sent ? (
-              <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-                <div className="w-14 h-14 rounded-full bg-[var(--brand-green)]/10 flex items-center justify-center mb-4">
-                  <Send className="w-6 h-6 text-[var(--brand-green)]" />
-                </div>
-                <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  {o.success || dict.contact.success}
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  {o.success_subtitle || dict.contact.success_subtitle}
-                </p>
-              </div>
+          {/* ── Right — Google Maps embed, slides in from right ── */}
+          <motion.div
+            style={{ x: mapX, opacity: mapOpacity }}
+            className="relative min-h-100 lg:min-h-0"
+          >
+            {mapSrc ? (
+              <iframe
+                key={mapSrc}
+                src={mapSrc}
+                width="100%"
+                height="100%"
+                style={{ border: 0, display: "block", minHeight: "400px" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Team Cargo locatie"
+                className="absolute inset-0 w-full h-full"
+              />
             ) : (
-              <form
-                onSubmit={(e) => void handleSubmit(e)}
-                className="space-y-4"
-              >
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-                    {dict.contact.name}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Jan de Vries"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-                    {dict.contact.email}
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="jan@bedrijf.nl"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-                    {dict.contact.message}
-                  </label>
-                  <textarea
-                    required
-                    rows={4}
-                    placeholder="Uw bericht..."
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl text-[0.92rem] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] focus:border-transparent resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-colors disabled:opacity-60 text-[0.92rem] tracking-widest"
-                >
-                  {loading ? (
-                    "Verzenden..."
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      {o.send || dict.contact.send}
-                    </>
-                  )}
-                </button>
-              </form>
+              /* Skeleton shown while the API resolves — no iframe until we know the real address */
+              <div className="absolute inset-0 w-full h-full bg-gray-100 flex items-center justify-center">
+                <MapPin className="w-8 h-8 text-gray-300 animate-pulse" />
+              </div>
             )}
-          </div>
+            {/* "Open in Maps" overlay button */}
+            <a
+              href={mapHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/90 hover:bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-xl shadow-md backdrop-blur-sm transition-colors"
+            >
+              <MapPin className="w-3.5 h-3.5 text-[#EA4335]" />
+              Open in Maps
+            </a>
+          </motion.div>
         </div>
       </div>
     </section>

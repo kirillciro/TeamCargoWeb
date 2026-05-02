@@ -22,6 +22,12 @@ section[id] {
   --brand-btn-text: #ffffff;
   --brand-trust-bg: #0d3d1e;
   --brand-partner-bg: #ffffff;
+  --brand-header-bg: #040f08;
+  --brand-footer-bg: #040f08;
+  --brand-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --brand-letter-spacing: 0.02em;
+  --brand-line-height: 1.65;
+  --brand-font-weight: 400;
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -35,7 +41,9 @@ section[id] {
   --color-brand-btn-text: var(--brand-btn-text);
   --color-brand-trust-bg: var(--brand-trust-bg);
   --color-brand-partner-bg: var(--brand-partner-bg);
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --color-brand-header-bg: var(--brand-header-bg);
+  --color-brand-footer-bg: var(--brand-footer-bg);
+  --font-sans: var(--brand-font-family);
 }
 
 * {
@@ -49,12 +57,13 @@ button,
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--brand-font-family);
   background: var(--background);
   color: var(--foreground);
   font-size: 1.025rem;
-  letter-spacing: 0.02em;
-  line-height: 1.65;
+  letter-spacing: var(--brand-letter-spacing);
+  line-height: var(--brand-line-height);
+  font-weight: var(--brand-font-weight);
 }
 
 /* ── Marquee (partner logos ticker) ─────────────────────── */

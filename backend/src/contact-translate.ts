@@ -26,6 +26,7 @@ export type ContactTexts = {
   whatsapp_number?: string;
   email_address?: string;
   map_address?: string;
+  map_pin?: string;
   phoneIcon?: string;
   emailIcon?: string;
   addressIcon?: string;
@@ -70,6 +71,7 @@ const NON_TRANSLATABLE_KEYS: (keyof ContactTexts)[] = [
   "whatsapp_number",
   "email_address",
   "map_address",
+  "map_pin",
   "phoneIcon",
   "emailIcon",
   "addressIcon",

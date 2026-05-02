@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Activity,
   Award,
@@ -394,10 +394,20 @@ const COLOR_DEFAULTS = {
   brandDark: "#006637",
   brandBtnText: "#ffffff",
   trustBg: "#0d3d1e",
+  headerBg: "#040f08",
+  footerBg: "#040f08",
 };
 
 type ColorKey = keyof typeof COLOR_DEFAULTS;
-type SubTab = "colors" | "hero" | "services" | "about" | "housing" | "contact";
+type SubTab =
+  | "colors"
+  | "fonts"
+  | "hero"
+  | "services"
+  | "about"
+  | "housing"
+  | "contact"
+  | "footer";
 type SectionKey =
   | "slogan"
   | "badge"
@@ -434,13 +444,14 @@ type HousingSectionKey =
   | "housingPerks"
   | "housingCta"
   | "housingImg1"
-  | "housingImg2";
+  | "housingImg2"
+  | "housingBg";
 
 type ContactSectionKey =
   | "contactHeading"
   | "contactDetails"
   | "contactLabels"
-  | "contactMessages"
+  | "contactMapPin"
   | "contactImg";
 
 const DEFAULT_SVC_IMGS = [
@@ -458,20 +469,191 @@ const CSS_VAR_MAP: Record<ColorKey, string> = {
   brandDark: "--brand-dark",
   brandBtnText: "--brand-btn-text",
   trustBg: "--brand-trust-bg",
+  headerBg: "--brand-header-bg",
+  footerBg: "--brand-footer-bg",
 };
+
+const LS_FONT = "tc_brand_font";
+
+type FontOption = {
+  id: string;
+  label: string;
+  family: string;
+  google: string | null;
+};
+
+const FONT_OPTIONS: FontOption[] = [
+  {
+    id: "helvetica",
+    label: "Helvetica Neue",
+    family: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+    google: null,
+  },
+  {
+    id: "inter",
+    label: "Inter",
+    family: '"Inter", sans-serif',
+    google: "Inter:wght@400;500;600;700",
+  },
+  {
+    id: "roboto",
+    label: "Roboto",
+    family: '"Roboto", sans-serif',
+    google: "Roboto:wght@400;500;700",
+  },
+  {
+    id: "poppins",
+    label: "Poppins",
+    family: '"Poppins", sans-serif',
+    google: "Poppins:wght@400;500;600;700",
+  },
+  {
+    id: "montserrat",
+    label: "Montserrat",
+    family: '"Montserrat", sans-serif',
+    google: "Montserrat:wght@400;500;600;700",
+  },
+  {
+    id: "lato",
+    label: "Lato",
+    family: '"Lato", sans-serif',
+    google: "Lato:wght@400;700",
+  },
+  {
+    id: "nunito",
+    label: "Nunito",
+    family: '"Nunito", sans-serif',
+    google: "Nunito:wght@400;500;600;700",
+  },
+  {
+    id: "opensans",
+    label: "Open Sans",
+    family: '"Open Sans", sans-serif',
+    google: "Open+Sans:wght@400;500;600;700",
+  },
+];
 
 export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [subTab, setSubTab] = useState<SubTab>("colors");
 
   // ── Colors ───────────────────────────────────────────────────────────────
-  const [colors, setColors] = useState(COLOR_DEFAULTS);
+  const [colors, setColors] = useState<typeof COLOR_DEFAULTS>(() => {
+    if (typeof window === "undefined") return COLOR_DEFAULTS;
+    try {
+      const saved = localStorage.getItem(LS_COLORS);
+      return saved
+        ? (JSON.parse(saved) as typeof COLOR_DEFAULTS)
+        : COLOR_DEFAULTS;
+    } catch {
+      return COLOR_DEFAULTS;
+    }
+  });
   const [colorSaved, setColorSaved] = useState(false);
 
+  // ── Fonts ─────────────────────────────────────────────────────────────────
+  const [selectedFont, setSelectedFont] = useState<string>(() => {
+    if (typeof window === "undefined") return "helvetica";
+    try {
+      const saved = localStorage.getItem(LS_FONT);
+      if (saved) return (JSON.parse(saved) as { id: string }).id ?? "helvetica";
+    } catch {
+      /* ignore */
+    }
+    return "helvetica";
+  });
+  const [letterSpacing, setLetterSpacing] = useState(() => {
+    if (typeof window === "undefined") return "0.02";
+    try {
+      const saved = localStorage.getItem(LS_FONT);
+      if (saved)
+        return (
+          (JSON.parse(saved) as { letterSpacing?: string }).letterSpacing ??
+          "0.02"
+        );
+    } catch {
+      /* ignore */
+    }
+    return "0.02";
+  });
+  const [lineHeight, setLineHeight] = useState(() => {
+    if (typeof window === "undefined") return "1.65";
+    try {
+      const saved = localStorage.getItem(LS_FONT);
+      if (saved)
+        return (
+          (JSON.parse(saved) as { lineHeight?: string }).lineHeight ?? "1.65"
+        );
+    } catch {
+      /* ignore */
+    }
+    return "1.65";
+  });
+  const [fontWeight, setFontWeight] = useState(() => {
+    if (typeof window === "undefined") return "400";
+    try {
+      const saved = localStorage.getItem(LS_FONT);
+      if (saved)
+        return (
+          (JSON.parse(saved) as { fontWeight?: string }).fontWeight ?? "400"
+        );
+    } catch {
+      /* ignore */
+    }
+    return "400";
+  });
+  const [fontSaved, setFontSaved] = useState(false);
+
+  // ── Parse all localStorage sections once at init (avoids setState-in-effect) ─
+  const [_lsData] = useState(() => {
+    if (typeof window === "undefined")
+      return {
+        hero: null,
+        svc: null,
+        about: null,
+        housing: null,
+        contact: null,
+        footer: null,
+      } as {
+        hero: Record<string, unknown> | null;
+        svc: Record<string, string> | null;
+        about: Record<string, string> | null;
+        housing: Record<string, string> | null;
+        contact: Record<string, string> | null;
+        footer: Record<string, string> | null;
+      };
+    const parse = <T,>(key: string): T | null => {
+      try {
+        const s = localStorage.getItem(key);
+        return s ? (JSON.parse(s) as T) : null;
+      } catch {
+        return null;
+      }
+    };
+    return {
+      hero: parse<Record<string, unknown>>(LS_HERO),
+      svc: parse<Record<string, string>>(LS_SERVICES),
+      about: parse<Record<string, string>>(LS_ABOUT),
+      housing: parse<Record<string, string>>(LS_HOUSING),
+      contact: parse<Record<string, string>>("tc_contact_overrides"),
+      footer: parse<Record<string, string>>("tc_footer_overrides"),
+    };
+  });
+  const _h = _lsData.hero;
+  const _s = _lsData.svc;
+  const _a = _lsData.about;
+  const _hg = _lsData.housing;
+  const _c = _lsData.contact;
+  const _ft = _lsData.footer;
+
   // ── Hero text ─────────────────────────────────────────────────────────────
-  const [slogan, setSlogan] = useState("");
-  const [badge, setBadge] = useState("");
-  const [trustLine, setTrustLine] = useState("");
-  const [heroTrustIcon, setHeroTrustIcon] = useState("");
+  const [slogan, setSlogan] = useState(() => (_h?.slogan as string) ?? "");
+  const [badge, setBadge] = useState(() => (_h?.badge as string) ?? "");
+  const [trustLine, setTrustLine] = useState(
+    () => (_h?.trustLine as string) ?? "",
+  );
+  const [heroTrustIcon, setHeroTrustIcon] = useState(
+    () => (_h?.trustIcon as string) ?? "",
+  );
   const [heroTrustIconPicker, setHeroTrustIconPicker] = useState(false);
   const [heroTrustIconPage, setHeroTrustIconPage] = useState(0);
   const [sectionSaved, setSectionSaved] = useState<Record<SectionKey, boolean>>(
@@ -494,18 +676,42 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [translating, setTranslating] = useState(false);
   const [translateError, setTranslateError] = useState<string | null>(null);
   // ── Hero stats ────────────────────────────────────────────────────────────
-  const [stat1Value, setStat1Value] = useState("");
-  const [stat1Label, setStat1Label] = useState("");
-  const [stat2Value, setStat2Value] = useState("");
-  const [stat2Label, setStat2Label] = useState("");
-  const [stat3Value, setStat3Value] = useState("");
-  const [stat3Label, setStat3Label] = useState("");
-  const [stat4Value, setStat4Value] = useState("");
-  const [stat4Label, setStat4Label] = useState("");
-  const [trustBg, setTrustBg] = useState(COLOR_DEFAULTS.trustBg);
-  const [partnersBg, setPartnersBg] = useState("#ffffff");
-  const [heroImgDesktop, setHeroImgDesktop] = useState("");
-  const [heroImgMobile, setHeroImgMobile] = useState("");
+  const [stat1Value, setStat1Value] = useState(
+    () => (_h?.stat1Value as string) ?? "",
+  );
+  const [stat1Label, setStat1Label] = useState(
+    () => (_h?.stat1Label as string) ?? "",
+  );
+  const [stat2Value, setStat2Value] = useState(
+    () => (_h?.stat2Value as string) ?? "",
+  );
+  const [stat2Label, setStat2Label] = useState(
+    () => (_h?.stat2Label as string) ?? "",
+  );
+  const [stat3Value, setStat3Value] = useState(
+    () => (_h?.stat3Value as string) ?? "",
+  );
+  const [stat3Label, setStat3Label] = useState(
+    () => (_h?.stat3Label as string) ?? "",
+  );
+  const [stat4Value, setStat4Value] = useState(
+    () => (_h?.stat4Value as string) ?? "",
+  );
+  const [stat4Label, setStat4Label] = useState(
+    () => (_h?.stat4Label as string) ?? "",
+  );
+  const [trustBg, setTrustBg] = useState(
+    () => (_h?.trustBg as string) ?? COLOR_DEFAULTS.trustBg,
+  );
+  const [partnersBg, setPartnersBg] = useState(
+    () => (_h?.partnersBg as string) ?? "#ffffff",
+  );
+  const [heroImgDesktop, setHeroImgDesktop] = useState(
+    () => (_h?.heroImgDesktop as string) ?? "",
+  );
+  const [heroImgMobile, setHeroImgMobile] = useState(
+    () => (_h?.heroImgMobile as string) ?? "",
+  );
 
   // ── Partners ──────────────────────────────────────────────────────────────
   const DEFAULT_PARTNERS = [
@@ -515,8 +721,12 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     { name: "GLS", logo: "/partners/gls_logo.svg" },
     { name: "Transmission", logo: "/partners/transmission_logo.svg" },
   ];
-  const [partners, setPartners] =
-    useState<{ name: string; logo: string }[]>(DEFAULT_PARTNERS);
+  const [partners, setPartners] = useState<{ name: string; logo: string }[]>(
+    () => {
+      const p = _h?.partners as { name: string; logo: string }[] | undefined;
+      return p && p.length > 0 ? p : DEFAULT_PARTNERS;
+    },
+  );
 
   // ── Services ─────────────────────────────────────────────────────────────
   const DEFAULT_SVC_CARDS = DEFAULT_SVC_IMGS.map((img) => ({
@@ -525,10 +735,18 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     img,
   }));
 
-  const [svcTitle, setSvcTitle] = useState("");
-  const [svcLabel, setSvcLabel] = useState("");
-  const [svcCards, setSvcCards] =
-    useState<{ title: string; desc: string; img: string }[]>(DEFAULT_SVC_CARDS);
+  const [svcTitle, setSvcTitle] = useState(() => _s?.title ?? "");
+  const [svcLabel, setSvcLabel] = useState(() => _s?.label ?? "");
+  const [svcCards, setSvcCards] = useState<
+    { title: string; desc: string; img: string }[]
+  >(() => {
+    if (!_s) return DEFAULT_SVC_CARDS;
+    return DEFAULT_SVC_CARDS.map((c, i) => ({
+      title: _s[`item${i}Title`] ?? "",
+      desc: _s[`item${i}Desc`] ?? "",
+      img: _s[`img${i}`] ?? c.img,
+    }));
+  });
   const [svcSectionSaved, setSvcSectionSaved] = useState<
     Record<ServicesSectionKey, boolean>
   >({
@@ -551,26 +769,47 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [svcAllSaved, setSvcAllSaved] = useState(false);
 
   // ── About state ───────────────────────────────────────────────────────────
-  const [aboutLabel, setAboutLabel] = useState("");
-  const [aboutTitle, setAboutTitle] = useState("");
-  const [aboutDesc, setAboutDesc] = useState("");
-  const [aboutDesc2, setAboutDesc2] = useState("");
-  const [aboutValuesTitle, setAboutValuesTitle] = useState("");
-  const [aboutValues, setAboutValues] = useState(["", "", "", ""]);
-  const [aboutDriversPlaced, setAboutDriversPlaced] = useState("");
-  const [aboutYearsActive, setAboutYearsActive] = useState("");
-  const [aboutLocation, setAboutLocation] = useState("");
-  const [aboutYearsActiveNum, setAboutYearsActiveNum] = useState("");
-  const [aboutDriversIcon, setAboutDriversIcon] = useState("");
-  const [aboutLocationIcon, setAboutLocationIcon] = useState("");
+  const [aboutLabel, setAboutLabel] = useState(() => _a?.label ?? "");
+  const [aboutTitle, setAboutTitle] = useState(() => _a?.title ?? "");
+  const [aboutDesc, setAboutDesc] = useState(() => _a?.description ?? "");
+  const [aboutDesc2, setAboutDesc2] = useState(() => _a?.description2 ?? "");
+  const [aboutValuesTitle, setAboutValuesTitle] = useState(
+    () => _a?.valuesTitle ?? "",
+  );
+  const [aboutValues, setAboutValues] = useState(() => [
+    _a?.value0 ?? "",
+    _a?.value1 ?? "",
+    _a?.value2 ?? "",
+    _a?.value3 ?? "",
+  ]);
+  const [aboutDriversPlaced, setAboutDriversPlaced] = useState(
+    () => _a?.driversPlaced ?? "",
+  );
+  const [aboutYearsActive, setAboutYearsActive] = useState(
+    () => _a?.yearsActive ?? "",
+  );
+  const [aboutLocation, setAboutLocation] = useState(() => _a?.location ?? "");
+  const [aboutYearsActiveNum, setAboutYearsActiveNum] = useState(
+    () => _a?.yearsActiveNum ?? "",
+  );
+  const [aboutDriversIcon, setAboutDriversIcon] = useState(
+    () => _a?.driversIcon ?? "",
+  );
+  const [aboutLocationIcon, setAboutLocationIcon] = useState(
+    () => _a?.locationIcon ?? "",
+  );
   const [aboutIconPicker, setAboutIconPicker] = useState<
     "drivers" | "location" | null
   >(null);
   const [aboutDriversIconPage, setAboutDriversIconPage] = useState(0);
   const [aboutLocationIconPage, setAboutLocationIconPage] = useState(0);
-  const [aboutImgLeft, setAboutImgLeft] = useState("");
-  const [aboutImgTopRight, setAboutImgTopRight] = useState("");
-  const [aboutImgBottomRight, setAboutImgBottomRight] = useState("");
+  const [aboutImgLeft, setAboutImgLeft] = useState(() => _a?.imgLeft ?? "");
+  const [aboutImgTopRight, setAboutImgTopRight] = useState(
+    () => _a?.imgTopRight ?? "",
+  );
+  const [aboutImgBottomRight, setAboutImgBottomRight] = useState(
+    () => _a?.imgBottomRight ?? "",
+  );
   const [aboutSectionSaved, setAboutSectionSaved] = useState<
     Record<AboutSectionKey, boolean>
   >({
@@ -594,14 +833,25 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [aboutTranslationPending, setAboutTranslationPending] = useState(false);
 
   // ── Housing state ─────────────────────────────────────────────────────────
-  const [housingLabel, setHousingLabel] = useState("");
-  const [housingTitle, setHousingTitle] = useState("");
-  const [housingDesc, setHousingDesc] = useState("");
-  const [housingPerks, setHousingPerks] = useState(["", "", "", ""]);
-  const [housingCta, setHousingCta] = useState("");
-  const [housingPerkIcons, setHousingPerkIcons] = useState(["", "", "", ""]);
-  const [housingImg1, setHousingImg1] = useState("");
-  const [housingImg2, setHousingImg2] = useState("");
+  const [housingLabel, setHousingLabel] = useState(() => _hg?.label ?? "");
+  const [housingTitle, setHousingTitle] = useState(() => _hg?.title ?? "");
+  const [housingDesc, setHousingDesc] = useState(() => _hg?.description ?? "");
+  const [housingPerks, setHousingPerks] = useState(() => [
+    _hg?.perk0 ?? "",
+    _hg?.perk1 ?? "",
+    _hg?.perk2 ?? "",
+    _hg?.perk3 ?? "",
+  ]);
+  const [housingCta, setHousingCta] = useState(() => _hg?.cta ?? "");
+  const [housingPerkIcons, setHousingPerkIcons] = useState(() => [
+    _hg?.perk0Icon ?? "",
+    _hg?.perk1Icon ?? "",
+    _hg?.perk2Icon ?? "",
+    _hg?.perk3Icon ?? "",
+  ]);
+  const [housingImg1, setHousingImg1] = useState(() => _hg?.img1 ?? "");
+  const [housingImg2, setHousingImg2] = useState(() => _hg?.img2 ?? "");
+  const [housingBg, setHousingBg] = useState(() => _hg?.bg ?? "");
   const [housingIconPicker, setHousingIconPicker] = useState<number | null>(
     null,
   );
@@ -615,6 +865,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     housingCta: false,
     housingImg1: false,
     housingImg2: false,
+    housingBg: false,
   });
   const [housingSavingKey, setHousingSavingKey] =
     useState<HousingSectionKey | null>(null);
@@ -627,26 +878,54 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [housingTranslationPending, setHousingTranslationPending] =
     useState(false);
 
+  // ── Footer state ──────────────────────────────────────────────────────────
+  const [footerTaglineSub, setFooterTaglineSub] = useState(
+    () => _ft?.tagline_sub ?? "",
+  );
+  const [footerAddressLine1, setFooterAddressLine1] = useState(
+    () => _ft?.address_line1 ?? "",
+  );
+  const [footerAddressLine2, setFooterAddressLine2] = useState(
+    () => _ft?.address_line2 ?? "",
+  );
+  const [footerPhone, setFooterPhone] = useState(() => _ft?.phone ?? "");
+  const [footerEmail, setFooterEmail] = useState(() => _ft?.email ?? "");
+  const [footerSectionSaved, setFooterSectionSaved] = useState(false);
+  const [footerSaving, setFooterSaving] = useState(false);
+  const [footerSaveError, setFooterSaveError] = useState<string | null>(null);
+
   // ── Contact state ─────────────────────────────────────────────────────────
-  const [contactTitle, setContactTitle] = useState("");
-  const [contactSubtitle, setContactSubtitle] = useState("");
-  const [contactPhoneLabel, setContactPhoneLabel] = useState("");
-  const [contactEmailLabel, setContactEmailLabel] = useState("");
-  const [contactAddressLabel, setContactAddressLabel] = useState("");
-  const [contactSend, setContactSend] = useState("");
-  const [contactSuccess, setContactSuccess] = useState("");
-  const [contactSuccessSubtitle, setContactSuccessSubtitle] = useState("");
-  const [contactWhatsapp, setContactWhatsapp] = useState("");
-  const [contactEmailAddress, setContactEmailAddress] = useState("");
-  const [contactMapAddress, setContactMapAddress] = useState("");
-  const [contactImg, setContactImg] = useState("");
+  const [contactTitle, setContactTitle] = useState(() => _c?.title ?? "");
+  const [contactSubtitle, setContactSubtitle] = useState(
+    () => _c?.subtitle ?? "",
+  );
+  const [contactPhoneLabel, setContactPhoneLabel] = useState(
+    () => _c?.phone ?? "",
+  );
+  const [contactEmailLabel, setContactEmailLabel] = useState(
+    () => _c?.email ?? "",
+  );
+  const [contactAddressLabel, setContactAddressLabel] = useState(
+    () => _c?.address ?? "",
+  );
+  const [contactMapPin, setContactMapPin] = useState(() => _c?.map_pin ?? "");
+  const [contactWhatsapp, setContactWhatsapp] = useState(
+    () => _c?.whatsapp_number ?? "",
+  );
+  const [contactEmailAddress, setContactEmailAddress] = useState(
+    () => _c?.email_address ?? "",
+  );
+  const [contactMapAddress, setContactMapAddress] = useState(
+    () => _c?.map_address ?? "",
+  );
+  const [contactImg, setContactImg] = useState(() => _c?.img ?? "");
   const [contactSectionSaved, setContactSectionSaved] = useState<
     Record<ContactSectionKey, boolean>
   >({
     contactHeading: false,
     contactDetails: false,
     contactLabels: false,
-    contactMessages: false,
+    contactMapPin: false,
     contactImg: false,
   });
   const [contactSavingKey, setContactSavingKey] =
@@ -659,7 +938,11 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   const [contactAllSaved, setContactAllSaved] = useState(false);
   const [contactTranslationPending, setContactTranslationPending] =
     useState(false);
-  const [contactRowIcons, setContactRowIcons] = useState(["", "", ""]);
+  const [contactRowIcons, setContactRowIcons] = useState(() => [
+    _c?.phoneIcon ?? "",
+    _c?.emailIcon ?? "",
+    _c?.addressIcon ?? "",
+  ]);
   const [contactIconPicker, setContactIconPicker] = useState<number | null>(
     null,
   );
@@ -668,167 +951,6 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
   // ── Translation-in-progress indicators ───────────────────────────────────
   const [heroTranslationPending, setHeroTranslationPending] = useState(false);
   const [svcTranslationPending, setSvcTranslationPending] = useState(false);
-
-  // Load persisted values on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(LS_COLORS);
-      if (saved) setColors(JSON.parse(saved) as typeof COLOR_DEFAULTS);
-    } catch {
-      /* ignore */
-    }
-    try {
-      const saved = localStorage.getItem(LS_HERO);
-      if (saved) {
-        const h = JSON.parse(saved) as {
-          slogan?: string;
-          badge?: string;
-          trustLine?: string;
-          trustIcon?: string;
-          trustBg?: string;
-          partnersBg?: string;
-          heroImgDesktop?: string;
-          heroImgMobile?: string;
-          partners?: { name: string; logo: string }[];
-          stat1Value?: string;
-          stat1Label?: string;
-          stat2Value?: string;
-          stat2Label?: string;
-          stat3Value?: string;
-          stat3Label?: string;
-          stat4Value?: string;
-          stat4Label?: string;
-        };
-        setSlogan(h.slogan ?? "");
-        setBadge(h.badge ?? "");
-        setTrustLine(h.trustLine ?? "");
-        setHeroTrustIcon(h.trustIcon ?? "");
-        setStat1Value(h.stat1Value ?? "");
-        setStat1Label(h.stat1Label ?? "");
-        setStat2Value(h.stat2Value ?? "");
-        setStat2Label(h.stat2Label ?? "");
-        setStat3Value(h.stat3Value ?? "");
-        setStat3Label(h.stat3Label ?? "");
-        setStat4Value(h.stat4Value ?? "");
-        setStat4Label(h.stat4Label ?? "");
-        if (h.trustBg) {
-          setTrustBg(h.trustBg);
-          document.documentElement.style.setProperty(
-            "--brand-trust-bg",
-            h.trustBg,
-          );
-        }
-        if (h.partnersBg) {
-          setPartnersBg(h.partnersBg);
-          document.documentElement.style.setProperty(
-            "--brand-partner-bg",
-            h.partnersBg,
-          );
-        }
-        if (h.heroImgDesktop) setHeroImgDesktop(h.heroImgDesktop);
-        if (h.heroImgMobile) setHeroImgMobile(h.heroImgMobile);
-        if (h.partners) setPartners(h.partners);
-      }
-    } catch {
-      /* ignore */
-    }
-    try {
-      const saved = localStorage.getItem(LS_SERVICES);
-      if (saved) {
-        const s = JSON.parse(saved) as Record<string, string>;
-        setSvcTitle(s.title ?? "");
-        setSvcLabel(s.label ?? "");
-        setSvcCards((prev) =>
-          prev.map((c, i) => ({
-            title: s[`item${i}Title`] ?? "",
-            desc: s[`item${i}Desc`] ?? "",
-            img: s[`img${i}`] ?? c.img,
-          })),
-        );
-      }
-    } catch {
-      /* ignore */
-    }
-    try {
-      const saved = localStorage.getItem(LS_ABOUT);
-      if (saved) {
-        const a = JSON.parse(saved) as Record<string, string>;
-        setAboutLabel(a.label ?? "");
-        setAboutTitle(a.title ?? "");
-        setAboutDesc(a.description ?? "");
-        setAboutDesc2(a.description2 ?? "");
-        setAboutValuesTitle(a.valuesTitle ?? "");
-        setAboutValues([
-          a.value0 ?? "",
-          a.value1 ?? "",
-          a.value2 ?? "",
-          a.value3 ?? "",
-        ]);
-        setAboutDriversPlaced(a.driversPlaced ?? "");
-        setAboutYearsActive(a.yearsActive ?? "");
-        setAboutLocation(a.location ?? "");
-        setAboutYearsActiveNum(a.yearsActiveNum ?? "");
-        setAboutDriversIcon(a.driversIcon ?? "");
-        setAboutLocationIcon(a.locationIcon ?? "");
-        if (a.imgLeft) setAboutImgLeft(a.imgLeft);
-        if (a.imgTopRight) setAboutImgTopRight(a.imgTopRight);
-        if (a.imgBottomRight) setAboutImgBottomRight(a.imgBottomRight);
-      }
-    } catch {
-      /* ignore */
-    }
-    try {
-      const saved = localStorage.getItem(LS_HOUSING);
-      if (saved) {
-        const h = JSON.parse(saved) as Record<string, string>;
-        setHousingLabel(h.label ?? "");
-        setHousingTitle(h.title ?? "");
-        setHousingDesc(h.description ?? "");
-        setHousingPerks([
-          h.perk0 ?? "",
-          h.perk1 ?? "",
-          h.perk2 ?? "",
-          h.perk3 ?? "",
-        ]);
-        setHousingCta(h.cta ?? "");
-        setHousingPerkIcons([
-          h.perk0Icon ?? "",
-          h.perk1Icon ?? "",
-          h.perk2Icon ?? "",
-          h.perk3Icon ?? "",
-        ]);
-        if (h.img1) setHousingImg1(h.img1);
-        if (h.img2) setHousingImg2(h.img2);
-      }
-    } catch {
-      /* ignore */
-    }
-    try {
-      const saved = localStorage.getItem("tc_contact_overrides");
-      if (saved) {
-        const c = JSON.parse(saved) as Record<string, string>;
-        setContactTitle(c.title ?? "");
-        setContactSubtitle(c.subtitle ?? "");
-        setContactPhoneLabel(c.phone ?? "");
-        setContactEmailLabel(c.email ?? "");
-        setContactAddressLabel(c.address ?? "");
-        setContactSend(c.send ?? "");
-        setContactSuccess(c.success ?? "");
-        setContactSuccessSubtitle(c.success_subtitle ?? "");
-        setContactWhatsapp(c.whatsapp_number ?? "");
-        setContactEmailAddress(c.email_address ?? "");
-        setContactMapAddress(c.map_address ?? "");
-        if (c.img) setContactImg(c.img);
-        setContactRowIcons([
-          c.phoneIcon ?? "",
-          c.emailIcon ?? "",
-          c.addressIcon ?? "",
-        ]);
-      }
-    } catch {
-      /* ignore */
-    }
-  }, []);
 
   // ── Color helpers ─────────────────────────────────────────────────────────
   /** Extract Cloudinary public_id from a secure_url, or null for non-Cloudinary URLs */
@@ -868,6 +990,73 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     );
     setColors(COLOR_DEFAULTS);
     localStorage.removeItem(LS_COLORS);
+  };
+
+  const applyFont = (font: FontOption) => {
+    // Load Google Font if needed
+    if (font.google) {
+      const linkId = `gf-${font.id}`;
+      if (!document.getElementById(linkId)) {
+        const link = document.createElement("link");
+        link.id = linkId;
+        link.rel = "stylesheet";
+        link.href = `https://fonts.googleapis.com/css2?family=${font.google}&display=swap`;
+        document.head.appendChild(link);
+      }
+    }
+    document.documentElement.style.setProperty(
+      "--brand-font-family",
+      font.family,
+    );
+    setSelectedFont(font.id);
+  };
+
+  const saveFont = () => {
+    const font =
+      FONT_OPTIONS.find((f) => f.id === selectedFont) ?? FONT_OPTIONS[0];
+    localStorage.setItem(
+      LS_FONT,
+      JSON.stringify({
+        id: font.id,
+        family: font.family,
+        google: font.google,
+        letterSpacing,
+        lineHeight,
+        fontWeight,
+      }),
+    );
+    setFontSaved(true);
+    setTimeout(() => setFontSaved(false), 2000);
+  };
+
+  const resetFont = () => {
+    document.documentElement.style.removeProperty("--brand-font-family");
+    document.documentElement.style.removeProperty("--brand-letter-spacing");
+    document.documentElement.style.removeProperty("--brand-line-height");
+    document.documentElement.style.removeProperty("--brand-font-weight");
+    setSelectedFont("helvetica");
+    setLetterSpacing("0.02");
+    setLineHeight("1.65");
+    setFontWeight("400");
+    localStorage.removeItem(LS_FONT);
+  };
+
+  const applyLetterSpacing = (val: string) => {
+    setLetterSpacing(val);
+    document.documentElement.style.setProperty(
+      "--brand-letter-spacing",
+      `${val}em`,
+    );
+  };
+
+  const applyLineHeight = (val: string) => {
+    setLineHeight(val);
+    document.documentElement.style.setProperty("--brand-line-height", val);
+  };
+
+  const applyFontWeight = (val: string) => {
+    setFontWeight(val);
+    document.documentElement.style.setProperty("--brand-font-weight", val);
   };
 
   // ── Shared translation-done poller ───────────────────────────────────────
@@ -1321,6 +1510,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     perk3Icon: housingPerkIcons[3],
     img1: housingImg1,
     img2: housingImg2,
+    bg: housingBg,
   });
 
   const persistHousing = async (
@@ -1413,6 +1603,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     setHousingPerkIcons(["", "", "", ""]);
     setHousingImg1("");
     setHousingImg2("");
+    setHousingBg("");
     localStorage.removeItem(LS_HOUSING);
     setHousingTranslationPending(false);
     setHousingSavingAll(true);
@@ -1438,9 +1629,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     phone: contactPhoneLabel,
     email: contactEmailLabel,
     address: contactAddressLabel,
-    send: contactSend,
-    success: contactSuccess,
-    success_subtitle: contactSuccessSubtitle,
+    map_pin: contactMapPin,
     whatsapp_number: contactWhatsapp,
     email_address: contactEmailAddress,
     map_address: contactMapAddress,
@@ -1537,9 +1726,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     setContactPhoneLabel("");
     setContactEmailLabel("");
     setContactAddressLabel("");
-    setContactSend("");
-    setContactSuccess("");
-    setContactSuccessSubtitle("");
+    setContactMapPin("");
     setContactWhatsapp("");
     setContactEmailAddress("");
     setContactMapAddress("");
@@ -1603,28 +1790,34 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
         {(
           [
             "colors",
+            "fonts",
             "hero",
             "services",
             "about",
             "housing",
             "contact",
+            "footer",
           ] as SubTab[]
         ).map((key) => {
           const labels: Record<SubTab, string> = {
             colors: dict.admin.custom_subtab_colors,
+            fonts: "Fonts",
             hero: dict.admin.custom_subtab_hero,
             services: dict.admin.custom_subtab_services,
             about: dict.admin.custom_subtab_about,
             housing: dict.admin.custom_subtab_housing,
             contact: dict.admin.custom_subtab_contact,
+            footer: "Footer",
           };
           const Icons: Record<SubTab, typeof Palette> = {
             colors: Palette,
+            fonts: Type,
             hero: Type,
             services: LayoutGrid,
             about: Users,
             housing: Home,
             contact: Mail,
+            footer: LayoutGrid,
           };
           const Icon = Icons[key];
           return (
@@ -1719,14 +1912,16 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
             </div>
           </div>
 
-          {/* Dark accent */}
-          <div className="space-y-3 border-t border-slate-800 pt-5">
-            {colorFields
-              .filter((f) => f.key === "brandDark")
-              .map(({ key, label, default: defaultHex }) => (
+          {/* Header & Footer colors */}
+          <div className="space-y-4 border-t border-slate-800 pt-5">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              Header &amp; Footer Background
+            </p>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {(["headerBg", "footerBg"] as const).map((key) => (
                 <div key={key} className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                    {label}
+                    {key === "headerBg" ? "Header" : "Footer"}
                   </label>
                   <div className="flex items-center gap-3">
                     <div
@@ -1747,34 +1942,264 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                         const v = e.target.value;
                         if (/^#[0-9a-fA-F]{0,6}$/.test(v)) applyColor(key, v);
                       }}
-                      placeholder={defaultHex}
+                      placeholder={key === "headerBg" ? "#040f08" : "#040f08"}
                       maxLength={7}
-                      className="flex-1 max-w-[180px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                      className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                     />
                   </div>
+                  {/* Live preview */}
+                  <div
+                    className="h-7 rounded-lg border border-slate-700 transition-colors"
+                    style={{ backgroundColor: colors[key] }}
+                  />
                 </div>
               ))}
+            </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-1">
-            <button
-              onClick={saveColors}
-              className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-amber-900 hover:bg-amber-300 transition-colors"
+          {/* ── Global action bar ── */}
+          <div className="rounded-2xl border border-amber-400/30 bg-amber-400/5 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold text-amber-300">
+                Save all changes
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Applies all color &amp; background overrides site-wide
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={saveColors}
+                className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-amber-900 hover:bg-amber-300 transition-colors"
+              >
+                {colorSaved ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                {colorSaved ? "All saved!" : "Save all"}
+              </button>
+              <button
+                onClick={resetColors}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-700/60 px-5 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:border-red-500 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Restore all defaults
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Fonts panel ── */}
+      {subTab === "fonts" && (
+        <div className="space-y-4">
+          {/* Typeface picker */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 space-y-4">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Typeface
+            </p>
+            <p className="text-xs text-slate-500">
+              Choose the font family used across the entire site.
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {FONT_OPTIONS.map((font) => {
+                const isSelected = selectedFont === font.id;
+                return (
+                  <button
+                    key={font.id}
+                    onClick={() => applyFont(font)}
+                    className={`rounded-xl border p-4 text-left transition-all ${
+                      isSelected
+                        ? "border-amber-400 bg-amber-400/10"
+                        : "border-slate-700 bg-slate-800 hover:border-slate-500"
+                    }`}
+                  >
+                    <p
+                      className="text-lg font-bold text-white mb-1 truncate"
+                      style={{ fontFamily: font.family }}
+                    >
+                      {font.label}
+                    </p>
+                    <p
+                      className="text-xs text-slate-400 leading-snug"
+                      style={{ fontFamily: font.family }}
+                    >
+                      Aa Bb Cc 123
+                    </p>
+                    {isSelected && (
+                      <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-amber-400 uppercase tracking-wide">
+                        <Check className="w-3 h-3" /> Active
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Typography controls */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 space-y-6">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Typography Controls
+            </p>
+
+            {/* Font Weight */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                  Font Weight
+                </label>
+                <span className="text-xs font-mono text-amber-400">
+                  {(
+                    {
+                      "100": "Thin",
+                      "200": "ExtraLight",
+                      "300": "Light",
+                      "400": "Regular",
+                      "500": "Medium",
+                      "600": "SemiBold",
+                      "700": "Bold",
+                      "800": "ExtraBold",
+                      "900": "Black",
+                    } as Record<string, string>
+                  )[fontWeight] ?? fontWeight}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={100}
+                max={900}
+                step={100}
+                value={fontWeight}
+                onChange={(e) => applyFontWeight(e.target.value)}
+                className="w-full accent-amber-400 cursor-pointer"
+              />
+              <div className="flex justify-between text-[9px] text-slate-600 font-mono">
+                <span>100</span>
+                <span>300</span>
+                <span>400</span>
+                <span>600</span>
+                <span>700</span>
+                <span>900</span>
+              </div>
+            </div>
+
+            {/* Letter Spacing */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                  Letter Spacing
+                </label>
+                <span className="text-xs font-mono text-amber-400">
+                  {letterSpacing}em
+                </span>
+              </div>
+              <input
+                type="range"
+                min={-0.05}
+                max={0.2}
+                step={0.005}
+                value={letterSpacing}
+                onChange={(e) => applyLetterSpacing(e.target.value)}
+                className="w-full accent-amber-400 cursor-pointer"
+              />
+              <div className="flex justify-between text-[9px] text-slate-600 font-mono">
+                <span>-0.05em</span>
+                <span>0em</span>
+                <span>0.1em</span>
+                <span>0.2em</span>
+              </div>
+            </div>
+
+            {/* Line Height */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                  Line Height
+                </label>
+                <span className="text-xs font-mono text-amber-400">
+                  {lineHeight}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={1.0}
+                max={2.2}
+                step={0.05}
+                value={lineHeight}
+                onChange={(e) => applyLineHeight(e.target.value)}
+                className="w-full accent-amber-400 cursor-pointer"
+              />
+              <div className="flex justify-between text-[9px] text-slate-600 font-mono">
+                <span>1.0</span>
+                <span>1.4</span>
+                <span>1.65</span>
+                <span>2.0</span>
+                <span>2.2</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Live preview */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Live Preview
+            </p>
+            <div
+              className="rounded-xl border border-slate-700 bg-slate-800 p-5 space-y-3"
+              style={{
+                fontFamily: FONT_OPTIONS.find((f) => f.id === selectedFont)
+                  ?.family,
+                letterSpacing: `${letterSpacing}em`,
+                lineHeight,
+                fontWeight,
+              }}
             >
-              {colorSaved ? (
-                <Check className="w-4 h-4" />
-              ) : (
-                <Save className="w-4 h-4" />
-              )}
-              {colorSaved ? dict.admin.custom_saved : dict.admin.custom_save}
-            </button>
-            <button
-              onClick={resetColors}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white hover:border-slate-400 transition-colors"
-            >
-              <RotateCcw className="w-4 h-4" />
-              {dict.admin.custom_reset}
-            </button>
+              <p className="text-2xl font-bold text-white">
+                Team Cargo — Professioneel Transport
+              </p>
+              <p className="text-sm text-slate-300">
+                Wij maken onze klanten en die van uw tevreden. Betrouwbaar, snel
+                en professioneel.
+              </p>
+              <p className="text-xs text-slate-500">
+                De beste keuze voor uw logistieke behoeften. Snel, veilig en
+                betrouwbaar transport door heel Nederland.
+              </p>
+            </div>
+          </div>
+
+          {/* ── Global action bar ── */}
+          <div className="rounded-2xl border border-amber-400/30 bg-amber-400/5 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold text-amber-300">
+                Save all changes
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Applies all typography settings across the entire site
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={saveFont}
+                className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-amber-900 hover:bg-amber-300 transition-colors"
+              >
+                {fontSaved ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                {fontSaved ? "All saved!" : "Save all"}
+              </button>
+              <button
+                onClick={resetFont}
+                className="inline-flex items-center gap-2 rounded-lg border border-red-700/60 px-5 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:border-red-500 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Restore all defaults
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -1881,7 +2306,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
             </p>
             <div className="flex items-center gap-2">
               {/* Trust icon picker */}
-              <div className="relative flex-shrink-0">
+              <div className="relative shrink-0">
                 <button
                   type="button"
                   onClick={() => {
@@ -2044,7 +2469,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                   }
                 }}
                 maxLength={7}
-                className="max-w-[140px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                className="max-w-35 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
               />
               <div
                 className="flex-1 h-10 rounded-lg flex items-center justify-center gap-2 text-xs font-medium"
@@ -2127,7 +2552,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                   }
                 }}
                 maxLength={7}
-                className="max-w-[140px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                className="max-w-35 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
               />
               <div
                 className="flex-1 h-10 rounded-lg flex items-center justify-center border border-slate-700 text-xs font-medium"
@@ -3026,7 +3451,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
               </label>
               <div className="flex items-center gap-2">
                 {/* Icon picker */}
-                <div className="relative flex-shrink-0">
+                <div className="relative shrink-0">
                   <button
                     type="button"
                     onClick={() => {
@@ -3136,7 +3561,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
               </label>
               <div className="flex items-center gap-2">
                 {/* Icon picker */}
-                <div className="relative flex-shrink-0">
+                <div className="relative shrink-0">
                   <button
                     type="button"
                     onClick={() => {
@@ -3860,9 +4285,82 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
             </div>
           </div>
 
-          {/* Save all / Reset all */}
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5">
-            <div className="flex flex-wrap gap-3">
+          {/* 7 ── Section Background Color */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Section Background Color
+            </p>
+            <p className="text-[10px] text-slate-500 leading-relaxed">
+              Default is dark green{" "}
+              <span className="font-mono text-slate-400">#0d2e18</span>. Pick
+              any color or enter a hex value.
+            </p>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={housingBg || "#0d2e18"}
+                onChange={(e) => setHousingBg(e.target.value)}
+                className="w-10 h-10 rounded-lg border border-slate-700 bg-slate-800 cursor-pointer p-0.5"
+              />
+              <input
+                type="text"
+                value={housingBg}
+                onChange={(e) => setHousingBg(e.target.value)}
+                placeholder="#0d2e18"
+                maxLength={7}
+                className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+              />
+            </div>
+            {/* Preview swatch */}
+            <div
+              className="h-8 rounded-lg border border-slate-700 transition-colors"
+              style={{ backgroundColor: housingBg || "#0d2e18" }}
+            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  void persistHousing(buildHousingSource(), "housingBg")
+                }
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+              >
+                {housingSavingKey === "housingBg" ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : housingSectionSaved.housingBg ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Save className="w-3 h-3" />
+                )}
+                {housingSectionSaved.housingBg ? "Saved!" : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setHousingBg("");
+                  void persistHousing(
+                    { ...buildHousingSource(), bg: "" },
+                    "housingBg",
+                  );
+                }}
+                disabled={housingTranslating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-2 text-xs font-medium text-slate-400 hover:text-white hover:border-slate-400 disabled:opacity-60 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" /> Reset to default
+              </button>
+            </div>
+          </div>
+
+          {/* ── Global action bar ── */}
+          <div className="rounded-2xl border border-amber-400/30 bg-amber-400/5 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold text-amber-300">
+                Save all changes
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Applies every section above at once &amp; translates to all 18
+                languages
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => void saveAllHousing()}
                 disabled={housingSavingAll || housingTranslating}
@@ -4231,71 +4729,49 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
             </div>
           </div>
 
-          {/* 4 ── Form Messages */}
+          {/* 4 ── Map Pin Location */}
           <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
             <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
-              Form Messages
+              Map Pin Location
+            </p>
+            <p className="text-[10px] text-slate-500 leading-relaxed">
+              Enter the exact address or coordinates to pin on the embedded
+              Google Map. Leave empty to use the address from Contact Details
+              above.
             </p>
             <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
-              Send button text
+              Map search query (address or coordinates)
             </label>
             <input
               type="text"
-              value={contactSend}
-              onChange={(e) => setContactSend(e.target.value)}
-              placeholder="Send message"
+              value={contactMapPin}
+              onChange={(e) => setContactMapPin(e.target.value)}
+              placeholder="Poortland 146, 1046 BD Amsterdam"
               className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
-            />
-            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
-              Success heading
-            </label>
-            <input
-              type="text"
-              value={contactSuccess}
-              onChange={(e) => setContactSuccess(e.target.value)}
-              placeholder="Message sent!"
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
-            />
-            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
-              Success subtitle
-            </label>
-            <textarea
-              value={contactSuccessSubtitle}
-              onChange={(e) => setContactSuccessSubtitle(e.target.value)}
-              rows={2}
-              placeholder="We will get back to you shortly."
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
             />
             <div className="flex items-center gap-2">
               <button
                 onClick={() =>
-                  void persistContact(buildContactSource(), "contactMessages")
+                  void persistContact(buildContactSource(), "contactMapPin")
                 }
                 disabled={contactTranslating}
                 className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-xs font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
               >
-                {contactSavingKey === "contactMessages" ? (
+                {contactSavingKey === "contactMapPin" ? (
                   <Loader2 className="w-3 h-3 animate-spin" />
-                ) : contactSectionSaved.contactMessages ? (
+                ) : contactSectionSaved.contactMapPin ? (
                   <Check className="w-3 h-3" />
                 ) : (
                   <Save className="w-3 h-3" />
                 )}
-                {contactSectionSaved.contactMessages ? "Saved!" : "Save"}
+                {contactSectionSaved.contactMapPin ? "Saved!" : "Save"}
               </button>
               <button
                 onClick={() => {
-                  setContactSend("");
-                  setContactSuccess("");
-                  setContactSuccessSubtitle("");
+                  setContactMapPin("");
                   void persistContact(
-                    {
-                      ...buildContactSource(),
-                      send: "",
-                      success: "",
-                      success_subtitle: "",
-                    },
-                    "contactMessages",
+                    { ...buildContactSource(), map_pin: "" },
+                    "contactMapPin",
                   );
                 }}
                 disabled={contactTranslating}
@@ -4348,9 +4824,18 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
             </div>
           </div>
 
-          {/* Save all / Restore all defaults */}
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5">
-            <div className="flex flex-wrap gap-3">
+          {/* ── Global action bar ── */}
+          <div className="rounded-2xl border border-amber-400/30 bg-amber-400/5 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold text-amber-300">
+                Save all changes
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Applies every section above at once &amp; translates to all 18
+                languages
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => void saveAllContact()}
                 disabled={contactSavingAll || contactTranslating}
@@ -4373,6 +4858,181 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
                 <RotateCcw className="w-4 h-4" />
                 Restore all defaults
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Footer panel ── */}
+      {subTab === "footer" && (
+        <div className="space-y-4">
+          {footerSaveError && (
+            <div className="rounded-lg bg-red-900/40 border border-red-700 px-4 py-3 text-sm text-red-300">
+              {footerSaveError}
+            </div>
+          )}
+
+          {/* Tagline */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Tagline
+            </p>
+            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+              Tagline / description line
+            </label>
+            <input
+              type="text"
+              value={footerTaglineSub}
+              onChange={(e) => setFooterTaglineSub(e.target.value)}
+              placeholder="Driver recruitment — Amsterdam"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+          </div>
+
+          {/* Contact info */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Contact Info
+            </p>
+            <p className="text-[10px] text-slate-500 leading-relaxed">
+              These values are used directly — not translated.
+            </p>
+            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+              Address line 1
+            </label>
+            <input
+              type="text"
+              value={footerAddressLine1}
+              onChange={(e) => setFooterAddressLine1(e.target.value)}
+              placeholder="Poortland 146, 1046 BD Amsterdam"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+              Address line 2 (country)
+            </label>
+            <input
+              type="text"
+              value={footerAddressLine2}
+              onChange={(e) => setFooterAddressLine2(e.target.value)}
+              placeholder="Netherlands"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+              Phone (WhatsApp, e.g. +31 6 85352412)
+            </label>
+            <input
+              type="text"
+              value={footerPhone}
+              onChange={(e) => setFooterPhone(e.target.value)}
+              placeholder="+31 6 85352412"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+            <label className="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">
+              Email address
+            </label>
+            <input
+              type="email"
+              value={footerEmail}
+              onChange={(e) => setFooterEmail(e.target.value)}
+              placeholder="info@teamcargo.nl"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+            />
+          </div>
+
+          {/* Save / Reset */}
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5">
+            {/* ── Global action bar ── */}
+            <div className="rounded-2xl border border-amber-400/30 bg-amber-400/5 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold text-amber-300">
+                  Save all changes
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Applies every field above at once &amp; translates to all 18
+                  languages
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  disabled={footerSaving}
+                  onClick={() => {
+                    const source = {
+                      tagline_sub: footerTaglineSub,
+                      address_line1: footerAddressLine1,
+                      address_line2: footerAddressLine2,
+                      phone: footerPhone,
+                      email: footerEmail,
+                    };
+                    localStorage.setItem(
+                      "tc_footer_overrides",
+                      JSON.stringify(source),
+                    );
+                    setFooterSaving(true);
+                    setFooterSaveError(null);
+                    fetchWithAuth("/api/admin/customization/footer", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ source }),
+                    })
+                      .then(
+                        (r) =>
+                          r.json() as Promise<{
+                            ok?: boolean;
+                            message?: string;
+                          }>,
+                      )
+                      .then((body) => {
+                        if (!body.ok)
+                          throw new Error(body.message ?? "Save failed");
+                        window.dispatchEvent(new Event("tc:footer-updated"));
+                        setFooterSectionSaved(true);
+                        setTimeout(() => setFooterSectionSaved(false), 2500);
+                      })
+                      .catch((err: unknown) =>
+                        setFooterSaveError(
+                          err instanceof Error ? err.message : "Save failed",
+                        ),
+                      )
+                      .finally(() => setFooterSaving(false));
+                  }}
+                  className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-amber-900 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+                >
+                  {footerSaving ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : footerSectionSaved ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
+                  {footerSectionSaved ? "All saved!" : "Save all"}
+                </button>
+                <button
+                  disabled={footerSaving}
+                  onClick={() => {
+                    setFooterTaglineSub("");
+                    setFooterAddressLine1("");
+                    setFooterAddressLine2("");
+                    setFooterPhone("");
+                    setFooterEmail("");
+                    localStorage.removeItem("tc_footer_overrides");
+                    fetchWithAuth("/api/admin/customization/footer", {
+                      method: "DELETE",
+                    })
+                      .then(() =>
+                        window.dispatchEvent(new Event("tc:footer-updated")),
+                      )
+                      .catch((err: unknown) =>
+                        setFooterSaveError(
+                          err instanceof Error ? err.message : "Reset failed",
+                        ),
+                      );
+                  }}
+                  className="inline-flex items-center gap-2 rounded-lg border border-red-700/60 px-5 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:border-red-500 disabled:opacity-60 transition-colors"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Restore all defaults
+                </button>
+              </div>
             </div>
           </div>
         </div>

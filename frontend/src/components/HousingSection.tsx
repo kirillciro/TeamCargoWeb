@@ -100,6 +100,7 @@ type HousingOverrides = {
   perk3Icon?: string;
   img1?: string;
   img2?: string;
+  bg?: string;
   _hasTranslations?: boolean;
 };
 
@@ -165,7 +166,8 @@ export default function HousingSection({
   return (
     <section
       id="housing"
-      className="bg-[#0d2e18] py-20 sm:py-28 overflow-hidden min-h-screen flex flex-col justify-center"
+      className="py-20 sm:py-28 overflow-hidden min-h-screen flex flex-col justify-center"
+      style={{ backgroundColor: overrides.bg || "#0d2e18" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">

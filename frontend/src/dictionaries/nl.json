@@ -413,6 +413,7 @@
     "custom_subtab_services": "Services Section",
     "custom_subtab_about": "About Section",
     "custom_subtab_housing": "Housing Section",
-    "custom_subtab_contact": "Contact Section"
+    "custom_subtab_contact": "Contact Section",
+    "custom_subtab_footer": "Footer"
   }
 }

@@ -1,6 +1,20 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/lib/getDictionary";
+
+type FooterOverrides = {
+  tagline_sub?: string;
+  address_line1?: string;
+  address_line2?: string;
+  phone?: string;
+  email?: string;
+  _hasTranslations?: boolean;
+};
+
+const LS_FOOTER = (lang: string) => `tc_footer_overrides_${lang}`;
 
 const SITEMAP = (lang: string, dict: Dictionary) => [
   {
@@ -28,38 +42,90 @@ export default function Footer({
   lang: string;
   dict: Dictionary;
 }) {
+  const [overrides, setOverrides] = useState<FooterOverrides>({});
+
+  useEffect(() => {
+    let pollTimer: ReturnType<typeof setTimeout> | null = null;
+    let cancelled = false;
+    const deadline = Date.now() + 120_000;
+
+    const fetchOverrides = async () => {
+      try {
+        const cached = localStorage.getItem(LS_FOOTER(lang));
+        setOverrides(cached ? (JSON.parse(cached) as FooterOverrides) : {});
+      } catch {
+        /* ignore */
+      }
+
+      try {
+        const res = await fetch(`/api/footer-overrides/${lang}`);
+        if (res.ok) {
+          const data = (await res.json()) as FooterOverrides;
+          const { _hasTranslations, ...rest } = data;
+          setOverrides(rest);
+          localStorage.setItem(LS_FOOTER(lang), JSON.stringify(rest));
+          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
+            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+    void fetchOverrides();
+
+    const handler = () => void fetchOverrides();
+    window.addEventListener("tc:footer-updated", handler);
+    return () => {
+      cancelled = true;
+      if (pollTimer) clearTimeout(pollTimer);
+      window.removeEventListener("tc:footer-updated", handler);
+    };
+  }, [lang]);
+
+  const o = overrides;
   const year = new Date().getFullYear();
   const sitemap = SITEMAP(lang, dict);
 
+  const taglineSub = o.tagline_sub || dict.footer.tagline_sub;
+  const addressLine1 = o.address_line1 || "Poortland 146, 1046 BD Amsterdam";
+  const addressLine2 = o.address_line2 || "Netherlands";
+  const phone = o.phone || "+31 6 85352412";
+  const email = o.email || "info@teamcargo.nl";
+  const whatsappHref = `https://wa.me/${phone.replace(/[^0-9]/g, "")}`;
+
   return (
-    <footer className="bg-[#040f08] border-t border-white/5">
+    <footer
+      className="border-t border-white/5"
+      style={{ backgroundColor: "var(--brand-footer-bg)" }}
+    >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-20">
         {/* Top section: brand left, nav columns right */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-20 gap-12 mb-14">
-          {/* Brand block — bottom on mobile, left on desktop */}
+          {/* Brand block */}
           <div className="lg:w-72 shrink-0 flex flex-col order-2 lg:order-1">
             <p className="text-white/65 text-sm leading-relaxed mb-4 tracking-wide">
-              {dict.footer.tagline_sub}
+              {taglineSub}
             </p>
             <p className="text-white/50 text-xs leading-relaxed mb-5">
-              Poortland 146, 1046 BD Amsterdam
+              {addressLine1}
               <br />
-              Netherlands
+              {addressLine2}
             </p>
             <div className="flex flex-col gap-2 mb-6">
               <a
-                href="https://wa.me/31685352412"
+                href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/60 hover:text-white text-xs transition-colors"
               >
-                +31 6 85352412
+                {phone}
               </a>
               <a
-                href="mailto:info@teamcargo.nl"
+                href={`mailto:${email}`}
                 className="text-white/60 hover:text-white text-xs transition-colors"
               >
-                info@teamcargo.nl
+                {email}
               </a>
             </div>
             <Image
@@ -71,7 +137,7 @@ export default function Footer({
             />
           </div>
 
-          {/* Nav columns — top on mobile, right on desktop */}
+          {/* Nav columns */}
           <div className="grid grid-cols-2 gap-x-16 gap-y-10 lg:flex lg:gap-24 lg:items-start lg:pt-0 order-1 lg:order-2">
             {sitemap.map((col) => (
               <div key={col.title}>

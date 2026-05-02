@@ -45,6 +45,7 @@ import {
   type ContactTexts,
   type ContactTranslations,
 } from "./contact-translate.js";
+import { getAnalyticsSummary } from "./analytics.js";
 
 const app = express();
 
@@ -1827,6 +1828,7 @@ app.get("/housing-overrides/:lang", async (req, res) => {
       "perk3Icon",
       "img1",
       "img2",
+      "bg",
     ]) {
       if (src[key] !== undefined) nonTranslatable[key] = src[key];
     }
@@ -1916,6 +1918,7 @@ app.get("/contact-overrides/:lang", async (req, res) => {
       "whatsapp_number",
       "email_address",
       "map_address",
+      "map_pin",
     ]) {
       if (src[key] !== undefined) nonTranslatable[key] = src[key];
     }
@@ -1939,6 +1942,109 @@ app.delete(
       "DELETE FROM app_settings WHERE key = 'contact_overrides'",
     );
     res.json({ ok: true });
+  },
+);
+
+import {
+  translateFooterTexts,
+  type FooterTexts,
+  type FooterTranslations,
+} from "./footer-translate.js";
+
+// ── Footer customization ─────────────────────────────────────────────────────
+app.post(
+  "/admin/customization/footer",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    try {
+      const { source } = req.body as { source: FooterTexts };
+      if (!source || typeof source !== "object") {
+        res.status(400).json({ message: "source texts required" });
+        return;
+      }
+      await pool.query(
+        `INSERT INTO app_settings (key, value, updated_at)
+         VALUES ('footer_overrides', $1, NOW())
+         ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+        [JSON.stringify({ source, translations: {} })],
+      );
+      res.json({ ok: true, translating: true });
+      void (async () => {
+        try {
+          const translations = await translateFooterTexts(source);
+          await pool.query(
+            `UPDATE app_settings SET value = $1, updated_at = NOW()
+             WHERE key = 'footer_overrides'`,
+            [JSON.stringify({ source, translations })],
+          );
+          console.log("[footer-translate-bg] done");
+        } catch (err) {
+          console.error("[footer-translate-bg] error:", err);
+        }
+      })();
+    } catch (err) {
+      console.error("[footer-customization] error:", err);
+      res.status(500).json({ message: "Save failed" });
+    }
+  },
+);
+
+app.get("/footer-overrides/:lang", async (req, res) => {
+  try {
+    const { lang } = req.params;
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'footer_overrides'",
+    );
+    if (result.rows.length === 0) {
+      res.json({});
+      return;
+    }
+    const data = result.rows[0].value as {
+      source: FooterTexts;
+      translations: FooterTranslations;
+    };
+    const langTexts =
+      data.translations[lang] ?? data.translations["en"] ?? data.source ?? {};
+    const src = data.source as Record<string, unknown>;
+    const nonTranslatable: Record<string, unknown> = {};
+    for (const key of ["address_line1", "address_line2", "phone", "email"]) {
+      if (src[key] !== undefined) nonTranslatable[key] = src[key];
+    }
+    res.json({
+      ...langTexts,
+      ...nonTranslatable,
+      _hasTranslations: Object.keys(data.translations ?? {}).length > 0,
+    });
+  } catch (err) {
+    console.error("[footer-overrides] error:", err);
+    res.json({});
+  }
+});
+
+app.delete(
+  "/admin/customization/footer",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    await pool.query("DELETE FROM app_settings WHERE key = 'footer_overrides'");
+    res.json({ ok: true });
+  },
+);
+
+// ── GA4 Analytics ─────────────────────────────────────────────────────────
+app.get(
+  "/admin/analytics/summary",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    try {
+      const summary = await getAnalyticsSummary();
+      res.json(summary);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
   },
 );
 

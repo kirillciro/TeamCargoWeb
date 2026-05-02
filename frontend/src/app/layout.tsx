@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,10 +22,18 @@ export default function RootLayout({
         {/* Apply saved brand colors before first paint — prevents flash */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var c=JSON.parse(localStorage.getItem('tc_brand_colors')||'null');if(c){var r=document.documentElement.style;if(c.brandGreen)r.setProperty('--brand-green',c.brandGreen);if(c.brandMid)r.setProperty('--brand-mid',c.brandMid);if(c.brandDark)r.setProperty('--brand-dark',c.brandDark);if(c.brandBtnText)r.setProperty('--brand-btn-text',c.brandBtnText);if(c.trustBg)r.setProperty('--brand-trust-bg',c.trustBg);}}catch(e){}try{var h=JSON.parse(localStorage.getItem('tc_hero_overrides')||'null');if(h){var r=document.documentElement.style;if(h.trustBg)r.setProperty('--brand-trust-bg',h.trustBg);if(h.partnersBg)r.setProperty('--brand-partner-bg',h.partnersBg);}}catch(e){}`,
+            __html: `try{var c=JSON.parse(localStorage.getItem('tc_brand_colors')||'null');if(c){var r=document.documentElement.style;if(c.brandGreen)r.setProperty('--brand-green',c.brandGreen);if(c.brandMid)r.setProperty('--brand-mid',c.brandMid);if(c.brandDark)r.setProperty('--brand-dark',c.brandDark);if(c.brandBtnText)r.setProperty('--brand-btn-text',c.brandBtnText);if(c.trustBg)r.setProperty('--brand-trust-bg',c.trustBg);if(c.headerBg)r.setProperty('--brand-header-bg',c.headerBg);if(c.footerBg)r.setProperty('--brand-footer-bg',c.footerBg);}}catch(e){}try{var h=JSON.parse(localStorage.getItem('tc_hero_overrides')||'null');if(h){var r=document.documentElement.style;if(h.trustBg)r.setProperty('--brand-trust-bg',h.trustBg);if(h.partnersBg)r.setProperty('--brand-partner-bg',h.partnersBg);}}catch(e){}try{var f=JSON.parse(localStorage.getItem('tc_brand_font')||'null');if(f){if(f.family){document.documentElement.style.setProperty('--brand-font-family',f.family);}if(f.letterSpacing){document.documentElement.style.setProperty('--brand-letter-spacing',f.letterSpacing);}if(f.lineHeight){document.documentElement.style.setProperty('--brand-line-height',f.lineHeight);}if(f.fontWeight){document.documentElement.style.setProperty('--brand-font-weight',f.fontWeight);}if(f.google){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+f.google+'&display=swap';document.head.appendChild(l);}}}catch(e){}`,
           }}
         />
         {children}
+        {/* ── Google Analytics 4 ── */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-17RWXXE1Y6"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-17RWXXE1Y6');`}
+        </Script>
       </body>
     </html>
   );
