@@ -1911,7 +1911,12 @@ app.get("/contact-overrides/:lang", async (req, res) => {
       data.translations[lang] ?? data.translations["en"] ?? data.source ?? {};
     const src = data.source as Record<string, unknown>;
     const nonTranslatable: Record<string, unknown> = {};
-    for (const key of ["img", "whatsapp_number", "email_address", "map_address"]) {
+    for (const key of [
+      "img",
+      "whatsapp_number",
+      "email_address",
+      "map_address",
+    ]) {
       if (src[key] !== undefined) nonTranslatable[key] = src[key];
     }
     res.json({
@@ -1940,4 +1945,9 @@ app.delete(
 const PORT = Number(process.env.PORT ?? 4000);
 app.listen(PORT, () => {
   console.log(`[team-cargo] backend running on port ${PORT}`);
+});
+
+// Prevent unhandled DB connection errors from crashing the process
+process.on("unhandledRejection", (reason) => {
+  console.error("[team-cargo] unhandled rejection:", reason);
 });

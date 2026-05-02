@@ -34,8 +34,24 @@ export type ContactTexts = {
 export type ContactTranslations = Record<string, ContactTexts>;
 
 const LANGS = [
-  "nl", "en", "de", "fr", "it", "es", "pt", "pl", "ro",
-  "et", "lv", "fi", "sv", "da", "no", "cs", "hu", "el",
+  "nl",
+  "en",
+  "de",
+  "fr",
+  "it",
+  "es",
+  "pt",
+  "pl",
+  "ro",
+  "et",
+  "lv",
+  "fi",
+  "sv",
+  "da",
+  "no",
+  "cs",
+  "hu",
+  "el",
 ];
 
 const TRANSLATABLE_KEYS: (keyof ContactTexts)[] = [

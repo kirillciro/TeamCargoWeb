@@ -1485,7 +1485,9 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
         2500,
       );
     } catch (err) {
-      setContactTranslateError(err instanceof Error ? err.message : "Save failed");
+      setContactTranslateError(
+        err instanceof Error ? err.message : "Save failed",
+      );
     } finally {
       setContactTranslating(false);
       setContactSavingKey(null);
@@ -1521,7 +1523,9 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
       setContactAllSaved(true);
       setTimeout(() => setContactAllSaved(false), 2500);
     } catch (err) {
-      setContactTranslateError(err instanceof Error ? err.message : "Save failed");
+      setContactTranslateError(
+        err instanceof Error ? err.message : "Save failed",
+      );
     } finally {
       setContactSavingAll(false);
     }
@@ -1546,10 +1550,14 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
     setContactSavingAll(true);
     setContactTranslateError(null);
     try {
-      await fetchWithAuth("/api/admin/customization/contact", { method: "DELETE" });
+      await fetchWithAuth("/api/admin/customization/contact", {
+        method: "DELETE",
+      });
       window.dispatchEvent(new Event("tc:contact-updated"));
     } catch (err) {
-      setContactTranslateError(err instanceof Error ? err.message : "Reset failed");
+      setContactTranslateError(
+        err instanceof Error ? err.message : "Reset failed",
+      );
     } finally {
       setContactSavingAll(false);
     }
@@ -1592,41 +1600,48 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
 
       {/* ── Sub-tab switcher ── */}
       <div className="flex flex-wrap gap-1 bg-slate-800/60 rounded-xl p-1 w-fit">
-        {(["colors", "hero", "services", "about", "housing", "contact"] as SubTab[]).map(
-          (key) => {
-            const labels: Record<SubTab, string> = {
-              colors: dict.admin.custom_subtab_colors,
-              hero: dict.admin.custom_subtab_hero,
-              services: dict.admin.custom_subtab_services,
-              about: dict.admin.custom_subtab_about,
-              housing: dict.admin.custom_subtab_housing,
-              contact: dict.admin.custom_subtab_contact,
-            };
-            const Icons: Record<SubTab, typeof Palette> = {
-              colors: Palette,
-              hero: Type,
-              services: LayoutGrid,
-              about: Users,
-              housing: Home,
-              contact: Mail,
-            };
-            const Icon = Icons[key];
-            return (
-              <button
-                key={key}
-                onClick={() => setSubTab(key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  subTab === key
-                    ? "bg-amber-400 text-amber-900"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {labels[key]}
-              </button>
-            );
-          },
-        )}
+        {(
+          [
+            "colors",
+            "hero",
+            "services",
+            "about",
+            "housing",
+            "contact",
+          ] as SubTab[]
+        ).map((key) => {
+          const labels: Record<SubTab, string> = {
+            colors: dict.admin.custom_subtab_colors,
+            hero: dict.admin.custom_subtab_hero,
+            services: dict.admin.custom_subtab_services,
+            about: dict.admin.custom_subtab_about,
+            housing: dict.admin.custom_subtab_housing,
+            contact: dict.admin.custom_subtab_contact,
+          };
+          const Icons: Record<SubTab, typeof Palette> = {
+            colors: Palette,
+            hero: Type,
+            services: LayoutGrid,
+            about: Users,
+            housing: Home,
+            contact: Mail,
+          };
+          const Icon = Icons[key];
+          return (
+            <button
+              key={key}
+              onClick={() => setSubTab(key)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                subTab === key
+                  ? "bg-amber-400 text-amber-900"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {labels[key]}
+            </button>
+          );
+        })}
       </div>
 
       {/* ── Colors panel ── */}
@@ -4068,8 +4083,7 @@ export default function AdminCustomizationTab({ dict }: { dict: Dictionary }) {
               const defaultIcons = [Phone, Mail, MapPin] as LucideIcon[];
               const PickedIcon =
                 (iconKey
-                  ? CONTACT_ICON_OPTS.flat().find((o) => o.id === iconKey)
-                      ?.Icon
+                  ? CONTACT_ICON_OPTS.flat().find((o) => o.id === iconKey)?.Icon
                   : undefined) ?? defaultIcons[i];
               const isPickerOpen = contactIconPicker === i;
               return (

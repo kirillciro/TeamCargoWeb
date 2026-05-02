@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="nl" suppressHydrationWarning>
+    <html lang="nl" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {/* Apply saved brand colors before first paint — prevents flash */}
         <script
