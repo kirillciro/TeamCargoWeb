@@ -207,7 +207,10 @@ export default function HeroSection({
     (overrides.trustIcon && TRUST_ICON_MAP[overrides.trustIcon]) || Shield;
 
   return (
-    <section className="relative h-dvh flex flex-col overflow-hidden">
+    <section
+      className="relative flex flex-col overflow-hidden"
+      style={{ height: "calc(100dvh / 0.75)" }}
+    >
       {/* Background photo */}
       <div className="absolute inset-0">
         {/* Desktop image (md+) */}

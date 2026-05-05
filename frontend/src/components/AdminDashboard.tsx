@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -65,6 +65,24 @@ export default function AdminDashboard({
   const router = useRouter();
   const { user, loading, logout } = useAuth();
   const [active, setActive] = useState<Tab>("overview");
+  const [win98, setWin98] = useState(false);
+
+  // Apply Win98 gray to the page body & html so nothing bleeds through
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    if (win98) {
+      html.style.background = "#c0c0c0";
+      body.style.background = "#c0c0c0";
+    } else {
+      html.style.background = "";
+      body.style.background = "";
+    }
+    return () => {
+      html.style.background = "";
+      body.style.background = "";
+    };
+  }, [win98]);
 
   useEffect(() => {
     if (loading) return;
@@ -86,54 +104,535 @@ export default function AdminDashboard({
   const initial = (user.firstName?.[0] ?? user.email[0]).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pt-16 sm:pt-20">
-      {/* ── Top bar ── */}
-      <div className="sticky top-16 sm:top-20 z-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Brand row */}
-          <div className="h-14 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-linear-to-br from-amber-400 to-amber-500 flex items-center justify-center text-sm font-bold text-amber-900 shrink-0">
-                {initial}
-              </div>
-              <span className="font-semibold text-sm text-white">
-                {dict.nav.admin_dashboard}
-              </span>
-              <span className="hidden sm:inline text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-400 border border-amber-400/30 uppercase tracking-wide">
-                Admin
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Link
-                href={`/${lang}/profile`}
-                className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
-              >
-                <User className="w-3.5 h-3.5" />
-                {dict.nav.my_profile}
-              </Link>
-              <button
-                onClick={() =>
-                  void logout().then(() => router.replace(`/${lang}`))
-                }
-                className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{dict.nav.logout}</span>
-              </button>
-              <Link
-                href={`/${lang}`}
-                className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">
-                  {dict.admin.back_to_site}
+    <div
+      data-admin
+      data-win98={win98 ? "1" : undefined}
+      className={`min-h-screen pt-16 sm:pt-20${win98 ? "" : " bg-slate-950 text-white"}`}
+      style={
+        win98
+          ? {
+              background: "#c0c0c0",
+              fontFamily: '"MS Sans Serif", "Segoe UI", Arial, sans-serif',
+              fontSize: "13px",
+              color: "#000",
+            }
+          : undefined
+      }
+    >
+      {/* ── Win98 global CSS (blankets every child component) ── */}
+      {win98 && (
+        <style>{`
+          /* ── TAILWIND v4 CSS VARIABLE OVERRIDES ─────────────────── */
+          /* Tailwind v4 generates: background-color: var(--color-slate-900)   */
+          /* Overriding the vars here cascades to ALL descendants automatically */
+          [data-win98] {
+            --color-slate-950: #c0c0c0;
+            --color-slate-900: #c0c0c0;
+            --color-slate-800: #d4d4d4;
+            --color-slate-700: #b8b8b8;
+            --color-slate-600: #a0a0a0;
+            --color-slate-500: #777;
+            --color-slate-400: #555;
+            --color-slate-300: #333;
+            --color-slate-200: #222;
+            --color-slate-100: #111;
+            --color-zinc-800: #d4d4d4;
+            --color-zinc-900: #c0c0c0;
+            --color-neutral-800: #d4d4d4;
+            --color-neutral-900: #c0c0c0;
+            --color-amber-400: #c0c0c0;
+            --color-amber-300: #c8c8c8;
+            --color-amber-200: #d0d0d0;
+            --color-amber-900: #000;
+            --color-red-900: #800000;
+            --color-red-800: #900000;
+            --color-red-400: #cc0000;
+            --color-red-300: #cc0000;
+            --color-green-400: #008000;
+            --color-emerald-400: #008000;
+            --color-blue-400: #000080;
+            --color-blue-300: #000080;
+            --color-blue-600: #000080;
+            --color-blue-700: #000080;
+          }
+
+          [data-win98], [data-win98] * { box-sizing: border-box; }
+
+          /* ── BACKGROUNDS ───────────────────────────────────────── */
+          /* Belt-and-suspenders: also override via class selectors    */
+          /* in case any Tailwind class resolves without CSS vars      */
+          [data-win98],
+          [data-win98] .bg-slate-950,
+          [data-win98] .bg-slate-900,
+          [data-win98] .bg-slate-900\/80,
+          [data-win98] .bg-slate-900\/60 {
+            background-color: #c0c0c0 !important;
+          }
+          [data-win98] .bg-slate-800,
+          [data-win98] .bg-slate-800\/40,
+          [data-win98] .bg-slate-800\/60,
+          [data-win98] .bg-slate-800\/80,
+          [data-win98] .bg-zinc-800,
+          [data-win98] .bg-neutral-800 {
+            background-color: #d4d4d4 !important;
+          }
+          [data-win98] .bg-slate-700,
+          [data-win98] .bg-slate-700\/50 { background-color: #b8b8b8 !important; }
+          /* amber/accent → neutral Win98 gray (NOT blue tint) */
+          [data-win98] .bg-amber-400\/5,
+          [data-win98] .bg-amber-400\/10,
+          [data-win98] .bg-amber-400\/20,
+          [data-win98] .bg-amber-400\/30 { background-color: #f0f0f0 !important; }
+          /* amber borders → normal gray divider */
+          [data-win98] .border-amber-400,
+          [data-win98] .border-amber-400\/20,
+          [data-win98] .border-amber-400\/30,
+          [data-win98] .border-amber-400\/50 { border-color: #808080 !important; }
+          /* amber fill (save buttons) → raised Win98 button */
+          [data-win98] .bg-amber-400,
+          [data-win98] .bg-amber-300 {
+            background-color: #c0c0c0 !important;
+            border: 2px solid !important;
+            border-color: #fff #808080 #808080 #fff !important;
+            color: #000 !important;
+          }
+          [data-win98] .hover\:bg-amber-300:hover { background-color: #d4d4d4 !important; }
+          /* error boxes */
+          [data-win98] .bg-red-900\/20,
+          [data-win98] .bg-red-900\/10,
+          [data-win98] .bg-red-900\/40,
+          [data-win98] .bg-red-800\/20 { background-color: #ffe0e0 !important; }
+          /* success */
+          [data-win98] .bg-emerald-500\/10,
+          [data-win98] .bg-green-500\/10 { background-color: #d4f0d4 !important; }
+          /* blue elements */
+          [data-win98] .bg-blue-600,
+          [data-win98] .bg-blue-700 { background-color: #000080 !important; }
+
+          /* ── PANEL CARDS → WIN98 RAISED BOX ────────────────────── */
+          /* Every card panel (div with slate-900 bg + border) gets raised border */
+          [data-win98] div.bg-slate-900,
+          [data-win98] div.bg-slate-800 {
+            border: 2px solid !important;
+            border-color: #fff #808080 #808080 #fff !important;
+          }
+          /* Image preview / sunken content box (slate-800 with inner border) */
+          [data-win98] div.bg-slate-800.border,
+          [data-win98] div.bg-slate-800.rounded-xl,
+          [data-win98] div.bg-slate-800.rounded-lg {
+            border-color: #808080 #fff #fff #808080 !important;
+          }
+          /* Amber action bar → flat Win98 group-box (sunken) */
+          [data-win98] div.bg-amber-400\/5,
+          [data-win98] div.bg-amber-400\/10 {
+            border: 2px solid !important;
+            border-color: #808080 #fff #fff #808080 !important;
+            background-color: #f0f0f0 !important;
+          }
+
+          /* ── BORDERS ────────────────────────────────────────────── */
+          [data-win98] .border-slate-900,
+          [data-win98] .border-slate-800,
+          [data-win98] .border-slate-700,
+          [data-win98] .border-slate-700\/50,
+          [data-win98] .border-slate-600 { border-color: #808080 !important; }
+          [data-win98] .border-red-800,
+          [data-win98] .border-red-700,
+          [data-win98] .border-red-700\/60 { border-color: #cc0000 !important; }
+          [data-win98] .border-emerald-500\/20,
+          [data-win98] .border-green-500\/20 { border-color: #008000 !important; }
+          [data-win98] .divide-slate-800 > * + * { border-color: #808080 !important; }
+
+          /* ── TEXT COLORS ────────────────────────────────────────── */
+          [data-win98] .text-white { color: #000 !important; }
+          [data-win98] .hover\:text-white:hover { color: #000 !important; }
+          [data-win98] .hover\:text-red-300:hover { color: #cc0000 !important; }
+          [data-win98] .text-slate-100,
+          [data-win98] .text-slate-200,
+          [data-win98] .text-slate-300 { color: #111 !important; }
+          [data-win98] .text-slate-400 { color: #333 !important; }
+          [data-win98] .text-slate-500 { color: #555 !important; }
+          [data-win98] .text-slate-600 { color: #777 !important; }
+          [data-win98] .text-amber-400,
+          [data-win98] .text-amber-300,
+          [data-win98] .text-amber-200 { color: #000 !important; }
+          [data-win98] .text-amber-900 { color: #000 !important; }
+          [data-win98] .text-red-400,
+          [data-win98] .text-red-300 { color: #cc0000 !important; }
+          [data-win98] .text-green-400,
+          [data-win98] .text-emerald-400 { color: #008000 !important; }
+          [data-win98] .text-yellow-400 { color: #808000 !important; }
+          [data-win98] .text-blue-400,
+          [data-win98] .text-blue-300 { color: #000080 !important; }
+
+          /* ── BORDER RADIUS → SQUARE ─────────────────────────────── */
+          [data-win98] .rounded-2xl,
+          [data-win98] .rounded-xl,
+          [data-win98] .rounded-lg,
+          [data-win98] .rounded-md,
+          [data-win98] .rounded-full,
+          [data-win98] .rounded { border-radius: 0 !important; }
+
+          /* ── INPUTS / TEXTAREA / SELECT → SUNKEN WIN98 ──────────── */
+          [data-win98] input[type="text"],
+          [data-win98] input[type="email"],
+          [data-win98] input[type="number"],
+          [data-win98] input[type="url"],
+          [data-win98] input[type="password"],
+          [data-win98] input[type="search"],
+          [data-win98] textarea,
+          [data-win98] select {
+            background: #fff !important;
+            border: 2px solid !important;
+            border-color: #808080 #fff #fff #808080 !important;
+            border-radius: 0 !important;
+            color: #000 !important;
+            font-family: "MS Sans Serif", Arial, sans-serif !important;
+            font-size: 12px !important;
+          }
+          [data-win98] input[type="range"] { accent-color: #000080 !important; }
+          /* color picker — keep native swatch visible, just Win98 the border */
+          [data-win98] input[type="color"] {
+            border: 2px solid !important;
+            border-color: #808080 #fff #fff #808080 !important;
+            border-radius: 0 !important;
+            padding: 2px !important;
+            cursor: pointer !important;
+            background: transparent !important;
+          }
+          [data-win98] input::placeholder,
+          [data-win98] textarea::placeholder { color: #888 !important; opacity: 1 !important; }
+
+          /* ── ALL BUTTONS → WIN98 RAISED ─────────────────────────── */
+          [data-win98] button:not([style]) {
+            background: #c0c0c0 !important;
+            border: 2px solid !important;
+            border-color: #fff #808080 #808080 #fff !important;
+            border-radius: 0 !important;
+            color: #000 !important;
+            font-family: "MS Sans Serif", Arial, sans-serif !important;
+            font-size: 12px !important;
+            cursor: pointer;
+          }
+          [data-win98] button:not([style]):hover { background: #d0d0d0 !important; }
+          [data-win98] button:not([style]):active {
+            border-color: #808080 #fff #fff #808080 !important;
+          }
+          [data-win98] button:not([style]):disabled {
+            color: #808080 !important; opacity: 1 !important;
+          }
+          /* selected picker items → sunken Win98 button (active/selected look) */
+          [data-win98] button.bg-amber-400\/10:not([style]),
+          [data-win98] button.bg-amber-400\/20:not([style]) {
+            background-color: #e0e0e0 !important;
+            border-color: #808080 #fff #fff #808080 !important;
+          }
+
+          /* ── TABLE ROW HOVER ─────────────────────────────────────── */
+          [data-win98] .hover\\:bg-slate-800\\/40:hover {
+            background-color: #000080 !important; color: #fff !important;
+          }
+          [data-win98] .hover\\:bg-slate-800\\/40:hover * { color: #fff !important; }
+
+          /* ── MISC ────────────────────────────────────────────────── */
+          [data-win98] svg.lucide { display: none !important; }
+          [data-iconpicker] svg.lucide { display: inline-block !important; width: 12px !important; height: 12px !important; }
+          [data-win98] a { color: #000080 !important; text-decoration: underline; }
+          /* ring utilities → plain gray outline */
+          [data-win98] .ring-amber-400,
+          [data-win98] .ring-1,
+          [data-win98] .ring-2 { --tw-ring-color: #808080 !important; }
+          [data-win98] .focus\:ring-2:focus,
+          [data-win98] .focus\:ring-amber-400\/40:focus { box-shadow: none !important; }
+          [data-win98] .backdrop-blur-md,
+          [data-win98] .backdrop-blur-sm { backdrop-filter: none !important; }
+          [data-win98] .animate-spin,
+          [data-win98] .animate-ping,
+          [data-win98] .animate-bounce { animation: none !important; }
+          [data-win98] .shadow,
+          [data-win98] .shadow-2xl,
+          [data-win98] .shadow-lg,
+          [data-win98] .shadow-md { box-shadow: 1px 1px 0 #000 !important; }
+          [data-win98] *:focus { outline: 1px dotted #000080 !important; box-shadow: none !important; }
+
+          /* ── SCROLLBAR ───────────────────────────────────────────── */
+          [data-win98] ::-webkit-scrollbar { width: 16px; height: 16px; }
+          [data-win98] ::-webkit-scrollbar-track { background: #c0c0c0; border: 1px solid #808080; }
+          [data-win98] ::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #fff #808080 #808080 #fff;
+          }
+        `}</style>
+      )}
+      <div
+        className={`sticky top-16 sm:top-20 z-20${win98 ? "" : " bg-slate-900/80 backdrop-blur-md border-b border-slate-800"}`}
+        style={
+          win98
+            ? { background: "#c0c0c0", borderBottom: "2px solid #808080" }
+            : undefined
+        }
+      >
+        {/* Win98 title bar */}
+        {win98 && (
+          <div
+            style={{
+              background: "linear-gradient(to right, #808080, #a0a0a0)",
+              color: "#fff",
+              padding: "3px 8px",
+              fontSize: "12px",
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              userSelect: "none" as const,
+            }}
+          >
+            <span>Team Cargo — Admin Dashboard</span>
+            <div style={{ marginLeft: "auto", display: "flex", gap: 3 }}>
+              {(["─", "□", "✕"] as const).map((s) => (
+                <span
+                  key={s}
+                  style={{
+                    display: "inline-block",
+                    width: 16,
+                    height: 14,
+                    background: "#c0c0c0",
+                    color: "#000",
+                    fontSize: 9,
+                    textAlign: "center" as const,
+                    lineHeight: "14px",
+                    border: "1px solid",
+                    borderColor: "#fff #808080 #808080 #fff",
+                    cursor: "default",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {s}
                 </span>
-              </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="w-full px-4 sm:px-6">
+          {/* Brand row */}
+          <div
+            className="flex items-center justify-between gap-4"
+            style={win98 ? { padding: "6px 0" } : { height: 56 }}
+          >
+            {/* Left: identity */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: win98 ? 8 : 12,
+              }}
+            >
+              {win98 ? (
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    border: "2px solid",
+                    borderColor: "#fff #808080 #808080 #fff",
+                    background: "#000080",
+                    color: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    flexShrink: 0,
+                  }}
+                >
+                  {initial}
+                </div>
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-linear-to-br from-amber-400 to-amber-500 flex items-center justify-center text-sm font-bold text-amber-900 shrink-0">
+                  {initial}
+                </div>
+              )}
+              {win98 ? (
+                <span style={{ fontWeight: "bold", fontSize: 12 }}>
+                  {dict.nav.admin_dashboard}
+                </span>
+              ) : (
+                <span className="font-semibold text-sm text-white">
+                  {dict.nav.admin_dashboard}
+                </span>
+              )}
+              {win98 ? (
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "bold",
+                    padding: "1px 6px",
+                    border: "1px solid #808080",
+                    background: "#000080",
+                    color: "#fff",
+                    textTransform: "uppercase" as const,
+                    letterSpacing: "0.05em",
+                  }}
+                >
+                  Admin
+                </span>
+              ) : (
+                <span className="hidden sm:inline text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-400 border border-amber-400/30 uppercase tracking-wide">
+                  Admin
+                </span>
+              )}
+            </div>
+
+            {/* Right: actions */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: win98 ? 6 : 12,
+              }}
+            >
+              {/* Toggle */}
+              <button
+                onClick={() => setWin98((v) => !v)}
+                title={
+                  win98
+                    ? "Switch to modern theme"
+                    : "Switch to Windows 98 theme"
+                }
+                style={
+                  win98
+                    ? {
+                        padding: "2px 10px",
+                        background: "#c0c0c0",
+                        border: "2px solid",
+                        borderColor: "#fff #808080 #808080 #fff",
+                        fontFamily: '"MS Sans Serif", Arial, sans-serif',
+                        fontSize: "12px",
+                        cursor: "pointer",
+                        color: "#000",
+                        fontWeight: "bold",
+                      }
+                    : undefined
+                }
+                className={
+                  win98
+                    ? ""
+                    : "flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-600 transition-colors"
+                }
+              >
+                {win98 ? "Modern" : "🖥️ Win98"}
+              </button>
+
+              {/* Profile */}
+              {win98 ? (
+                <Link
+                  href={`/${lang}/profile`}
+                  className="hidden sm:inline-flex"
+                  style={{
+                    padding: "2px 8px",
+                    background: "#c0c0c0",
+                    border: "2px solid",
+                    borderColor: "#fff #808080 #808080 #fff",
+                    fontSize: "12px",
+                    color: "#000",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap" as const,
+                    cursor: "pointer",
+                  }}
+                >
+                  {dict.nav.my_profile}
+                </Link>
+              ) : (
+                <Link
+                  href={`/${lang}/profile`}
+                  className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  {dict.nav.my_profile}
+                </Link>
+              )}
+
+              {/* Logout */}
+              {win98 ? (
+                <button
+                  onClick={() =>
+                    void logout().then(() => router.replace(`/${lang}`))
+                  }
+                  style={{
+                    padding: "2px 8px",
+                    background: "#c0c0c0",
+                    border: "2px solid",
+                    borderColor: "#fff #808080 #808080 #fff",
+                    fontFamily: '"MS Sans Serif", Arial, sans-serif',
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    color: "#000",
+                    whiteSpace: "nowrap" as const,
+                  }}
+                >
+                  {dict.nav.logout}
+                </button>
+              ) : (
+                <button
+                  onClick={() =>
+                    void logout().then(() => router.replace(`/${lang}`))
+                  }
+                  className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{dict.nav.logout}</span>
+                </button>
+              )}
+
+              {/* Back */}
+              {win98 ? (
+                <Link
+                  href={`/${lang}`}
+                  className="hidden sm:inline-flex"
+                  style={{
+                    padding: "2px 8px",
+                    background: "#c0c0c0",
+                    border: "2px solid",
+                    borderColor: "#fff #808080 #808080 #fff",
+                    fontSize: "12px",
+                    color: "#000",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap" as const,
+                    cursor: "pointer",
+                  }}
+                >
+                  ← {dict.admin.back_to_site}
+                </Link>
+              ) : (
+                <Link
+                  href={`/${lang}`}
+                  className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">
+                    {dict.admin.back_to_site}
+                  </span>
+                </Link>
+              )}
             </div>
           </div>
 
           {/* Tab row */}
-          <div className="flex gap-0 -mb-px overflow-x-auto">
+          <div
+            className={win98 ? "" : "flex gap-0 -mb-px overflow-x-auto"}
+            style={
+              win98
+                ? {
+                    display: "flex",
+                    gap: 4,
+                    borderTop: "2px solid #808080",
+                    paddingTop: 6,
+                    paddingBottom: 4,
+                    overflowX: "auto" as const,
+                  }
+                : undefined
+            }
+          >
             {TABS.map((key) => {
               const Icon = TAB_ICONS[key];
               const tabLabel = {
@@ -146,13 +645,41 @@ export default function AdminDashboard({
                 <button
                   key={key}
                   onClick={() => setActive(key)}
-                  className={`relative flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
-                    active === key
-                      ? "border-amber-400 text-amber-400"
-                      : "border-transparent text-slate-400 hover:text-white hover:border-slate-600"
-                  }`}
+                  className={
+                    win98
+                      ? ""
+                      : `relative flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
+                          active === key
+                            ? "border-amber-400 text-amber-400"
+                            : "border-transparent text-slate-400 hover:text-white hover:border-slate-600"
+                        }`
+                  }
+                  style={
+                    win98
+                      ? {
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 5,
+                          padding: "3px 14px",
+                          background: active === key ? "#fff" : "#c0c0c0",
+                          border: "2px solid",
+                          borderColor:
+                            active === key
+                              ? "#808080 #fff #fff #808080"
+                              : "#fff #808080 #808080 #fff",
+                          fontFamily: '"MS Sans Serif", Arial, sans-serif',
+                          fontSize: "12px",
+                          cursor: "pointer",
+                          color: "#000",
+                          fontWeight: active === key ? "bold" : "normal",
+                          whiteSpace: "nowrap" as const,
+                          boxShadow:
+                            active === key ? "inset 1px 1px 0 #000" : undefined,
+                        }
+                      : undefined
+                  }
                 >
-                  <Icon className="w-4 h-4" />
+                  {win98 ? null : <Icon className="w-4 h-4" />}
                   {tabLabel}
                 </button>
               );
@@ -162,15 +689,355 @@ export default function AdminDashboard({
       </div>
 
       {/* ── Content ── */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        {active === "overview" && <AdminOverviewTab dict={dict} />}
-        {active === "users" && (
-          <AdminUsersTab currentUserId={user.id} dict={dict} />
-        )}
-        {active === "emails" && <AdminEmailsTab dict={dict} />}
-        {active === "customization" && <AdminCustomizationTab dict={dict} />}
+      <div className="w-full px-4 sm:px-6 py-6">
+        {active === "overview" &&
+          (win98 ? (
+            <AdminOverviewTab dict={dict} win98={win98} />
+          ) : (
+            <div className="max-w-[83.6352rem] mx-auto">
+              <AdminOverviewTab dict={dict} win98={win98} />
+            </div>
+          ))}
+        {active === "users" &&
+          (win98 ? (
+            <Win98Window title="Users Management" icon={<W98IcUser />}>
+              <AdminUsersTab currentUserId={user.id} dict={dict} win98 />
+            </Win98Window>
+          ) : (
+            <div className="max-w-[83.6352rem] mx-auto">
+              <AdminUsersTab currentUserId={user.id} dict={dict} />
+            </div>
+          ))}
+        {active === "emails" &&
+          (win98 ? (
+            <Win98Window title="Email Inbox" icon={<W98IcMail />}>
+              <AdminEmailsTab dict={dict} win98 />
+            </Win98Window>
+          ) : (
+            <div className="max-w-[83.6352rem] mx-auto px-2 pt-[100px] pb-[100px]">
+              <AdminEmailsTab dict={dict} />
+            </div>
+          ))}
+        {active === "customization" &&
+          (win98 ? (
+            <Win98Window title="Customization Settings" icon={<W98IcGear />}>
+              <AdminCustomizationTab dict={dict} win98={win98} />
+            </Win98Window>
+          ) : (
+            <AdminCustomizationTab dict={dict} win98={win98} />
+          ))}
       </div>
     </div>
+  );
+}
+
+// ── Win98 helper components ───────────────────────────────────────────────
+
+const W98_RAISED: React.CSSProperties = {
+  border: "2px solid",
+  borderColor: "#fff #808080 #808080 #fff",
+  background: "#c0c0c0",
+};
+const W98_SUNKEN: React.CSSProperties = {
+  border: "2px solid",
+  borderColor: "#808080 #fff #fff #808080",
+  background: "#fff",
+};
+
+// Pixel-style SVG icons (currentColor inherits from title bar text)
+const W98IcUser = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <circle cx="8" cy="5" r="3" fill="currentColor" />
+    <path d="M2 15 Q2 10 8 10 Q14 10 14 15" fill="currentColor" />
+  </svg>
+);
+const W98IcUsers = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <circle cx="5" cy="5" r="2.5" fill="currentColor" />
+    <circle cx="11" cy="5" r="2.5" fill="currentColor" />
+    <path
+      d="M0 14 Q0 10 5 10 Q7 10 8 11 Q9 10 11 10 Q16 10 16 14"
+      fill="currentColor"
+    />
+  </svg>
+);
+const W98IcChart = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <rect x="1" y="9" width="3" height="6" fill="currentColor" />
+    <rect x="5" y="5" width="3" height="10" fill="currentColor" />
+    <rect x="9" y="2" width="3" height="13" fill="currentColor" />
+    <rect x="13" y="6" width="2" height="9" fill="currentColor" />
+    <rect x="0" y="15" width="16" height="1" fill="currentColor" />
+  </svg>
+);
+const W98IcCursor = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <polygon
+      points="3,1 3,13 6,10 9,15 11,14 8,9 13,9"
+      fill="currentColor"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+const W98IcGlobe = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <circle cx="8" cy="8" r="6" />
+    <ellipse cx="8" cy="8" rx="2.5" ry="6" />
+    <line x1="2" y1="8" x2="14" y2="8" />
+    <line x1="3" y1="5" x2="13" y2="5" />
+    <line x1="3" y1="11" x2="13" y2="11" />
+  </svg>
+);
+const W98IcPin = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <circle
+      cx="8"
+      cy="6"
+      r="4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    />
+    <circle cx="8" cy="6" r="1.5" fill="currentColor" />
+    <path d="M5.5 9.2 Q8 15 8 15 Q8 15 10.5 9.2" fill="currentColor" />
+  </svg>
+);
+const W98IcDoc = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <polygon points="3,1 10,1 13,4 13,15 3,15" />
+    <polyline points="10,1 10,4 13,4" />
+    <line x1="5" y1="7" x2="11" y2="7" />
+    <line x1="5" y1="10" x2="11" y2="10" />
+    <line x1="5" y1="13" x2="9" y2="13" />
+  </svg>
+);
+const W98IcMonitor = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <rect x="1" y="2" width="14" height="9" />
+    <line x1="5" y1="11" x2="5" y2="14" />
+    <line x1="11" y1="11" x2="11" y2="14" />
+    <line x1="3" y1="14" x2="13" y2="14" />
+  </svg>
+);
+const W98IcMail = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <rect x="1" y="3" width="14" height="10" />
+    <polyline points="1,3 8,9 15,3" />
+  </svg>
+);
+const W98IcGear = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    style={{ display: "block", flexShrink: 0 }}
+  >
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      d="M6.5 1 L6 2.8 A5.5 5.5 0 0 0 4.3 3.7 L2.6 3.2 L1 5.5 L2.2 6.7 A5.5 5.5 0 0 0 2.1 8 A5.5 5.5 0 0 0 2.2 9.3 L1 10.5 L2.6 12.8 L4.3 12.3 A5.5 5.5 0 0 0 6 13.2 L6.5 15 L9.5 15 L10 13.2 A5.5 5.5 0 0 0 11.7 12.3 L13.4 12.8 L15 10.5 L13.8 9.3 A5.5 5.5 0 0 0 13.9 8 A5.5 5.5 0 0 0 13.8 6.7 L15 5.5 L13.4 3.2 L11.7 3.7 A5.5 5.5 0 0 0 10 2.8 L9.5 1 Z M8 5.5 A2.5 2.5 0 1 0 8 10.5 A2.5 2.5 0 0 0 8 5.5 Z"
+    />
+  </svg>
+);
+
+function Win98Window({
+  title,
+  icon,
+  secondary,
+  children,
+}: {
+  title: string;
+  icon?: React.ReactNode;
+  secondary?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div style={{ ...W98_RAISED, marginBottom: 0 }}>
+      <div
+        style={{
+          background: secondary
+            ? "linear-gradient(to right, #808080, #a0a0a0)"
+            : "linear-gradient(to right, #000080, #1084d0)",
+          color: "#fff",
+          padding: "3px 6px",
+          fontSize: 11,
+          fontWeight: "bold",
+          display: "flex",
+          alignItems: "center",
+          gap: 5,
+          userSelect: "none",
+        }}
+      >
+        {icon && (
+          <span style={{ display: "flex", alignItems: "center" }}>{icon}</span>
+        )}
+        {title}
+      </div>
+      <div style={{ padding: "8px 10px" }}>{children}</div>
+    </div>
+  );
+}
+
+function Win98Progress({
+  value,
+  color = "#000080",
+}: {
+  value: number;
+  color?: string;
+}) {
+  return (
+    <div>
+      <div
+        style={{
+          ...W98_SUNKEN,
+          height: 16,
+          padding: 1,
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${value}%`,
+            height: "100%",
+            background: color,
+            transition: "width 0.5s",
+            display: "flex",
+            alignItems: "center",
+            paddingLeft: 4,
+          }}
+        >
+          {value > 10 && (
+            <span
+              style={{ color: "#fff", fontSize: 10, fontFamily: "monospace" }}
+            >
+              {value}%
+            </span>
+          )}
+        </div>
+      </div>
+      {value <= 10 && (
+        <span style={{ fontSize: 10, fontFamily: "monospace" }}>{value}%</span>
+      )}
+    </div>
+  );
+}
+
+function Win98Table({
+  rows,
+  headers,
+}: {
+  rows: string[][];
+  headers: string[];
+}) {
+  return (
+    <table
+      style={{
+        width: "100%",
+        borderCollapse: "collapse" as const,
+        fontSize: 12,
+      }}
+    >
+      <thead>
+        <tr style={{ background: "#000080", color: "#fff" }}>
+          {headers.map((h) => (
+            <th
+              key={h}
+              style={{
+                padding: "2px 6px",
+                textAlign: "left" as const,
+                fontWeight: "bold",
+              }}
+            >
+              {h}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, i) => (
+          <tr key={i} style={{ background: i % 2 === 0 ? "#fff" : "#f0f0f0" }}>
+            {row.map((cell, j) => (
+              <td
+                key={j}
+                style={{
+                  padding: "2px 6px",
+                  borderBottom: "1px solid #d0d0d0",
+                  fontFamily: j === row.length - 1 ? "monospace" : "inherit",
+                  textAlign:
+                    j === row.length - 1
+                      ? ("right" as const)
+                      : ("left" as const),
+                  maxWidth: j === 0 ? 160 : undefined,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap" as const,
+                }}
+              >
+                {cell}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
@@ -261,7 +1128,13 @@ function DeviceTooltip({
   );
 }
 
-function AdminOverviewTab({ dict }: { dict: Dictionary }) {
+function AdminOverviewTab({
+  dict,
+  win98,
+}: {
+  dict: Dictionary;
+  win98: boolean;
+}) {
   const [stats, setStats] = useState<Stats | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -321,569 +1194,999 @@ function AdminOverviewTab({ dict }: { dict: Dictionary }) {
   }));
 
   return (
-    <div className="space-y-8">
-      {/* ── Header ── */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-white">Analytics</h2>
-        {analytics && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-            </span>
-            <span className="text-xs font-medium text-emerald-400">
-              {analytics.activeUsers} active now
-            </span>
+    <div className={win98 ? "" : "space-y-8"}>
+      {/* ── Header (modern only — win98 header lives in dashboard title bar) ── */}
+      {!win98 && (
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-white">Analytics</h2>
+          <div className="flex items-center gap-3 shrink-0">
+            {analytics && (
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                <span className="text-xs font-medium text-emerald-400">
+                  {analytics.activeUsers} active now
+                </span>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* ── User stats ── */}
-      <div>
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-          Users
-        </p>
-        <p className="text-[11px] text-slate-600 mt-0.5 mb-3">
-          Registered accounts in your database
-        </p>
-        <div className="grid sm:grid-cols-3 gap-4">
-          <StatCard
-            icon={Users}
-            label={dict.admin.stat_total_users}
-            value={stats.totalUsers}
-            color="text-blue-400"
-            accentColor="#60a5fa"
-          />
-          <StatCard
-            icon={CheckCircle}
-            label={dict.admin.stat_verified}
-            value={stats.totalVerified}
-            color="text-green-400"
-            accentColor="#4ade80"
-          />
-          <StatCard
-            icon={XCircle}
-            label={dict.admin.stat_unverified}
-            value={stats.totalUnverified}
-            color="text-yellow-400"
-            accentColor="#facc15"
-          />
         </div>
-      </div>
+      )}
 
-      {/* ── GA4 Analytics ── */}
-      {analytics && (
-        <>
-          {/* Sessions bar chart + KPIs */}
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
-            <div className="flex items-start justify-between mb-5">
-              <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                  Sessions
-                </p>
-                <p className="text-[11px] text-slate-600 mt-0.5">
-                  Each visit to your site, regardless of the user
-                </p>
-              </div>
-              <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
-                Last 30 days
+      {/* ════════════════════ WIN98 THEME ════════════════════ */}
+      {win98 &&
+        stats &&
+        (() => {
+          const F = '"MS Sans Serif", Arial, sans-serif';
+          const GRP: React.CSSProperties = {
+            border: "2px solid",
+            borderColor: "#808080 #fff #fff #808080",
+            background: "#c0c0c0",
+            padding: "20px 16px 14px",
+            position: "relative",
+          };
+          const GRP_LBL: React.CSSProperties = {
+            position: "absolute",
+            top: -9,
+            left: 10,
+            background: "#c0c0c0",
+            padding: "0 4px",
+            fontSize: 11,
+            fontWeight: "bold",
+            color: "#000",
+            fontFamily: F,
+            whiteSpace: "nowrap",
+          };
+          const KV = (
+            label: string,
+            value: string | number,
+            isLast = false,
+          ) => (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                padding: "6px 0",
+                borderBottom: isLast ? "none" : "1px solid #808080",
+              }}
+            >
+              <span style={{ fontFamily: F, fontSize: 11, color: "#555" }}>
+                {label}
+              </span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontWeight: "bold",
+                  fontSize: 12,
+                }}
+              >
+                {typeof value === "number" ? value.toLocaleString() : value}
               </span>
             </div>
-            {/* KPI row */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              {[
-                {
-                  label: "Today",
-                  value: analytics.sessions.today,
-                  color: SESSION_COLORS[0],
-                  id: "0",
-                },
-                {
-                  label: "7 days",
-                  value: analytics.sessions.week,
-                  color: SESSION_COLORS[1],
-                  id: "1",
-                },
-                {
-                  label: "30 days",
-                  value: analytics.sessions.month,
-                  color: SESSION_COLORS[2],
-                  id: "2",
-                },
-              ].map(({ label, value, color, id }) => (
-                <div
-                  key={id}
-                  className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden"
-                >
-                  <div
-                    className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl"
-                    style={{ background: color }}
-                  />
-                  <p className="text-[11px] text-slate-500 mb-2 uppercase tracking-wide">
-                    {label}
-                  </p>
-                  <p
-                    className="text-3xl font-bold tabular-nums tracking-tight"
-                    style={{ color }}
-                  >
-                    {value.toLocaleString()}
-                  </p>
-                </div>
-              ))}
-            </div>
-            {/* Bar chart */}
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart
-                data={sessionBarData}
-                barCategoryGap="40%"
-                margin={{ top: 20, right: 8, bottom: 0, left: -16 }}
+          );
+          return (
+            <div
+              style={{
+                padding: "4px 2px 14px",
+                fontFamily: F,
+                fontSize: 11,
+                color: "#000",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <style>{`
+              .w98a-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: stretch; }
+              .w98a-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+              @media (max-width: 600px) {
+                .w98a-top { grid-template-columns: 1fr; }
+                .w98a-2col { grid-template-columns: 1fr; }
+              }
+            `}</style>
+
+              {/* Status bar */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  padding: "3px 8px",
+                  border: "2px solid",
+                  borderColor: "#808080 #fff #fff #808080",
+                  fontSize: 11,
+                }}
               >
-                <defs>
-                  {SESSION_COLORS.map((c, i) => (
-                    <linearGradient
-                      key={i}
-                      id={`sg-${i}`}
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="0%" stopColor={c} stopOpacity={0.95} />
-                      <stop offset="100%" stopColor={c} stopOpacity={0.25} />
-                    </linearGradient>
-                  ))}
-                </defs>
-                <CartesianGrid
-                  vertical={false}
-                  stroke="#1e293b"
-                  strokeDasharray="4 4"
-                />
-                <XAxis
-                  dataKey="period"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={{ fill: "#334155", fontSize: 11 }}
-                  axisLine={false}
-                  tickLine={false}
-                  allowDecimals={false}
-                />
-                <Tooltip
-                  content={<ChartTooltip />}
-                  cursor={{ fill: "rgba(255,255,255,0.03)", radius: 6 }}
-                />
-                <Bar dataKey="sessions" radius={[6, 6, 0, 0]}>
-                  {sessionBarData.map((_, i) => (
-                    <Cell key={i} fill={`url(#sg-${i})`} />
-                  ))}
-                  <LabelList
-                    dataKey="sessions"
-                    position="top"
-                    style={{ fill: "#94a3b8", fontSize: 11, fontWeight: 600 }}
-                    formatter={(v: unknown) =>
-                      Number(v) > 0 ? Number(v).toLocaleString() : ""
-                    }
-                  />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* ── Engagement KPIs ── */}
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
-            <div className="flex items-start justify-between mb-5">
-              <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                  Engagement
-                </p>
-                <p className="text-[11px] text-slate-600 mt-0.5">
-                  How visitors interact with your content once they arrive
-                </p>
-              </div>
-              <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
-                30 days
-              </span>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {/* Avg session duration */}
-              <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-violet-400" />
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Clock className="w-3 h-3 text-violet-400" />
-                  <p className="text-[11px] text-slate-500 uppercase tracking-wide">
-                    Avg. Duration
-                  </p>
-                </div>
-                <p className="text-2xl font-bold tabular-nums tracking-tight text-violet-300">
-                  {formatDuration(analytics.engagement.avgSessionDuration)}
-                </p>
-                <p className="text-[10px] text-slate-600 mt-1">per session</p>
-              </div>
-              {/* Engagement rate */}
-              <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-emerald-400" />
-                <div className="flex items-center gap-1.5 mb-2">
-                  <MousePointer2 className="w-3 h-3 text-emerald-400" />
-                  <p className="text-[11px] text-slate-500 uppercase tracking-wide">
-                    Engaged
-                  </p>
-                </div>
-                <p className="text-2xl font-bold tabular-nums tracking-tight text-emerald-300">
-                  {Math.round(analytics.engagement.engagementRate * 100)}%
-                </p>
-                <div className="mt-2 h-1 rounded-full bg-slate-700 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-emerald-400/60 transition-all duration-700"
-                    style={{
-                      width: `${Math.round(analytics.engagement.engagementRate * 100)}%`,
-                    }}
-                  />
-                </div>
-              </div>
-              {/* New vs returning */}
-              <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-sky-400" />
-                <div className="flex items-center gap-1.5 mb-2">
-                  <UserCheck className="w-3 h-3 text-sky-400" />
-                  <p className="text-[11px] text-slate-500 uppercase tracking-wide">
-                    New Users
-                  </p>
-                </div>
-                <p className="text-2xl font-bold tabular-nums tracking-tight text-sky-300">
-                  {Math.round(analytics.engagement.newUsersRate * 100)}%
-                </p>
-                <div className="mt-2 h-1 rounded-full bg-slate-700 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-sky-400/60 transition-all duration-700"
-                    style={{
-                      width: `${Math.round(analytics.engagement.newUsersRate * 100)}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Traffic Sources + Countries row ── */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            {/* Traffic Sources — horizontal bar */}
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
-              <div className="flex items-start justify-between mb-5">
-                <div>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                    Traffic Sources
-                  </p>
-                  <p className="text-[11px] text-slate-600 mt-0.5">
-                    Where visitors come from — search, direct, referral, or ads
-                  </p>
-                </div>
-                <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
-                  30 days
+                <span
+                  style={{
+                    color: analytics ? "#006600" : "#808080",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {analytics ? "● GA4 Connected" : "○ GA4 Unavailable"}
+                </span>
+                {analytics && (
+                  <>
+                    <span style={{ color: "#808080" }}>|</span>
+                    <span>
+                      Active users: <strong>{analytics.activeUsers}</strong>
+                    </span>
+                  </>
+                )}
+                <span style={{ marginLeft: "auto", color: "#555" }}>
+                  {new Date().toLocaleDateString()}
                 </span>
               </div>
-              <ResponsiveContainer
-                width="100%"
-                height={Math.max(180, analytics.trafficSources.length * 34)}
-              >
-                <BarChart
-                  layout="vertical"
-                  data={analytics.trafficSources}
-                  margin={{ top: 0, right: 44, bottom: 0, left: 0 }}
-                  barCategoryGap="30%"
-                >
-                  <defs>
-                    <linearGradient id="tg" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.9} />
-                      <stop
-                        offset="100%"
-                        stopColor="#8b5cf6"
-                        stopOpacity={0.3}
-                      />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    horizontal={false}
-                    stroke="#1e293b"
-                    strokeDasharray="4 4"
-                  />
-                  <XAxis
-                    type="number"
-                    tick={{ fill: "#334155", fontSize: 11 }}
-                    axisLine={false}
-                    tickLine={false}
-                    allowDecimals={false}
-                  />
-                  <YAxis
-                    dataKey="source"
-                    type="category"
-                    width={110}
-                    tick={{ fill: "#94a3b8", fontSize: 11 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    content={<ChartTooltip />}
-                    cursor={{ fill: "rgba(255,255,255,0.03)" }}
-                  />
-                  <Bar dataKey="sessions" radius={[0, 6, 6, 0]} fill="url(#tg)">
-                    <LabelList
-                      dataKey="sessions"
-                      position="right"
-                      style={{ fill: "#64748b", fontSize: 11, fontWeight: 600 }}
-                      formatter={(v: unknown) =>
-                        Number(v) > 0 ? Number(v).toLocaleString() : ""
-                      }
-                    />
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
 
-            {/* Top Countries — list with inline progress */}
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
-              <div className="flex items-start justify-between mb-5">
-                <div>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                    Top Countries
-                  </p>
-                  <p className="text-[11px] text-slate-600 mt-0.5">
-                    Geographic breakdown of your visitors by session count
-                  </p>
+              {/* Top row: Users | Sessions | Engagement */}
+              <div className="w98a-top">
+                {/* Users & Accounts */}
+                <div style={{ ...GRP }}>
+                  <span style={GRP_LBL}>Users &amp; Accounts</span>
+                  {KV(dict.admin.stat_total_users, stats.totalUsers)}
+                  {KV(dict.admin.stat_verified, stats.totalVerified)}
+                  {KV(dict.admin.stat_unverified, stats.totalUnverified, true)}
                 </div>
-                <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
-                  30 days
-                </span>
-              </div>
-              {(() => {
-                const total = analytics.topCountries.reduce(
-                  (s, c) => s + c.sessions,
-                  0,
-                );
-                return (
-                  <div className="space-y-3">
-                    {analytics.topCountries.map((c, i) => {
-                      const pct =
-                        total > 0 ? Math.round((c.sessions / total) * 100) : 0;
-                      const opacity = 1 - i * 0.09;
+
+                {/* Sessions */}
+                <div style={{ ...GRP }}>
+                  <span style={GRP_LBL}>Sessions</span>
+                  {analytics ? (
+                    [
+                      { label: "Today", value: analytics.sessions.today },
+                      { label: "7 days", value: analytics.sessions.week },
+                      { label: "30 days", value: analytics.sessions.month },
+                    ].map(({ label, value }, i, arr) => {
+                      const max = Math.max(
+                        analytics.sessions.today,
+                        analytics.sessions.week,
+                        analytics.sessions.month,
+                        1,
+                      );
+                      const bars = Math.round((value / max) * 12);
                       return (
-                        <div key={c.country}>
-                          <div className="flex items-center gap-2 mb-1.5">
-                            <MapPin className="w-3 h-3 text-slate-600 shrink-0" />
-                            <span className="text-sm text-slate-300 flex-1 truncate">
-                              {c.country}
-                            </span>
-                            <span className="text-sm font-bold tabular-nums text-slate-300">
-                              {pct}%
-                            </span>
-                            <span className="text-xs text-slate-600 tabular-nums w-7 text-right shrink-0">
-                              {c.sessions}
+                        <div
+                          key={label}
+                          style={{
+                            padding: "6px 0",
+                            borderBottom:
+                              i < arr.length - 1 ? "1px solid #808080" : "none",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              fontSize: 11,
+                              marginBottom: 2,
+                            }}
+                          >
+                            <span style={{ color: "#555" }}>{label}</span>
+                            <span
+                              style={{
+                                fontFamily: "monospace",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {value.toLocaleString()}
                             </span>
                           </div>
-                          <div className="h-1 rounded-full bg-slate-800 overflow-hidden">
-                            <div
-                              className="h-full rounded-full transition-all duration-700"
-                              style={{
-                                width: `${pct}%`,
-                                background: `rgba(251,191,36,${opacity})`,
-                              }}
-                            />
+                          <div
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: 9,
+                              color: "#000080",
+                              lineHeight: 1,
+                            }}
+                          >
+                            {"█".repeat(bars)}
+                            {"░".repeat(12 - bars)}
                           </div>
                         </div>
                       );
-                    })}
+                    })
+                  ) : (
+                    <span style={{ fontSize: 11, color: "#808080" }}>
+                      No GA4 data
+                    </span>
+                  )}
+                </div>
+
+                {/* Engagement */}
+                <div style={{ ...GRP }}>
+                  <span style={GRP_LBL}>Engagement</span>
+                  {analytics ? (
+                    <>
+                      {KV(
+                        "Avg. Duration",
+                        formatDuration(analytics.engagement.avgSessionDuration),
+                      )}
+                      <div
+                        style={{
+                          padding: "6px 0",
+                          borderBottom: "1px solid #808080",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: 11,
+                            marginBottom: 3,
+                          }}
+                        >
+                          <span style={{ color: "#555" }}>Engaged</span>
+                          <span style={{ fontFamily: "monospace" }}>
+                            {Math.round(
+                              analytics.engagement.engagementRate * 100,
+                            )}
+                            %
+                          </span>
+                        </div>
+                        <Win98Progress
+                          value={Math.round(
+                            analytics.engagement.engagementRate * 100,
+                          )}
+                          color="#000080"
+                        />
+                      </div>
+                      <div style={{ padding: "6px 0" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: 11,
+                            marginBottom: 3,
+                          }}
+                        >
+                          <span style={{ color: "#555" }}>New Users</span>
+                          <span style={{ fontFamily: "monospace" }}>
+                            {Math.round(
+                              analytics.engagement.newUsersRate * 100,
+                            )}
+                            %
+                          </span>
+                        </div>
+                        <Win98Progress
+                          value={Math.round(
+                            analytics.engagement.newUsersRate * 100,
+                          )}
+                          color="#008000"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <span style={{ fontSize: 11, color: "#808080" }}>
+                      No GA4 data
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Audience: Traffic Sources + Top Countries */}
+              {analytics && (
+                <div style={{ ...GRP }}>
+                  <span style={GRP_LBL}>Audience</span>
+                  <div className="w98a-2col">
+                    <div>
+                      <div
+                        style={{
+                          fontSize: 11,
+                          fontWeight: "bold",
+                          color: "#000080",
+                          marginBottom: 5,
+                        }}
+                      >
+                        Traffic Sources
+                      </div>
+                      <Win98Table
+                        rows={analytics.trafficSources.map((t) => [
+                          t.source,
+                          t.sessions.toLocaleString(),
+                        ])}
+                        headers={["Source", "Sessions"]}
+                      />
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontSize: 11,
+                          fontWeight: "bold",
+                          color: "#000080",
+                          marginBottom: 5,
+                        }}
+                      >
+                        Top Countries
+                      </div>
+                      <Win98Table
+                        rows={analytics.topCountries.map((c) => [
+                          c.country,
+                          c.sessions.toLocaleString(),
+                        ])}
+                        headers={["Country", "Sessions"]}
+                      />
+                    </div>
                   </div>
-                );
-              })()}
+                </div>
+              )}
+
+              {/* Top Pages | Devices — two separate GRP boxes side by side */}
+              {analytics && (
+                <div className="w98a-2col">
+                  {/* Top Pages */}
+                  <div style={{ ...GRP }}>
+                    <span style={GRP_LBL}>Top Pages</span>
+                    <Win98Table
+                      rows={analytics.topPages.map((p, i) => [
+                        `${i + 1}. ${p.path}`,
+                        p.sessions.toLocaleString(),
+                      ])}
+                      headers={["Page", "Sessions"]}
+                    />
+                  </div>
+
+                  {/* Devices */}
+                  <div style={{ ...GRP }}>
+                    <span style={GRP_LBL}>Devices</span>
+                    {(() => {
+                      const total = analytics.deviceCategory.reduce(
+                        (s, x) => s + x.sessions,
+                        0,
+                      );
+                      return analytics.deviceCategory.map((d, i, arr) => {
+                        const pct =
+                          total > 0
+                            ? Math.round((d.sessions / total) * 100)
+                            : 0;
+                        return (
+                          <div
+                            key={d.category}
+                            style={{
+                              paddingBottom: i < arr.length - 1 ? 10 : 0,
+                              marginBottom: i < arr.length - 1 ? 10 : 0,
+                              borderBottom:
+                                i < arr.length - 1
+                                  ? "1px solid #808080"
+                                  : "none",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                fontSize: 11,
+                                marginBottom: 4,
+                              }}
+                            >
+                              <span
+                                style={{
+                                  textTransform: "capitalize" as const,
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                {d.category}
+                              </span>
+                              <span
+                                style={{
+                                  fontFamily: "monospace",
+                                  color: "#000080",
+                                }}
+                              >
+                                {pct}% &nbsp;
+                                <span
+                                  style={{
+                                    color: "#555",
+                                    fontWeight: "normal",
+                                  }}
+                                >
+                                  ({d.sessions.toLocaleString()} sessions)
+                                </span>
+                              </span>
+                            </div>
+                            <Win98Progress value={pct} color="#000080" />
+                          </div>
+                        );
+                      });
+                    })()}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
+      {/* ════════════════════ MODERN THEME ════════════════════ */}
+      {!win98 && (
+        <div className="space-y-8">
+          {/* ── User stats ── */}
+          <div>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Users
+            </p>
+            <p className="text-[11px] text-slate-600 mt-0.5 mb-3">
+              Registered accounts in your database
+            </p>
+            <div className="grid sm:grid-cols-3 gap-4">
+              <StatCard
+                icon={Users}
+                label={dict.admin.stat_total_users}
+                value={stats.totalUsers}
+                color="text-blue-400"
+                accentColor="#60a5fa"
+              />
+              <StatCard
+                icon={CheckCircle}
+                label={dict.admin.stat_verified}
+                value={stats.totalVerified}
+                color="text-green-400"
+                accentColor="#4ade80"
+              />
+              <StatCard
+                icon={XCircle}
+                label={dict.admin.stat_unverified}
+                value={stats.totalUnverified}
+                color="text-yellow-400"
+                accentColor="#facc15"
+              />
             </div>
           </div>
 
-          {/* Top Pages + Devices row */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            {/* Top Pages — horizontal bar chart */}
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
-              <div className="flex items-start justify-between mb-5">
-                <div>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                    Top Pages
-                  </p>
-                  <p className="text-[11px] text-slate-600 mt-0.5">
-                    Most visited URLs — shows where users spend their time
-                  </p>
-                </div>
-                <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
-                  30 days
-                </span>
-              </div>
-              <ResponsiveContainer
-                width="100%"
-                height={Math.max(200, analytics.topPages.length * 34)}
-              >
-                <BarChart
-                  layout="vertical"
-                  data={analytics.topPages}
-                  margin={{ top: 0, right: 44, bottom: 0, left: 0 }}
-                  barCategoryGap="30%"
-                >
-                  <defs>
-                    <linearGradient id="pg" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.9} />
-                      <stop
-                        offset="100%"
-                        stopColor="#f59e0b"
-                        stopOpacity={0.35}
-                      />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    horizontal={false}
-                    stroke="#1e293b"
-                    strokeDasharray="4 4"
-                  />
-                  <XAxis
-                    type="number"
-                    tick={{ fill: "#334155", fontSize: 11 }}
-                    axisLine={false}
-                    tickLine={false}
-                    allowDecimals={false}
-                  />
-                  <YAxis
-                    dataKey="path"
-                    type="category"
-                    width={90}
-                    tick={{
-                      fill: "#94a3b8",
-                      fontSize: 11,
-                      fontFamily: "ui-monospace, monospace",
-                    }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    content={<ChartTooltip />}
-                    cursor={{ fill: "rgba(255,255,255,0.03)" }}
-                  />
-                  <Bar dataKey="sessions" radius={[0, 6, 6, 0]} fill="url(#pg)">
-                    <LabelList
-                      dataKey="sessions"
-                      position="right"
-                      style={{ fill: "#64748b", fontSize: 11, fontWeight: 600 }}
-                      formatter={(v: unknown) =>
-                        Number(v) > 0 ? Number(v).toLocaleString() : ""
-                      }
-                    />
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Devices — donut chart */}
-            <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
-              <div className="flex items-start justify-between mb-5">
-                <div>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                    Devices
-                  </p>
-                  <p className="text-[11px] text-slate-600 mt-0.5">
-                    What type of device visitors use to access your site
-                  </p>
-                </div>
-                <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
-                  30 days
-                </span>
-              </div>
-              <div className="flex flex-col items-center gap-5">
-                {/* Donut with center label */}
-                <div className="relative w-full">
-                  <ResponsiveContainer width="100%" height={170}>
-                    <PieChart>
-                      <Pie
-                        data={devicePieData}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={52}
-                        outerRadius={78}
-                        paddingAngle={3}
-                        strokeWidth={0}
-                        startAngle={90}
-                        endAngle={-270}
-                      >
-                        {devicePieData?.map((_, i) => (
-                          <Cell
-                            key={i}
-                            fill={DEVICE_COLORS[i % DEVICE_COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip content={<DeviceTooltip />} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  {/* Center label */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <p className="text-2xl font-bold text-white tabular-nums leading-none">
-                      {totalDeviceSessions.toLocaleString()}
+          {/* ── GA4 Analytics ── */}
+          {analytics && (
+            <>
+              {/* Sessions bar chart + KPIs */}
+              <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                <div className="flex items-start justify-between mb-5">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                      Sessions
                     </p>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">
-                      sessions
+                    <p className="text-[11px] text-slate-600 mt-0.5">
+                      Each visit to your site, regardless of the user
                     </p>
                   </div>
+                  <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                    Last 30 days
+                  </span>
                 </div>
-                {/* Legend */}
-                <div className="w-full space-y-2.5">
-                  {analytics.deviceCategory.map((d, i) => {
-                    const DevIcon =
-                      d.category === "mobile"
-                        ? Smartphone
-                        : d.category === "tablet"
-                          ? Tablet
-                          : Monitor;
-                    const pct = totalDeviceSessions
-                      ? Math.round((d.sessions / totalDeviceSessions) * 100)
-                      : 0;
-                    const color = DEVICE_COLORS[i % DEVICE_COLORS.length];
+                {/* KPI row */}
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  {[
+                    {
+                      label: "Today",
+                      value: analytics.sessions.today,
+                      color: SESSION_COLORS[0],
+                      id: "0",
+                    },
+                    {
+                      label: "7 days",
+                      value: analytics.sessions.week,
+                      color: SESSION_COLORS[1],
+                      id: "1",
+                    },
+                    {
+                      label: "30 days",
+                      value: analytics.sessions.month,
+                      color: SESSION_COLORS[2],
+                      id: "2",
+                    },
+                  ].map(({ label, value, color, id }) => (
+                    <div
+                      key={id}
+                      className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden"
+                    >
+                      <div
+                        className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl"
+                        style={{ background: color }}
+                      />
+                      <p className="text-[11px] text-slate-500 mb-2 uppercase tracking-wide">
+                        {label}
+                      </p>
+                      <p
+                        className="text-3xl font-bold tabular-nums tracking-tight"
+                        style={{ color }}
+                      >
+                        {value.toLocaleString()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                {/* Bar chart */}
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart
+                    data={sessionBarData}
+                    barCategoryGap="40%"
+                    margin={{ top: 20, right: 8, bottom: 0, left: -16 }}
+                  >
+                    <defs>
+                      {SESSION_COLORS.map((c, i) => (
+                        <linearGradient
+                          key={i}
+                          id={`sg-${i}`}
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop offset="0%" stopColor={c} stopOpacity={0.95} />
+                          <stop
+                            offset="100%"
+                            stopColor={c}
+                            stopOpacity={0.25}
+                          />
+                        </linearGradient>
+                      ))}
+                    </defs>
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="#1e293b"
+                      strokeDasharray="4 4"
+                    />
+                    <XAxis
+                      dataKey="period"
+                      tick={{ fill: "#64748b", fontSize: 12 }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      tick={{ fill: "#334155", fontSize: 11 }}
+                      axisLine={false}
+                      tickLine={false}
+                      allowDecimals={false}
+                    />
+                    <Tooltip
+                      content={<ChartTooltip />}
+                      cursor={{ fill: "rgba(255,255,255,0.03)", radius: 6 }}
+                    />
+                    <Bar dataKey="sessions" radius={[6, 6, 0, 0]}>
+                      {sessionBarData.map((_, i) => (
+                        <Cell key={i} fill={`url(#sg-${i})`} />
+                      ))}
+                      <LabelList
+                        dataKey="sessions"
+                        position="top"
+                        style={{
+                          fill: "#94a3b8",
+                          fontSize: 11,
+                          fontWeight: 600,
+                        }}
+                        formatter={(v: unknown) =>
+                          Number(v) > 0 ? Number(v).toLocaleString() : ""
+                        }
+                      />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* ── Engagement KPIs ── */}
+              <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                <div className="flex items-start justify-between mb-5">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                      Engagement
+                    </p>
+                    <p className="text-[11px] text-slate-600 mt-0.5">
+                      How visitors interact with your content once they arrive
+                    </p>
+                  </div>
+                  <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                    30 days
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {/* Avg session duration */}
+                  <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-violet-400" />
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Clock className="w-3 h-3 text-violet-400" />
+                      <p className="text-[11px] text-slate-500 uppercase tracking-wide">
+                        Avg. Duration
+                      </p>
+                    </div>
+                    <p className="text-2xl font-bold tabular-nums tracking-tight text-violet-300">
+                      {formatDuration(analytics.engagement.avgSessionDuration)}
+                    </p>
+                    <p className="text-[10px] text-slate-600 mt-1">
+                      per session
+                    </p>
+                  </div>
+                  {/* Engagement rate */}
+                  <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-emerald-400" />
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <MousePointer2 className="w-3 h-3 text-emerald-400" />
+                      <p className="text-[11px] text-slate-500 uppercase tracking-wide">
+                        Engaged
+                      </p>
+                    </div>
+                    <p className="text-2xl font-bold tabular-nums tracking-tight text-emerald-300">
+                      {Math.round(analytics.engagement.engagementRate * 100)}%
+                    </p>
+                    <div className="mt-2 h-1 rounded-full bg-slate-700 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-emerald-400/60 transition-all duration-700"
+                        style={{
+                          width: `${Math.round(analytics.engagement.engagementRate * 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  {/* New vs returning */}
+                  <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-sky-400" />
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <UserCheck className="w-3 h-3 text-sky-400" />
+                      <p className="text-[11px] text-slate-500 uppercase tracking-wide">
+                        New Users
+                      </p>
+                    </div>
+                    <p className="text-2xl font-bold tabular-nums tracking-tight text-sky-300">
+                      {Math.round(analytics.engagement.newUsersRate * 100)}%
+                    </p>
+                    <div className="mt-2 h-1 rounded-full bg-slate-700 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-sky-400/60 transition-all duration-700"
+                        style={{
+                          width: `${Math.round(analytics.engagement.newUsersRate * 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── Traffic Sources + Countries row ── */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                {/* Traffic Sources — horizontal bar */}
+                <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                        Traffic Sources
+                      </p>
+                      <p className="text-[11px] text-slate-600 mt-0.5">
+                        Where visitors come from — search, direct, referral, or
+                        ads
+                      </p>
+                    </div>
+                    <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                      30 days
+                    </span>
+                  </div>
+                  <ResponsiveContainer
+                    width="100%"
+                    height={Math.max(180, analytics.trafficSources.length * 34)}
+                  >
+                    <BarChart
+                      layout="vertical"
+                      data={analytics.trafficSources}
+                      margin={{ top: 0, right: 44, bottom: 0, left: 0 }}
+                      barCategoryGap="30%"
+                    >
+                      <defs>
+                        <linearGradient id="tg" x1="0" y1="0" x2="1" y2="0">
+                          <stop
+                            offset="0%"
+                            stopColor="#8b5cf6"
+                            stopOpacity={0.9}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#8b5cf6"
+                            stopOpacity={0.3}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
+                        horizontal={false}
+                        stroke="#1e293b"
+                        strokeDasharray="4 4"
+                      />
+                      <XAxis
+                        type="number"
+                        tick={{ fill: "#334155", fontSize: 11 }}
+                        axisLine={false}
+                        tickLine={false}
+                        allowDecimals={false}
+                      />
+                      <YAxis
+                        dataKey="source"
+                        type="category"
+                        width={110}
+                        tick={{ fill: "#94a3b8", fontSize: 11 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <Tooltip
+                        content={<ChartTooltip />}
+                        cursor={{ fill: "rgba(255,255,255,0.03)" }}
+                      />
+                      <Bar
+                        dataKey="sessions"
+                        radius={[0, 6, 6, 0]}
+                        fill="url(#tg)"
+                      >
+                        <LabelList
+                          dataKey="sessions"
+                          position="right"
+                          style={{
+                            fill: "#64748b",
+                            fontSize: 11,
+                            fontWeight: 600,
+                          }}
+                          formatter={(v: unknown) =>
+                            Number(v) > 0 ? Number(v).toLocaleString() : ""
+                          }
+                        />
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Top Countries — list with inline progress */}
+                <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                        Top Countries
+                      </p>
+                      <p className="text-[11px] text-slate-600 mt-0.5">
+                        Geographic breakdown of your visitors by session count
+                      </p>
+                    </div>
+                    <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                      30 days
+                    </span>
+                  </div>
+                  {(() => {
+                    const total = analytics.topCountries.reduce(
+                      (s, c) => s + c.sessions,
+                      0,
+                    );
                     return (
-                      <div key={d.category}>
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <div
-                            className="w-2 h-2 rounded-full shrink-0"
-                            style={{ background: color }}
-                          />
-                          <DevIcon className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                          <span className="text-sm text-slate-300 capitalize flex-1">
-                            {d.category}
-                          </span>
-                          <span
-                            className="text-sm font-bold tabular-nums"
-                            style={{ color }}
-                          >
-                            {pct}%
-                          </span>
-                          <span className="text-xs text-slate-600 tabular-nums">
-                            {d.sessions.toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="h-1 rounded-full bg-slate-800 overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all duration-700"
-                            style={{
-                              width: `${pct}%`,
-                              background: color,
-                              opacity: 0.6,
-                            }}
-                          />
-                        </div>
+                      <div className="space-y-3">
+                        {analytics.topCountries.map((c, i) => {
+                          const pct =
+                            total > 0
+                              ? Math.round((c.sessions / total) * 100)
+                              : 0;
+                          const opacity = 1 - i * 0.09;
+                          return (
+                            <div key={c.country}>
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <MapPin className="w-3 h-3 text-slate-600 shrink-0" />
+                                <span className="text-sm text-slate-300 flex-1 truncate">
+                                  {c.country}
+                                </span>
+                                <span className="text-sm font-bold tabular-nums text-slate-300">
+                                  {pct}%
+                                </span>
+                                <span className="text-xs text-slate-600 tabular-nums w-7 text-right shrink-0">
+                                  {c.sessions}
+                                </span>
+                              </div>
+                              <div className="h-1 rounded-full bg-slate-800 overflow-hidden">
+                                <div
+                                  className="h-full rounded-full transition-all duration-700"
+                                  style={{
+                                    width: `${pct}%`,
+                                    background: `rgba(251,191,36,${opacity})`,
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     );
-                  })}
+                  })()}
                 </div>
               </div>
-            </div>
-          </div>
-        </>
+
+              {/* Top Pages + Devices row */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                {/* Top Pages — horizontal bar chart */}
+                <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                        Top Pages
+                      </p>
+                      <p className="text-[11px] text-slate-600 mt-0.5">
+                        Most visited URLs — shows where users spend their time
+                      </p>
+                    </div>
+                    <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                      30 days
+                    </span>
+                  </div>
+                  <ResponsiveContainer
+                    width="100%"
+                    height={Math.max(200, analytics.topPages.length * 34)}
+                  >
+                    <BarChart
+                      layout="vertical"
+                      data={analytics.topPages}
+                      margin={{ top: 0, right: 44, bottom: 0, left: 0 }}
+                      barCategoryGap="30%"
+                    >
+                      <defs>
+                        <linearGradient id="pg" x1="0" y1="0" x2="1" y2="0">
+                          <stop
+                            offset="0%"
+                            stopColor="#f59e0b"
+                            stopOpacity={0.9}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#f59e0b"
+                            stopOpacity={0.35}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
+                        horizontal={false}
+                        stroke="#1e293b"
+                        strokeDasharray="4 4"
+                      />
+                      <XAxis
+                        type="number"
+                        tick={{ fill: "#334155", fontSize: 11 }}
+                        axisLine={false}
+                        tickLine={false}
+                        allowDecimals={false}
+                      />
+                      <YAxis
+                        dataKey="path"
+                        type="category"
+                        width={90}
+                        tick={{
+                          fill: "#94a3b8",
+                          fontSize: 11,
+                          fontFamily: "ui-monospace, monospace",
+                        }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <Tooltip
+                        content={<ChartTooltip />}
+                        cursor={{ fill: "rgba(255,255,255,0.03)" }}
+                      />
+                      <Bar
+                        dataKey="sessions"
+                        radius={[0, 6, 6, 0]}
+                        fill="url(#pg)"
+                      >
+                        <LabelList
+                          dataKey="sessions"
+                          position="right"
+                          style={{
+                            fill: "#64748b",
+                            fontSize: 11,
+                            fontWeight: 600,
+                          }}
+                          formatter={(v: unknown) =>
+                            Number(v) > 0 ? Number(v).toLocaleString() : ""
+                          }
+                        />
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Devices — donut chart */}
+                <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                        Devices
+                      </p>
+                      <p className="text-[11px] text-slate-600 mt-0.5">
+                        What type of device visitors use to access your site
+                      </p>
+                    </div>
+                    <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                      30 days
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-center gap-5">
+                    {/* Donut with center label */}
+                    <div className="relative w-full">
+                      <ResponsiveContainer width="100%" height={170}>
+                        <PieChart>
+                          <Pie
+                            data={devicePieData}
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={52}
+                            outerRadius={78}
+                            paddingAngle={3}
+                            strokeWidth={0}
+                            startAngle={90}
+                            endAngle={-270}
+                          >
+                            {devicePieData?.map((_, i) => (
+                              <Cell
+                                key={i}
+                                fill={DEVICE_COLORS[i % DEVICE_COLORS.length]}
+                              />
+                            ))}
+                          </Pie>
+                          <Tooltip content={<DeviceTooltip />} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      {/* Center label */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <p className="text-2xl font-bold text-white tabular-nums leading-none">
+                          {totalDeviceSessions.toLocaleString()}
+                        </p>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">
+                          sessions
+                        </p>
+                      </div>
+                    </div>
+                    {/* Legend */}
+                    <div className="w-full space-y-2.5">
+                      {analytics.deviceCategory.map((d, i) => {
+                        const DevIcon =
+                          d.category === "mobile"
+                            ? Smartphone
+                            : d.category === "tablet"
+                              ? Tablet
+                              : Monitor;
+                        const pct = totalDeviceSessions
+                          ? Math.round((d.sessions / totalDeviceSessions) * 100)
+                          : 0;
+                        const color = DEVICE_COLORS[i % DEVICE_COLORS.length];
+                        return (
+                          <div key={d.category}>
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <div
+                                className="w-2 h-2 rounded-full shrink-0"
+                                style={{ background: color }}
+                              />
+                              <DevIcon className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                              <span className="text-sm text-slate-300 capitalize flex-1">
+                                {d.category}
+                              </span>
+                              <span
+                                className="text-sm font-bold tabular-nums"
+                                style={{ color }}
+                              >
+                                {pct}%
+                              </span>
+                              <span className="text-xs text-slate-600 tabular-nums">
+                                {d.sessions.toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="h-1 rounded-full bg-slate-800 overflow-hidden">
+                              <div
+                                className="h-full rounded-full transition-all duration-700"
+                                style={{
+                                  width: `${pct}%`,
+                                  background: color,
+                                  opacity: 0.6,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       )}
+      {/* end modern theme */}
     </div>
   );
 }
@@ -923,9 +2226,11 @@ function StatCard({
 function AdminUsersTab({
   currentUserId,
   dict,
+  win98,
 }: {
   currentUserId: number;
   dict: Dictionary;
+  win98?: boolean;
 }) {
   const [users, setUsers] = useState<AuthUser[]>([]);
   const [search, setSearch] = useState("");
@@ -975,6 +2280,397 @@ function AdminUsersTab({
     } finally {
       setDeletingId(null);
     }
+  }
+
+  if (win98) {
+    /* ── Win98 render ── */
+    const w98Btn: React.CSSProperties = {
+      fontFamily: "inherit",
+      fontSize: 11,
+      background: "#c0c0c0",
+      color: "#000",
+      border: "2px solid",
+      borderColor: "#fff #808080 #808080 #fff",
+      padding: "1px 6px",
+      cursor: "pointer",
+    };
+    const w98BtnSunken: React.CSSProperties = {
+      ...w98Btn,
+      borderColor: "#808080 #fff #fff #808080",
+    };
+    const w98Input: React.CSSProperties = {
+      fontFamily: "inherit",
+      fontSize: 11,
+      background: "#fff",
+      color: "#000",
+      border: "2px solid",
+      borderColor: "#808080 #fff #fff #808080",
+      padding: "2px 6px",
+      outline: "none",
+      width: "100%",
+      boxSizing: "border-box",
+    };
+    return (
+      <div
+        style={{
+          fontFamily: "MS Sans Serif, Arial, sans-serif",
+          fontSize: 12,
+          color: "#000",
+          background: "#c0c0c0",
+        }}
+      >
+        {/* toolbar row */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 6,
+          }}
+        >
+          <span style={{ fontWeight: "bold", fontSize: 11 }}>
+            {dict.admin.users_title}
+          </span>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              marginLeft: "auto",
+            }}
+          >
+            <span style={{ fontSize: 11 }}>Search:</span>
+            <input
+              value={search}
+              style={w98Input}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setLoading(true);
+                  void load(search);
+                }
+              }}
+              placeholder={dict.admin.search_placeholder}
+            />
+            <button
+              style={w98Btn}
+              onClick={() => {
+                setLoading(true);
+                void load(search);
+              }}
+            >
+              Find
+            </button>
+          </div>
+        </div>
+
+        {/* table */}
+        {loading ? (
+          <div
+            style={{ padding: "20px 0", textAlign: "center", color: "#000" }}
+          >
+            Loading...
+          </div>
+        ) : (
+          <div
+            style={{
+              border: "2px solid",
+              borderColor: "#808080 #fff #fff #808080",
+              background: "#fff",
+              overflow: "auto",
+            }}
+          >
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                fontSize: 11,
+              }}
+            >
+              <thead>
+                <tr style={{ background: "#000080", color: "#fff" }}>
+                  <th
+                    style={{
+                      padding: "3px 8px",
+                      textAlign: "left",
+                      fontWeight: "bold",
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {dict.admin.col_user}
+                  </th>
+                  <th
+                    style={{
+                      padding: "3px 8px",
+                      textAlign: "left",
+                      fontWeight: "bold",
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {dict.admin.col_provider}
+                  </th>
+                  <th
+                    style={{
+                      padding: "3px 8px",
+                      textAlign: "left",
+                      fontWeight: "bold",
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {dict.admin.col_joined}
+                  </th>
+                  <th
+                    style={{
+                      padding: "3px 8px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {dict.admin.col_status}
+                  </th>
+                  <th
+                    style={{
+                      padding: "3px 8px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {dict.admin.col_role}
+                  </th>
+                  <th
+                    style={{
+                      padding: "3px 8px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {dict.admin.col_actions}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      style={{
+                        padding: "16px 8px",
+                        textAlign: "center",
+                        color: "#808080",
+                      }}
+                    >
+                      {dict.admin.no_users_found}
+                    </td>
+                  </tr>
+                )}
+                {users.map((u, i) => (
+                  <tr
+                    key={u.id}
+                    style={{ background: i % 2 === 0 ? "#fff" : "#f0f0f0" }}
+                  >
+                    {/* User */}
+                    <td
+                      style={{
+                        padding: "3px 8px",
+                        borderBottom: "1px solid #d4d4d4",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 20,
+                            height: 20,
+                            background: "#000080",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 10,
+                            fontWeight: "bold",
+                            flexShrink: 0,
+                            border: "1px solid #808080",
+                          }}
+                        >
+                          {(u.firstName?.[0] ?? u.email[0]).toUpperCase()}
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: "bold", fontSize: 11 }}>
+                            {`${u.firstName} ${u.lastName}`.trim() || "—"}
+                            {u.id === currentUserId && (
+                              <span
+                                style={{
+                                  marginLeft: 4,
+                                  color: "#808080",
+                                  fontSize: 10,
+                                }}
+                              >
+                                {dict.admin.you}
+                              </span>
+                            )}
+                          </div>
+                          <div style={{ fontSize: 10, color: "#444" }}>
+                            {u.email}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    {/* Provider */}
+                    <td
+                      style={{
+                        padding: "3px 8px",
+                        fontSize: 11,
+                        borderBottom: "1px solid #d4d4d4",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {u.provider}
+                    </td>
+                    {/* Joined */}
+                    <td
+                      style={{
+                        padding: "3px 8px",
+                        fontSize: 11,
+                        borderBottom: "1px solid #d4d4d4",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {new Date(u.createdAt).toLocaleDateString()}
+                    </td>
+                    {/* Status */}
+                    <td
+                      style={{
+                        padding: "3px 8px",
+                        textAlign: "center",
+                        borderBottom: "1px solid #d4d4d4",
+                      }}
+                    >
+                      {u.isVerified ? (
+                        <span
+                          style={{
+                            fontSize: 10,
+                            border: "1px solid #008000",
+                            padding: "1px 4px",
+                            color: "#006400",
+                            background: "#e0ffe0",
+                          }}
+                        >
+                          {dict.admin.badge_verified}
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            fontSize: 10,
+                            border: "1px solid #808000",
+                            padding: "1px 4px",
+                            color: "#804000",
+                            background: "#ffffd0",
+                          }}
+                        >
+                          {dict.admin.badge_pending}
+                        </span>
+                      )}
+                    </td>
+                    {/* Role */}
+                    <td
+                      style={{
+                        padding: "3px 8px",
+                        textAlign: "center",
+                        borderBottom: "1px solid #d4d4d4",
+                      }}
+                    >
+                      <button
+                        disabled={updatingId === u.id || u.id === currentUserId}
+                        onClick={() => void toggleRole(u)}
+                        style={{
+                          ...w98Btn,
+                          opacity:
+                            updatingId === u.id || u.id === currentUserId
+                              ? 0.5
+                              : 1,
+                          fontWeight: u.role === "admin" ? "bold" : "normal",
+                          color: u.role === "admin" ? "#000080" : "#000",
+                        }}
+                        title={
+                          u.id === currentUserId
+                            ? dict.admin.cannot_change_own_role
+                            : dict.admin.toggle_role
+                        }
+                      >
+                        {updatingId === u.id
+                          ? "..."
+                          : u.role === "admin"
+                            ? dict.admin.role_admin
+                            : dict.admin.role_user}
+                      </button>
+                    </td>
+                    {/* Actions */}
+                    <td
+                      style={{
+                        padding: "3px 8px",
+                        textAlign: "center",
+                        borderBottom: "1px solid #d4d4d4",
+                      }}
+                    >
+                      {u.id !== currentUserId &&
+                        (confirmDeleteId === u.id ? (
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              gap: 4,
+                              alignItems: "center",
+                            }}
+                          >
+                            <button
+                              onClick={() => void deleteUser(u.id)}
+                              disabled={deletingId === u.id}
+                              style={{
+                                ...w98BtnSunken,
+                                color: "#800000",
+                                opacity: deletingId === u.id ? 0.5 : 1,
+                              }}
+                            >
+                              {deletingId === u.id ? "..." : dict.admin.confirm}
+                            </button>
+                            <button
+                              onClick={() => setConfirmDeleteId(null)}
+                              style={w98Btn}
+                            >
+                              {dict.admin.cancel}
+                            </button>
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => setConfirmDeleteId(u.id)}
+                            style={w98Btn}
+                            title={dict.admin.delete_user}
+                          >
+                            Del
+                          </button>
+                        ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (

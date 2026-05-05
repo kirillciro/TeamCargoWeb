@@ -2,6 +2,7 @@
 
 html {
   scroll-behavior: smooth;
+  zoom: 0.75;
 }
 
 /* Offset anchor targets to clear the fixed header + add a small visual gap */
@@ -64,6 +65,11 @@ body {
   letter-spacing: var(--brand-letter-spacing);
   line-height: var(--brand-line-height);
   font-weight: var(--brand-font-weight);
+}
+
+/* Admin panel — keep body dark so no white bleed under zoomed viewport */
+body:has([data-admin]) {
+  background: #020617;
 }
 
 /* ── Marquee (partner logos ticker) ─────────────────────── */

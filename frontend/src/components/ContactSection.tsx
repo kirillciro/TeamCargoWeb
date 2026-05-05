@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useScroll, useTransform, motion } from "framer-motion";
 import {
   Phone,
   Mail,
@@ -72,43 +71,10 @@ export default function ContactSection({
   dict: Dictionary;
   lang?: string;
 }) {
-  const sectionRef = useRef<HTMLElement>(null);
   const [overrides, setOverrides] = useState<ContactOverrides>({});
   // mapSrc is locked in after the first successful load so the iframe never
   // reloads mid-animation due to overrides arriving late.
   const [mapSrc, setMapSrc] = useState<string | null>(null);
-
-  // ── Scroll-driven animation setup ──────────────────────────────────────────
-  // scrollYProgress: 0 = section top enters viewport bottom (first pixel visible)
-  //                  1 = section top reaches viewport center (animation fully done)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "start center"],
-  });
-
-  // Left panel — heading slides in from left (starts immediately)
-  const headingX = useTransform(scrollYProgress, [0, 0.4], [-60, 0]);
-  const headingOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
-  // Left panel — subtitle, tiny delay
-  const subtitleX = useTransform(scrollYProgress, [0.05, 0.45], [-60, 0]);
-  const subtitleOpacity = useTransform(scrollYProgress, [0.05, 0.45], [0, 1]);
-  // Left panel — contact rows slide up, staggered
-  const row0Opacity = useTransform(scrollYProgress, [0.1, 0.5], [0, 1]);
-  const row0Y = useTransform(scrollYProgress, [0.1, 0.5], [28, 0]);
-  const row1Opacity = useTransform(scrollYProgress, [0.2, 0.6], [0, 1]);
-  const row1Y = useTransform(scrollYProgress, [0.2, 0.6], [28, 0]);
-  const row2Opacity = useTransform(scrollYProgress, [0.3, 0.7], [0, 1]);
-  const row2Y = useTransform(scrollYProgress, [0.3, 0.7], [28, 0]);
-  // Right panel — map fades + slides in from right
-  const mapX = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
-  const mapOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-
-  // Convenience arrays
-  const rowStyles = [
-    { opacity: row0Opacity, y: row0Y },
-    { opacity: row1Opacity, y: row1Y },
-    { opacity: row2Opacity, y: row2Y },
-  ];
 
   useEffect(() => {
     let pollTimer: ReturnType<typeof setTimeout> | null = null;
@@ -196,7 +162,6 @@ export default function ContactSection({
 
   return (
     <section
-      ref={sectionRef}
       id="contact"
       className="bg-gray-50 py-20 sm:py-28 min-h-screen flex flex-col justify-center"
     >
@@ -220,8 +185,7 @@ export default function ContactSection({
             />
 
             <div className="relative z-10">
-              {/* Heading — slides in from left */}
-              <motion.div style={{ x: headingX, opacity: headingOpacity }}>
+              <div>
                 <span className="inline-block text-[#4dc95e] text-xs font-bold uppercase tracking-[0.25em] mb-3">
                   Contact
                 </span>
@@ -231,25 +195,19 @@ export default function ContactSection({
                 >
                   {o.title || dict.contact.title}
                 </h2>
-              </motion.div>
+              </div>
 
-              {/* Subtitle — slides in from left, delayed */}
-              <motion.p
-                style={{ x: subtitleX, opacity: subtitleOpacity }}
-                className="text-white/80 mb-10 text-base leading-relaxed drop-shadow"
-              >
+              <p className="text-white/80 mb-10 text-base leading-relaxed drop-shadow">
                 {o.subtitle || dict.contact.subtitle}
-              </motion.p>
+              </p>
 
-              {/* Contact rows — each slides up, staggered */}
               <div className="space-y-5">
-                {contactRows.map(({ Icon, label, value, href }, i) => (
-                  <motion.a
+                {contactRows.map(({ Icon, label, value, href }) => (
+                  <a
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={rowStyles[i]}
                     className="flex items-start gap-4 group"
                   >
                     <div className="w-11 h-11 rounded-xl bg-(--brand-green)/80 group-hover:bg-brand-green flex items-center justify-center shrink-0 transition-colors mt-0.5">
@@ -263,7 +221,7 @@ export default function ContactSection({
                         {value}
                       </p>
                     </div>
-                  </motion.a>
+                  </a>
                 ))}
               </div>
             </div>
@@ -275,11 +233,8 @@ export default function ContactSection({
             </div>
           </div>
 
-          {/* ── Right — Google Maps embed, slides in from right ── */}
-          <motion.div
-            style={{ x: mapX, opacity: mapOpacity }}
-            className="relative min-h-100 lg:min-h-0"
-          >
+          {/* ── Right — Google Maps embed ── */}
+          <div className="relative min-h-100 lg:min-h-0">
             {mapSrc ? (
               <iframe
                 key={mapSrc}
@@ -309,7 +264,7 @@ export default function ContactSection({
               <MapPin className="w-3.5 h-3.5 text-[#EA4335]" />
               Open in Maps
             </a>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -19,6 +19,25 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
+// ── Win98 style constants ───────────────────────────────────────────────────
+
+const W98_BTN: React.CSSProperties = {
+  fontFamily: "inherit",
+  fontSize: 11,
+  background: "#c0c0c0",
+  color: "#000",
+  border: "2px solid",
+  borderColor: "#fff #808080 #808080 #fff",
+  padding: "2px 8px",
+  cursor: "pointer",
+};
+
+const W98_INSET: React.CSSProperties = {
+  border: "2px solid",
+  borderColor: "#808080 #fff #fff #808080",
+  background: "#fff",
+};
+
 // ── Modal ────────────────────────────────────────────────────────────────────
 
 type ModalState =
@@ -30,12 +49,133 @@ function AppModal({
   modal,
   onClose,
   dict,
+  win98,
 }: {
   modal: ModalState;
   onClose: () => void;
   dict: Dictionary;
+  win98?: boolean;
 }) {
   if (!modal) return null;
+
+  if (win98) {
+    const closeBtn: React.CSSProperties = {
+      background: "#c0c0c0",
+      border: "2px solid",
+      borderColor: "#fff #808080 #808080 #fff",
+      width: 16,
+      height: 14,
+      fontSize: 9,
+      lineHeight: 1,
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 0,
+    };
+    return (
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "rgba(0,0,0,0.5)",
+        }}
+        onClick={onClose}
+      >
+        <div
+          style={{
+            background: "#c0c0c0",
+            border: "2px solid",
+            borderColor: "#fff #808080 #808080 #fff",
+            width: 320,
+            fontFamily: "MS Sans Serif, Arial, sans-serif",
+            fontSize: 11,
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div
+            style={{
+              background: "linear-gradient(to right,#000080,#1084d0)",
+              color: "#fff",
+              padding: "3px 6px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: 11,
+              fontWeight: "bold",
+            }}
+          >
+            <span>{modal.type === "confirm" ? "Confirm" : "Error"}</span>
+            <button style={closeBtn} onClick={onClose}>
+              ✕
+            </button>
+          </div>
+          <div
+            style={{
+              padding: "16px 12px",
+              display: "flex",
+              gap: 10,
+              alignItems: "flex-start",
+            }}
+          >
+            <span
+              style={{
+                fontSize: 28,
+                lineHeight: 1,
+                color: modal.type === "confirm" ? "#000080" : "#800000",
+                fontWeight: "bold",
+              }}
+            >
+              {modal.type === "confirm" ? "?" : "!"}
+            </span>
+            <div>
+              <p style={{ fontWeight: "bold", marginBottom: 4 }}>
+                {modal.type === "confirm"
+                  ? dict.admin.modal_are_you_sure
+                  : dict.admin.modal_something_went_wrong}
+              </p>
+              <p style={{ color: "#333" }}>{modal.message}</p>
+            </div>
+          </div>
+          <div
+            style={{
+              padding: "8px 12px",
+              borderTop: "1px solid #808080",
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: 6,
+            }}
+          >
+            {modal.type === "confirm" ? (
+              <>
+                <button
+                  style={W98_BTN}
+                  onClick={() => {
+                    modal.onConfirm();
+                    onClose();
+                  }}
+                >
+                  {dict.admin.modal_delete}
+                </button>
+                <button style={W98_BTN} onClick={onClose}>
+                  {dict.admin.cancel}
+                </button>
+              </>
+            ) : (
+              <button style={W98_BTN} onClick={onClose}>
+                {dict.admin.modal_ok}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
@@ -239,12 +379,74 @@ function FolderSidebar({
   counts,
   onSelect,
   dict,
+  win98,
 }: {
   active: Folder;
   counts: FolderCounts;
   onSelect: (f: Folder) => void;
   dict: Dictionary;
+  win98?: boolean;
 }) {
+  if (win98) {
+    return (
+      <div style={{ padding: 2 }}>
+        {FOLDER_META.map(({ key, labelKey }) => {
+          const label = dict.admin[labelKey] as string;
+          const unread = counts[key]?.unread ?? 0;
+          const total = counts[key]?.total ?? 0;
+          const isActive = active === key;
+          const icons: Record<string, string> = {
+            INBOX: "[+]",
+            SPAM: "[!]",
+            TRASH: "[-]",
+          };
+          return (
+            <button
+              key={key}
+              onClick={() => onSelect(key)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+                width: "100%",
+                padding: "2px 4px",
+                textAlign: "left",
+                background: isActive ? "#000080" : "transparent",
+                color: isActive ? "#fff" : "#000",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                fontSize: 11,
+              }}
+            >
+              <span style={{ fontFamily: "monospace", fontSize: 10 }}>
+                {icons[key]}
+              </span>
+              <span style={{ flex: 1 }}>{label}</span>
+              <span
+                style={{ fontSize: 10, color: isActive ? "#ccc" : "#808080" }}
+              >
+                {total > 999 ? "999+" : total}
+              </span>
+              {unread > 0 && (
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "bold",
+                    color: isActive ? "#ffff00" : "#000080",
+                    marginLeft: 2,
+                  }}
+                >
+                  ({unread})
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <nav className="flex flex-col gap-0.5 p-2">
       {FOLDER_META.map(({ key, labelKey, Icon, color }) => {
@@ -298,6 +500,7 @@ function EmailListItem({
   onToggle,
   onClick,
   dict,
+  win98,
 }: {
   email: EmailSummary;
   selected: boolean;
@@ -305,8 +508,101 @@ function EmailListItem({
   onToggle: (id: number) => void;
   onClick: () => void;
   dict: Dictionary;
+  win98?: boolean;
 }) {
   const sender = email.from_name || email.from_address;
+
+  if (win98) {
+    return (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "24px 1fr 1.6fr 60px",
+          alignItems: "center",
+          borderBottom: "1px solid #d4d4d4",
+          background: selected ? "#000080" : "transparent",
+          color: selected ? "#fff" : "#000",
+          cursor: "default",
+          minHeight: 20,
+        }}
+        onClick={onClick}
+      >
+        <div
+          style={{ padding: "1px 4px", display: "flex", alignItems: "center" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle(email.id);
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={() => onToggle(email.id)}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+        <div
+          style={{
+            padding: "1px 2px",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            gap: 3,
+          }}
+        >
+          {!email.is_read && (
+            <span
+              style={{
+                display: "inline-block",
+                width: 5,
+                height: 5,
+                borderRadius: "50%",
+                background: selected ? "#7fa8ff" : "#000080",
+                flexShrink: 0,
+              }}
+            />
+          )}
+          <span
+            style={{
+              fontWeight: email.is_read ? "normal" : "bold",
+              fontSize: 11,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {sender}
+          </span>
+        </div>
+        <div style={{ padding: "1px 2px", overflow: "hidden" }}>
+          <span
+            style={{
+              fontSize: 11,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              display: "block",
+            }}
+          >
+            {email.subject || dict.admin.no_subject}
+          </span>
+        </div>
+        <div
+          style={{
+            padding: "1px 4px",
+            fontSize: 10,
+            color: selected ? "#ccc" : "#808080",
+            whiteSpace: "nowrap",
+            textAlign: "right",
+          }}
+        >
+          {formatDate(email.received_at)}
+          {email.attachment_count > 0 ? " [A]" : ""}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`flex items-stretch border-b border-slate-100 transition-colors hover:bg-slate-50 ${
@@ -368,10 +664,43 @@ function EmailListItem({
 function ExtractionBadge({
   status,
   dict,
+  win98,
 }: {
   status: Extraction["status"] | "none";
   dict: Dictionary;
+  win98?: boolean;
 }) {
+  if (win98) {
+    const textMap: Record<string, string> = {
+      none: "Not extracted",
+      pending: "Pending...",
+      extracting: "Processing...",
+      extracted: "[OK] Extracted",
+      failed: "[ERR] Failed",
+      sent: "[OK] Sent",
+    };
+    const colorMap: Record<string, string> = {
+      none: "#808080",
+      pending: "#808000",
+      extracting: "#000080",
+      extracted: "#006400",
+      failed: "#800000",
+      sent: "#006400",
+    };
+    return (
+      <span
+        style={{
+          fontSize: 11,
+          color: colorMap[status] ?? "#000",
+          fontWeight:
+            status === "extracted" || status === "sent" ? "bold" : "normal",
+        }}
+      >
+        {textMap[status] ?? status}
+      </span>
+    );
+  }
+
   const map: Record<
     string,
     {
@@ -423,7 +752,15 @@ function ExtractionBadge({
 
 // ── Extraction data grid ──────────────────────────────────────────────────────
 
-function ExtractionGrid({ data, dict }: { data: CargoData; dict: Dictionary }) {
+function ExtractionGrid({
+  data,
+  dict,
+  win98,
+}: {
+  data: CargoData;
+  dict: Dictionary;
+  win98?: boolean;
+}) {
   const rows: [string, string | number | null | undefined][] = [
     // Route / dispatch — shown first
     ["Route", data.route],
@@ -456,10 +793,54 @@ function ExtractionGrid({ data, dict }: { data: CargoData; dict: Dictionary }) {
   ][];
 
   if (rows.length === 0) {
-    return (
+    return win98 ? (
+      <p style={{ fontSize: 11, color: "#808080", fontStyle: "italic" }}>
+        {dict.admin.extract_no_data}
+      </p>
+    ) : (
       <p className="text-xs text-slate-400 italic">
         {dict.admin.extract_no_data}
       </p>
+    );
+  }
+
+  if (win98) {
+    return (
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          fontSize: 11,
+          background: "#fff",
+          border: "1px solid #808080",
+        }}
+      >
+        <tbody>
+          {rows.map(([label, val], i) => (
+            <tr
+              key={label}
+              style={{ background: i % 2 === 0 ? "#fff" : "#f0f0f0" }}
+            >
+              <td
+                style={{
+                  padding: "2px 6px",
+                  fontWeight: "bold",
+                  color: "#000080",
+                  borderRight: "1px solid #d4d4d4",
+                  whiteSpace: "nowrap",
+                  width: "35%",
+                  verticalAlign: "top",
+                }}
+              >
+                {label}
+              </td>
+              <td style={{ padding: "2px 6px", wordBreak: "break-word" }}>
+                {String(val)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     );
   }
 
@@ -487,12 +868,14 @@ function AttachmentRow({
   existingExtraction,
   onExtractionUpdate,
   dict,
+  win98,
 }: {
   emailId: number;
   attachment: Attachment;
   existingExtraction: Extraction | undefined;
   onExtractionUpdate: (e: Extraction) => void;
   dict: Dictionary;
+  win98?: boolean;
 }) {
   const [extraction, setExtraction] = useState<Extraction | undefined>(
     existingExtraction,
@@ -587,6 +970,118 @@ function AttachmentRow({
       setSending(false);
     }
   };
+
+  if (win98) {
+    return (
+      <div
+        style={{
+          border: "1px solid #808080",
+          background: "#f0f0f0",
+          padding: 6,
+          marginBottom: 4,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 4,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <span style={{ fontSize: 11, fontFamily: "monospace" }}>[DOC]</span>
+            <a
+              href={`/api/admin/emails/${emailId}/attachment/${attachment.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#000080",
+                textDecoration: "underline",
+                fontSize: 11,
+              }}
+            >
+              {attachment.filename}
+            </a>
+            <span style={{ fontSize: 10, color: "#808080" }}>
+              ({formatBytes(attachment.size_bytes)})
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            {extraction && (
+              <ExtractionBadge status={extraction.status} dict={dict} win98 />
+            )}
+            {(!extraction || extraction.status === "failed") && (
+              <button
+                onClick={() => void handleExtract()}
+                disabled={extracting}
+                style={{ ...W98_BTN, opacity: extracting ? 0.6 : 1 }}
+              >
+                {extracting
+                  ? dict.admin.processing
+                  : dict.admin.extract_with_ai}
+              </button>
+            )}
+            {(extraction?.status === "extracted" ||
+              extraction?.status === "sent") && (
+              <button
+                onClick={() => void handleExtract()}
+                disabled={extracting}
+                style={{ ...W98_BTN, opacity: extracting ? 0.6 : 1 }}
+              >
+                {extracting ? dict.admin.processing : dict.admin.re_extract}
+              </button>
+            )}
+          </div>
+        </div>
+        {(extraction?.status === "extracted" ||
+          extraction?.status === "sent") &&
+          extraction.extracted_json && (
+            <div style={{ marginTop: 6 }}>
+              <ExtractionGrid
+                data={extraction.extracted_json}
+                dict={dict}
+                win98
+              />
+            </div>
+          )}
+        {extraction?.status === "extracted" && (
+          <div style={{ marginTop: 6 }}>
+            <button
+              onClick={() => void handleSendWA()}
+              disabled={sending}
+              style={{ ...W98_BTN, opacity: sending ? 0.6 : 1 }}
+            >
+              {sending ? dict.admin.sending : dict.admin.send_to_whatsapp}
+            </button>
+          </div>
+        )}
+        {sendError && (
+          <p style={{ fontSize: 11, color: "#800000", marginTop: 4 }}>
+            {sendError}
+          </p>
+        )}
+        {extraction?.status === "sent" && (
+          <p
+            style={{
+              fontSize: 11,
+              color: "#006400",
+              marginTop: 4,
+              fontWeight: "bold",
+            }}
+          >
+            {dict.admin.sent_to_whatsapp}
+          </p>
+        )}
+        {extraction?.status === "failed" && (
+          <p style={{ fontSize: 11, color: "#800000", marginTop: 4 }}>
+            Error: {extraction.error_message ?? "Unknown error"}
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-3">
@@ -688,10 +1183,12 @@ function EmailDetailPanel({
   emailId,
   onBack,
   dict,
+  win98,
 }: {
   emailId: number;
   onBack: () => void;
   dict: Dictionary;
+  win98?: boolean;
 }) {
   const [detail, setDetail] = useState<EmailDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -723,6 +1220,128 @@ function EmailDetailPanel({
         : [updated, ...prev];
     });
   }, []);
+
+  if (win98) {
+    return (
+      <div
+        style={{
+          fontFamily: "MS Sans Serif, Arial, sans-serif",
+          fontSize: 11,
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          background: "#fff",
+        }}
+      >
+        {/* Back button on mobile */}
+        <div
+          style={{
+            borderBottom: "1px solid #808080",
+            padding: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
+          <button onClick={onBack} style={W98_BTN}>
+            {"<"} {dict.admin.back}
+          </button>
+        </div>
+        {loading && (
+          <div style={{ padding: 16, textAlign: "center", color: "#808080" }}>
+            Loading...
+          </div>
+        )}
+        {detail && (
+          <div style={{ flex: 1, overflowY: "auto", padding: 8 }}>
+            {/* Header */}
+            <div
+              style={{
+                borderBottom: "1px solid #808080",
+                paddingBottom: 6,
+                marginBottom: 8,
+              }}
+            >
+              <div
+                style={{ fontWeight: "bold", fontSize: 12, marginBottom: 3 }}
+              >
+                {detail.email.subject || dict.admin.no_subject}
+              </div>
+              <div style={{ fontSize: 11, marginBottom: 2 }}>
+                <strong>From:</strong>{" "}
+                {detail.email.from_name || detail.email.from_address}
+                {detail.email.from_name && (
+                  <span style={{ color: "#808080" }}>
+                    {" "}
+                    &lt;{detail.email.from_address}&gt;
+                  </span>
+                )}
+              </div>
+              <div style={{ fontSize: 10, color: "#808080" }}>
+                {new Date(detail.email.received_at).toLocaleString()}
+              </div>
+            </div>
+            {/* Body */}
+            <div
+              style={{
+                ...W98_INSET,
+                padding: 6,
+                marginBottom: 8,
+                minHeight: 60,
+              }}
+            >
+              {detail.email.body_text ? (
+                <pre
+                  style={{
+                    fontSize: 11,
+                    whiteSpace: "pre-wrap",
+                    fontFamily: "inherit",
+                    margin: 0,
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {detail.email.body_text}
+                </pre>
+              ) : (
+                <span style={{ color: "#808080", fontStyle: "italic" }}>
+                  {dict.admin.no_message_body}
+                </span>
+              )}
+            </div>
+            {/* Attachments */}
+            {detail.attachments.length > 0 && (
+              <div>
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 10,
+                    color: "#000080",
+                    marginBottom: 4,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {dict.admin.pdf_attachments} ({detail.attachments.length})
+                </div>
+                {detail.attachments.map((att) => (
+                  <AttachmentRow
+                    key={att.id}
+                    emailId={emailId}
+                    attachment={att}
+                    existingExtraction={extractions.find(
+                      (e) => e.attachment_id === att.id,
+                    )}
+                    onExtractionUpdate={handleExtractionUpdate}
+                    dict={dict}
+                    win98
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -804,7 +1423,13 @@ function EmailDetailPanel({
 
 // ── AdminEmailsTab (root) ─────────────────────────────────────────────────────
 
-export default function AdminEmailsTab({ dict }: { dict: Dictionary }) {
+export default function AdminEmailsTab({
+  dict,
+  win98,
+}: {
+  dict: Dictionary;
+  win98?: boolean;
+}) {
   const [folder, setFolder] = useState<Folder>("INBOX");
   const [counts, setCounts] = useState<FolderCounts>({});
   const [emails, setEmails] = useState<EmailSummary[]>([]);
@@ -985,6 +1610,511 @@ export default function AdminEmailsTab({ dict }: { dict: Dictionary }) {
 
   const pageSize = 25;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+  // Win98 resizable column widths: [fromW, dateW]  — subject takes the rest
+  const [colFrom, setColFrom] = useState(170);
+  const [colDate, setColDate] = useState(68);
+  const colCheckbox = 22;
+
+  const startResizeFrom = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startW = colFrom;
+    const onMove = (ev: MouseEvent) =>
+      setColFrom(Math.max(60, startW + ev.clientX - startX));
+    const onUp = () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+    };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  };
+
+  const startResizeDate = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startW = colDate;
+    const onMove = (ev: MouseEvent) =>
+      setColDate(Math.max(50, startW - (ev.clientX - startX)));
+    const onUp = () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+    };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  };
+
+  const thStyle: React.CSSProperties = {
+    padding: "2px 6px",
+    borderRight: "1px solid #808080",
+    borderBottom: "2px solid #808080",
+    textAlign: "left",
+    fontWeight: "bold",
+    fontSize: 11,
+    overflow: "hidden",
+    userSelect: "none",
+    background: "#c0c0c0",
+    position: "relative",
+    whiteSpace: "nowrap",
+  };
+
+  const resizeHandle: React.CSSProperties = {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 5,
+    cursor: "col-resize",
+    zIndex: 2,
+  };
+
+  if (win98) {
+    return (
+      <>
+        <AppModal
+          modal={modal}
+          onClose={() => setModal(null)}
+          dict={dict}
+          win98
+        />
+        <div
+          style={{
+            fontFamily: "MS Sans Serif, Arial, sans-serif",
+            fontSize: 11,
+            color: "#000",
+            background: "#c0c0c0",
+            border: "2px solid",
+            borderColor: "#fff #808080 #808080 #fff",
+            height: "calc(100vh - 180px)",
+            minHeight: 384,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            position: "relative",
+          }}
+        >
+          {/* Sync overlay */}
+          {syncing && (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                zIndex: 20,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                background: "rgba(192,192,192,0.88)",
+                fontFamily: "inherit",
+                fontSize: 11,
+              }}
+            >
+              <span>Syncing...</span>
+            </div>
+          )}
+
+          {/* Toolbar */}
+          <div
+            style={{
+              padding: "3px 4px",
+              borderBottom: "2px solid #808080",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              onClick={() => void handleSync()}
+              disabled={syncing}
+              style={{ ...W98_BTN, opacity: syncing ? 0.6 : 1 }}
+            >
+              {syncing ? dict.admin.syncing : dict.admin.sync_inbox}
+            </button>
+            {checkedIds.size > 0 && (
+              <button
+                onClick={() => void handleDeleteSelected(false)}
+                disabled={deleting}
+                style={{ ...W98_BTN, opacity: deleting ? 0.6 : 1 }}
+              >
+                Delete ({selectAllFolder ? total : checkedIds.size})
+              </button>
+            )}
+            {checkedIds.size === 0 && total > 0 && (
+              <button
+                onClick={() => void handleDeleteSelected(true)}
+                disabled={deleting}
+                style={{ ...W98_BTN, opacity: deleting ? 0.6 : 1 }}
+              >
+                Delete All
+              </button>
+            )}
+            {syncMsg && (
+              <span style={{ fontSize: 10, color: "#000080", marginLeft: 4 }}>
+                {syncMsg}
+              </span>
+            )}
+          </div>
+
+          {/* Three-pane content */}
+          <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+            {/* Folder sidebar */}
+            <div
+              style={{
+                width: 130,
+                flexShrink: 0,
+                borderRight: "2px solid #808080",
+                overflow: "auto",
+                background: "#c0c0c0",
+              }}
+            >
+              <div
+                style={{
+                  padding: "2px 4px",
+                  borderBottom: "1px solid #808080",
+                  fontWeight: "bold",
+                  fontSize: 10,
+                  color: "#fff",
+                  background: "#000080",
+                }}
+              >
+                Folders
+              </div>
+              <FolderSidebar
+                active={folder}
+                counts={counts}
+                onSelect={handleFolderChange}
+                dict={dict}
+                win98
+              />
+            </div>
+
+            {/* Email list + detail — side by side, 50/50 */}
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "row",
+                overflow: "hidden",
+              }}
+            >
+              {/* LEFT: Email list pane */}
+              <div
+                style={{
+                  flex: 1,
+                  borderRight: "2px solid #808080",
+                  overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
+                  background: "#fff",
+                }}
+              >
+                {/* Single table — header + rows share the same column context */}
+                <div style={{ flex: 1, overflowY: "auto" }}>
+                  <table
+                    style={{
+                      width: "100%",
+                      tableLayout: "fixed",
+                      borderCollapse: "collapse",
+                      fontSize: 11,
+                    }}
+                  >
+                    <colgroup>
+                      <col style={{ width: colCheckbox }} />
+                      <col style={{ width: colFrom }} />
+                      <col />
+                      {/* Subject: takes remaining space */}
+                      <col style={{ width: colDate }} />
+                    </colgroup>
+                    <thead>
+                      <tr
+                        style={{
+                          background: "#c0c0c0",
+                          position: "sticky",
+                          top: 0,
+                          zIndex: 1,
+                        }}
+                      >
+                        <th
+                          style={{
+                            ...thStyle,
+                            width: colCheckbox,
+                            borderRight: "1px solid #808080",
+                            fontWeight: "normal",
+                            padding: "2px 4px",
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={allChecked}
+                            onChange={toggleSelectAll}
+                            disabled={emails.length === 0}
+                            title={allChecked ? "Deselect all" : "Select all"}
+                          />
+                        </th>
+                        <th style={{ ...thStyle, width: colFrom }}>
+                          From
+                          <span
+                            style={resizeHandle}
+                            onMouseDown={startResizeFrom}
+                          />
+                        </th>
+                        <th style={{ ...thStyle }}>Subject</th>
+                        <th
+                          style={{
+                            ...thStyle,
+                            width: colDate,
+                            borderRight: "none",
+                            position: "relative",
+                          }}
+                        >
+                          Date
+                          <span
+                            style={{ ...resizeHandle, right: "auto", left: 0 }}
+                            onMouseDown={startResizeDate}
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {loading ? (
+                        <tr>
+                          <td
+                            colSpan={4}
+                            style={{
+                              padding: 16,
+                              textAlign: "center",
+                              color: "#808080",
+                            }}
+                          >
+                            Loading...
+                          </td>
+                        </tr>
+                      ) : emails.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan={4}
+                            style={{
+                              padding: 16,
+                              textAlign: "center",
+                              color: "#808080",
+                            }}
+                          >
+                            {dict.admin.no_emails}
+                          </td>
+                        </tr>
+                      ) : (
+                        emails.map((email) => {
+                          const sender = email.from_name || email.from_address;
+                          const isSelected = selectedId === email.id;
+                          const isChecked = checkedIds.has(email.id);
+                          return (
+                            <tr
+                              key={email.id}
+                              style={{
+                                background: isSelected
+                                  ? "#000080"
+                                  : "transparent",
+                                color: isSelected ? "#fff" : "#000",
+                                cursor: "default",
+                              }}
+                              onClick={() => handleSelectEmail(email)}
+                            >
+                              <td
+                                style={{
+                                  padding: "1px 4px",
+                                  borderBottom: "1px solid #e8e8e8",
+                                }}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleCheck(email.id);
+                                }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isChecked}
+                                  onChange={() => toggleCheck(email.id)}
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                              </td>
+                              <td
+                                style={{
+                                  padding: "1px 6px",
+                                  borderBottom: "1px solid #e8e8e8",
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                  maxWidth: 0,
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 3,
+                                  }}
+                                >
+                                  {!email.is_read && (
+                                    <span
+                                      style={{
+                                        display: "inline-block",
+                                        width: 5,
+                                        height: 5,
+                                        borderRadius: "50%",
+                                        background: isSelected
+                                          ? "#7fa8ff"
+                                          : "#000080",
+                                        flexShrink: 0,
+                                      }}
+                                    />
+                                  )}
+                                  <span
+                                    style={{
+                                      fontWeight: email.is_read
+                                        ? "normal"
+                                        : "bold",
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      whiteSpace: "nowrap",
+                                    }}
+                                  >
+                                    {sender}
+                                  </span>
+                                </span>
+                              </td>
+                              <td
+                                style={{
+                                  padding: "1px 6px",
+                                  borderBottom: "1px solid #e8e8e8",
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                  maxWidth: 0,
+                                }}
+                              >
+                                {email.subject || dict.admin.no_subject}
+                                {email.attachment_count > 0 && (
+                                  <span
+                                    style={{
+                                      marginLeft: 4,
+                                      color: isSelected ? "#ccc" : "#808080",
+                                      fontSize: 10,
+                                    }}
+                                  >
+                                    [A]
+                                  </span>
+                                )}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "1px 6px",
+                                  borderBottom: "1px solid #e8e8e8",
+                                  fontSize: 10,
+                                  color: isSelected ? "#ccc" : "#808080",
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {formatDate(email.received_at)}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "3px 8px",
+                      borderTop: "1px solid #808080",
+                      background: "#c0c0c0",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <button
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                      style={{ ...W98_BTN, opacity: page === 1 ? 0.5 : 1 }}
+                    >
+                      {dict.admin.prev}
+                    </button>
+                    <span style={{ fontSize: 10 }}>
+                      {page}/{totalPages}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
+                      disabled={page === totalPages}
+                      style={{
+                        ...W98_BTN,
+                        opacity: page === totalPages ? 0.5 : 1,
+                      }}
+                    >
+                      {dict.admin.next}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* RIGHT: Email detail pane */}
+              <div style={{ flex: 1, overflow: "hidden", background: "#fff" }}>
+                {selectedId ? (
+                  <EmailDetailPanel
+                    key={selectedId}
+                    emailId={selectedId}
+                    onBack={() => setSelectedId(null)}
+                    dict={dict}
+                    win98
+                  />
+                ) : (
+                  <div
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#808080",
+                      fontSize: 11,
+                    }}
+                  >
+                    {dict.admin.select_email}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Status bar */}
+          <div
+            style={{
+              padding: "2px 6px",
+              borderTop: "1px solid #808080",
+              fontSize: 10,
+              color: "#000",
+              display: "flex",
+              gap: 12,
+              background: "#c0c0c0",
+              flexShrink: 0,
+            }}
+          >
+            <span>
+              {folder.charAt(0) + folder.slice(1).toLowerCase()}: {total}{" "}
+              message{total !== 1 ? "s" : ""}
+            </span>
+            {checkedIds.size > 0 && <span>{checkedIds.size} selected</span>}
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
