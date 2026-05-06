@@ -108,7 +108,7 @@ export default function Header({
                 href="https://wa.me/31685352412"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/35 text-white text-sm font-semibold transition-colors duration-200"
+                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-bold transition-colors duration-200" style={{ background: 'var(--brand-green)', color: 'var(--brand-btn-text)' }} onMouseEnter={e => (e.currentTarget.style.background = 'var(--brand-mid)')} onMouseLeave={e => (e.currentTarget.style.background = 'var(--brand-green)')}
               >
                 <MessageCircle className="w-4 h-4 shrink-0" />
                 <span className="hidden sm:inline">{dict.hero.cta_whatsapp}</span>
@@ -291,7 +291,10 @@ export default function Header({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-white/10 border border-white/20 hover:bg-white/15 transition-colors"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors"
+              style={{ background: 'var(--brand-green)', color: 'var(--brand-btn-text)' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--brand-mid)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'var(--brand-green)')}
               onClick={() => setMobileOpen(false)}
             >
               <Phone className="w-4 h-4 shrink-0" />
