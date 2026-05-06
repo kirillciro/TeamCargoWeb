@@ -108,7 +108,7 @@ export default function Header({
                 href="https://wa.me/31685352412"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-bold transition-colors duration-200"
+                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/35 text-white text-sm font-semibold transition-colors duration-200"
               >
                 <MessageCircle className="w-4 h-4 shrink-0" />
                 <span className="hidden sm:inline">{dict.hero.cta_whatsapp}</span>
@@ -118,7 +118,7 @@ export default function Header({
               {user?.role === "admin" && (
                 <Link
                   href={`/${lang}/admin`}
-                  className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-amber-950 text-sm font-bold transition-colors duration-200"
+                  className="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-amber-400 hover:bg-amber-300 text-amber-950 text-sm font-bold transition-colors duration-200"
                 >
                   <LayoutDashboard className="w-4 h-4 shrink-0" />
                   {dict.nav.admin_dashboard}
@@ -130,7 +130,7 @@ export default function Header({
                 <div className="hidden md:flex items-center gap-1.5">
                   <Link
                     href={`/${lang}/profile`}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/8 border border-white/12 hover:bg-white/15 hover:border-white/25 text-white text-sm font-semibold transition-colors duration-200"
+                    className="flex items-center gap-2 h-9 px-3 rounded-lg bg-white/8 border border-white/12 hover:bg-white/15 hover:border-white/25 text-white text-sm font-semibold transition-colors duration-200"
                   >
                     <span className="w-6 h-6 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-[11px] font-bold flex items-center justify-center shrink-0">
                       {userInitial}
@@ -148,7 +148,7 @@ export default function Header({
               ) : (
                 <button
                   onClick={() => openAuth("login")}
-                  className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/25 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/40 transition-colors duration-200"
+                  className="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-white/25 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/40 transition-colors duration-200"
                 >
                   <User className="w-4 h-4" />
                   {dict.nav.login}
@@ -291,7 +291,7 @@ export default function Header({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-emerald-500 hover:bg-emerald-400 transition-colors"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-white/10 border border-white/20 hover:bg-white/15 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               <Phone className="w-4 h-4 shrink-0" />
