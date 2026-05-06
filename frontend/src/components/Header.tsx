@@ -87,7 +87,7 @@ export default function Header({
                 <a
                   key={link.href}
                   href={link.href}
-                  className="relative px-4 py-2 text-sm font-semibold text-white/70 hover:text-white rounded-full hover:bg-white/8 transition-all duration-200 group"
+                  className="relative px-4 py-2 text-sm font-semibold text-white/70 hover:text-white rounded-lg hover:bg-white/8 transition-colors duration-200 group"
                 >
                   {link.label}
                   <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-4 bg-amber-400/50 rounded-full transition-all duration-200" />
@@ -108,7 +108,7 @@ export default function Header({
                 href="https://wa.me/31685352412"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-bold transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:-translate-y-px active:translate-y-0"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-bold transition-colors duration-200"
               >
                 <MessageCircle className="w-4 h-4 shrink-0" />
                 <span className="hidden sm:inline">{dict.hero.cta_whatsapp}</span>
@@ -118,7 +118,7 @@ export default function Header({
               {user?.role === "admin" && (
                 <Link
                   href={`/${lang}/admin`}
-                  className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-400 hover:bg-amber-300 text-amber-950 text-sm font-bold transition-all duration-200 shadow-lg shadow-amber-400/20 hover:shadow-amber-400/40 hover:-translate-y-px active:translate-y-0 ring-2 ring-transparent hover:ring-amber-400/30"
+                  className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-amber-950 text-sm font-bold transition-colors duration-200"
                 >
                   <LayoutDashboard className="w-4 h-4 shrink-0" />
                   {dict.nav.admin_dashboard}
@@ -130,7 +130,7 @@ export default function Header({
                 <div className="hidden md:flex items-center gap-1.5">
                   <Link
                     href={`/${lang}/profile`}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/8 border border-white/12 hover:bg-white/15 hover:border-white/25 text-white text-sm font-semibold transition-all duration-200"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/8 border border-white/12 hover:bg-white/15 hover:border-white/25 text-white text-sm font-semibold transition-colors duration-200"
                   >
                     <span className="w-6 h-6 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-[11px] font-bold flex items-center justify-center shrink-0">
                       {userInitial}
@@ -140,7 +140,7 @@ export default function Header({
                   <button
                     onClick={() => void logout()}
                     title={dict.nav.logout}
-                    className="w-9 h-9 flex items-center justify-center rounded-full text-white/50 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/15 transition-all duration-200"
+                    className="w-9 h-9 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/15 transition-colors duration-200"
                   >
                     <LogOut className="w-4 h-4" />
                   </button>
@@ -148,7 +148,7 @@ export default function Header({
               ) : (
                 <button
                   onClick={() => openAuth("login")}
-                  className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/25 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/40 transition-all duration-200"
+                  className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/25 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/40 transition-colors duration-200"
                 >
                   <User className="w-4 h-4" />
                   {dict.nav.login}
@@ -158,7 +158,7 @@ export default function Header({
               {/* Hamburger */}
               <button
                 onClick={() => setMobileOpen(true)}
-                className="flex md:hidden items-center justify-center w-9 h-9 rounded-full text-white hover:bg-white/10 border border-white/10 hover:border-white/25 transition-all duration-200"
+                className="flex md:hidden items-center justify-center w-9 h-9 rounded-lg text-white hover:bg-white/10 border border-white/10 hover:border-white/25 transition-colors duration-200"
                 aria-label="Open menu"
               >
                 <Menu className="w-5 h-5" />
@@ -204,7 +204,7 @@ export default function Header({
           </Link>
           <button
             onClick={() => setMobileOpen(false)}
-            className="w-9 h-9 flex items-center justify-center rounded-full text-white hover:bg-white/10 border border-white/10 transition-colors"
+            className="w-9 h-9 flex items-center justify-center rounded-lg text-white hover:bg-white/10 border border-white/10 transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -218,7 +218,7 @@ export default function Header({
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-between px-4 py-3.5 rounded-2xl text-white/80 hover:text-white hover:bg-white/8 font-semibold text-sm transition-all group"
+              className="flex items-center justify-between px-4 py-3.5 rounded-xl text-white/80 hover:text-white hover:bg-white/8 font-semibold text-sm transition-colors group"
             >
               {link.label}
               <ChevronRight className="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors shrink-0" />
@@ -243,7 +243,7 @@ export default function Header({
               <Link
                 href={`/${lang}/admin`}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-amber-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-lg shadow-amber-400/15"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-amber-950 bg-amber-400 hover:bg-amber-300 transition-colors"
               >
                 <LayoutDashboard className="w-4 h-4 shrink-0" />
                 {dict.nav.admin_dashboard}
@@ -255,7 +255,7 @@ export default function Header({
                 <Link
                   href={`/${lang}/profile`}
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-white bg-white/8 border border-white/12 hover:bg-white/14 hover:border-white/22 transition-all"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white bg-white/8 border border-white/12 hover:bg-white/14 hover:border-white/22 transition-colors"
                 >
                   <span className="w-7 h-7 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0">
                     {userInitial}
@@ -267,7 +267,7 @@ export default function Header({
                     setMobileOpen(false);
                     void logout();
                   }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-white/60 border border-white/12 hover:bg-white/8 hover:text-white transition-all text-left"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white/60 border border-white/12 hover:bg-white/8 hover:text-white transition-colors text-left"
                 >
                   <LogOut className="w-4 h-4 shrink-0" />
                   {dict.nav.logout}
@@ -279,7 +279,7 @@ export default function Header({
                   setMobileOpen(false);
                   openAuth("login");
                 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-white bg-white/10 border border-white/20 hover:bg-white/15 transition-all"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-white/10 border border-white/20 hover:bg-white/15 transition-colors"
               >
                 <User className="w-4 h-4 shrink-0" />
                 {dict.nav.login}
@@ -291,7 +291,7 @@ export default function Header({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-white bg-emerald-500 hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/15"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-emerald-500 hover:bg-emerald-400 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               <Phone className="w-4 h-4 shrink-0" />
