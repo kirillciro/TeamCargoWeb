@@ -414,6 +414,9 @@
     "custom_subtab_about": "Sección Acerca de",
     "custom_subtab_housing": "Sección Vivienda",
     "custom_subtab_contact": "Sección Contacto",
-    "custom_subtab_footer": "Pie de página"
+    "custom_subtab_footer": "Pie de página",
+    "set_as_default": "Establecer como predeterminado",
+    "is_default": "Predeterminado",
+    "default_theme_saved": "¡Predeterminado guardado!"
   }
 }

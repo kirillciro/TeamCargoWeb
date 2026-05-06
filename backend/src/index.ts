@@ -2048,6 +2048,60 @@ app.get(
   },
 );
 
+// ── Default theme setting ──────────────────────────────────────────────────
+
+app.get(
+  "/admin/settings/default-theme",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    try {
+      const result = await pool.query(
+        "SELECT value FROM app_settings WHERE key = 'default_theme'",
+      );
+      const theme =
+        (result.rows[0]?.value as { theme?: string })?.theme ?? "modern";
+      res.json({ theme });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
+app.post(
+  "/admin/settings/default-theme",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    try {
+      const { theme } = req.body as { theme?: string };
+      if (theme !== "modern" && theme !== "win98") {
+        res.status(400).json({ error: "theme must be 'modern' or 'win98'" });
+        return;
+      }
+      const existing = await pool.query(
+        "SELECT key FROM app_settings WHERE key = 'default_theme'",
+      );
+      if (existing.rows.length === 0) {
+        await pool.query(
+          "INSERT INTO app_settings (key, value, updated_at) VALUES ('default_theme', $1, NOW())",
+          [JSON.stringify({ theme })],
+        );
+      } else {
+        await pool.query(
+          "UPDATE app_settings SET value = $1, updated_at = NOW() WHERE key = 'default_theme'",
+          [JSON.stringify({ theme })],
+        );
+      }
+      res.json({ theme });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
 const PORT = Number(process.env.PORT ?? 4000);
 app.listen(PORT, () => {
   console.log(`[team-cargo] backend running on port ${PORT}`);

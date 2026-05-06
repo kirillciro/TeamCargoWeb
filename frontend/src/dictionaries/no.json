@@ -414,6 +414,9 @@
     "custom_subtab_about": "Om oss-seksjon",
     "custom_subtab_housing": "Boligseksjon",
     "custom_subtab_contact": "Kontaktseksjon",
-    "custom_subtab_footer": "Bunntekst"
+    "custom_subtab_footer": "Bunntekst",
+    "set_as_default": "Angi som standard",
+    "is_default": "Standard",
+    "default_theme_saved": "Standard lagret!"
   }
 }

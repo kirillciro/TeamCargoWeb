@@ -414,6 +414,9 @@
     "custom_subtab_about": "Om oss-sektion",
     "custom_subtab_housing": "Bostadssektion",
     "custom_subtab_contact": "Kontaktsektion",
-    "custom_subtab_footer": "Sidfot"
+    "custom_subtab_footer": "Sidfot",
+    "set_as_default": "Ange som standard",
+    "is_default": "Standard",
+    "default_theme_saved": "Standard sparat!"
   }
 }

@@ -414,6 +414,9 @@
     "custom_subtab_about": "Sekcja O nas",
     "custom_subtab_housing": "Sekcja Mieszkania",
     "custom_subtab_contact": "Sekcja Kontakt",
-    "custom_subtab_footer": "Stopka"
+    "custom_subtab_footer": "Stopka",
+    "set_as_default": "Ustaw jako domyślny",
+    "is_default": "Domyślny",
+    "default_theme_saved": "Domyślny zapisany!"
   }
 }

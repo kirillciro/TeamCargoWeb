@@ -414,6 +414,9 @@
     "custom_subtab_about": "Ενότητα Σχετικά",
     "custom_subtab_housing": "Ενότητα Στέγασης",
     "custom_subtab_contact": "Ενότητα Επικοινωνίας",
-    "custom_subtab_footer": "Υποσέλιδο"
+    "custom_subtab_footer": "Υποσέλιδο",
+    "set_as_default": "Ορισμός ως προεπιλογή",
+    "is_default": "Προεπιλογή",
+    "default_theme_saved": "Προεπιλογή αποθηκεύτηκε!"
   }
 }

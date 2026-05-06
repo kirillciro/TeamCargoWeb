@@ -414,6 +414,9 @@
     "custom_subtab_about": "Meist jaotis",
     "custom_subtab_housing": "Eluaseme jaotis",
     "custom_subtab_contact": "Kontakti jaotis",
-    "custom_subtab_footer": "Jalus"
+    "custom_subtab_footer": "Jalus",
+    "set_as_default": "Määra vaikimisi",
+    "is_default": "Vaikimisi",
+    "default_theme_saved": "Vaikimisi salvestatud!"
   }
 }

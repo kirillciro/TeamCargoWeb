@@ -414,6 +414,9 @@
     "custom_subtab_about": "Om os-sektion",
     "custom_subtab_housing": "Boligsektion",
     "custom_subtab_contact": "Kontaktsektion",
-    "custom_subtab_footer": "Sidefod"
+    "custom_subtab_footer": "Sidefod",
+    "set_as_default": "Angiv som standard",
+    "is_default": "Standard",
+    "default_theme_saved": "Standard gemt!"
   }
 }

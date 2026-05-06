@@ -414,6 +414,9 @@
     "custom_subtab_about": "Über uns-Bereich",
     "custom_subtab_housing": "Wohnbereich",
     "custom_subtab_contact": "Kontakt-Bereich",
-    "custom_subtab_footer": "Fußzeile"
+    "custom_subtab_footer": "Fußzeile",
+    "set_as_default": "Als Standard festlegen",
+    "is_default": "Standard",
+    "default_theme_saved": "Standard gespeichert!"
   }
 }

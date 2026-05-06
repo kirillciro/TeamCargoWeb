@@ -414,6 +414,9 @@
     "custom_subtab_about": "Over ons sectie",
     "custom_subtab_housing": "Woningsectie",
     "custom_subtab_contact": "Contactsectie",
-    "custom_subtab_footer": "Voettekst"
+    "custom_subtab_footer": "Voettekst",
+    "set_as_default": "Instellen als standaard",
+    "is_default": "Standaard",
+    "default_theme_saved": "Standaard opgeslagen!"
   }
 }

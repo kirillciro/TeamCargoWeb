@@ -414,6 +414,9 @@
     "custom_subtab_about": "Sezione Chi siamo",
     "custom_subtab_housing": "Sezione Alloggi",
     "custom_subtab_contact": "Sezione Contatti",
-    "custom_subtab_footer": "Piè di pagina"
+    "custom_subtab_footer": "Piè di pagina",
+    "set_as_default": "Imposta come predefinito",
+    "is_default": "Predefinito",
+    "default_theme_saved": "Predefinito salvato!"
   }
 }

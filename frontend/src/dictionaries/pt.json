@@ -414,6 +414,9 @@
     "custom_subtab_about": "Seção Sobre",
     "custom_subtab_housing": "Seção Moradia",
     "custom_subtab_contact": "Seção Contato",
-    "custom_subtab_footer": "Rodapé"
+    "custom_subtab_footer": "Rodapé",
+    "set_as_default": "Definir como padrão",
+    "is_default": "Padrão",
+    "default_theme_saved": "Padrão salvo!"
   }
 }

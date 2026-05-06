@@ -414,6 +414,9 @@
     "custom_subtab_about": "Par mums sadaļa",
     "custom_subtab_housing": "Mājokļu sadaļa",
     "custom_subtab_contact": "Kontaktu sadaļa",
-    "custom_subtab_footer": "Kājene"
+    "custom_subtab_footer": "Kājene",
+    "set_as_default": "Iestatīt kā noklusējumu",
+    "is_default": "Noklusējums",
+    "default_theme_saved": "Noklusējums saglabāts!"
   }
 }

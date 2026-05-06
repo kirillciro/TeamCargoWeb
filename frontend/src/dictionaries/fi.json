@@ -414,6 +414,9 @@
     "custom_subtab_about": "Tietoja-osio",
     "custom_subtab_housing": "Asuminen-osio",
     "custom_subtab_contact": "Yhteystiedot-osio",
-    "custom_subtab_footer": "Alatunniste"
+    "custom_subtab_footer": "Alatunniste",
+    "set_as_default": "Aseta oletukseksi",
+    "is_default": "Oletus",
+    "default_theme_saved": "Oletus tallennettu!"
   }
 }

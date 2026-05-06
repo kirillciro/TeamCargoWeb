@@ -66,6 +66,40 @@ export default function AdminDashboard({
   const { user, loading, logout } = useAuth();
   const [active, setActive] = useState<Tab>("overview");
   const [win98, setWin98] = useState(false);
+  const [defaultTheme, setDefaultTheme] = useState<"modern" | "win98">("modern");
+  const [savingDefault, setSavingDefault] = useState(false);
+  const [defaultSaved, setDefaultSaved] = useState(false);
+
+  // Load persisted default theme and apply it on first mount
+  useEffect(() => {
+    fetchWithAuth("/api/admin/settings/default-theme")
+      .then((r) => r.json())
+      .then((data: { theme?: string }) => {
+        const t = data.theme === "win98" ? "win98" : "modern";
+        setDefaultTheme(t);
+        setWin98(t === "win98");
+      })
+      .catch(() => {/* keep defaults */});
+  }, []);
+
+  async function handleSetDefault() {
+    setSavingDefault(true);
+    try {
+      const theme = win98 ? "win98" : "modern";
+      const res = await fetchWithAuth("/api/admin/settings/default-theme", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ theme }),
+      });
+      if (res.ok) {
+        setDefaultTheme(theme);
+        setDefaultSaved(true);
+        setTimeout(() => setDefaultSaved(false), 2000);
+      }
+    } finally {
+      setSavingDefault(false);
+    }
+  }
 
   // Apply Win98 gray to the page body & html so nothing bleeds through
   useEffect(() => {
@@ -521,6 +555,54 @@ export default function AdminDashboard({
                 }
               >
                 {win98 ? "Modern" : "🖥️ Win98"}
+              </button>
+
+              {/* Set as default */}
+              <button
+                onClick={handleSetDefault}
+                disabled={savingDefault}
+                title={
+                  defaultSaved
+                    ? dict.admin.default_theme_saved
+                    : (win98 ? "win98" : "modern") === defaultTheme
+                      ? dict.admin.is_default
+                      : dict.admin.set_as_default
+                }
+                style={
+                  win98
+                    ? {
+                        padding: "2px 8px",
+                        background: "#c0c0c0",
+                        border: "2px solid",
+                        borderColor:
+                          (win98 ? "win98" : "modern") === defaultTheme
+                            ? "#808080 #fff #fff #808080"
+                            : "#fff #808080 #808080 #fff",
+                        fontFamily: '"MS Sans Serif", Arial, sans-serif',
+                        fontSize: "11px",
+                        cursor: savingDefault ? "wait" : "pointer",
+                        color: "#000",
+                        whiteSpace: "nowrap" as const,
+                      }
+                    : undefined
+                }
+                className={
+                  win98
+                    ? ""
+                    : `flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border transition-colors whitespace-nowrap ${
+                        defaultSaved
+                          ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400"
+                          : (win98 ? "win98" : "modern") === defaultTheme
+                            ? "bg-amber-400/10 border-amber-400/30 text-amber-400 cursor-default"
+                            : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
+                      }`
+                }
+              >
+                {defaultSaved
+                  ? dict.admin.default_theme_saved
+                  : (win98 ? "win98" : "modern") === defaultTheme
+                    ? `★ ${dict.admin.is_default}`
+                    : dict.admin.set_as_default}
               </button>
 
               {/* Profile */}

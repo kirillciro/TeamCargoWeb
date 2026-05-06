@@ -414,6 +414,9 @@
     "custom_subtab_about": "Sekce O nás",
     "custom_subtab_housing": "Sekce Bydlení",
     "custom_subtab_contact": "Kontaktní sekce",
-    "custom_subtab_footer": "Zápatí"
+    "custom_subtab_footer": "Zápatí",
+    "set_as_default": "Nastavit jako výchozí",
+    "is_default": "Výchozí",
+    "default_theme_saved": "Výchozí uloženo!"
   }
 }

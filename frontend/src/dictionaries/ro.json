@@ -414,6 +414,9 @@
     "custom_subtab_about": "Secțiunea Despre",
     "custom_subtab_housing": "Secțiunea Locuințe",
     "custom_subtab_contact": "Secțiunea Contact",
-    "custom_subtab_footer": "Subsol"
+    "custom_subtab_footer": "Subsol",
+    "set_as_default": "Setează ca implicit",
+    "is_default": "Implicit",
+    "default_theme_saved": "Implicit salvat!"
   }
 }

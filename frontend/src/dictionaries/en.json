@@ -414,6 +414,9 @@
     "custom_subtab_about": "About Section",
     "custom_subtab_housing": "Housing Section",
     "custom_subtab_contact": "Contact Section",
-    "custom_subtab_footer": "Footer"
+    "custom_subtab_footer": "Footer",
+    "set_as_default": "Set as default",
+    "is_default": "Default",
+    "default_theme_saved": "Default saved!"
   }
 }

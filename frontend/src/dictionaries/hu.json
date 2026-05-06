@@ -414,6 +414,9 @@
     "custom_subtab_about": "Rólunk szekció",
     "custom_subtab_housing": "Lakhatás szekció",
     "custom_subtab_contact": "Kapcsolat szekció",
-    "custom_subtab_footer": "Lábléc"
+    "custom_subtab_footer": "Lábléc",
+    "set_as_default": "Beállítás alapértelmezettként",
+    "is_default": "Alapértelmezett",
+    "default_theme_saved": "Alapértelmezett mentve!"
   }
 }
