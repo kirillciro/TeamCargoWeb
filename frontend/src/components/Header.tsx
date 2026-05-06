@@ -87,7 +87,7 @@ export default function Header({
                 <a
                   key={link.href}
                   href={link.href}
-                  className="relative px-4 py-2 text-sm font-semibold text-white/60 hover:text-[var(--brand-green)] rounded-lg transition-colors duration-300 group"
+                  className="relative px-4 py-2 text-sm font-semibold text-white/60 hover:text-white rounded-lg transition-colors duration-300 group"
                 >
                   {link.label}
                   <span className="absolute bottom-1 left-1/2 -translate-x-1/2 h-[2px] w-0 group-hover:w-[calc(100%-2rem)] bg-[var(--brand-green)] rounded-full transition-all duration-300" />
