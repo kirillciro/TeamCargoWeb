@@ -70,7 +70,10 @@ export default function Header({
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
             {/* Logo */}
-            <Link href={`/${lang}`} className="flex items-center shrink-0 group mx-3 py-1 px-2">
+            <Link
+              href={`/${lang}`}
+              className="flex items-center shrink-0 group ml-2 mr-6 py-1"
+            >
               <Image
                 src="/logo.svg"
                 alt="Team Cargo"
@@ -108,10 +111,22 @@ export default function Header({
                 href="https://wa.me/31685352412"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-bold transition-colors duration-200" style={{ background: 'var(--brand-green)', color: 'var(--brand-btn-text)' }} onMouseEnter={e => (e.currentTarget.style.background = 'var(--brand-mid)')} onMouseLeave={e => (e.currentTarget.style.background = 'var(--brand-green)')}
+                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-bold transition-colors duration-200"
+                style={{
+                  background: "var(--brand-green)",
+                  color: "var(--brand-btn-text)",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "var(--brand-mid)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "var(--brand-green)")
+                }
               >
                 <MessageCircle className="w-4 h-4 shrink-0" />
-                <span className="hidden sm:inline">{dict.hero.cta_whatsapp}</span>
+                <span className="hidden sm:inline">
+                  {dict.hero.cta_whatsapp}
+                </span>
               </a>
 
               {/* Admin Dashboard */}
@@ -292,9 +307,16 @@ export default function Header({
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors"
-              style={{ background: 'var(--brand-green)', color: 'var(--brand-btn-text)' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--brand-mid)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'var(--brand-green)')}
+              style={{
+                background: "var(--brand-green)",
+                color: "var(--brand-btn-text)",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--brand-mid)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "var(--brand-green)")
+              }
               onClick={() => setMobileOpen(false)}
             >
               <Phone className="w-4 h-4 shrink-0" />
@@ -338,5 +360,3 @@ export default function Header({
     </>
   );
 }
-
-
