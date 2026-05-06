@@ -70,7 +70,7 @@ export default function Header({
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
             {/* Logo */}
-            <Link href={`/${lang}`} className="flex items-center shrink-0 group">
+            <Link href={`/${lang}`} className="flex items-center shrink-0 group mr-4">
               <Image
                 src="/logo.svg"
                 alt="Team Cargo"
