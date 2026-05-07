@@ -126,7 +126,7 @@ export default function ContactSection({
   }, [lang]);
 
   const o = overrides;
-  const whatsappNumber = o.whatsapp_number || "31685352412";
+  const whatsappNumber = o.whatsapp_number || "393497080551";
   const emailAddress = o.email_address || "info@teamcargo.nl";
   const mapAddress = o.map_address || "Poortland 146, 1046 BD Amsterdam";
   const whatsappHref = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}`;

@@ -108,7 +108,7 @@ export default function Header({
 
               {/* WhatsApp CTA */}
               <a
-                href="https://wa.me/31685352412"
+                href="https://wa.me/393497080551"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-bold transition-colors duration-200"
@@ -281,7 +281,7 @@ export default function Header({
 
             {/* WhatsApp in mobile */}
             <a
-              href="https://wa.me/31685352412"
+              href="https://wa.me/393497080551"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors"
