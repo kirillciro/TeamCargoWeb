@@ -266,28 +266,16 @@ export default function Header({
             )}
 
             {user ? (
-              <>
-                <Link
-                  href={`/${lang}/profile`}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white bg-white/8 border border-white/12 hover:bg-white/14 hover:border-white/22 transition-colors"
-                >
-                  <span className="w-7 h-7 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0">
-                    {userInitial}
-                  </span>
-                  {dict.nav.my_profile}
-                </Link>
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    void logout();
-                  }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white/60 border border-white/12 hover:bg-white/8 hover:text-white transition-colors text-left"
-                >
-                  <LogOut className="w-4 h-4 shrink-0" />
-                  {dict.nav.logout}
-                </button>
-              </>
+              <Link
+                href={`/${lang}/profile`}
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white bg-white/8 border border-white/12 hover:bg-white/14 hover:border-white/22 transition-colors"
+              >
+                <span className="w-7 h-7 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-xs font-bold flex items-center justify-center shrink-0">
+                  {userInitial}
+                </span>
+                {dict.nav.my_profile}
+              </Link>
             ) : (
               <button
                 onClick={() => {
@@ -324,6 +312,22 @@ export default function Header({
             </a>
           </div>
         </nav>
+
+        {/* Logout pinned at bottom */}
+        {user && (
+          <div className="px-4 pb-4 pt-2 border-t border-white/10">
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                void logout();
+              }}
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-colors text-left"
+            >
+              <LogOut className="w-4 h-4 shrink-0" />
+              {dict.nav.logout}
+            </button>
+          </div>
+        )}
 
         {/* Panel footer */}
         <div className="px-5 py-4 border-t border-white/10">
