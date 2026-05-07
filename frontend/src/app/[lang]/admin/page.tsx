@@ -18,7 +18,7 @@ export default async function AdminPage({
   return (
     <AuthProvider>
       <Header lang={resolvedLang} dict={dict} />
-      <main className="flex-1 min-h-screen bg-slate-950">
+      <main className="flex-1 min-h-screen bg-slate-950 pt-20 sm:pt-24">
         <Suspense>
           <AdminDashboard lang={resolvedLang} dict={dict} />
         </Suspense>
