@@ -49,7 +49,7 @@ export default function ProfileDashboard({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 pt-20 sm:pt-24 flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-2 border-[#36B347] border-t-transparent animate-spin" />
       </div>
     );
@@ -61,7 +61,7 @@ export default function ProfileDashboard({
   const fullName = `${user.firstName} ${user.lastName}`.trim();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pt-16 sm:pt-20">
+    <div className="min-h-screen bg-slate-950 text-white pt-20 sm:pt-24">
       {/* ── Top bar ── */}
       <div className="sticky top-16 sm:top-20 z-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">

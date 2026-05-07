@@ -66,7 +66,9 @@ export default function AdminDashboard({
   const { user, loading, logout } = useAuth();
   const [active, setActive] = useState<Tab>("overview");
   const [win98, setWin98] = useState(false);
-  const [defaultTheme, setDefaultTheme] = useState<"modern" | "win98">("modern");
+  const [defaultTheme, setDefaultTheme] = useState<"modern" | "win98">(
+    "modern",
+  );
   const [savingDefault, setSavingDefault] = useState(false);
   const [defaultSaved, setDefaultSaved] = useState(false);
 
@@ -79,7 +81,9 @@ export default function AdminDashboard({
         setDefaultTheme(t);
         setWin98(t === "win98");
       })
-      .catch(() => {/* keep defaults */});
+      .catch(() => {
+        /* keep defaults */
+      });
   }, []);
 
   async function handleSetDefault() {
@@ -127,7 +131,7 @@ export default function AdminDashboard({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 pt-16 sm:pt-20 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 pt-20 sm:pt-24 flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
       </div>
     );
@@ -141,7 +145,7 @@ export default function AdminDashboard({
     <div
       data-admin
       data-win98={win98 ? "1" : undefined}
-      className={`min-h-screen pt-16 sm:pt-20${win98 ? "" : " bg-slate-950 text-white"}`}
+      className={`min-h-screen pt-20 sm:pt-24${win98 ? "" : " bg-slate-950 text-white"}`}
       style={
         win98
           ? {

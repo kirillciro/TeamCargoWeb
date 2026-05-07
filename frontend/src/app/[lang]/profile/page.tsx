@@ -18,7 +18,7 @@ export default async function ProfilePage({
   return (
     <AuthProvider>
       <Header lang={resolvedLang} dict={dict} />
-      <main className="flex-1 pt-20 sm:pt-24">
+      <main className="flex-1">
         <Suspense>
           <ProfileDashboard lang={resolvedLang} dict={dict} />
         </Suspense>
