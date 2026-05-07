@@ -242,16 +242,6 @@ export default function Header({
 
           <div className="h-px bg-white/10 my-3 mx-2" />
 
-          {/* Language row */}
-          <div className="px-4 py-2 mb-2">
-            <p className="text-white/35 text-[10px] font-bold uppercase tracking-wider mb-2.5">
-              {dict.nav.language}
-            </p>
-            <LanguageSwitcher currentLang={lang} />
-          </div>
-
-          <div className="h-px bg-white/10 my-1 mx-2" />
-
           {/* Auth section */}
           <div className="flex flex-col gap-2 px-1 pt-3 pb-2">
             {user?.role === "admin" && (
@@ -310,6 +300,16 @@ export default function Header({
               <Phone className="w-4 h-4 shrink-0" />
               {dict.hero.cta_whatsapp}
             </a>
+
+            <div className="h-px bg-white/10 my-1 mx-2" />
+
+            {/* Language row */}
+            <div className="px-4 py-2">
+              <p className="text-white/35 text-[10px] font-bold uppercase tracking-wider mb-2.5">
+                {dict.nav.language}
+              </p>
+              <LanguageSwitcher currentLang={lang} />
+            </div>
           </div>
         </nav>
 
