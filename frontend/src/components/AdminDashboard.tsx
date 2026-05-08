@@ -404,7 +404,7 @@ export default function AdminDashboard({
         `}</style>
       )}
       <div
-        className={`sticky top-16 sm:top-20 z-20${win98 ? "" : " bg-slate-900/80 backdrop-blur-md border-b border-slate-800"}`}
+        className={`sticky top-20 sm:top-24 z-20${win98 ? "" : " bg-slate-900/80 backdrop-blur-md border-b border-slate-800"}`}
         style={
           win98
             ? { background: "#c0c0c0", borderBottom: "2px solid #808080" }
