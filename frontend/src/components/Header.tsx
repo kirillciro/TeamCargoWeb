@@ -46,6 +46,7 @@ export default function Header({
   }, []);
 
   useEffect(() => {
+    const onScroll = () => {
       const ratio = Math.min(window.scrollY / (window.innerHeight * 0.10), 1);
       setScrollRatio(ratio);
     };
