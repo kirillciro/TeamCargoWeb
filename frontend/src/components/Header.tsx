@@ -64,7 +64,11 @@ export default function Header({
     };
     readHeaderSetting();
     window.addEventListener("tc-header-settings-changed", readHeaderSetting);
-    return () => window.removeEventListener("tc-header-settings-changed", readHeaderSetting);
+    return () =>
+      window.removeEventListener(
+        "tc-header-settings-changed",
+        readHeaderSetting,
+      );
   }, []);
 
   useEffect(() => {

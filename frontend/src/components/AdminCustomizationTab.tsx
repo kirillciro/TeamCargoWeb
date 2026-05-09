@@ -597,7 +597,10 @@ export default function AdminCustomizationTab({
     if (typeof window === "undefined") return true;
     try {
       const saved = localStorage.getItem(LS_HEADER);
-      if (saved) return (JSON.parse(saved) as { transparent: boolean }).transparent !== false;
+      if (saved)
+        return (
+          (JSON.parse(saved) as { transparent: boolean }).transparent !== false
+        );
     } catch {
       /* ignore */
     }
@@ -1972,7 +1975,8 @@ export default function AdminCustomizationTab({
               Header Transparency
             </p>
             <p className="text-xs text-slate-500">
-              Control whether the header fades in from transparent as the user scrolls, or always appears solid.
+              Control whether the header fades in from transparent as the user
+              scrolls, or always appears solid.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <button
@@ -2009,7 +2013,10 @@ export default function AdminCustomizationTab({
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => {
-                  localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
+                  localStorage.setItem(
+                    LS_HEADER,
+                    JSON.stringify({ transparent: headerTransparent }),
+                  );
                   window.dispatchEvent(new Event("tc-header-settings-changed"));
                   setHeaderSaved(true);
                   setTimeout(() => setHeaderSaved(false), 2000);
@@ -2079,14 +2086,39 @@ export default function AdminCustomizationTab({
             cursor: "pointer",
           };
           return (
-            <div style={{ padding: "4px 2px 14px", fontFamily: F, fontSize: 11, color: "#000" }}>
+            <div
+              style={{
+                padding: "4px 2px 14px",
+                fontFamily: F,
+                fontSize: 11,
+                color: "#000",
+              }}
+            >
               <div style={{ ...GRP, marginTop: 8 }}>
                 <span style={GRP_LBL}>Header Transparency</span>
-                <p style={{ fontFamily: F, fontSize: 11, color: "#000", marginBottom: 10 }}>
-                  Control whether the header fades in from transparent on scroll, or stays solid.
+                <p
+                  style={{
+                    fontFamily: F,
+                    fontSize: 11,
+                    color: "#000",
+                    marginBottom: 10,
+                  }}
+                >
+                  Control whether the header fades in from transparent on
+                  scroll, or stays solid.
                 </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={{ display: "flex", alignItems: "center", cursor: "pointer", fontFamily: F, fontSize: 11 }}>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 6 }}
+                >
+                  <label
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      fontFamily: F,
+                      fontSize: 11,
+                    }}
+                  >
                     <input
                       type="radio"
                       name="headerMode"
@@ -2096,7 +2128,15 @@ export default function AdminCustomizationTab({
                     />
                     Transparent at top (fades in on scroll)
                   </label>
-                  <label style={{ display: "flex", alignItems: "center", cursor: "pointer", fontFamily: F, fontSize: 11 }}>
+                  <label
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      fontFamily: F,
+                      fontSize: 11,
+                    }}
+                  >
                     <input
                       type="radio"
                       name="headerMode"
@@ -2126,8 +2166,13 @@ export default function AdminCustomizationTab({
                 <div style={{ display: "flex", gap: 6 }}>
                   <button
                     onClick={() => {
-                      localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
-                      window.dispatchEvent(new Event("tc-header-settings-changed"));
+                      localStorage.setItem(
+                        LS_HEADER,
+                        JSON.stringify({ transparent: headerTransparent }),
+                      );
+                      window.dispatchEvent(
+                        new Event("tc-header-settings-changed"),
+                      );
                       setHeaderSaved(true);
                       setTimeout(() => setHeaderSaved(false), 2000);
                     }}
@@ -2139,7 +2184,9 @@ export default function AdminCustomizationTab({
                     onClick={() => {
                       setHeaderTransparent(true);
                       localStorage.removeItem(LS_HEADER);
-                      window.dispatchEvent(new Event("tc-header-settings-changed"));
+                      window.dispatchEvent(
+                        new Event("tc-header-settings-changed"),
+                      );
                     }}
                     style={{ ...BTN_LG, color: "#cc0000" }}
                   >

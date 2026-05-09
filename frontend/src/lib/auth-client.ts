@@ -7,6 +7,7 @@ export type AuthUser = {
   isVerified: boolean;
   provider: string;
   createdAt: string;
+  avatarUrl: string | null;
 };
 
 const ACCESS_TOKEN_KEY = "tc_access_token";

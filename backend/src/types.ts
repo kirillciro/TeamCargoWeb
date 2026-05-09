@@ -9,6 +9,7 @@ export type SafeUser = {
   isVerified: boolean;
   provider: string;
   createdAt: string;
+  avatarUrl: string | null;
 };
 
 // Minimal JWT payload required to identify the logged-in user.

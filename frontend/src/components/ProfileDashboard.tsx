@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Settings,
@@ -14,6 +15,7 @@ import {
   Phone,
   Globe,
   Loader2,
+  Camera,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import type { Dictionary } from "@/lib/getDictionary";
@@ -43,6 +45,7 @@ function computeCompleteness(
   let score = 0;
   if (user.firstName && user.lastName) score += 10;
   if (dp?.phone) score += 10;
+  if (dp?.whatsapp) score += 10;
   if (dp?.country) score += 10;
   if (dp?.license_cats?.length) score += 20;
   if (dp?.years_exp !== null && dp?.years_exp !== undefined) score += 10;
@@ -124,8 +127,12 @@ export default function ProfileDashboard({
           {/* Brand row */}
           <div className="h-14 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-sm font-bold text-white shrink-0">
-                {initial}
+              <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-sm font-bold text-white shrink-0 overflow-hidden">
+                {user.avatarUrl ? (
+                  <Image src={user.avatarUrl} alt="avatar" width={32} height={32} className="w-full h-full object-cover" />
+                ) : (
+                  initial
+                )}
               </div>
               <span className="font-semibold text-sm text-white">
                 {fullName || user.email}
@@ -206,6 +213,7 @@ export default function ProfileDashboard({
             dpLoading={dpLoading}
             onDriverProfileSaved={setDriverProfile}
             onNameSaved={refreshUser}
+            onAvatarSaved={refreshUser}
             setActive={setActive}
           />
         )}
@@ -231,6 +239,7 @@ function ProfileOverview({
     isVerified: boolean;
     provider: string;
     createdAt: string;
+    avatarUrl: string | null;
   };
   lang: string;
   dict: Dictionary;
@@ -248,8 +257,12 @@ function ProfileOverview({
       {/* Welcome card */}
       <div className="rounded-2xl bg-linear-to-br from-[#0d2e1a] to-[#0a1f12] border border-[#1a7f45]/30 p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-2xl font-bold text-white shrink-0">
-            {(user.firstName?.[0] ?? user.email[0]).toUpperCase()}
+          <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-2xl font-bold text-white shrink-0 overflow-hidden">
+            {user.avatarUrl ? (
+              <Image src={user.avatarUrl} alt="avatar" width={64} height={64} className="w-full h-full object-cover" />
+            ) : (
+              (user.firstName?.[0] ?? user.email[0]).toUpperCase()
+            )}
           </div>
           <div>
             <h1 className="text-xl font-bold text-white">
@@ -353,16 +366,29 @@ function ProfileSettings({
   dpLoading,
   onDriverProfileSaved,
   onNameSaved,
+  onAvatarSaved,
 }: {
-  user: { email: string; provider: string; firstName: string; lastName: string };
+  user: { email: string; provider: string; firstName: string; lastName: string; avatarUrl: string | null };
   driverProfile: DriverProfile | null;
   dpLoading: boolean;
   onDriverProfileSaved: (dp: DriverProfile) => void;
   onNameSaved: () => Promise<void>;
+  onAvatarSaved: () => Promise<void>;
   setActive: (tab: Tab) => void;
 }) {
   return (
     <div className="space-y-6">
+      {/* Profile image */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
+        <h2 className="text-base font-bold text-white mb-1">Profile image</h2>
+        <p className="text-slate-400 text-sm mb-5">Upload a photo that employers will see.</p>
+        <AvatarUpload
+          currentUrl={user.avatarUrl}
+          initial={(user.firstName?.[0] ?? user.email[0]).toUpperCase()}
+          onSaved={onAvatarSaved}
+        />
+      </div>
+
       {/* Edit name */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
         <h2 className="text-base font-bold text-white mb-1">Personal details</h2>
@@ -409,6 +435,112 @@ function ProfileSettings({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ── Avatar Upload ─────────────────────────────────────────────────────────────
+
+function AvatarUpload({
+  currentUrl,
+  initial,
+  onSaved,
+}: {
+  currentUrl: string | null;
+  initial: string;
+  onSaved: () => Promise<void>;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string | null>(currentUrl);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+
+  async function handleFile(file: File) {
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image must be under 5 MB.");
+      return;
+    }
+    setError(null);
+    setUploading(true);
+    const localUrl = URL.createObjectURL(file);
+    setPreview(localUrl);
+    try {
+      const { fetchWithAuth } = await import("@/lib/auth-client");
+      const form = new FormData();
+      form.append("avatar", file);
+      const res = await fetchWithAuth("/api/profile/avatar", {
+        method: "POST",
+        body: form,
+      });
+      if (!res.ok) {
+        const d = (await res.json()) as { error?: string };
+        setError(d.error ?? "Upload failed.");
+        setPreview(currentUrl);
+        return;
+      }
+      await onSaved();
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("An unexpected error occurred.");
+      setPreview(currentUrl);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-5">
+      {/* Avatar circle */}
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        className="relative w-20 h-20 rounded-2xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-2xl font-bold text-white shrink-0 overflow-hidden group"
+      >
+        {preview ? (
+          <Image src={preview} alt="avatar" fill className="object-cover" />
+        ) : (
+          initial
+        )}
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          {uploading ? (
+            <Loader2 className="w-5 h-5 animate-spin text-white" />
+          ) : (
+            <Camera className="w-5 h-5 text-white" />
+          )}
+        </div>
+      </button>
+
+      <div className="space-y-2">
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm text-white font-semibold transition-colors disabled:opacity-50"
+        >
+          {uploading ? "Uploading…" : saved ? "Saved ✓" : "Change photo"}
+        </button>
+        <p className="text-xs text-slate-500">JPG, PNG or WebP · max 5 MB</p>
+        {error && <p className="text-xs text-red-400">{error}</p>}
+      </div>
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) void handleFile(file);
+          e.target.value = "";
+        }}
+      />
     </div>
   );
 }

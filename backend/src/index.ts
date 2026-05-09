@@ -5,6 +5,7 @@ import cors from "cors";
 import express from "express";
 import crypto from "crypto";
 import multer from "multer";
+import { v2 as cloudinary } from "cloudinary";
 import { z } from "zod";
 import { OAuth2Client } from "google-auth-library";
 import { pool } from "./db.js";
@@ -99,6 +100,7 @@ type UserRow = {
   is_verified: boolean;
   provider: string;
   created_at: Date;
+  avatar_url: string | null;
 };
 
 function mapUser(row: UserRow): SafeUser {
@@ -111,6 +113,7 @@ function mapUser(row: UserRow): SafeUser {
     isVerified: row.is_verified,
     provider: row.provider,
     createdAt: row.created_at.toISOString(),
+    avatarUrl: row.avatar_url ?? null,
   };
 }
 
@@ -235,7 +238,7 @@ app.post("/auth/login", async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, first_name, last_name, email, password_hash, role,
-              is_verified, provider, created_at
+              is_verified, provider, created_at, avatar_url
        FROM users WHERE email = $1 AND provider = 'email' LIMIT 1`,
       [email.toLowerCase()],
     );
@@ -344,7 +347,7 @@ app.get("/auth/verify-email", async (req, res) => {
 
     // Fetch full user to issue tokens so the frontend can auto-login
     const userResult = await pool.query(
-      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at
+      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
        FROM users WHERE id = $1 LIMIT 1`,
       [userId],
     );
@@ -577,7 +580,7 @@ app.post("/auth/refresh", async (req, res) => {
 
     const result = await pool.query(
       `SELECT id, first_name, last_name, email, role, is_verified, provider,
-              created_at, refresh_token_hash
+              created_at, avatar_url, refresh_token_hash
        FROM users WHERE id = $1 LIMIT 1`,
       [decoded.sub],
     );
@@ -647,7 +650,7 @@ app.post("/auth/logout", async (req, res) => {
 app.get("/auth/me", requireAuth, async (req: AuthedRequest, res) => {
   try {
     const result = await pool.query(
-      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at
+      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
        FROM users WHERE id = $1 LIMIT 1`,
       [req.userId],
     );
@@ -755,7 +758,7 @@ app.post("/auth/google", async (req, res) => {
     const lastName = family_name ?? "";
 
     let result = await pool.query(
-      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at
+      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
        FROM users WHERE email = $1 LIMIT 1`,
       [email.toLowerCase()],
     );
@@ -764,7 +767,7 @@ app.post("/auth/google", async (req, res) => {
       result = await pool.query(
         `INSERT INTO users (first_name, last_name, email, provider, provider_id, is_verified)
          VALUES ($1, $2, $3, 'google', $4, TRUE)
-         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at`,
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
         [firstName, lastName, email.toLowerCase(), googleSub],
       );
     }
@@ -824,7 +827,7 @@ app.post("/auth/apple", async (req, res) => {
     const lastName = appleLast ?? "";
 
     let result = await pool.query(
-      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at
+      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
        FROM users WHERE email = $1 LIMIT 1`,
       [email],
     );
@@ -833,7 +836,7 @@ app.post("/auth/apple", async (req, res) => {
       result = await pool.query(
         `INSERT INTO users (first_name, last_name, email, provider, provider_id, is_verified)
          VALUES ($1, $2, $3, 'apple', $4, TRUE)
-         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at`,
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
         [firstName, lastName, email, payload.sub ?? ""],
       );
     }
@@ -1234,14 +1237,14 @@ app.get(
       typeof req.query.search === "string" ? req.query.search.trim() : "";
     const result = search
       ? await pool.query(
-          `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at
+          `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
            FROM users
            WHERE first_name ILIKE $1 OR last_name ILIKE $1 OR email ILIKE $1
            ORDER BY created_at DESC LIMIT 100`,
           [`%${search}%`],
         )
       : await pool.query(
-          `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at
+          `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
            FROM users ORDER BY created_at DESC LIMIT 100`,
         );
     res.json({ users: result.rows.map(mapUser) });
@@ -1267,7 +1270,7 @@ app.patch(
     }
     const result = await pool.query(
       `UPDATE users SET role = $1 WHERE id = $2
-       RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at`,
+       RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
       [role, userId],
     );
     if (!result.rowCount) {
@@ -2197,7 +2200,7 @@ app.put(
       const result = await pool.query(
         `UPDATE users SET first_name = $1, last_name = $2
          WHERE id = $3
-         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at`,
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
         [firstName, lastName, req.userId],
       );
       if (result.rows.length === 0) {
@@ -2207,6 +2210,68 @@ app.put(
       res.json(mapUser(result.rows[0] as UserRow));
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
+// ── Profile Avatar ──────────────────────────────────────────────────────────
+
+cloudinary.config({
+  cloud_name: "dhq3nxqt2",
+  api_key: process.env.CLOUDINARY_API_KEY ?? "",
+  api_secret: process.env.CLOUDINARY_API_SECRET ?? "",
+});
+
+const avatarUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed"));
+    }
+  },
+});
+
+app.post(
+  "/profile/avatar",
+  requireAuth,
+  avatarUpload.single("avatar"),
+  async (req: AuthedRequest, res) => {
+    if (!req.file) {
+      res.status(400).json({ error: "No file uploaded" });
+      return;
+    }
+    try {
+      const uploadResult = await new Promise<{ secure_url: string }>(
+        (resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream(
+              {
+                folder: "Team_Cargo_Web-User_Profile_Images",
+                public_id: `user_${req.userId}`,
+                overwrite: true,
+                transformation: [{ width: 400, height: 400, crop: "fill", gravity: "face" }],
+              },
+              (err, result) => {
+                if (err || !result) reject(err ?? new Error("Upload failed"));
+                else resolve(result as { secure_url: string });
+              },
+            )
+            .end(req.file!.buffer);
+        },
+      );
+
+      const { rows } = await pool.query(
+        `UPDATE users SET avatar_url = $1 WHERE id = $2
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
+        [uploadResult.secure_url, req.userId],
+      );
+      res.json(mapUser(rows[0] as UserRow));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Upload error";
       res.status(500).json({ error: msg });
     }
   },
