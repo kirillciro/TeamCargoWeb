@@ -9,9 +9,52 @@ import {
   ArrowLeft,
   LogOut,
   ShieldCheck,
+  Truck,
+  MapPin,
+  Phone,
+  Globe,
+  Loader2,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import type { Dictionary } from "@/lib/getDictionary";
+
+type DriverProfile = {
+  phone: string | null;
+  whatsapp: string | null;
+  country: string | null;
+  availability: "available" | "open" | "unavailable";
+  license_cats: string[];
+  years_exp: number | null;
+  languages: string[];
+  work_type: string | null;
+  preferred_routes: string[];
+  bio: string | null;
+};
+
+const LICENSE_CATS = ["B", "BE", "C1", "C1E", "C", "CE", "D1", "D", "DE"];
+const LANGUAGES = [
+  "English", "Dutch", "German", "French", "Polish", "Romanian",
+  "Bulgarian", "Lithuanian", "Latvian", "Czech", "Slovak", "Hungarian",
+  "Italian", "Spanish", "Portuguese", "Ukrainian", "Russian", "Turkish",
+];
+const WORK_TYPES = ["Long-haul", "Regional", "Local", "Any"];
+
+function computeCompleteness(
+  user: { firstName: string; lastName: string },
+  dp: DriverProfile | null,
+): number {
+  let score = 0;
+  if (user.firstName && user.lastName) score += 10;
+  if (dp?.phone) score += 10;
+  if (dp?.country) score += 10;
+  if (dp?.license_cats?.length) score += 20;
+  if (dp?.years_exp !== null && dp?.years_exp !== undefined) score += 10;
+  if (dp?.languages?.length) score += 15;
+  if (dp?.work_type) score += 10;
+  if (dp?.availability) score += 5;
+  if (dp?.bio) score += 10;
+  return score;
+}
 
 type Tab = "overview" | "settings";
 const TABS: Tab[] = ["overview", "settings"];
@@ -35,17 +78,31 @@ export default function ProfileDashboard({
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, refreshUser } = useAuth();
   const initialTab = (searchParams.get("tab") as Tab | null) ?? "overview";
   const [active, setActive] = useState<Tab>(
     TABS.includes(initialTab as Tab) ? (initialTab as Tab) : "overview",
   );
+  const [driverProfile, setDriverProfile] = useState<DriverProfile | null>(null);
+  const [dpLoading, setDpLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && !user) {
       router.replace(`/${lang}`);
     }
   }, [user, loading, lang, router]);
+
+  useEffect(() => {
+    if (!user) return;
+    import("@/lib/auth-client")
+      .then(({ fetchWithAuth }) =>
+        fetchWithAuth("/api/profile/driver").then(async (r) => {
+          if (r.ok) setDriverProfile((await r.json()) as DriverProfile | null);
+        }),
+      )
+      .catch(() => {})
+      .finally(() => setDpLoading(false));
+  }, [user]);
 
   if (loading) {
     return (
@@ -61,7 +118,10 @@ export default function ProfileDashboard({
   const fullName = `${user.firstName} ${user.lastName}`.trim();
 
   return (
-    <div data-profile className="min-h-screen bg-slate-950 text-white pt-20 sm:pt-24">
+    <div
+      data-profile
+      className="min-h-screen bg-slate-950 text-white pt-20 sm:pt-24"
+    >
       {/* ── Top bar ── */}
       <div className="sticky top-16 sm:top-20 z-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -135,9 +195,24 @@ export default function ProfileDashboard({
       {/* ── Content ── */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {active === "overview" && (
-          <ProfileOverview user={user} lang={lang} dict={dict} />
+          <ProfileOverview
+            user={user}
+            lang={lang}
+            dict={dict}
+            completeness={computeCompleteness(user, driverProfile)}
+            setActive={setActive}
+          />
         )}
-        {active === "settings" && <ProfileSettings user={user} />}
+        {active === "settings" && (
+          <ProfileSettings
+            user={user}
+            driverProfile={driverProfile}
+            dpLoading={dpLoading}
+            onDriverProfileSaved={setDriverProfile}
+            onNameSaved={refreshUser}
+            setActive={setActive}
+          />
+        )}
       </div>
     </div>
   );
@@ -149,6 +224,8 @@ function ProfileOverview({
   user,
   lang,
   dict,
+  completeness,
+  setActive,
 }: {
   user: {
     firstName: string;
@@ -161,6 +238,8 @@ function ProfileOverview({
   };
   lang: string;
   dict: Dictionary;
+  completeness: number;
+  setActive: (tab: Tab) => void;
 }) {
   const joined = new Date(user.createdAt).toLocaleDateString(undefined, {
     year: "numeric",
@@ -200,6 +279,33 @@ function ProfileOverview({
           </div>
         </div>
       </div>
+
+      {/* Profile completeness */}
+      {completeness < 100 && (
+        <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-sm font-bold text-white">Profile completeness</p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Complete your driver profile to be visible to employers
+              </p>
+            </div>
+            <span className="text-lg font-bold text-[#36B347]">{completeness}%</span>
+          </div>
+          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#36B347] rounded-full transition-all duration-500"
+              style={{ width: `${completeness}%` }}
+            />
+          </div>
+          <button
+            onClick={() => setActive("settings")}
+            className="mt-3 text-xs text-[#36B347] hover:text-[#4ade80] font-semibold transition-colors"
+          >
+            Complete profile →
+          </button>
+        </div>
+      )}
 
       {/* Info grid */}
       <div className="grid sm:grid-cols-2 gap-4">
@@ -247,32 +353,418 @@ function InfoCard({ label, value }: { label: string; value: string }) {
 
 function ProfileSettings({
   user,
+  driverProfile,
+  dpLoading,
+  onDriverProfileSaved,
+  onNameSaved,
 }: {
-  user: { email: string; provider: string };
+  user: { email: string; provider: string; firstName: string; lastName: string };
+  driverProfile: DriverProfile | null;
+  dpLoading: boolean;
+  onDriverProfileSaved: (dp: DriverProfile) => void;
+  onNameSaved: () => Promise<void>;
+  setActive: (tab: Tab) => void;
 }) {
   return (
     <div className="space-y-6">
+      {/* Edit name */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <h2 className="text-base font-bold text-white mb-1">
-          Account settings
-        </h2>
-        <p className="text-slate-400 text-sm mb-6">
-          Manage your account preferences.
-        </p>
+        <h2 className="text-base font-bold text-white mb-1">Personal details</h2>
+        <p className="text-slate-400 text-sm mb-5">Update your display name.</p>
+        <EditNameForm
+          firstName={user.firstName}
+          lastName={user.lastName}
+          onSaved={onNameSaved}
+        />
+      </div>
 
+      {/* Driver profile */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
+        <div className="flex items-center gap-2.5 mb-1">
+          <Truck className="w-4 h-4 text-[#36B347]" />
+          <h2 className="text-base font-bold text-white">Driver profile</h2>
+        </div>
+        <p className="text-slate-400 text-sm mb-5">
+          Fill in your driver details so employers can find and contact you.
+        </p>
+        {dpLoading ? (
+          <div className="flex items-center gap-2 text-slate-500 text-sm">
+            <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+          </div>
+        ) : (
+          <DriverProfileForm
+            initial={driverProfile}
+            onSaved={onDriverProfileSaved}
+          />
+        )}
+      </div>
+
+      {/* Account settings */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
+        <h2 className="text-base font-bold text-white mb-1">Account settings</h2>
+        <p className="text-slate-400 text-sm mb-6">Manage your account preferences.</p>
         {user.provider === "local" ? (
           <ChangePasswordForm email={user.email} />
         ) : (
           <div className="rounded-xl bg-slate-800/60 border border-slate-700 p-4 text-sm text-slate-400">
             You signed in with{" "}
-            <span className="text-white font-medium capitalize">
-              {user.provider}
-            </span>
-            . Password management is handled by your sign-in provider.
+            <span className="text-white font-medium capitalize">{user.provider}</span>.
+            Password management is handled by your sign-in provider.
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+// ── Edit Name Form ────────────────────────────────────────────────────────────
+
+function EditNameForm({
+  firstName: initFirst,
+  lastName: initLast,
+  onSaved,
+}: {
+  firstName: string;
+  lastName: string;
+  onSaved: () => Promise<void>;
+}) {
+  const [first, setFirst] = useState(initFirst);
+  const [last, setLast] = useState(initLast);
+  const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { fetchWithAuth } = await import("@/lib/auth-client");
+      const res = await fetchWithAuth("/api/profile/name", {
+        method: "PUT",
+        body: JSON.stringify({ firstName: first, lastName: last }),
+      });
+      if (!res.ok) {
+        const d = (await res.json()) as { message?: string };
+        setError(d.message ?? "Failed to update name.");
+        return;
+      }
+      await onSaved();
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const inputCls =
+    "w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]";
+
+  return (
+    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4 max-w-sm">
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs text-slate-400 mb-1.5">First name</label>
+          <input
+            type="text"
+            value={first}
+            onChange={(e) => setFirst(e.target.value)}
+            required
+            className={inputCls}
+            placeholder="John"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1.5">Last name</label>
+          <input
+            type="text"
+            value={last}
+            onChange={(e) => setLast(e.target.value)}
+            className={inputCls}
+            placeholder="Doe"
+          />
+        </div>
+      </div>
+      {error && <p className="text-sm text-red-400">{error}</p>}
+      <button
+        type="submit"
+        disabled={loading}
+        className="px-4 py-2.5 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50"
+      >
+        {loading ? "Saving…" : saved ? "Saved ✓" : "Save name"}
+      </button>
+    </form>
+  );
+}
+
+// ── Driver Profile Form ───────────────────────────────────────────────────────
+
+function DriverProfileForm({
+  initial,
+  onSaved,
+}: {
+  initial: DriverProfile | null;
+  onSaved: (dp: DriverProfile) => void;
+}) {
+  const [phone, setPhone] = useState(initial?.phone ?? "");
+  const [whatsapp, setWhatsapp] = useState(initial?.whatsapp ?? "");
+  const [country, setCountry] = useState(initial?.country ?? "");
+  const [availability, setAvailability] = useState<DriverProfile["availability"]>(
+    initial?.availability ?? "available",
+  );
+  const [licenseCats, setLicenseCats] = useState<string[]>(initial?.license_cats ?? []);
+  const [yearsExp, setYearsExp] = useState<string>(
+    initial?.years_exp != null ? String(initial.years_exp) : "",
+  );
+  const [languages, setLanguages] = useState<string[]>(initial?.languages ?? []);
+  const [workType, setWorkType] = useState(initial?.work_type ?? "");
+  const [routes, setRoutes] = useState(initial?.preferred_routes.join(", ") ?? "");
+  const [bio, setBio] = useState(initial?.bio ?? "");
+  const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function toggleItem(arr: string[], set: (v: string[]) => void, val: string) {
+    set(arr.includes(val) ? arr.filter((x) => x !== val) : [...arr, val]);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    const payload: DriverProfile = {
+      phone: phone || null,
+      whatsapp: whatsapp || null,
+      country: country || null,
+      availability,
+      license_cats: licenseCats,
+      years_exp: yearsExp !== "" ? Number(yearsExp) : null,
+      languages,
+      work_type: workType || null,
+      preferred_routes: routes
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean),
+      bio: bio || null,
+    };
+    try {
+      const { fetchWithAuth } = await import("@/lib/auth-client");
+      const res = await fetchWithAuth("/api/profile/driver", {
+        method: "PUT",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const d = (await res.json()) as { message?: string };
+        setError(d.message ?? "Failed to save.");
+        return;
+      }
+      onSaved(payload);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const inputCls =
+    "w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]";
+  const labelCls = "block text-xs text-slate-400 mb-1.5";
+  const sectionCls = "pt-5 border-t border-slate-800 space-y-4";
+
+  return (
+    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-5">
+      {/* Contact */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className={labelCls}>
+            <Phone className="inline w-3 h-3 mr-1 opacity-60" />Phone number
+          </label>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className={inputCls}
+            placeholder="+31 6 12345678"
+          />
+        </div>
+        <div>
+          <label className={labelCls}>
+            <Phone className="inline w-3 h-3 mr-1 opacity-60" />WhatsApp number
+          </label>
+          <input
+            type="tel"
+            value={whatsapp}
+            onChange={(e) => setWhatsapp(e.target.value)}
+            className={inputCls}
+            placeholder="+31 6 12345678"
+          />
+        </div>
+      </div>
+
+      {/* Location & availability */}
+      <div className={sectionCls}>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className={labelCls}>
+              <MapPin className="inline w-3 h-3 mr-1 opacity-60" />Country of residence
+            </label>
+            <input
+              type="text"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className={inputCls}
+              placeholder="Netherlands"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Availability</label>
+            <div className="flex gap-2 mt-1 flex-wrap">
+              {([
+                ["available", "Available", "text-green-400 bg-green-400/10 border-green-400/30"],
+                ["open", "Open to offers", "text-amber-400 bg-amber-400/10 border-amber-400/30"],
+                ["unavailable", "Not available", "text-slate-400 bg-slate-800 border-slate-700"],
+              ] as [DriverProfile["availability"], string, string][]).map(([val, lbl, cls]) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => setAvailability(val)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                    availability === val ? cls : "text-slate-500 bg-slate-800/50 border-slate-700/50 hover:border-slate-600"
+                  }`}
+                >
+                  {lbl}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* License categories */}
+      <div className={sectionCls}>
+        <div>
+          <label className={labelCls}>License categories</label>
+          <div className="flex flex-wrap gap-2 mt-1">
+            {LICENSE_CATS.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => toggleItem(licenseCats, setLicenseCats, cat)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
+                  licenseCats.includes(cat)
+                    ? "bg-[#1a7f45] border-[#36B347] text-white"
+                    : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Experience & work type */}
+      <div className={sectionCls}>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className={labelCls}>Years of experience</label>
+            <input
+              type="number"
+              min={0}
+              max={60}
+              value={yearsExp}
+              onChange={(e) => setYearsExp(e.target.value)}
+              className={inputCls}
+              placeholder="e.g. 5"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Preferred work type</label>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {WORK_TYPES.map((wt) => (
+                <button
+                  key={wt}
+                  type="button"
+                  onClick={() => setWorkType(wt === workType ? "" : wt)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                    workType === wt
+                      ? "bg-[#1a7f45] border-[#36B347] text-white"
+                      : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
+                  }`}
+                >
+                  {wt}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Languages */}
+      <div className={sectionCls}>
+        <div>
+          <label className={labelCls}>
+            <Globe className="inline w-3 h-3 mr-1 opacity-60" />Languages spoken
+          </label>
+          <div className="flex flex-wrap gap-2 mt-1">
+            {LANGUAGES.map((lang) => (
+              <button
+                key={lang}
+                type="button"
+                onClick={() => toggleItem(languages, setLanguages, lang)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                  languages.includes(lang)
+                    ? "bg-[#1a7f45] border-[#36B347] text-white"
+                    : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
+                }`}
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Preferred routes & bio */}
+      <div className={sectionCls}>
+        <div>
+          <label className={labelCls}>Preferred countries / routes</label>
+          <input
+            type="text"
+            value={routes}
+            onChange={(e) => setRoutes(e.target.value)}
+            className={inputCls}
+            placeholder="Netherlands, Germany, Belgium"
+          />
+          <p className="text-xs text-slate-500 mt-1">Separate with commas</p>
+        </div>
+        <div>
+          <label className={labelCls}>Short bio</label>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            rows={3}
+            maxLength={500}
+            className={`${inputCls} resize-none`}
+            placeholder="Experienced CE driver with 8 years of international freight…"
+          />
+          <p className="text-xs text-slate-500 mt-1">{bio.length}/500</p>
+        </div>
+      </div>
+
+      {error && <p className="text-sm text-red-400">{error}</p>}
+      <button
+        type="submit"
+        disabled={loading}
+        className="px-5 py-2.5 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50"
+      >
+        {loading ? "Saving…" : saved ? "Saved ✓" : "Save driver profile"}
+      </button>
+    </form>
   );
 }
 

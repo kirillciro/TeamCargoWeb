@@ -2102,6 +2102,122 @@ app.post(
   },
 );
 
+// ── Driver Profile ──────────────────────────────────────────────────────────
+
+app.get(
+  "/profile/driver",
+  requireAuth,
+  async (req: AuthedRequest, res) => {
+    try {
+      const result = await pool.query(
+        `SELECT phone, whatsapp, country, availability, license_cats,
+                years_exp, languages, work_type, preferred_routes, bio
+         FROM driver_profiles WHERE user_id = $1`,
+        [req.user!.sub],
+      );
+      res.json(result.rows[0] ?? null);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
+app.put(
+  "/profile/driver",
+  requireAuth,
+  async (req: AuthedRequest, res) => {
+    const schema = z.object({
+      phone: z.string().max(30).optional().nullable(),
+      whatsapp: z.string().max(30).optional().nullable(),
+      country: z.string().max(100).optional().nullable(),
+      availability: z.enum(["available", "open", "unavailable"]).optional(),
+      license_cats: z.array(z.string().max(10)).max(20).optional(),
+      years_exp: z.number().int().min(0).max(60).optional().nullable(),
+      languages: z.array(z.string().max(50)).max(30).optional(),
+      work_type: z.string().max(50).optional().nullable(),
+      preferred_routes: z.array(z.string().max(100)).max(20).optional(),
+      bio: z.string().max(500).optional().nullable(),
+    });
+    const parsed = schema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: parsed.error.flatten() });
+      return;
+    }
+    const d = parsed.data;
+    try {
+      await pool.query(
+        `INSERT INTO driver_profiles
+           (user_id, phone, whatsapp, country, availability, license_cats,
+            years_exp, languages, work_type, preferred_routes, bio, updated_at)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,NOW())
+         ON CONFLICT (user_id) DO UPDATE SET
+           phone = EXCLUDED.phone,
+           whatsapp = EXCLUDED.whatsapp,
+           country = EXCLUDED.country,
+           availability = EXCLUDED.availability,
+           license_cats = EXCLUDED.license_cats,
+           years_exp = EXCLUDED.years_exp,
+           languages = EXCLUDED.languages,
+           work_type = EXCLUDED.work_type,
+           preferred_routes = EXCLUDED.preferred_routes,
+           bio = EXCLUDED.bio,
+           updated_at = NOW()`,
+        [
+          req.user!.sub,
+          d.phone ?? null,
+          d.whatsapp ?? null,
+          d.country ?? null,
+          d.availability ?? "available",
+          d.license_cats ?? [],
+          d.years_exp ?? null,
+          d.languages ?? [],
+          d.work_type ?? null,
+          d.preferred_routes ?? [],
+          d.bio ?? null,
+        ],
+      );
+      res.json({ ok: true });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
+app.put(
+  "/profile/name",
+  requireAuth,
+  async (req: AuthedRequest, res) => {
+    const schema = z.object({
+      firstName: z.string().min(1).max(100).trim(),
+      lastName: z.string().max(100).trim(),
+    });
+    const parsed = schema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: parsed.error.flatten() });
+      return;
+    }
+    const { firstName, lastName } = parsed.data;
+    try {
+      const result = await pool.query(
+        `UPDATE users SET first_name = $1, last_name = $2
+         WHERE id = $3
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at`,
+        [firstName, lastName, req.user!.sub],
+      );
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
+      res.json(mapUser(result.rows[0] as UserRow));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
 const PORT = Number(process.env.PORT ?? 4000);
 app.listen(PORT, () => {
   console.log(`[team-cargo] backend running on port ${PORT}`);
