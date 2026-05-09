@@ -2864,7 +2864,7 @@ function AdminUsersTab({
               <div style={{ padding: 10, maxHeight: "68vh", overflowY: "auto", overflowX: "hidden" }}>
                 {/* Identity sunken box */}
                 <div style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#fff", padding: 8, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 40, height: 40, background: "#000080", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: "bold", border: "1px solid #808080", flexShrink: 0, overflow: "hidden" }}>
+                  <div style={{ width: 72, height: 72, background: "#000080", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30, fontWeight: "bold", border: "2px solid #808080", flexShrink: 0, overflow: "hidden" }}>
                     {vu.user.avatarUrl
                       ? <img src={vu.user.avatarUrl} alt="avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       : (vu.user.firstName?.[0] ?? vu.user.email[0]).toUpperCase()
@@ -3148,7 +3148,7 @@ function AdminUsersTab({
             <div className="p-5 space-y-5 max-h-[85vh] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
               {/* Identity */}
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-xl font-bold text-white shrink-0 overflow-hidden">
+                <div className="w-24 h-24 rounded-2xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-3xl font-bold text-white shrink-0 overflow-hidden">
                   {vu.user.avatarUrl
                     ? <img src={vu.user.avatarUrl} alt="avatar" className="w-full h-full object-cover" />
                     : (vu.user.firstName?.[0] ?? vu.user.email[0]).toUpperCase()
