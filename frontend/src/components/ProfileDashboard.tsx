@@ -545,8 +545,8 @@ function DriverProfileForm({
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        const d = (await res.json()) as { message?: string };
-        setError(d.message ?? "Failed to save.");
+        const d = (await res.json()) as { error?: string; message?: string };
+        setError(d.error ?? d.message ?? "Failed to save.");
         return;
       }
       onSaved(payload);

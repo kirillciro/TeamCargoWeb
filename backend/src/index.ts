@@ -2113,7 +2113,7 @@ app.get(
         `SELECT phone, whatsapp, country, availability, license_cats,
                 years_exp, languages, bio
          FROM driver_profiles WHERE user_id = $1`,
-        [req.user!.sub],
+        [req.userId],
       );
       res.json(result.rows[0] ?? null);
     } catch (err) {
@@ -2160,7 +2160,7 @@ app.put(
            bio = EXCLUDED.bio,
            updated_at = NOW()`,
         [
-          req.user!.sub,
+          req.userId,
           d.phone ?? null,
           d.whatsapp ?? null,
           d.country ?? null,
@@ -2198,7 +2198,7 @@ app.put(
         `UPDATE users SET first_name = $1, last_name = $2
          WHERE id = $3
          RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at`,
-        [firstName, lastName, req.user!.sub],
+        [firstName, lastName, req.userId],
       );
       if (result.rows.length === 0) {
         res.status(404).json({ error: "User not found" });
