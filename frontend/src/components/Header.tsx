@@ -34,6 +34,7 @@ export default function Header({
   const [scrollRatio, setScrollRatio] = useState(0);
   const [isWin98, setIsWin98] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [headerTransparent, setHeaderTransparent] = useState(true);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,18 +42,45 @@ export default function Header({
       setIsWin98(!!document.querySelector('[data-win98="1"]'));
     checkWin98();
     const obs = new MutationObserver(checkWin98);
-    obs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['data-win98'] });
+    obs.observe(document.body, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-win98"],
+    });
     return () => obs.disconnect();
   }, []);
 
   useEffect(() => {
+    const readHeaderSetting = () => {
+      try {
+        const saved = localStorage.getItem("tc_header_settings");
+        if (saved) {
+          const parsed = JSON.parse(saved) as { transparent?: boolean };
+          setHeaderTransparent(parsed.transparent !== false);
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+    readHeaderSetting();
+    window.addEventListener("tc-header-settings-changed", readHeaderSetting);
+    return () => window.removeEventListener("tc-header-settings-changed", readHeaderSetting);
+  }, []);
+
+  useEffect(() => {
     const onScroll = () => {
-      const ratio = Math.min(window.scrollY / (window.innerHeight * 0.10), 1);
+      if (!headerTransparent) {
+        setScrollRatio(1);
+        return;
+      }
+      const ratio = Math.min(window.scrollY / (window.innerHeight * 0.1), 1);
       setScrollRatio(ratio);
     };
+    // Apply immediately based on current state
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [headerTransparent]);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -72,14 +100,20 @@ export default function Header({
         className="fixed top-0 left-0 right-0 z-50"
         style={{
           backgroundColor: isWin98
-            ? 'rgba(30, 30, 40, 0.97)'
+            ? "rgba(30, 30, 40, 0.97)"
             : `color-mix(in srgb, var(--brand-header-bg) ${Math.round(scrollRatio * 92)}%, transparent)`,
           borderBottom: isWin98
-            ? '1px solid rgba(0,0,0,0.4)'
+            ? "1px solid rgba(0,0,0,0.4)"
             : `1px solid rgba(255,255,255,${scrollRatio * 0.08})`,
-          backdropFilter: isWin98 ? 'none' : `blur(${scrollRatio * 20}px)`,
-          WebkitBackdropFilter: isWin98 ? 'none' : `blur(${scrollRatio * 20}px)`,
-          boxShadow: isWin98 ? '0 2px 8px rgba(0,0,0,0.5)' : scrollRatio > 0.5 ? `0 8px 32px rgba(0,0,0,${scrollRatio * 0.4})` : 'none',
+          backdropFilter: isWin98 ? "none" : `blur(${scrollRatio * 20}px)`,
+          WebkitBackdropFilter: isWin98
+            ? "none"
+            : `blur(${scrollRatio * 20}px)`,
+          boxShadow: isWin98
+            ? "0 2px 8px rgba(0,0,0,0.5)"
+            : scrollRatio > 0.5
+              ? `0 8px 32px rgba(0,0,0,${scrollRatio * 0.4})`
+              : "none",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

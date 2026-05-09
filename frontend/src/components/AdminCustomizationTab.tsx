@@ -109,6 +109,7 @@ import CloudinaryLogoUpload from "./CloudinaryLogoUpload";
 
 const LS_COLORS = "tc_brand_colors";
 const LS_HERO = "tc_hero_overrides";
+const LS_HEADER = "tc_header_settings";
 const LS_SERVICES = "tc_services_overrides";
 const LS_ABOUT = "tc_about_overrides";
 const LS_HOUSING = "tc_housing_overrides";
@@ -402,6 +403,7 @@ type ColorKey = keyof typeof COLOR_DEFAULTS;
 type SubTab =
   | "colors"
   | "fonts"
+  | "header"
   | "hero"
   | "services"
   | "about"
@@ -589,6 +591,19 @@ export default function AdminCustomizationTab({
   win98?: boolean;
 }) {
   const [subTab, setSubTab] = useState<SubTab>("colors");
+
+  // ── Header ───────────────────────────────────────────────────────────────
+  const [headerTransparent, setHeaderTransparent] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    try {
+      const saved = localStorage.getItem(LS_HEADER);
+      if (saved) return (JSON.parse(saved) as { transparent: boolean }).transparent !== false;
+    } catch {
+      /* ignore */
+    }
+    return true;
+  });
+  const [headerSaved, setHeaderSaved] = useState(false);
 
   // ── Colors ───────────────────────────────────────────────────────────────
   const [colors, setColors] = useState<typeof COLOR_DEFAULTS>(() => {
@@ -1860,6 +1875,7 @@ export default function AdminCustomizationTab({
             [
               ["colors", "Colors"],
               ["fonts", "Fonts"],
+              ["header", "Header"],
               ["hero", "Hero"],
               ["services", "Services"],
               ["about", "About"],
@@ -1898,6 +1914,7 @@ export default function AdminCustomizationTab({
             [
               "colors",
               "fonts",
+              "header",
               "hero",
               "services",
               "about",
@@ -1909,6 +1926,7 @@ export default function AdminCustomizationTab({
             const labels: Record<SubTab, string> = {
               colors: "Colors",
               fonts: "Fonts",
+              header: "Header",
               hero: "Hero",
               services: "Services",
               about: "About",
@@ -1919,6 +1937,7 @@ export default function AdminCustomizationTab({
             const Icons: Record<SubTab, typeof Palette> = {
               colors: Palette,
               fonts: Type,
+              header: LayoutGrid,
               hero: Type,
               services: LayoutGrid,
               about: Users,
@@ -1944,6 +1963,169 @@ export default function AdminCustomizationTab({
           })}
         </div>
       )}
+
+      {/* ── Header panel (modern) ── */}
+      {subTab === "header" && !win98 && (
+        <div className="space-y-4">
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-4">
+            <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
+              Header Transparency
+            </p>
+            <p className="text-xs text-slate-500">
+              Control whether the header fades in from transparent as the user scrolls, or always appears solid.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => setHeaderTransparent(true)}
+                className={`flex-1 py-3 rounded-xl text-sm font-semibold border transition-colors ${
+                  headerTransparent
+                    ? "bg-amber-400 text-amber-900 border-amber-400"
+                    : "bg-slate-800 text-slate-400 border-slate-700 hover:text-white hover:border-slate-500"
+                }`}
+              >
+                Transparent at top
+              </button>
+              <button
+                onClick={() => setHeaderTransparent(false)}
+                className={`flex-1 py-3 rounded-xl text-sm font-semibold border transition-colors ${
+                  !headerTransparent
+                    ? "bg-amber-400 text-amber-900 border-amber-400"
+                    : "bg-slate-800 text-slate-400 border-slate-700 hover:text-white hover:border-slate-500"
+                }`}
+              >
+                Always visible (solid)
+              </button>
+            </div>
+            <p className="text-xs text-slate-500">
+              {headerTransparent
+                ? "Header starts transparent and fades in as you scroll down."
+                : "Header is always solid — no fade effect."}
+            </p>
+          </div>
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex items-center justify-between gap-4">
+            <span className="text-xs text-slate-400">
+              {headerSaved ? "Saved ✓" : "Changes are not yet saved."}
+            </span>
+            <button
+              onClick={() => {
+                localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
+                window.dispatchEvent(new Event("tc-header-settings-changed"));
+                setHeaderSaved(true);
+                setTimeout(() => setHeaderSaved(false), 2000);
+              }}
+              className="bg-amber-400 hover:bg-amber-300 text-amber-950 font-semibold text-sm px-5 py-2 rounded-lg transition-colors"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Header panel (win98) ── */}
+      {subTab === "header" &&
+        win98 &&
+        (() => {
+          const F = '"MS Sans Serif", Arial, sans-serif';
+          const GRP: React.CSSProperties = {
+            border: "2px solid",
+            borderColor: "#808080 #fff #fff #808080",
+            background: "#c0c0c0",
+            padding: "18px 12px 12px",
+            position: "relative",
+          };
+          const GRP_LBL: React.CSSProperties = {
+            position: "absolute",
+            top: -9,
+            left: 10,
+            background: "#c0c0c0",
+            padding: "0 4px",
+            fontSize: 11,
+            fontWeight: "bold",
+            color: "#000",
+            fontFamily: F,
+            whiteSpace: "nowrap",
+          };
+          const BTN: React.CSSProperties = {
+            fontFamily: F,
+            fontSize: 11,
+            background: "#c0c0c0",
+            color: "#000",
+            border: "2px solid",
+            borderColor: "#fff #808080 #808080 #fff",
+            padding: "3px 18px",
+            cursor: "pointer",
+            minWidth: 88,
+          };
+          const BTN_LG: React.CSSProperties = {
+            ...BTN,
+            padding: "4px 22px",
+            fontWeight: "bold",
+          };
+          const RADIO: React.CSSProperties = {
+            accentColor: "#000080",
+            marginRight: 4,
+            cursor: "pointer",
+          };
+          return (
+            <div style={{ padding: "4px 2px 14px", fontFamily: F, fontSize: 11, color: "#000" }}>
+              <div style={{ ...GRP, marginTop: 8 }}>
+                <span style={GRP_LBL}>Header Transparency</span>
+                <p style={{ fontFamily: F, fontSize: 11, color: "#000", marginBottom: 10 }}>
+                  Control whether the header fades in from transparent on scroll, or stays solid.
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ display: "flex", alignItems: "center", cursor: "pointer", fontFamily: F, fontSize: 11 }}>
+                    <input
+                      type="radio"
+                      name="headerMode"
+                      checked={headerTransparent}
+                      onChange={() => setHeaderTransparent(true)}
+                      style={RADIO}
+                    />
+                    Transparent at top (fades in on scroll)
+                  </label>
+                  <label style={{ display: "flex", alignItems: "center", cursor: "pointer", fontFamily: F, fontSize: 11 }}>
+                    <input
+                      type="radio"
+                      name="headerMode"
+                      checked={!headerTransparent}
+                      onChange={() => setHeaderTransparent(false)}
+                      style={RADIO}
+                    />
+                    Always visible (solid)
+                  </label>
+                </div>
+              </div>
+              <div
+                style={{
+                  ...GRP,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 8,
+                  flexWrap: "wrap" as const,
+                  marginTop: 14,
+                }}
+              >
+                <span style={GRP_LBL}>Global Actions</span>
+                <span style={{ fontFamily: F, fontSize: 11 }}>
+                  {headerSaved ? "Saved ✓" : "Save header display settings"}
+                </span>
+                <button
+                  onClick={() => {
+                    localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
+                    window.dispatchEvent(new Event("tc-header-settings-changed"));
+                    setHeaderSaved(true);
+                    setTimeout(() => setHeaderSaved(false), 2000);
+                  }}
+                  style={BTN_LG}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          );
+        })()}
 
       {/* ── Colors panel ── */}
       {subTab === "colors" && !win98 && (
