@@ -101,6 +101,10 @@ type UserRow = {
   provider: string;
   created_at: Date;
   avatar_url: string | null;
+  license_front_url: string | null;
+  license_back_url: string | null;
+  passport_front_url: string | null;
+  passport_back_url: string | null;
 };
 
 function mapUser(row: UserRow): SafeUser {
@@ -114,6 +118,10 @@ function mapUser(row: UserRow): SafeUser {
     provider: row.provider,
     createdAt: row.created_at.toISOString(),
     avatarUrl: row.avatar_url ?? null,
+    licenseFrontUrl: row.license_front_url ?? null,
+    licenseBackUrl: row.license_back_url ?? null,
+    passportFrontUrl: row.passport_front_url ?? null,
+    passportBackUrl: row.passport_back_url ?? null,
   };
 }
 
@@ -650,7 +658,8 @@ app.post("/auth/logout", async (req, res) => {
 app.get("/auth/me", requireAuth, async (req: AuthedRequest, res) => {
   try {
     const result = await pool.query(
-      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
+      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
+              license_front_url, license_back_url, passport_front_url, passport_back_url
        FROM users WHERE id = $1 LIMIT 1`,
       [req.userId],
     );
@@ -2299,6 +2308,61 @@ app.post(
         [uploadResult.secure_url, req.userId],
       );
       res.json(mapUser(rows[0] as UserRow));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Upload error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
+// ── Document upload (license / passport) ──────────────────────────────────────
+
+const DOC_COLUMNS: Record<string, string> = {
+  license_front:  "license_front_url",
+  license_back:   "license_back_url",
+  passport_front: "passport_front_url",
+  passport_back:  "passport_back_url",
+};
+
+app.post(
+  "/profile/documents/:docType",
+  requireAuth,
+  avatarUpload.single("document"),
+  async (req: AuthedRequest, res) => {
+    const { docType } = req.params as { docType: string };
+    const column = DOC_COLUMNS[docType];
+    if (!column) {
+      res.status(400).json({ error: "Invalid document type" });
+      return;
+    }
+    if (!req.file) {
+      res.status(400).json({ error: "No file uploaded" });
+      return;
+    }
+    try {
+      const uploadResult = await new Promise<{ secure_url: string }>(
+        (resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream(
+              {
+                folder: "Team_Cargo_Web-User_Documents",
+                public_id: `user_${req.userId}_${docType}`,
+                overwrite: true,
+              },
+              (err, result) => {
+                if (err || !result) reject(err ?? new Error("Upload failed"));
+                else resolve(result as { secure_url: string });
+              },
+            )
+            .end(req.file!.buffer);
+        },
+      );
+
+      await pool.query(
+        `UPDATE users SET ${column} = $1 WHERE id = $2`,
+        [uploadResult.secure_url, req.userId],
+      );
+      res.json({ url: uploadResult.secure_url });
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Upload error";
       res.status(500).json({ error: msg });

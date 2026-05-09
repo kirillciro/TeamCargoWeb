@@ -8,6 +8,10 @@ export type AuthUser = {
   provider: string;
   createdAt: string;
   avatarUrl: string | null;
+  licenseFrontUrl: string | null;
+  licenseBackUrl: string | null;
+  passportFrontUrl: string | null;
+  passportBackUrl: string | null;
 };
 
 const ACCESS_TOKEN_KEY = "tc_access_token";

@@ -10,6 +10,10 @@ export type SafeUser = {
   provider: string;
   createdAt: string;
   avatarUrl: string | null;
+  licenseFrontUrl: string | null;
+  licenseBackUrl: string | null;
+  passportFrontUrl: string | null;
+  passportBackUrl: string | null;
 };
 
 // Minimal JWT payload required to identify the logged-in user.

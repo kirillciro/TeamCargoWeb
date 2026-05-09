@@ -16,6 +16,9 @@ import {
   Globe,
   Loader2,
   Camera,
+  FileImage,
+  Upload,
+  CheckCircle2,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import type { Dictionary } from "@/lib/getDictionary";
@@ -407,6 +410,10 @@ function ProfileSettings({
     firstName: string;
     lastName: string;
     avatarUrl: string | null;
+    licenseFrontUrl: string | null;
+    licenseBackUrl: string | null;
+    passportFrontUrl: string | null;
+    passportBackUrl: string | null;
   };
   driverProfile: DriverProfile | null;
   dpLoading: boolean;
@@ -428,6 +435,33 @@ function ProfileSettings({
           initial={(user.firstName?.[0] ?? user.email[0]).toUpperCase()}
           onSaved={onAvatarSaved}
         />
+      </div>
+
+      {/* Documents */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
+        <div className="flex items-center gap-2.5 mb-1">
+          <FileImage className="w-4 h-4 text-[#36B347]" />
+          <h2 className="text-base font-bold text-white">Documents</h2>
+        </div>
+        <p className="text-slate-400 text-sm mb-6">
+          Upload clear photos of your documents. These are only visible to admins.
+        </p>
+        <div className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Driving License</p>
+            <div className="grid grid-cols-2 gap-3">
+              <DocUpload label="Front" docType="license_front" currentUrl={user.licenseFrontUrl} onSaved={onAvatarSaved} />
+              <DocUpload label="Back"  docType="license_back"  currentUrl={user.licenseBackUrl}  onSaved={onAvatarSaved} />
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Passport / ID Card</p>
+            <div className="grid grid-cols-2 gap-3">
+              <DocUpload label="Front" docType="passport_front" currentUrl={user.passportFrontUrl} onSaved={onAvatarSaved} />
+              <DocUpload label="Back"  docType="passport_back"  currentUrl={user.passportBackUrl}  onSaved={onAvatarSaved} />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Edit name */}
@@ -579,6 +613,96 @@ function AvatarUpload({
         {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
 
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) void handleFile(file);
+          e.target.value = "";
+        }}
+      />
+    </div>
+  );
+}
+
+// ── Document Upload ───────────────────────────────────────────────────────────
+
+function DocUpload({
+  label,
+  docType,
+  currentUrl,
+  onSaved,
+}: {
+  label: string;
+  docType: string;
+  currentUrl: string | null;
+  onSaved: () => Promise<void>;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string | null>(currentUrl);
+  const [uploading, setUploading] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleFile(file: File) {
+    if (!file.type.startsWith("image/")) { setError("Image files only."); return; }
+    if (file.size > 10 * 1024 * 1024) { setError("Max 10 MB."); return; }
+    setError(null);
+    setUploading(true);
+    setPreview(URL.createObjectURL(file));
+    try {
+      const { fetchWithAuth } = await import("@/lib/auth-client");
+      const form = new FormData();
+      form.append("document", file);
+      const res = await fetchWithAuth(`/api/profile/documents/${docType}`, { method: "POST", body: form });
+      if (!res.ok) {
+        const d = (await res.json()) as { error?: string };
+        setError(d.error ?? "Upload failed.");
+        setPreview(currentUrl);
+        return;
+      }
+      await onSaved();
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("Unexpected error.");
+      setPreview(currentUrl);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        className="relative w-full aspect-[3/2] rounded-xl border-2 border-dashed border-slate-700 hover:border-[#36B347]/60 bg-slate-800/50 hover:bg-slate-800 transition-colors overflow-hidden group flex items-center justify-center"
+      >
+        {preview ? (
+          <Image src={preview} alt={label} fill className="object-cover" />
+        ) : (
+          <div className="flex flex-col items-center gap-1.5 text-slate-500 group-hover:text-slate-400 transition-colors">
+            <Upload className="w-5 h-5" />
+            <span className="text-xs font-medium">{label}</span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          {uploading ? (
+            <Loader2 className="w-5 h-5 animate-spin text-white" />
+          ) : saved ? (
+            <CheckCircle2 className="w-5 h-5 text-green-400" />
+          ) : (
+            <Camera className="w-5 h-5 text-white" />
+          )}
+        </div>
+      </button>
+      <p className="text-[11px] text-center font-medium text-slate-400">{label}</p>
+      {error && <p className="text-[11px] text-red-400 text-center">{error}</p>}
       <input
         ref={inputRef}
         type="file"
