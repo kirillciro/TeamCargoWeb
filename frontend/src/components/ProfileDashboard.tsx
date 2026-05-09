@@ -19,6 +19,8 @@ import {
   FileImage,
   Upload,
   CheckCircle2,
+  UserCircle,
+  IdCard,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import type { Dictionary } from "@/lib/getDictionary";
@@ -439,20 +441,30 @@ function ProfileSettings({
 
   // ── Driver profile fields (single object to avoid effect batching warnings) ──
   type DpFields = {
-    phone: string; whatsapp: string; country: string;
+    phone: string;
+    whatsapp: string;
+    country: string;
     availability: DriverProfile["availability"];
-    licenseCats: string[]; yearsExp: string; languages: string[]; bio: string;
+    licenseCats: string[];
+    yearsExp: string;
+    languages: string[];
+    bio: string;
   };
   function fieldsFromProfile(dp: DriverProfile | null): DpFields {
     return {
-      phone: dp?.phone ?? "", whatsapp: dp?.whatsapp ?? "", country: dp?.country ?? "",
+      phone: dp?.phone ?? "",
+      whatsapp: dp?.whatsapp ?? "",
+      country: dp?.country ?? "",
       availability: dp?.availability ?? "available",
       licenseCats: dp?.license_cats ?? [],
       yearsExp: dp?.years_exp != null ? String(dp.years_exp) : "",
-      languages: dp?.languages ?? [], bio: dp?.bio ?? "",
+      languages: dp?.languages ?? [],
+      bio: dp?.bio ?? "",
     };
   }
-  const [dp, setDp] = useState<DpFields>(() => fieldsFromProfile(driverProfile));
+  const [dp, setDp] = useState<DpFields>(() =>
+    fieldsFromProfile(driverProfile),
+  );
 
   // ── Save state ──
   const [saving, setSaving] = useState(false);
@@ -467,7 +479,8 @@ function ProfileSettings({
     let age = today.getFullYear() - birth.getFullYear();
     if (
       today.getMonth() < birth.getMonth() ||
-      (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())
+      (today.getMonth() === birth.getMonth() &&
+        today.getDate() < birth.getDate())
     )
       age--;
     return age >= 0 && age < 120 ? age : null;
@@ -522,10 +535,12 @@ function ProfileSettings({
   return (
     <form onSubmit={(e) => void handleSave(e)}>
       <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden divide-y divide-slate-800">
-
         {/* ── Profile image ── */}
         <div className="p-6">
-          <h2 className="text-sm font-bold text-white mb-1">Profile image</h2>
+          <div className="flex items-center gap-2.5 mb-1">
+            <UserCircle className="w-4 h-4 text-[#36B347]" />
+            <h2 className="text-sm font-bold text-white">Profile image</h2>
+          </div>
           <p className="text-xs text-slate-400 mb-5">
             Click your photo to change it. Uploads immediately.
           </p>
@@ -539,8 +554,13 @@ function ProfileSettings({
         {/* ── Personal details ── */}
         <div className="p-6 space-y-4">
           <div>
-            <h2 className="text-sm font-bold text-white mb-1">Personal details</h2>
-            <p className="text-xs text-slate-400">Your registered name and date of birth.</p>
+            <div className="flex items-center gap-2.5 mb-1">
+              <IdCard className="w-4 h-4 text-[#36B347]" />
+              <h2 className="text-sm font-bold text-white">Personal details</h2>
+            </div>
+            <p className="text-xs text-slate-400">
+              Your registered name and date of birth.
+            </p>
           </div>
           <div className="grid grid-cols-2 gap-3 max-w-sm">
             <div>
@@ -567,7 +587,9 @@ function ProfileSettings({
                 className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347] [color-scheme:dark]"
               />
               {age !== null && (
-                <span className="text-sm font-semibold text-[#36B347]">{age} years old</span>
+                <span className="text-sm font-semibold text-[#36B347]">
+                  {age} years old
+                </span>
               )}
             </div>
           </div>
@@ -600,7 +622,9 @@ function ProfileSettings({
                   <input
                     type="tel"
                     value={dp.phone}
-                    onChange={(e) => setDp((prev) => ({ ...prev, phone: e.target.value }))}
+                    onChange={(e) =>
+                      setDp((prev) => ({ ...prev, phone: e.target.value }))
+                    }
                     className={inputCls}
                     placeholder="+31 6 12345678"
                   />
@@ -613,7 +637,9 @@ function ProfileSettings({
                   <input
                     type="tel"
                     value={dp.whatsapp}
-                    onChange={(e) => setDp((prev) => ({ ...prev, whatsapp: e.target.value }))}
+                    onChange={(e) =>
+                      setDp((prev) => ({ ...prev, whatsapp: e.target.value }))
+                    }
                     className={inputCls}
                     placeholder="+31 6 12345678"
                   />
@@ -630,7 +656,9 @@ function ProfileSettings({
                   <input
                     type="text"
                     value={dp.country}
-                    onChange={(e) => setDp((prev) => ({ ...prev, country: e.target.value }))}
+                    onChange={(e) =>
+                      setDp((prev) => ({ ...prev, country: e.target.value }))
+                    }
                     className={inputCls}
                     placeholder="Netherlands"
                   />
@@ -640,15 +668,29 @@ function ProfileSettings({
                   <div className="flex gap-2 mt-1 flex-wrap">
                     {(
                       [
-                        ["available", "Available", "text-green-400 bg-green-400/10 border-green-400/30"],
-                        ["open", "Open to offers", "text-amber-400 bg-amber-400/10 border-amber-400/30"],
-                        ["unavailable", "Not available", "text-slate-400 bg-slate-800 border-slate-700"],
+                        [
+                          "available",
+                          "Available",
+                          "text-green-400 bg-green-400/10 border-green-400/30",
+                        ],
+                        [
+                          "open",
+                          "Open to offers",
+                          "text-amber-400 bg-amber-400/10 border-amber-400/30",
+                        ],
+                        [
+                          "unavailable",
+                          "Not available",
+                          "text-slate-400 bg-slate-800 border-slate-700",
+                        ],
                       ] as [DriverProfile["availability"], string, string][]
                     ).map(([val, lbl, cls]) => (
                       <button
                         key={val}
                         type="button"
-                        onClick={() => setDp((prev) => ({ ...prev, availability: val }))}
+                        onClick={() =>
+                          setDp((prev) => ({ ...prev, availability: val }))
+                        }
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
                           dp.availability === val
                             ? cls
@@ -670,7 +712,14 @@ function ProfileSettings({
                     <button
                       key={cat}
                       type="button"
-                      onClick={() => setDp((prev) => ({ ...prev, licenseCats: prev.licenseCats.includes(cat) ? prev.licenseCats.filter((x) => x !== cat) : [...prev.licenseCats, cat] }))}
+                      onClick={() =>
+                        setDp((prev) => ({
+                          ...prev,
+                          licenseCats: prev.licenseCats.includes(cat)
+                            ? prev.licenseCats.filter((x) => x !== cat)
+                            : [...prev.licenseCats, cat],
+                        }))
+                      }
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
                         dp.licenseCats.includes(cat)
                           ? "bg-[#1a7f45] border-[#36B347] text-white"
@@ -691,7 +740,9 @@ function ProfileSettings({
                   min={0}
                   max={60}
                   value={dp.yearsExp}
-                  onChange={(e) => setDp((prev) => ({ ...prev, yearsExp: e.target.value }))}
+                  onChange={(e) =>
+                    setDp((prev) => ({ ...prev, yearsExp: e.target.value }))
+                  }
                   className={inputCls}
                   placeholder="e.g. 5"
                 />
@@ -708,7 +759,14 @@ function ProfileSettings({
                     <button
                       key={lang}
                       type="button"
-                      onClick={() => setDp((prev) => ({ ...prev, languages: prev.languages.includes(lang) ? prev.languages.filter((x) => x !== lang) : [...prev.languages, lang] }))}
+                      onClick={() =>
+                        setDp((prev) => ({
+                          ...prev,
+                          languages: prev.languages.includes(lang)
+                            ? prev.languages.filter((x) => x !== lang)
+                            : [...prev.languages, lang],
+                        }))
+                      }
                       className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
                         dp.languages.includes(lang)
                           ? "bg-[#1a7f45] border-[#36B347] text-white"
@@ -726,13 +784,17 @@ function ProfileSettings({
                 <label className={labelCls}>Short bio</label>
                 <textarea
                   value={dp.bio}
-                  onChange={(e) => setDp((prev) => ({ ...prev, bio: e.target.value }))}
+                  onChange={(e) =>
+                    setDp((prev) => ({ ...prev, bio: e.target.value }))
+                  }
                   rows={3}
                   maxLength={500}
                   className={`${inputCls} resize-none`}
                   placeholder="Experienced CE driver with 8 years of international freight…"
                 />
-                <p className="text-xs text-slate-500 mt-1">{dp.bio.length}/500</p>
+                <p className="text-xs text-slate-500 mt-1">
+                  {dp.bio.length}/500
+                </p>
               </div>
             </div>
           )}
@@ -746,7 +808,8 @@ function ProfileSettings({
               <h2 className="text-sm font-bold text-white">Documents</h2>
             </div>
             <p className="text-xs text-slate-400">
-              Upload clear photos of your documents. Visible to admins only. Uploads immediately.
+              Upload clear photos of your documents. Visible to admins only.
+              Uploads immediately.
             </p>
           </div>
           <div className="space-y-5">
@@ -755,8 +818,18 @@ function ProfileSettings({
                 Driving License
               </p>
               <div className="grid grid-cols-2 gap-3">
-                <DocUpload label="Front" docType="license_front" currentUrl={user.licenseFrontUrl} onSaved={onAvatarSaved} />
-                <DocUpload label="Back"  docType="license_back"  currentUrl={user.licenseBackUrl}  onSaved={onAvatarSaved} />
+                <DocUpload
+                  label="Front"
+                  docType="license_front"
+                  currentUrl={user.licenseFrontUrl}
+                  onSaved={onAvatarSaved}
+                />
+                <DocUpload
+                  label="Back"
+                  docType="license_back"
+                  currentUrl={user.licenseBackUrl}
+                  onSaved={onAvatarSaved}
+                />
               </div>
             </div>
             <div>
@@ -764,13 +837,22 @@ function ProfileSettings({
                 Passport / ID Card
               </p>
               <div className="grid grid-cols-2 gap-3">
-                <DocUpload label="Front" docType="passport_front" currentUrl={user.passportFrontUrl} onSaved={onAvatarSaved} />
-                <DocUpload label="Back"  docType="passport_back"  currentUrl={user.passportBackUrl}  onSaved={onAvatarSaved} />
+                <DocUpload
+                  label="Front"
+                  docType="passport_front"
+                  currentUrl={user.passportFrontUrl}
+                  onSaved={onAvatarSaved}
+                />
+                <DocUpload
+                  label="Back"
+                  docType="passport_back"
+                  currentUrl={user.passportBackUrl}
+                  onSaved={onAvatarSaved}
+                />
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
       {/* ── Save button ── */}
@@ -782,7 +864,9 @@ function ProfileSettings({
           className="px-6 py-3 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50 flex items-center gap-2"
         >
           {saving ? (
-            <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" /> Saving…
+            </>
           ) : saved ? (
             "Saved ✓"
           ) : (
@@ -920,8 +1004,14 @@ function DocUpload({
   const [error, setError] = useState<string | null>(null);
 
   async function handleFile(file: File) {
-    if (!file.type.startsWith("image/")) { setError("Image files only."); return; }
-    if (file.size > 10 * 1024 * 1024) { setError("Max 10 MB."); return; }
+    if (!file.type.startsWith("image/")) {
+      setError("Image files only.");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Max 10 MB.");
+      return;
+    }
     setError(null);
     setUploading(true);
     setPreview(URL.createObjectURL(file));
@@ -929,7 +1019,10 @@ function DocUpload({
       const { fetchWithAuth } = await import("@/lib/auth-client");
       const form = new FormData();
       form.append("document", file);
-      const res = await fetchWithAuth(`/api/profile/documents/${docType}`, { method: "POST", body: form });
+      const res = await fetchWithAuth(`/api/profile/documents/${docType}`, {
+        method: "POST",
+        body: form,
+      });
       if (!res.ok) {
         const d = (await res.json()) as { error?: string };
         setError(d.error ?? "Upload failed.");
@@ -973,7 +1066,9 @@ function DocUpload({
           )}
         </div>
       </button>
-      <p className="text-[11px] text-center font-medium text-slate-400">{label}</p>
+      <p className="text-[11px] text-center font-medium text-slate-400">
+        {label}
+      </p>
       {error && <p className="text-[11px] text-red-400 text-center">{error}</p>}
       <input
         ref={inputRef}

@@ -119,7 +119,9 @@ function mapUser(row: UserRow): SafeUser {
     provider: row.provider,
     createdAt: row.created_at.toISOString(),
     avatarUrl: row.avatar_url ?? null,
-    dateOfBirth: row.date_of_birth ? row.date_of_birth.toISOString().slice(0, 10) : null,
+    dateOfBirth: row.date_of_birth
+      ? row.date_of_birth.toISOString().slice(0, 10)
+      : null,
     licenseFrontUrl: row.license_front_url ?? null,
     licenseBackUrl: row.license_back_url ?? null,
     passportFrontUrl: row.passport_front_url ?? null,
@@ -248,7 +250,8 @@ app.post("/auth/login", async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, first_name, last_name, email, password_hash, role,
-              is_verified, provider, created_at, avatar_url
+              is_verified, provider, created_at, avatar_url,
+              date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url
        FROM users WHERE email = $1 AND provider = 'email' LIMIT 1`,
       [email.toLowerCase()],
     );
@@ -590,7 +593,8 @@ app.post("/auth/refresh", async (req, res) => {
 
     const result = await pool.query(
       `SELECT id, first_name, last_name, email, role, is_verified, provider,
-              created_at, avatar_url, refresh_token_hash
+              created_at, avatar_url, refresh_token_hash,
+              date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url
        FROM users WHERE id = $1 LIMIT 1`,
       [decoded.sub],
     );
@@ -769,7 +773,8 @@ app.post("/auth/google", async (req, res) => {
     const lastName = family_name ?? "";
 
     let result = await pool.query(
-      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
+      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
+              date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url
        FROM users WHERE email = $1 LIMIT 1`,
       [email.toLowerCase()],
     );
@@ -778,7 +783,8 @@ app.post("/auth/google", async (req, res) => {
       result = await pool.query(
         `INSERT INTO users (first_name, last_name, email, provider, provider_id, is_verified)
          VALUES ($1, $2, $3, 'google', $4, TRUE)
-         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
+                   date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url`,
         [firstName, lastName, email.toLowerCase(), googleSub],
       );
     }
@@ -838,7 +844,8 @@ app.post("/auth/apple", async (req, res) => {
     const lastName = appleLast ?? "";
 
     let result = await pool.query(
-      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
+      `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
+              date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url
        FROM users WHERE email = $1 LIMIT 1`,
       [email],
     );
@@ -847,7 +854,8 @@ app.post("/auth/apple", async (req, res) => {
       result = await pool.query(
         `INSERT INTO users (first_name, last_name, email, provider, provider_id, is_verified)
          VALUES ($1, $2, $3, 'apple', $4, TRUE)
-         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
+                   date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url`,
         [firstName, lastName, email, payload.sub ?? ""],
       );
     }
@@ -1292,6 +1300,30 @@ app.patch(
   },
 );
 
+app.patch(
+  "/admin/users/:id/verify",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const userId = parseInt(String(req.params.id), 10);
+    const { isVerified } = req.body as { isVerified?: boolean };
+    if (typeof isVerified !== "boolean") {
+      res.status(400).json({ message: "isVerified must be a boolean." });
+      return;
+    }
+    const result = await pool.query(
+      `UPDATE users SET is_verified = $1 WHERE id = $2
+       RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
+      [isVerified, userId],
+    );
+    if (!result.rowCount) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+    res.json({ user: mapUser(result.rows[0] as UserRow) });
+  },
+);
+
 app.delete(
   "/admin/users/:id",
   requireAuth,
@@ -1326,7 +1358,8 @@ app.get(
     try {
       const [userResult, dpResult] = await Promise.all([
         pool.query(
-          `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
+          `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
+                  date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url
            FROM users WHERE id = $1 LIMIT 1`,
           [userId],
         ),
@@ -2257,7 +2290,10 @@ app.put("/profile/name", requireAuth, async (req: AuthedRequest, res) => {
 
 app.put("/profile/dob", requireAuth, async (req: AuthedRequest, res) => {
   const schema = z.object({
-    dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD").nullable(),
+    dateOfBirth: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD")
+      .nullable(),
   });
   const parsed = schema.safeParse(req.body);
   if (!parsed.success) {
@@ -2265,10 +2301,10 @@ app.put("/profile/dob", requireAuth, async (req: AuthedRequest, res) => {
     return;
   }
   try {
-    await pool.query(
-      `UPDATE users SET date_of_birth = $1 WHERE id = $2`,
-      [parsed.data.dateOfBirth, req.userId],
-    );
+    await pool.query(`UPDATE users SET date_of_birth = $1 WHERE id = $2`, [
+      parsed.data.dateOfBirth,
+      req.userId,
+    ]);
     res.json({ ok: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Unknown error";
@@ -2304,7 +2340,12 @@ const docUpload = multer({
 
 /** Sanitise a name for use as a Cloudinary folder segment */
 function sanitizeFolder(name: string): string {
-  return name.trim().replace(/[^a-zA-Z0-9 _-]/g, "").replace(/\s+/g, "_") || "Unknown";
+  return (
+    name
+      .trim()
+      .replace(/[^a-zA-Z0-9 _-]/g, "")
+      .replace(/\s+/g, "_") || "Unknown"
+  );
 }
 
 /** Cloudinary upload_stream wrapped in a promise */
@@ -2327,7 +2368,10 @@ app.post(
   requireAuth,
   avatarUpload.single("avatar"),
   async (req: AuthedRequest, res) => {
-    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+    if (!req.file) {
+      res.status(400).json({ error: "No file uploaded" });
+      return;
+    }
     try {
       // Fetch user's last name for folder naming
       const userRow = await pool.query<{ last_name: string }>(
@@ -2341,7 +2385,9 @@ app.post(
         folder,
         public_id: `avatar_${req.userId}`,
         overwrite: true,
-        transformation: [{ width: 400, height: 400, crop: "fill", gravity: "face" }],
+        transformation: [
+          { width: 400, height: 400, crop: "fill", gravity: "face" },
+        ],
       });
 
       const { rows } = await pool.query(
@@ -2361,17 +2407,17 @@ app.post(
 // ── Document upload (license / passport) ──────────────────────────────────────
 
 const DOC_COLUMNS: Record<string, string> = {
-  license_front:  "license_front_url",
-  license_back:   "license_back_url",
+  license_front: "license_front_url",
+  license_back: "license_back_url",
   passport_front: "passport_front_url",
-  passport_back:  "passport_back_url",
+  passport_back: "passport_back_url",
 };
 
 const DOC_FOLDERS: Record<string, string> = {
-  license_front:  "Driving License",
-  license_back:   "Driving License",
+  license_front: "Driving License",
+  license_back: "Driving License",
   passport_front: "Passport-ID",
-  passport_back:  "Passport-ID",
+  passport_back: "Passport-ID",
 };
 
 app.post(
@@ -2382,8 +2428,14 @@ app.post(
     const { docType } = req.params as { docType: string };
     const column = DOC_COLUMNS[docType];
     const docFolder = DOC_FOLDERS[docType];
-    if (!column || !docFolder) { res.status(400).json({ error: "Invalid document type" }); return; }
-    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+    if (!column || !docFolder) {
+      res.status(400).json({ error: "Invalid document type" });
+      return;
+    }
+    if (!req.file) {
+      res.status(400).json({ error: "No file uploaded" });
+      return;
+    }
     try {
       // Fetch user's last name for folder naming
       const userRow = await pool.query<{ last_name: string }>(
@@ -2399,10 +2451,10 @@ app.post(
         overwrite: true,
       });
 
-      await pool.query(
-        `UPDATE users SET ${column} = $1 WHERE id = $2`,
-        [uploadResult.secure_url, req.userId],
-      );
+      await pool.query(`UPDATE users SET ${column} = $1 WHERE id = $2`, [
+        uploadResult.secure_url,
+        req.userId,
+      ]);
       res.json({ url: uploadResult.secure_url });
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Upload error";
