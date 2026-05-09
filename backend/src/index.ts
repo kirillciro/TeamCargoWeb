@@ -1302,6 +1302,45 @@ app.delete(
   },
 );
 
+app.get(
+  "/admin/users/:id/driver-profile",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const userId = parseInt(String(req.params.id), 10);
+    if (isNaN(userId)) {
+      res.status(400).json({ error: "Invalid user id" });
+      return;
+    }
+    try {
+      const [userResult, dpResult] = await Promise.all([
+        pool.query(
+          `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url
+           FROM users WHERE id = $1 LIMIT 1`,
+          [userId],
+        ),
+        pool.query(
+          `SELECT phone, whatsapp, country, availability, license_cats,
+                  years_exp, languages, bio
+           FROM driver_profiles WHERE user_id = $1`,
+          [userId],
+        ),
+      ]);
+      if (!userResult.rowCount) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
+      res.json({
+        user: mapUser(userResult.rows[0] as UserRow),
+        driverProfile: dpResult.rows[0] ?? null,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      res.status(500).json({ error: msg });
+    }
+  },
+);
+
 // ── Meta WhatsApp Webhooks ─────────────────────────────────────────────────
 
 // Verification handshake — Meta sends a GET to confirm the endpoint
@@ -2107,48 +2146,41 @@ app.post(
 
 // ── Driver Profile ──────────────────────────────────────────────────────────
 
-app.get(
-  "/profile/driver",
-  requireAuth,
-  async (req: AuthedRequest, res) => {
-    try {
-      const result = await pool.query(
-        `SELECT phone, whatsapp, country, availability, license_cats,
+app.get("/profile/driver", requireAuth, async (req: AuthedRequest, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT phone, whatsapp, country, availability, license_cats,
                 years_exp, languages, bio
          FROM driver_profiles WHERE user_id = $1`,
-        [req.userId],
-      );
-      res.json(result.rows[0] ?? null);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Unknown error";
-      res.status(500).json({ error: msg });
-    }
-  },
-);
+      [req.userId],
+    );
+    res.json(result.rows[0] ?? null);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    res.status(500).json({ error: msg });
+  }
+});
 
-app.put(
-  "/profile/driver",
-  requireAuth,
-  async (req: AuthedRequest, res) => {
-    const schema = z.object({
-      phone: z.string().max(30).optional().nullable(),
-      whatsapp: z.string().max(30).optional().nullable(),
-      country: z.string().max(100).optional().nullable(),
-      availability: z.enum(["available", "open", "unavailable"]).optional(),
-      license_cats: z.array(z.string().max(10)).max(20).optional(),
-      years_exp: z.number().int().min(0).max(60).optional().nullable(),
-      languages: z.array(z.string().max(50)).max(30).optional(),
-      bio: z.string().max(500).optional().nullable(),
-    });
-    const parsed = schema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ error: parsed.error.flatten() });
-      return;
-    }
-    const d = parsed.data;
-    try {
-      await pool.query(
-        `INSERT INTO driver_profiles
+app.put("/profile/driver", requireAuth, async (req: AuthedRequest, res) => {
+  const schema = z.object({
+    phone: z.string().max(30).optional().nullable(),
+    whatsapp: z.string().max(30).optional().nullable(),
+    country: z.string().max(100).optional().nullable(),
+    availability: z.enum(["available", "open", "unavailable"]).optional(),
+    license_cats: z.array(z.string().max(10)).max(20).optional(),
+    years_exp: z.number().int().min(0).max(60).optional().nullable(),
+    languages: z.array(z.string().max(50)).max(30).optional(),
+    bio: z.string().max(500).optional().nullable(),
+  });
+  const parsed = schema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
+  }
+  const d = parsed.data;
+  try {
+    await pool.query(
+      `INSERT INTO driver_profiles
            (user_id, phone, whatsapp, country, availability, license_cats,
             years_exp, languages, bio, updated_at)
          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,NOW())
@@ -2162,58 +2194,53 @@ app.put(
            languages = EXCLUDED.languages,
            bio = EXCLUDED.bio,
            updated_at = NOW()`,
-        [
-          req.userId,
-          d.phone ?? null,
-          d.whatsapp ?? null,
-          d.country ?? null,
-          d.availability ?? "available",
-          d.license_cats ?? [],
-          d.years_exp ?? null,
-          d.languages ?? [],
-          d.bio ?? null,
-        ],
-      );
-      res.json({ ok: true });
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Unknown error";
-      res.status(500).json({ error: msg });
-    }
-  },
-);
+      [
+        req.userId,
+        d.phone ?? null,
+        d.whatsapp ?? null,
+        d.country ?? null,
+        d.availability ?? "available",
+        d.license_cats ?? [],
+        d.years_exp ?? null,
+        d.languages ?? [],
+        d.bio ?? null,
+      ],
+    );
+    res.json({ ok: true });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    res.status(500).json({ error: msg });
+  }
+});
 
-app.put(
-  "/profile/name",
-  requireAuth,
-  async (req: AuthedRequest, res) => {
-    const schema = z.object({
-      firstName: z.string().min(1).max(100).trim(),
-      lastName: z.string().max(100).trim(),
-    });
-    const parsed = schema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ error: parsed.error.flatten() });
-      return;
-    }
-    const { firstName, lastName } = parsed.data;
-    try {
-      const result = await pool.query(
-        `UPDATE users SET first_name = $1, last_name = $2
+app.put("/profile/name", requireAuth, async (req: AuthedRequest, res) => {
+  const schema = z.object({
+    firstName: z.string().min(1).max(100).trim(),
+    lastName: z.string().max(100).trim(),
+  });
+  const parsed = schema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
+  }
+  const { firstName, lastName } = parsed.data;
+  try {
+    const result = await pool.query(
+      `UPDATE users SET first_name = $1, last_name = $2
          WHERE id = $3
          RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
-        [firstName, lastName, req.userId],
-      );
-      if (result.rows.length === 0) {
-        res.status(404).json({ error: "User not found" });
-        return;
-      }
-      res.json(mapUser(result.rows[0] as UserRow));
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Unknown error";
-      res.status(500).json({ error: msg });
+      [firstName, lastName, req.userId],
+    );
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: "User not found" });
+      return;
     }
-  },
-);
+    res.json(mapUser(result.rows[0] as UserRow));
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    res.status(500).json({ error: msg });
+  }
+});
 
 // ── Profile Avatar ──────────────────────────────────────────────────────────
 
@@ -2253,7 +2280,9 @@ app.post(
                 folder: "Team_Cargo_Web-User_Profile_Images",
                 public_id: `user_${req.userId}`,
                 overwrite: true,
-                transformation: [{ width: 400, height: 400, crop: "fill", gravity: "face" }],
+                transformation: [
+                  { width: 400, height: 400, crop: "fill", gravity: "face" },
+                ],
               },
               (err, result) => {
                 if (err || !result) reject(err ?? new Error("Upload failed"));

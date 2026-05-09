@@ -25,6 +25,10 @@ import {
   MapPin,
   MousePointer2,
   UserCheck,
+  Truck,
+  X,
+  Phone,
+  Globe,
 } from "lucide-react";
 import {
   BarChart,
@@ -47,6 +51,17 @@ import type { Dictionary } from "@/lib/getDictionary";
 
 type Tab = "overview" | "users" | "emails" | "customization";
 const TABS: Tab[] = ["overview", "users", "emails", "customization"];
+
+type DriverProfile = {
+  phone: string | null;
+  whatsapp: string | null;
+  country: string | null;
+  availability: "available" | "open" | "unavailable";
+  license_cats: string[];
+  years_exp: number | null;
+  languages: string[];
+  bio: string | null;
+};
 
 const TAB_ICONS: Record<Tab, React.ElementType> = {
   overview: BarChart3,
@@ -2324,6 +2339,8 @@ function AdminUsersTab({
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+  const [viewUser, setViewUser] = useState<{ user: AuthUser; driverProfile: DriverProfile | null } | null>(null);
+  const [viewLoading, setViewLoading] = useState(false);
 
   const load = useCallback(async (q = "") => {
     try {
@@ -2365,6 +2382,18 @@ function AdminUsersTab({
       setUsers((prev) => prev.filter((x) => x.id !== id));
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  async function openView(u: AuthUser) {
+    setViewUser({ user: u, driverProfile: null });
+    setViewLoading(true);
+    try {
+      const res = await fetchWithAuth(`/api/admin/users/${u.id}/driver-profile`);
+      const data = (await res.json()) as { user: AuthUser; driverProfile: DriverProfile | null };
+      setViewUser({ user: data.user, driverProfile: data.driverProfile });
+    } finally {
+      setViewLoading(false);
     }
   }
 
@@ -2760,6 +2789,7 @@ function AdminUsersTab({
   }
 
   return (
+    <>
     <div className="space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
         <h2 className="text-lg font-bold text-white">
@@ -2805,6 +2835,7 @@ function AdminUsersTab({
                 <th className="px-4 py-3 text-center">
                   {dict.admin.col_actions}
                 </th>
+                <th className="px-4 py-3 text-center">Profile</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
@@ -2923,12 +2954,142 @@ function AdminUsersTab({
                         </button>
                       ))}
                   </td>
+                  <td className="px-4 py-3 text-center">
+                    <button
+                      onClick={() => void openView(u)}
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-[#36B347] hover:bg-[#36B347]/10 transition-colors"
+                      title="View driver profile"
+                    >
+                      <Truck className="w-3.5 h-3.5" />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+    </div>
+
+      {/* ── User profile modal ── */}
+      {viewUser && (() => {
+        const vu = viewUser;
+        const dp = viewUser.driverProfile;
+        return (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          onClick={(e) => { if (e.target === e.currentTarget) setViewUser(null); }}
+        >
+          <div className="w-full max-w-lg bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <Truck className="w-4 h-4 text-[#36B347]" />
+                <span className="font-bold text-white text-sm">User &amp; Driver Profile</span>
+              </div>
+              <button onClick={() => setViewUser(null)} className="text-slate-500 hover:text-white transition-colors">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-5 space-y-5 max-h-[78vh] overflow-y-auto">
+              {/* Identity */}
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-xl font-bold text-white shrink-0 overflow-hidden">
+                  {vu.user.avatarUrl
+                    ? <img src={vu.user.avatarUrl} alt="avatar" className="w-full h-full object-cover" />
+                    : (vu.user.firstName?.[0] ?? vu.user.email[0]).toUpperCase()
+                  }
+                </div>
+                <div>
+                  <p className="font-bold text-white text-base">{`${vu.user.firstName} ${vu.user.lastName}`.trim() || "—"}</p>
+                  <p className="text-slate-400 text-xs mt-0.5">{vu.user.email}</p>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                    <span className={`text-[10px] font-semibold rounded-full px-2 py-0.5 border ${
+                      vu.user.role === "admin"
+                        ? "text-amber-400 bg-amber-400/10 border-amber-400/30"
+                        : "text-slate-400 bg-slate-800 border-slate-700"
+                    }`}>{vu.user.role}</span>
+                    {vu.user.isVerified
+                      ? <span className="text-[10px] font-semibold text-green-400 bg-green-400/10 border border-green-400/20 rounded-full px-2 py-0.5">Verified</span>
+                      : <span className="text-[10px] font-semibold text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 rounded-full px-2 py-0.5">Unverified</span>
+                    }
+                    <span className="text-[10px] text-slate-500 capitalize bg-slate-800 border border-slate-700 rounded-full px-2 py-0.5">{vu.user.provider}</span>
+                  </div>
+                  <p className="text-slate-500 text-[11px] mt-1">Joined {new Date(vu.user.createdAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+
+              {/* Driver profile */}
+              <div className="border-t border-slate-800 pt-4">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Driver Profile</p>
+                {viewLoading ? (
+                  <div className="flex justify-center py-6"><Loader2 className="w-5 h-5 animate-spin text-slate-500" /></div>
+                ) : !dp ? (
+                  <div className="rounded-xl bg-slate-800/50 border border-slate-700 p-4 text-sm text-slate-400 text-center">
+                    No driver profile filled in yet.
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div>{{
+                      available: <span className="text-xs font-semibold text-green-400 bg-green-400/10 border border-green-400/30 rounded-full px-3 py-1">Available</span>,
+                      open: <span className="text-xs font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/30 rounded-full px-3 py-1">Open to offers</span>,
+                      unavailable: <span className="text-xs font-semibold text-slate-400 bg-slate-800 border border-slate-700 rounded-full px-3 py-1">Not available</span>,
+                    }[dp.availability]}</div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <AdminInfoField label="Phone" value={dp.phone} icon={<Phone className="w-3 h-3" />} />
+                      <AdminInfoField label="WhatsApp" value={dp.whatsapp} icon={<Phone className="w-3 h-3" />} />
+                      <AdminInfoField label="Country" value={dp.country} icon={<MapPin className="w-3 h-3" />} />
+                      <AdminInfoField label="Years exp." value={dp.years_exp != null ? `${dp.years_exp} yr` : null} />
+                    </div>
+
+                    {dp.license_cats.length > 0 && (
+                      <div>
+                        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">License categories</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {dp.license_cats.map((c) => (
+                            <span key={c} className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#1a7f45]/20 border border-[#36B347]/40 text-[#36B347]">{c}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {dp.languages.length > 0 && (
+                      <div>
+                        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Languages</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {dp.languages.map((l) => (
+                            <span key={l} className="px-2.5 py-1 rounded-lg text-xs bg-slate-800 border border-slate-700 text-slate-300">{l}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {dp.bio && (
+                      <div>
+                        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Bio</p>
+                        <p className="text-sm text-slate-300 bg-slate-800/50 rounded-xl border border-slate-700 p-3 leading-relaxed">{dp.bio}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        );
+      })()}
+    </>
+  );
+}
+
+function AdminInfoField({ label, value, icon }: { label: string; value: string | null; icon?: React.ReactNode }) {
+  return (
+    <div className="rounded-xl bg-slate-800/50 border border-slate-700 p-3">
+      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1">
+        {icon}{label}
+      </p>
+      <p className="text-sm text-white">{value ?? "—"}</p>
     </div>
   );
 }

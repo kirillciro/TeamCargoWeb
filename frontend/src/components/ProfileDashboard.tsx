@@ -33,9 +33,24 @@ type DriverProfile = {
 
 const LICENSE_CATS = ["B", "BE", "C1", "C1E", "C", "CE", "D1", "D", "DE"];
 const LANGUAGES = [
-  "English", "Dutch", "German", "French", "Polish", "Romanian",
-  "Bulgarian", "Lithuanian", "Latvian", "Czech", "Slovak", "Hungarian",
-  "Italian", "Spanish", "Portuguese", "Ukrainian", "Russian", "Turkish",
+  "English",
+  "Dutch",
+  "German",
+  "French",
+  "Polish",
+  "Romanian",
+  "Bulgarian",
+  "Lithuanian",
+  "Latvian",
+  "Czech",
+  "Slovak",
+  "Hungarian",
+  "Italian",
+  "Spanish",
+  "Portuguese",
+  "Ukrainian",
+  "Russian",
+  "Turkish",
 ];
 
 function computeCompleteness(
@@ -82,7 +97,9 @@ export default function ProfileDashboard({
   const [active, setActive] = useState<Tab>(
     TABS.includes(initialTab as Tab) ? (initialTab as Tab) : "overview",
   );
-  const [driverProfile, setDriverProfile] = useState<DriverProfile | null>(null);
+  const [driverProfile, setDriverProfile] = useState<DriverProfile | null>(
+    null,
+  );
   const [dpLoading, setDpLoading] = useState(true);
 
   useEffect(() => {
@@ -129,7 +146,13 @@ export default function ProfileDashboard({
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-sm font-bold text-white shrink-0 overflow-hidden">
                 {user.avatarUrl ? (
-                  <Image src={user.avatarUrl} alt="avatar" width={32} height={32} className="w-full h-full object-cover" />
+                  <Image
+                    src={user.avatarUrl}
+                    alt="avatar"
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   initial
                 )}
@@ -259,7 +282,13 @@ function ProfileOverview({
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-2xl font-bold text-white shrink-0 overflow-hidden">
             {user.avatarUrl ? (
-              <Image src={user.avatarUrl} alt="avatar" width={64} height={64} className="w-full h-full object-cover" />
+              <Image
+                src={user.avatarUrl}
+                alt="avatar"
+                width={64}
+                height={64}
+                className="w-full h-full object-cover"
+              />
             ) : (
               (user.firstName?.[0] ?? user.email[0]).toUpperCase()
             )}
@@ -294,12 +323,16 @@ function ProfileOverview({
         <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-sm font-bold text-white">Profile completeness</p>
+              <p className="text-sm font-bold text-white">
+                Profile completeness
+              </p>
               <p className="text-xs text-slate-400 mt-0.5">
                 Complete your driver profile to be visible to employers
               </p>
             </div>
-            <span className="text-lg font-bold text-[#36B347]">{completeness}%</span>
+            <span className="text-lg font-bold text-[#36B347]">
+              {completeness}%
+            </span>
           </div>
           <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
             <div
@@ -368,7 +401,13 @@ function ProfileSettings({
   onNameSaved,
   onAvatarSaved,
 }: {
-  user: { email: string; provider: string; firstName: string; lastName: string; avatarUrl: string | null };
+  user: {
+    email: string;
+    provider: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string | null;
+  };
   driverProfile: DriverProfile | null;
   dpLoading: boolean;
   onDriverProfileSaved: (dp: DriverProfile) => void;
@@ -381,7 +420,9 @@ function ProfileSettings({
       {/* Profile image */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
         <h2 className="text-base font-bold text-white mb-1">Profile image</h2>
-        <p className="text-slate-400 text-sm mb-5">Upload a photo that employers will see.</p>
+        <p className="text-slate-400 text-sm mb-5">
+          Upload a photo that employers will see.
+        </p>
         <AvatarUpload
           currentUrl={user.avatarUrl}
           initial={(user.firstName?.[0] ?? user.email[0]).toUpperCase()}
@@ -391,7 +432,9 @@ function ProfileSettings({
 
       {/* Edit name */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <h2 className="text-base font-bold text-white mb-1">Personal details</h2>
+        <h2 className="text-base font-bold text-white mb-1">
+          Personal details
+        </h2>
         <p className="text-slate-400 text-sm mb-5">Update your display name.</p>
         <EditNameForm
           firstName={user.firstName}
@@ -423,15 +466,21 @@ function ProfileSettings({
 
       {/* Account settings */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <h2 className="text-base font-bold text-white mb-1">Account settings</h2>
-        <p className="text-slate-400 text-sm mb-6">Manage your account preferences.</p>
+        <h2 className="text-base font-bold text-white mb-1">
+          Account settings
+        </h2>
+        <p className="text-slate-400 text-sm mb-6">
+          Manage your account preferences.
+        </p>
         {user.provider === "local" ? (
           <ChangePasswordForm email={user.email} />
         ) : (
           <div className="rounded-xl bg-slate-800/60 border border-slate-700 p-4 text-sm text-slate-400">
             You signed in with{" "}
-            <span className="text-white font-medium capitalize">{user.provider}</span>.
-            Password management is handled by your sign-in provider.
+            <span className="text-white font-medium capitalize">
+              {user.provider}
+            </span>
+            . Password management is handled by your sign-in provider.
           </div>
         )}
       </div>
@@ -594,7 +643,9 @@ function EditNameForm({
     <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4 max-w-sm">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-slate-400 mb-1.5">First name</label>
+          <label className="block text-xs text-slate-400 mb-1.5">
+            First name
+          </label>
           <input
             type="text"
             value={first}
@@ -605,7 +656,9 @@ function EditNameForm({
           />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1.5">Last name</label>
+          <label className="block text-xs text-slate-400 mb-1.5">
+            Last name
+          </label>
           <input
             type="text"
             value={last}
@@ -639,14 +692,18 @@ function DriverProfileForm({
   const [phone, setPhone] = useState(initial?.phone ?? "");
   const [whatsapp, setWhatsapp] = useState(initial?.whatsapp ?? "");
   const [country, setCountry] = useState(initial?.country ?? "");
-  const [availability, setAvailability] = useState<DriverProfile["availability"]>(
-    initial?.availability ?? "available",
+  const [availability, setAvailability] = useState<
+    DriverProfile["availability"]
+  >(initial?.availability ?? "available");
+  const [licenseCats, setLicenseCats] = useState<string[]>(
+    initial?.license_cats ?? [],
   );
-  const [licenseCats, setLicenseCats] = useState<string[]>(initial?.license_cats ?? []);
   const [yearsExp, setYearsExp] = useState<string>(
     initial?.years_exp != null ? String(initial.years_exp) : "",
   );
-  const [languages, setLanguages] = useState<string[]>(initial?.languages ?? []);
+  const [languages, setLanguages] = useState<string[]>(
+    initial?.languages ?? [],
+  );
   const [bio, setBio] = useState(initial?.bio ?? "");
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -702,7 +759,8 @@ function DriverProfileForm({
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>
-            <Phone className="inline w-3 h-3 mr-1 opacity-60" />Phone number
+            <Phone className="inline w-3 h-3 mr-1 opacity-60" />
+            Phone number
           </label>
           <input
             type="tel"
@@ -714,7 +772,8 @@ function DriverProfileForm({
         </div>
         <div>
           <label className={labelCls}>
-            <Phone className="inline w-3 h-3 mr-1 opacity-60" />WhatsApp number
+            <Phone className="inline w-3 h-3 mr-1 opacity-60" />
+            WhatsApp number
           </label>
           <input
             type="tel"
@@ -731,7 +790,8 @@ function DriverProfileForm({
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className={labelCls}>
-              <MapPin className="inline w-3 h-3 mr-1 opacity-60" />Country of residence
+              <MapPin className="inline w-3 h-3 mr-1 opacity-60" />
+              Country of residence
             </label>
             <input
               type="text"
@@ -744,17 +804,33 @@ function DriverProfileForm({
           <div>
             <label className={labelCls}>Availability</label>
             <div className="flex gap-2 mt-1 flex-wrap">
-              {([
-                ["available", "Available", "text-green-400 bg-green-400/10 border-green-400/30"],
-                ["open", "Open to offers", "text-amber-400 bg-amber-400/10 border-amber-400/30"],
-                ["unavailable", "Not available", "text-slate-400 bg-slate-800 border-slate-700"],
-              ] as [DriverProfile["availability"], string, string][]).map(([val, lbl, cls]) => (
+              {(
+                [
+                  [
+                    "available",
+                    "Available",
+                    "text-green-400 bg-green-400/10 border-green-400/30",
+                  ],
+                  [
+                    "open",
+                    "Open to offers",
+                    "text-amber-400 bg-amber-400/10 border-amber-400/30",
+                  ],
+                  [
+                    "unavailable",
+                    "Not available",
+                    "text-slate-400 bg-slate-800 border-slate-700",
+                  ],
+                ] as [DriverProfile["availability"], string, string][]
+              ).map(([val, lbl, cls]) => (
                 <button
                   key={val}
                   type="button"
                   onClick={() => setAvailability(val)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                    availability === val ? cls : "text-slate-500 bg-slate-800/50 border-slate-700/50 hover:border-slate-600"
+                    availability === val
+                      ? cls
+                      : "text-slate-500 bg-slate-800/50 border-slate-700/50 hover:border-slate-600"
                   }`}
                 >
                   {lbl}
@@ -808,7 +884,8 @@ function DriverProfileForm({
       <div className={sectionCls}>
         <div>
           <label className={labelCls}>
-            <Globe className="inline w-3 h-3 mr-1 opacity-60" />Languages spoken
+            <Globe className="inline w-3 h-3 mr-1 opacity-60" />
+            Languages spoken
           </label>
           <div className="flex flex-wrap gap-2 mt-1">
             {LANGUAGES.map((lang) => (
