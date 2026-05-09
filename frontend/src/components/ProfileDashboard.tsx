@@ -251,7 +251,6 @@ export default function ProfileDashboard({
             driverProfile={driverProfile}
             dpLoading={dpLoading}
             onDriverProfileSaved={setDriverProfile}
-            onNameSaved={refreshUser}
             onAvatarSaved={refreshUser}
             setActive={setActive}
           />
@@ -414,7 +413,6 @@ function ProfileSettings({
   driverProfile,
   dpLoading,
   onDriverProfileSaved,
-  onNameSaved,
   onAvatarSaved,
 }: {
   user: {
@@ -423,6 +421,7 @@ function ProfileSettings({
     firstName: string;
     lastName: string;
     avatarUrl: string | null;
+    dateOfBirth: string | null;
     licenseFrontUrl: string | null;
     licenseBackUrl: string | null;
     passportFrontUrl: string | null;
@@ -431,7 +430,6 @@ function ProfileSettings({
   driverProfile: DriverProfile | null;
   dpLoading: boolean;
   onDriverProfileSaved: (dp: DriverProfile) => void;
-  onNameSaved: () => Promise<void>;
   onAvatarSaved: () => Promise<void>;
   setActive: (tab: Tab) => void;
 }) {
@@ -450,59 +448,27 @@ function ProfileSettings({
         />
       </div>
 
-      {/* Edit name */}
+      {/* Personal details — read-only name + editable DOB */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <h2 className="text-base font-bold text-white mb-1">
-          Personal details
-        </h2>
-        <p className="text-slate-400 text-sm mb-5">Update your display name.</p>
-        <EditNameForm
-          firstName={user.firstName}
-          lastName={user.lastName}
-          onSaved={onNameSaved}
-        />
-      </div>
-
-      {/* Driver profile */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <div className="flex items-center gap-2.5 mb-1">
-          <Truck className="w-4 h-4 text-[#36B347]" />
-          <h2 className="text-base font-bold text-white">Driver profile</h2>
+        <h2 className="text-base font-bold text-white mb-1">Personal details</h2>
+        <p className="text-slate-400 text-sm mb-5">Your registered name and date of birth.</p>
+        <div className="space-y-4 max-w-sm">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <p className="text-xs text-slate-400 mb-1.5">First name</p>
+              <div className="w-full bg-slate-800/40 border border-slate-700/60 rounded-lg px-3 py-2.5 text-sm text-slate-300 select-none">
+                {user.firstName || "—"}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400 mb-1.5">Last name</p>
+              <div className="w-full bg-slate-800/40 border border-slate-700/60 rounded-lg px-3 py-2.5 text-sm text-slate-300 select-none">
+                {user.lastName || "—"}
+              </div>
+            </div>
+          </div>
+          <DobForm dateOfBirth={user.dateOfBirth} onSaved={onAvatarSaved} />
         </div>
-        <p className="text-slate-400 text-sm mb-5">
-          Fill in your driver details so employers can find and contact you.
-        </p>
-        {dpLoading ? (
-          <div className="flex items-center gap-2 text-slate-500 text-sm">
-            <Loader2 className="w-4 h-4 animate-spin" /> Loading…
-          </div>
-        ) : (
-          <DriverProfileForm
-            initial={driverProfile}
-            onSaved={onDriverProfileSaved}
-          />
-        )}
-      </div>
-
-      {/* Account settings */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <h2 className="text-base font-bold text-white mb-1">
-          Account settings
-        </h2>
-        <p className="text-slate-400 text-sm mb-6">
-          Manage your account preferences.
-        </p>
-        {user.provider === "local" ? (
-          <ChangePasswordForm email={user.email} />
-        ) : (
-          <div className="rounded-xl bg-slate-800/60 border border-slate-700 p-4 text-sm text-slate-400">
-            You signed in with{" "}
-            <span className="text-white font-medium capitalize">
-              {user.provider}
-            </span>
-            . Password management is handled by your sign-in provider.
-          </div>
-        )}
       </div>
 
       {/* Documents */}
@@ -530,6 +496,27 @@ function ProfileSettings({
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Driver profile — at the bottom */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
+        <div className="flex items-center gap-2.5 mb-1">
+          <Truck className="w-4 h-4 text-[#36B347]" />
+          <h2 className="text-base font-bold text-white">Driver profile</h2>
+        </div>
+        <p className="text-slate-400 text-sm mb-5">
+          Fill in your driver details so employers can find and contact you.
+        </p>
+        {dpLoading ? (
+          <div className="flex items-center gap-2 text-slate-500 text-sm">
+            <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+          </div>
+        ) : (
+          <DriverProfileForm
+            initial={driverProfile}
+            onSaved={onDriverProfileSaved}
+          />
+        )}
       </div>
     </div>
   );
@@ -641,6 +628,83 @@ function AvatarUpload({
   );
 }
 
+// ── DOB Form ──────────────────────────────────────────────────────────────────
+
+function DobForm({ dateOfBirth, onSaved }: { dateOfBirth: string | null; onSaved: () => Promise<void> }) {
+  const [dob, setDob] = useState(dateOfBirth ?? "");
+  const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function calcAge(dobStr: string): number | null {
+    if (!dobStr) return null;
+    const birth = new Date(dobStr);
+    if (isNaN(birth.getTime())) return null;
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    if (
+      today.getMonth() < birth.getMonth() ||
+      (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())
+    ) age--;
+    return age >= 0 && age < 120 ? age : null;
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { fetchWithAuth } = await import("@/lib/auth-client");
+      const res = await fetchWithAuth("/api/profile/dob", {
+        method: "PUT",
+        body: JSON.stringify({ dateOfBirth: dob || null }),
+      });
+      if (!res.ok) {
+        const d = (await res.json()) as { error?: string };
+        setError(d.error ?? "Failed to save.");
+        return;
+      }
+      await onSaved();
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const age = calcAge(dob);
+
+  return (
+    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-3">
+      <div>
+        <label className="block text-xs text-slate-400 mb-1.5">Date of birth</label>
+        <div className="flex items-center gap-3">
+          <input
+            type="date"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+            max={new Date().toISOString().slice(0, 10)}
+            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347] [color-scheme:dark]"
+          />
+          {age !== null && (
+            <span className="text-sm font-semibold text-[#36B347]">{age} years old</span>
+          )}
+        </div>
+      </div>
+      {error && <p className="text-xs text-red-400">{error}</p>}
+      <button
+        type="submit"
+        disabled={loading}
+        className="px-4 py-2.5 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50"
+      >
+        {loading ? "Saving…" : saved ? "Saved ✓" : "Save"}
+      </button>
+    </form>
+  );
+}
+
 // ── Document Upload ───────────────────────────────────────────────────────────
 
 function DocUpload({
@@ -728,92 +792,6 @@ function DocUpload({
         }}
       />
     </div>
-  );
-}
-
-// ── Edit Name Form ────────────────────────────────────────────────────────────
-
-function EditNameForm({
-  firstName: initFirst,
-  lastName: initLast,
-  onSaved,
-}: {
-  firstName: string;
-  lastName: string;
-  onSaved: () => Promise<void>;
-}) {
-  const [first, setFirst] = useState(initFirst);
-  const [last, setLast] = useState(initLast);
-  const [loading, setLoading] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    try {
-      const { fetchWithAuth } = await import("@/lib/auth-client");
-      const res = await fetchWithAuth("/api/profile/name", {
-        method: "PUT",
-        body: JSON.stringify({ firstName: first, lastName: last }),
-      });
-      if (!res.ok) {
-        const d = (await res.json()) as { message?: string };
-        setError(d.message ?? "Failed to update name.");
-        return;
-      }
-      await onSaved();
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
-    } catch {
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const inputCls =
-    "w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]";
-
-  return (
-    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4 max-w-sm">
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs text-slate-400 mb-1.5">
-            First name
-          </label>
-          <input
-            type="text"
-            value={first}
-            onChange={(e) => setFirst(e.target.value)}
-            required
-            className={inputCls}
-            placeholder="John"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-slate-400 mb-1.5">
-            Last name
-          </label>
-          <input
-            type="text"
-            value={last}
-            onChange={(e) => setLast(e.target.value)}
-            className={inputCls}
-            placeholder="Doe"
-          />
-        </div>
-      </div>
-      {error && <p className="text-sm text-red-400">{error}</p>}
-      <button
-        type="submit"
-        disabled={loading}
-        className="px-4 py-2.5 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50"
-      >
-        {loading ? "Saving…" : saved ? "Saved ✓" : "Save name"}
-      </button>
-    </form>
   );
 }
 
@@ -1071,102 +1049,3 @@ function DriverProfileForm({
   );
 }
 
-function ChangePasswordForm({ email }: { email: string }) {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setSuccess(false);
-    if (newPassword.length < 8) {
-      setError("New password must be at least 8 characters.");
-      return;
-    }
-    if (newPassword !== confirm) {
-      setError("Passwords do not match.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const { fetchWithAuth } = await import("@/lib/auth-client");
-      const res = await fetchWithAuth("/api/auth/change-password", {
-        method: "POST",
-        body: JSON.stringify({ email, currentPassword, newPassword }),
-      });
-      if (!res.ok) {
-        const data = (await res.json()) as { message?: string };
-        setError(data.message ?? "Failed to change password.");
-        return;
-      }
-      setSuccess(true);
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirm("");
-    } catch {
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4 max-w-sm">
-      <h3 className="text-sm font-bold text-white">Change password</h3>
-      <div>
-        <label className="block text-xs text-slate-400 mb-1.5">
-          Current password
-        </label>
-        <input
-          type="password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          required
-          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]"
-          placeholder="••••••••"
-        />
-      </div>
-      <div>
-        <label className="block text-xs text-slate-400 mb-1.5">
-          New password
-        </label>
-        <input
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]"
-          placeholder="Min. 8 characters"
-        />
-      </div>
-      <div>
-        <label className="block text-xs text-slate-400 mb-1.5">
-          Confirm new password
-        </label>
-        <input
-          type="password"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-          required
-          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]"
-          placeholder="••••••••"
-        />
-      </div>
-      {error && <p className="text-sm text-red-400">{error}</p>}
-      {success && (
-        <p className="text-sm text-green-400">Password updated successfully!</p>
-      )}
-      <button
-        type="submit"
-        disabled={loading}
-        className="px-4 py-2.5 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50"
-      >
-        {loading ? "Saving…" : "Update password"}
-      </button>
-    </form>
-  );
-}

@@ -8,6 +8,7 @@ export type AuthUser = {
   provider: string;
   createdAt: string;
   avatarUrl: string | null;
+  dateOfBirth: string | null;
   licenseFrontUrl: string | null;
   licenseBackUrl: string | null;
   passportFrontUrl: string | null;

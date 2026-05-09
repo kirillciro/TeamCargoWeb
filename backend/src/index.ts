@@ -101,6 +101,7 @@ type UserRow = {
   provider: string;
   created_at: Date;
   avatar_url: string | null;
+  date_of_birth: Date | null;
   license_front_url: string | null;
   license_back_url: string | null;
   passport_front_url: string | null;
@@ -118,6 +119,7 @@ function mapUser(row: UserRow): SafeUser {
     provider: row.provider,
     createdAt: row.created_at.toISOString(),
     avatarUrl: row.avatar_url ?? null,
+    dateOfBirth: row.date_of_birth ? row.date_of_birth.toISOString().slice(0, 10) : null,
     licenseFrontUrl: row.license_front_url ?? null,
     licenseBackUrl: row.license_back_url ?? null,
     passportFrontUrl: row.passport_front_url ?? null,
@@ -659,7 +661,7 @@ app.get("/auth/me", requireAuth, async (req: AuthedRequest, res) => {
   try {
     const result = await pool.query(
       `SELECT id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
-              license_front_url, license_back_url, passport_front_url, passport_back_url
+              date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url
        FROM users WHERE id = $1 LIMIT 1`,
       [req.userId],
     );
@@ -2245,6 +2247,29 @@ app.put("/profile/name", requireAuth, async (req: AuthedRequest, res) => {
       return;
     }
     res.json(mapUser(result.rows[0] as UserRow));
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    res.status(500).json({ error: msg });
+  }
+});
+
+// ── Profile: Date of birth ─────────────────────────────────────────────────
+
+app.put("/profile/dob", requireAuth, async (req: AuthedRequest, res) => {
+  const schema = z.object({
+    dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD").nullable(),
+  });
+  const parsed = schema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
+  }
+  try {
+    await pool.query(
+      `UPDATE users SET date_of_birth = $1 WHERE id = $2`,
+      [parsed.data.dateOfBirth, req.userId],
+    );
+    res.json({ ok: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Unknown error";
     res.status(500).json({ error: msg });
