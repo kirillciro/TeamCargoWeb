@@ -11,8 +11,6 @@ CREATE TABLE IF NOT EXISTS driver_profiles (
   license_cats      TEXT[] NOT NULL DEFAULT '{}',
   years_exp         INTEGER,
   languages         TEXT[] NOT NULL DEFAULT '{}',
-  work_type         TEXT,
-  preferred_routes  TEXT[] NOT NULL DEFAULT '{}',
   bio               TEXT,
   updated_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

@@ -26,8 +26,6 @@ type DriverProfile = {
   license_cats: string[];
   years_exp: number | null;
   languages: string[];
-  work_type: string | null;
-  preferred_routes: string[];
   bio: string | null;
 };
 
@@ -37,7 +35,6 @@ const LANGUAGES = [
   "Bulgarian", "Lithuanian", "Latvian", "Czech", "Slovak", "Hungarian",
   "Italian", "Spanish", "Portuguese", "Ukrainian", "Russian", "Turkish",
 ];
-const WORK_TYPES = ["Long-haul", "Regional", "Local", "Any"];
 
 function computeCompleteness(
   user: { firstName: string; lastName: string },
@@ -50,7 +47,6 @@ function computeCompleteness(
   if (dp?.license_cats?.length) score += 20;
   if (dp?.years_exp !== null && dp?.years_exp !== undefined) score += 10;
   if (dp?.languages?.length) score += 15;
-  if (dp?.work_type) score += 10;
   if (dp?.availability) score += 5;
   if (dp?.bio) score += 10;
   return score;
@@ -519,8 +515,6 @@ function DriverProfileForm({
     initial?.years_exp != null ? String(initial.years_exp) : "",
   );
   const [languages, setLanguages] = useState<string[]>(initial?.languages ?? []);
-  const [workType, setWorkType] = useState(initial?.work_type ?? "");
-  const [routes, setRoutes] = useState(initial?.preferred_routes.join(", ") ?? "");
   const [bio, setBio] = useState(initial?.bio ?? "");
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -542,11 +536,6 @@ function DriverProfileForm({
       license_cats: licenseCats,
       years_exp: yearsExp !== "" ? Number(yearsExp) : null,
       languages,
-      work_type: workType || null,
-      preferred_routes: routes
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
       bio: bio || null,
     };
     try {
@@ -667,40 +656,19 @@ function DriverProfileForm({
         </div>
       </div>
 
-      {/* Experience & work type */}
+      {/* Experience */}
       <div className={sectionCls}>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div>
-            <label className={labelCls}>Years of experience</label>
-            <input
-              type="number"
-              min={0}
-              max={60}
-              value={yearsExp}
-              onChange={(e) => setYearsExp(e.target.value)}
-              className={inputCls}
-              placeholder="e.g. 5"
-            />
-          </div>
-          <div>
-            <label className={labelCls}>Preferred work type</label>
-            <div className="flex flex-wrap gap-2 mt-1">
-              {WORK_TYPES.map((wt) => (
-                <button
-                  key={wt}
-                  type="button"
-                  onClick={() => setWorkType(wt === workType ? "" : wt)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                    workType === wt
-                      ? "bg-[#1a7f45] border-[#36B347] text-white"
-                      : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
-                  }`}
-                >
-                  {wt}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="max-w-[160px]">
+          <label className={labelCls}>Years of experience</label>
+          <input
+            type="number"
+            min={0}
+            max={60}
+            value={yearsExp}
+            onChange={(e) => setYearsExp(e.target.value)}
+            className={inputCls}
+            placeholder="e.g. 5"
+          />
         </div>
       </div>
 
@@ -729,19 +697,8 @@ function DriverProfileForm({
         </div>
       </div>
 
-      {/* Preferred routes & bio */}
+      {/* Bio */}
       <div className={sectionCls}>
-        <div>
-          <label className={labelCls}>Preferred countries / routes</label>
-          <input
-            type="text"
-            value={routes}
-            onChange={(e) => setRoutes(e.target.value)}
-            className={inputCls}
-            placeholder="Netherlands, Germany, Belgium"
-          />
-          <p className="text-xs text-slate-500 mt-1">Separate with commas</p>
-        </div>
         <div>
           <label className={labelCls}>Short bio</label>
           <textarea

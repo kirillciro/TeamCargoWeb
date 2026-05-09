@@ -2111,7 +2111,7 @@ app.get(
     try {
       const result = await pool.query(
         `SELECT phone, whatsapp, country, availability, license_cats,
-                years_exp, languages, work_type, preferred_routes, bio
+                years_exp, languages, bio
          FROM driver_profiles WHERE user_id = $1`,
         [req.user!.sub],
       );
@@ -2135,8 +2135,6 @@ app.put(
       license_cats: z.array(z.string().max(10)).max(20).optional(),
       years_exp: z.number().int().min(0).max(60).optional().nullable(),
       languages: z.array(z.string().max(50)).max(30).optional(),
-      work_type: z.string().max(50).optional().nullable(),
-      preferred_routes: z.array(z.string().max(100)).max(20).optional(),
       bio: z.string().max(500).optional().nullable(),
     });
     const parsed = schema.safeParse(req.body);
@@ -2149,8 +2147,8 @@ app.put(
       await pool.query(
         `INSERT INTO driver_profiles
            (user_id, phone, whatsapp, country, availability, license_cats,
-            years_exp, languages, work_type, preferred_routes, bio, updated_at)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,NOW())
+            years_exp, languages, bio, updated_at)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,NOW())
          ON CONFLICT (user_id) DO UPDATE SET
            phone = EXCLUDED.phone,
            whatsapp = EXCLUDED.whatsapp,
@@ -2159,8 +2157,6 @@ app.put(
            license_cats = EXCLUDED.license_cats,
            years_exp = EXCLUDED.years_exp,
            languages = EXCLUDED.languages,
-           work_type = EXCLUDED.work_type,
-           preferred_routes = EXCLUDED.preferred_routes,
            bio = EXCLUDED.bio,
            updated_at = NOW()`,
         [
@@ -2172,8 +2168,6 @@ app.put(
           d.license_cats ?? [],
           d.years_exp ?? null,
           d.languages ?? [],
-          d.work_type ?? null,
-          d.preferred_routes ?? [],
           d.bio ?? null,
         ],
       );
