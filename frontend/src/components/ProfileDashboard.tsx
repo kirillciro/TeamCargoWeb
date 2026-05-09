@@ -450,33 +450,6 @@ function ProfileSettings({
         />
       </div>
 
-      {/* Documents */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <div className="flex items-center gap-2.5 mb-1">
-          <FileImage className="w-4 h-4 text-[#36B347]" />
-          <h2 className="text-base font-bold text-white">Documents</h2>
-        </div>
-        <p className="text-slate-400 text-sm mb-6">
-          Upload clear photos of your documents. These are only visible to admins.
-        </p>
-        <div className="space-y-5">
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Driving License</p>
-            <div className="grid grid-cols-2 gap-3">
-              <DocUpload label="Front" docType="license_front" currentUrl={user.licenseFrontUrl} onSaved={onAvatarSaved} />
-              <DocUpload label="Back"  docType="license_back"  currentUrl={user.licenseBackUrl}  onSaved={onAvatarSaved} />
-            </div>
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Passport / ID Card</p>
-            <div className="grid grid-cols-2 gap-3">
-              <DocUpload label="Front" docType="passport_front" currentUrl={user.passportFrontUrl} onSaved={onAvatarSaved} />
-              <DocUpload label="Back"  docType="passport_back"  currentUrl={user.passportBackUrl}  onSaved={onAvatarSaved} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Edit name */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
         <h2 className="text-base font-bold text-white mb-1">
@@ -530,6 +503,33 @@ function ProfileSettings({
             . Password management is handled by your sign-in provider.
           </div>
         )}
+      </div>
+
+      {/* Documents */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
+        <div className="flex items-center gap-2.5 mb-1">
+          <FileImage className="w-4 h-4 text-[#36B347]" />
+          <h2 className="text-base font-bold text-white">Documents</h2>
+        </div>
+        <p className="text-slate-400 text-sm mb-6">
+          Upload clear photos of your documents. These are only visible to admins.
+        </p>
+        <div className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Driving License</p>
+            <div className="grid grid-cols-2 gap-3">
+              <DocUpload label="Front" docType="license_front" currentUrl={user.licenseFrontUrl} onSaved={onAvatarSaved} />
+              <DocUpload label="Back"  docType="license_back"  currentUrl={user.licenseBackUrl}  onSaved={onAvatarSaved} />
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Passport / ID Card</p>
+            <div className="grid grid-cols-2 gap-3">
+              <DocUpload label="Front" docType="passport_front" currentUrl={user.passportFrontUrl} onSaved={onAvatarSaved} />
+              <DocUpload label="Back"  docType="passport_back"  currentUrl={user.passportBackUrl}  onSaved={onAvatarSaved} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
