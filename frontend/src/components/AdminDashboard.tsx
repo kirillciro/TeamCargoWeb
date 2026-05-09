@@ -2426,6 +2426,7 @@ function AdminUsersTab({
       boxSizing: "border-box",
     };
     return (
+      <>
       <div
         style={{
           fontFamily: "MS Sans Serif, Arial, sans-serif",
@@ -2570,13 +2571,24 @@ function AdminUsersTab({
                   >
                     {dict.admin.col_actions}
                   </th>
+                  <th
+                    style={{
+                      padding: "3px 8px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Profile
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {users.length === 0 && (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={7}
                       style={{
                         padding: "16px 8px",
                         textAlign: "center",
@@ -2778,6 +2790,22 @@ function AdminUsersTab({
                           </button>
                         ))}
                     </td>
+                    {/* Profile */}
+                    <td
+                      style={{
+                        padding: "3px 8px",
+                        textAlign: "center",
+                        borderBottom: "1px solid #d4d4d4",
+                      }}
+                    >
+                      <button
+                        style={w98Btn}
+                        onClick={() => void openView(u)}
+                        title="View profile"
+                      >
+                        View
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -2785,6 +2813,132 @@ function AdminUsersTab({
           </div>
         )}
       </div>
+
+      {/* ── Win98 modal ── */}
+      {viewUser && (() => {
+        const vu = viewUser;
+        const dp = viewUser.driverProfile;
+        const w98TitleBar: React.CSSProperties = {
+          background: "linear-gradient(to right, #000080, #1084d0)",
+          color: "#fff",
+          padding: "3px 6px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          fontSize: 11,
+          fontWeight: "bold",
+          userSelect: "none",
+        };
+        const w98TitleBtn: React.CSSProperties = {
+          background: "#c0c0c0",
+          border: "2px solid",
+          borderColor: "#fff #808080 #808080 #fff",
+          color: "#000",
+          fontFamily: "inherit",
+          fontSize: 11,
+          fontWeight: "bold",
+          width: 18,
+          height: 16,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          lineHeight: 1,
+          padding: 0,
+          flexShrink: 0,
+        };
+        const w98LabelStyle: React.CSSProperties = { fontSize: 10, color: "#808080", marginBottom: 2 };
+        const w98ValStyle: React.CSSProperties = { fontSize: 11, color: "#000", fontWeight: "bold" };
+        return (
+          <div
+            style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.3)" }}
+            onClick={(e) => { if (e.target === e.currentTarget) setViewUser(null); }}
+          >
+            <div style={{ width: "100%", maxWidth: 560, background: "#c0c0c0", border: "2px solid", borderColor: "#fff #808080 #808080 #fff", boxShadow: "4px 4px 0 #000", fontFamily: "MS Sans Serif, Arial, sans-serif", fontSize: 11 }}>
+              {/* Title bar */}
+              <div style={w98TitleBar}>
+                <span>User &amp; Driver Profile</span>
+                <button style={w98TitleBtn} onClick={() => setViewUser(null)}>✕</button>
+              </div>
+              {/* Scrollable body */}
+              <div style={{ padding: 10, maxHeight: "68vh", overflowY: "auto", overflowX: "hidden" }}>
+                {/* Identity sunken box */}
+                <div style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#fff", padding: 8, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 40, height: 40, background: "#000080", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: "bold", border: "1px solid #808080", flexShrink: 0, overflow: "hidden" }}>
+                    {vu.user.avatarUrl
+                      ? <img src={vu.user.avatarUrl} alt="avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      : (vu.user.firstName?.[0] ?? vu.user.email[0]).toUpperCase()
+                    }
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: "bold", fontSize: 12 }}>{`${vu.user.firstName} ${vu.user.lastName}`.trim() || "—"}</div>
+                    <div style={{ fontSize: 10, color: "#444" }}>{vu.user.email}</div>
+                    <div style={{ display: "flex", gap: 4, marginTop: 3, flexWrap: "wrap" as const }}>
+                      <span style={{ fontSize: 10, border: "1px solid #808080", padding: "0px 3px", background: vu.user.role === "admin" ? "#000080" : "#c0c0c0", color: vu.user.role === "admin" ? "#fff" : "#000" }}>{vu.user.role}</span>
+                      {vu.user.isVerified
+                        ? <span style={{ fontSize: 10, border: "1px solid #008000", padding: "0px 3px", color: "#006400", background: "#e0ffe0" }}>Verified</span>
+                        : <span style={{ fontSize: 10, border: "1px solid #808000", padding: "0px 3px", color: "#804000", background: "#ffffd0" }}>Unverified</span>
+                      }
+                      <span style={{ fontSize: 10, border: "1px solid #808080", padding: "0px 3px", textTransform: "capitalize" as const }}>{vu.user.provider}</span>
+                    </div>
+                    <div style={{ fontSize: 10, color: "#808080", marginTop: 2 }}>Joined {new Date(vu.user.createdAt).toLocaleDateString()}</div>
+                  </div>
+                </div>
+                {/* Driver profile section */}
+                <div style={{ fontWeight: "bold", fontSize: 11, marginBottom: 5, borderBottom: "1px solid #808080", paddingBottom: 2 }}>Driver Profile</div>
+                {viewLoading ? (
+                  <div style={{ textAlign: "center", padding: "12px 0", color: "#808080" }}>Loading...</div>
+                ) : !dp ? (
+                  <div style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#fff", padding: 8, color: "#808080", textAlign: "center" }}>No driver profile filled in yet.</div>
+                ) : (
+                  <div>
+                    <div style={{ marginBottom: 6 }}>
+                      <span style={{ fontSize: 10, border: "1px solid", padding: "1px 4px", ...({ available: { borderColor: "#008000", color: "#006400", background: "#e0ffe0" }, open: { borderColor: "#808000", color: "#804000", background: "#ffffd0" }, unavailable: { borderColor: "#808080", color: "#444", background: "#f0f0f0" } }[dp.availability]) }}>
+                        {{ available: "Available", open: "Open to offers", unavailable: "Not available" }[dp.availability]}
+                      </span>
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, marginBottom: 6 }}>
+                      {([{ label: "Phone", val: dp.phone }, { label: "WhatsApp", val: dp.whatsapp }, { label: "Country", val: dp.country }, { label: "Years exp.", val: dp.years_exp != null ? `${dp.years_exp} yr` : null }] as const).map(({ label, val }) => (
+                        <div key={label} style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#fff", padding: "3px 6px" }}>
+                          <div style={w98LabelStyle}>{label}</div>
+                          <div style={w98ValStyle}>{val ?? "—"}</div>
+                        </div>
+                      ))}
+                    </div>
+                    {dp.license_cats.length > 0 && (
+                      <div style={{ marginBottom: 6 }}>
+                        <div style={w98LabelStyle}>License categories</div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+                          {dp.license_cats.map((c) => <span key={c} style={{ fontSize: 10, border: "1px solid #000080", padding: "1px 4px", background: "#e0e8ff", color: "#000080", fontWeight: "bold" }}>{c}</span>)}
+                        </div>
+                      </div>
+                    )}
+                    {dp.languages.length > 0 && (
+                      <div style={{ marginBottom: 6 }}>
+                        <div style={w98LabelStyle}>Languages</div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+                          {dp.languages.map((l) => <span key={l} style={{ fontSize: 10, border: "1px solid #808080", padding: "1px 4px", background: "#f0f0f0" }}>{l}</span>)}
+                        </div>
+                      </div>
+                    )}
+                    {dp.bio && (
+                      <div>
+                        <div style={w98LabelStyle}>Bio</div>
+                        <div style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#fff", padding: 6, fontSize: 11, lineHeight: 1.4 }}>{dp.bio}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              {/* Footer */}
+              <div style={{ padding: "4px 10px 8px", textAlign: "right", borderTop: "1px solid #808080" }}>
+                <button style={w98Btn} onClick={() => setViewUser(null)}>Close</button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+      </>
     );
   }
 
@@ -2980,7 +3134,7 @@ function AdminUsersTab({
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
           onClick={(e) => { if (e.target === e.currentTarget) setViewUser(null); }}
         >
-          <div className="w-full max-w-lg bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <Truck className="w-4 h-4 text-[#36B347]" />
@@ -2991,7 +3145,7 @@ function AdminUsersTab({
               </button>
             </div>
 
-            <div className="p-5 space-y-5 max-h-[78vh] overflow-y-auto">
+            <div className="p-5 space-y-5 max-h-[85vh] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
               {/* Identity */}
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-xl font-bold text-white shrink-0 overflow-hidden">
