@@ -247,6 +247,7 @@ export default function ProfileDashboard({
         )}
         {active === "settings" && (
           <ProfileSettings
+            key={dpLoading ? "loading" : "loaded"}
             user={user}
             driverProfile={driverProfile}
             dpLoading={dpLoading}
@@ -433,92 +434,363 @@ function ProfileSettings({
   onAvatarSaved: () => Promise<void>;
   setActive: (tab: Tab) => void;
 }) {
-  return (
-    <div className="space-y-6">
-      {/* Profile image */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <h2 className="text-base font-bold text-white mb-1">Profile image</h2>
-        <p className="text-slate-400 text-sm mb-5">
-          Upload a photo that employers will see.
-        </p>
-        <AvatarUpload
-          currentUrl={user.avatarUrl}
-          initial={(user.firstName?.[0] ?? user.email[0]).toUpperCase()}
-          onSaved={onAvatarSaved}
-        />
-      </div>
+  // ── DOB ──
+  const [dob, setDob] = useState(user.dateOfBirth ?? "");
 
-      {/* Personal details — read-only name + editable DOB */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <h2 className="text-base font-bold text-white mb-1">Personal details</h2>
-        <p className="text-slate-400 text-sm mb-5">Your registered name and date of birth.</p>
-        <div className="space-y-4 max-w-sm">
-          <div className="grid grid-cols-2 gap-3">
+  // ── Driver profile fields (single object to avoid effect batching warnings) ──
+  type DpFields = {
+    phone: string; whatsapp: string; country: string;
+    availability: DriverProfile["availability"];
+    licenseCats: string[]; yearsExp: string; languages: string[]; bio: string;
+  };
+  function fieldsFromProfile(dp: DriverProfile | null): DpFields {
+    return {
+      phone: dp?.phone ?? "", whatsapp: dp?.whatsapp ?? "", country: dp?.country ?? "",
+      availability: dp?.availability ?? "available",
+      licenseCats: dp?.license_cats ?? [],
+      yearsExp: dp?.years_exp != null ? String(dp.years_exp) : "",
+      languages: dp?.languages ?? [], bio: dp?.bio ?? "",
+    };
+  }
+  const [dp, setDp] = useState<DpFields>(() => fieldsFromProfile(driverProfile));
+
+  // ── Save state ──
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  function calcAge(dobStr: string): number | null {
+    if (!dobStr) return null;
+    const birth = new Date(dobStr);
+    if (isNaN(birth.getTime())) return null;
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    if (
+      today.getMonth() < birth.getMonth() ||
+      (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())
+    )
+      age--;
+    return age >= 0 && age < 120 ? age : null;
+  }
+
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    setSaveError(null);
+    setSaving(true);
+    const dpPayload: DriverProfile = {
+      phone: dp.phone || null,
+      whatsapp: dp.whatsapp || null,
+      country: dp.country || null,
+      availability: dp.availability,
+      license_cats: dp.licenseCats,
+      years_exp: dp.yearsExp !== "" ? Number(dp.yearsExp) : null,
+      languages: dp.languages,
+      bio: dp.bio || null,
+    };
+    try {
+      const { fetchWithAuth } = await import("@/lib/auth-client");
+      const [dobRes, dpRes] = await Promise.all([
+        fetchWithAuth("/api/profile/dob", {
+          method: "PUT",
+          body: JSON.stringify({ dateOfBirth: dob || null }),
+        }),
+        fetchWithAuth("/api/profile/driver", {
+          method: "PUT",
+          body: JSON.stringify(dpPayload),
+        }),
+      ]);
+      if (!dobRes.ok || !dpRes.ok) {
+        setSaveError("Failed to save some details. Please try again.");
+        return;
+      }
+      onDriverProfileSaved(dpPayload);
+      await onAvatarSaved();
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setSaveError("An unexpected error occurred.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  const inputCls =
+    "w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]";
+  const labelCls = "block text-xs text-slate-400 mb-1.5";
+  const age = calcAge(dob);
+
+  return (
+    <form onSubmit={(e) => void handleSave(e)}>
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden divide-y divide-slate-800">
+
+        {/* ── Profile image ── */}
+        <div className="p-6">
+          <h2 className="text-sm font-bold text-white mb-1">Profile image</h2>
+          <p className="text-xs text-slate-400 mb-5">
+            Click your photo to change it. Uploads immediately.
+          </p>
+          <AvatarUpload
+            currentUrl={user.avatarUrl}
+            initial={(user.firstName?.[0] ?? user.email[0]).toUpperCase()}
+            onSaved={onAvatarSaved}
+          />
+        </div>
+
+        {/* ── Personal details ── */}
+        <div className="p-6 space-y-4">
+          <div>
+            <h2 className="text-sm font-bold text-white mb-1">Personal details</h2>
+            <p className="text-xs text-slate-400">Your registered name and date of birth.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-3 max-w-sm">
             <div>
-              <p className="text-xs text-slate-400 mb-1.5">First name</p>
+              <p className={labelCls}>First name</p>
               <div className="w-full bg-slate-800/40 border border-slate-700/60 rounded-lg px-3 py-2.5 text-sm text-slate-300 select-none">
                 {user.firstName || "—"}
               </div>
             </div>
             <div>
-              <p className="text-xs text-slate-400 mb-1.5">Last name</p>
+              <p className={labelCls}>Last name</p>
               <div className="w-full bg-slate-800/40 border border-slate-700/60 rounded-lg px-3 py-2.5 text-sm text-slate-300 select-none">
                 {user.lastName || "—"}
               </div>
             </div>
           </div>
-          <DobForm dateOfBirth={user.dateOfBirth} onSaved={onAvatarSaved} />
-        </div>
-      </div>
-
-      {/* Documents */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <div className="flex items-center gap-2.5 mb-1">
-          <FileImage className="w-4 h-4 text-[#36B347]" />
-          <h2 className="text-base font-bold text-white">Documents</h2>
-        </div>
-        <p className="text-slate-400 text-sm mb-6">
-          Upload clear photos of your documents. These are only visible to admins.
-        </p>
-        <div className="space-y-5">
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Driving License</p>
-            <div className="grid grid-cols-2 gap-3">
-              <DocUpload label="Front" docType="license_front" currentUrl={user.licenseFrontUrl} onSaved={onAvatarSaved} />
-              <DocUpload label="Back"  docType="license_back"  currentUrl={user.licenseBackUrl}  onSaved={onAvatarSaved} />
-            </div>
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Passport / ID Card</p>
-            <div className="grid grid-cols-2 gap-3">
-              <DocUpload label="Front" docType="passport_front" currentUrl={user.passportFrontUrl} onSaved={onAvatarSaved} />
-              <DocUpload label="Back"  docType="passport_back"  currentUrl={user.passportBackUrl}  onSaved={onAvatarSaved} />
+          <div className="max-w-sm">
+            <label className={labelCls}>Date of birth</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="date"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                max={new Date().toISOString().slice(0, 10)}
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347] [color-scheme:dark]"
+              />
+              {age !== null && (
+                <span className="text-sm font-semibold text-[#36B347]">{age} years old</span>
+              )}
             </div>
           </div>
         </div>
+
+        {/* ── Driver profile ── */}
+        <div className="p-6 space-y-5">
+          <div>
+            <div className="flex items-center gap-2.5 mb-1">
+              <Truck className="w-4 h-4 text-[#36B347]" />
+              <h2 className="text-sm font-bold text-white">Driver profile</h2>
+            </div>
+            <p className="text-xs text-slate-400">
+              Fill in your driver details so employers can find and contact you.
+            </p>
+          </div>
+          {dpLoading ? (
+            <div className="flex items-center gap-2 text-slate-500 text-sm">
+              <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+            </div>
+          ) : (
+            <div className="space-y-5">
+              {/* Contact */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelCls}>
+                    <Phone className="inline w-3 h-3 mr-1 opacity-60" />
+                    Phone number
+                  </label>
+                  <input
+                    type="tel"
+                    value={dp.phone}
+                    onChange={(e) => setDp((prev) => ({ ...prev, phone: e.target.value }))}
+                    className={inputCls}
+                    placeholder="+31 6 12345678"
+                  />
+                </div>
+                <div>
+                  <label className={labelCls}>
+                    <Phone className="inline w-3 h-3 mr-1 opacity-60" />
+                    WhatsApp number
+                  </label>
+                  <input
+                    type="tel"
+                    value={dp.whatsapp}
+                    onChange={(e) => setDp((prev) => ({ ...prev, whatsapp: e.target.value }))}
+                    className={inputCls}
+                    placeholder="+31 6 12345678"
+                  />
+                </div>
+              </div>
+
+              {/* Location & availability */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelCls}>
+                    <MapPin className="inline w-3 h-3 mr-1 opacity-60" />
+                    Country of residence
+                  </label>
+                  <input
+                    type="text"
+                    value={dp.country}
+                    onChange={(e) => setDp((prev) => ({ ...prev, country: e.target.value }))}
+                    className={inputCls}
+                    placeholder="Netherlands"
+                  />
+                </div>
+                <div>
+                  <label className={labelCls}>Availability</label>
+                  <div className="flex gap-2 mt-1 flex-wrap">
+                    {(
+                      [
+                        ["available", "Available", "text-green-400 bg-green-400/10 border-green-400/30"],
+                        ["open", "Open to offers", "text-amber-400 bg-amber-400/10 border-amber-400/30"],
+                        ["unavailable", "Not available", "text-slate-400 bg-slate-800 border-slate-700"],
+                      ] as [DriverProfile["availability"], string, string][]
+                    ).map(([val, lbl, cls]) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setDp((prev) => ({ ...prev, availability: val }))}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                          dp.availability === val
+                            ? cls
+                            : "text-slate-500 bg-slate-800/50 border-slate-700/50 hover:border-slate-600"
+                        }`}
+                      >
+                        {lbl}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* License categories */}
+              <div>
+                <label className={labelCls}>License categories</label>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {LICENSE_CATS.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setDp((prev) => ({ ...prev, licenseCats: prev.licenseCats.includes(cat) ? prev.licenseCats.filter((x) => x !== cat) : [...prev.licenseCats, cat] }))}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
+                        dp.licenseCats.includes(cat)
+                          ? "bg-[#1a7f45] border-[#36B347] text-white"
+                          : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Experience */}
+              <div className="max-w-40">
+                <label className={labelCls}>Years of experience</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={60}
+                  value={dp.yearsExp}
+                  onChange={(e) => setDp((prev) => ({ ...prev, yearsExp: e.target.value }))}
+                  className={inputCls}
+                  placeholder="e.g. 5"
+                />
+              </div>
+
+              {/* Languages */}
+              <div>
+                <label className={labelCls}>
+                  <Globe className="inline w-3 h-3 mr-1 opacity-60" />
+                  Languages spoken
+                </label>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {LANGUAGES.map((lang) => (
+                    <button
+                      key={lang}
+                      type="button"
+                      onClick={() => setDp((prev) => ({ ...prev, languages: prev.languages.includes(lang) ? prev.languages.filter((x) => x !== lang) : [...prev.languages, lang] }))}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                        dp.languages.includes(lang)
+                          ? "bg-[#1a7f45] border-[#36B347] text-white"
+                          : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
+                      }`}
+                    >
+                      {lang}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bio */}
+              <div>
+                <label className={labelCls}>Short bio</label>
+                <textarea
+                  value={dp.bio}
+                  onChange={(e) => setDp((prev) => ({ ...prev, bio: e.target.value }))}
+                  rows={3}
+                  maxLength={500}
+                  className={`${inputCls} resize-none`}
+                  placeholder="Experienced CE driver with 8 years of international freight…"
+                />
+                <p className="text-xs text-slate-500 mt-1">{dp.bio.length}/500</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ── Documents ── */}
+        <div className="p-6 space-y-5">
+          <div>
+            <div className="flex items-center gap-2.5 mb-1">
+              <FileImage className="w-4 h-4 text-[#36B347]" />
+              <h2 className="text-sm font-bold text-white">Documents</h2>
+            </div>
+            <p className="text-xs text-slate-400">
+              Upload clear photos of your documents. Visible to admins only. Uploads immediately.
+            </p>
+          </div>
+          <div className="space-y-5">
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                Driving License
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <DocUpload label="Front" docType="license_front" currentUrl={user.licenseFrontUrl} onSaved={onAvatarSaved} />
+                <DocUpload label="Back"  docType="license_back"  currentUrl={user.licenseBackUrl}  onSaved={onAvatarSaved} />
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                Passport / ID Card
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <DocUpload label="Front" docType="passport_front" currentUrl={user.passportFrontUrl} onSaved={onAvatarSaved} />
+                <DocUpload label="Back"  docType="passport_back"  currentUrl={user.passportBackUrl}  onSaved={onAvatarSaved} />
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      {/* Driver profile — at the bottom */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6">
-        <div className="flex items-center gap-2.5 mb-1">
-          <Truck className="w-4 h-4 text-[#36B347]" />
-          <h2 className="text-base font-bold text-white">Driver profile</h2>
-        </div>
-        <p className="text-slate-400 text-sm mb-5">
-          Fill in your driver details so employers can find and contact you.
-        </p>
-        {dpLoading ? (
-          <div className="flex items-center gap-2 text-slate-500 text-sm">
-            <Loader2 className="w-4 h-4 animate-spin" /> Loading…
-          </div>
-        ) : (
-          <DriverProfileForm
-            initial={driverProfile}
-            onSaved={onDriverProfileSaved}
-          />
-        )}
+      {/* ── Save button ── */}
+      {saveError && <p className="text-sm text-red-400 mt-4">{saveError}</p>}
+      <div className="mt-5 flex justify-end">
+        <button
+          type="submit"
+          disabled={saving || dpLoading}
+          className="px-6 py-3 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50 flex items-center gap-2"
+        >
+          {saving ? (
+            <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
+          ) : saved ? (
+            "Saved ✓"
+          ) : (
+            "Save details"
+          )}
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -628,83 +900,6 @@ function AvatarUpload({
   );
 }
 
-// ── DOB Form ──────────────────────────────────────────────────────────────────
-
-function DobForm({ dateOfBirth, onSaved }: { dateOfBirth: string | null; onSaved: () => Promise<void> }) {
-  const [dob, setDob] = useState(dateOfBirth ?? "");
-  const [loading, setLoading] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  function calcAge(dobStr: string): number | null {
-    if (!dobStr) return null;
-    const birth = new Date(dobStr);
-    if (isNaN(birth.getTime())) return null;
-    const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    if (
-      today.getMonth() < birth.getMonth() ||
-      (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())
-    ) age--;
-    return age >= 0 && age < 120 ? age : null;
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    try {
-      const { fetchWithAuth } = await import("@/lib/auth-client");
-      const res = await fetchWithAuth("/api/profile/dob", {
-        method: "PUT",
-        body: JSON.stringify({ dateOfBirth: dob || null }),
-      });
-      if (!res.ok) {
-        const d = (await res.json()) as { error?: string };
-        setError(d.error ?? "Failed to save.");
-        return;
-      }
-      await onSaved();
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
-    } catch {
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const age = calcAge(dob);
-
-  return (
-    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-3">
-      <div>
-        <label className="block text-xs text-slate-400 mb-1.5">Date of birth</label>
-        <div className="flex items-center gap-3">
-          <input
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            max={new Date().toISOString().slice(0, 10)}
-            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347] [color-scheme:dark]"
-          />
-          {age !== null && (
-            <span className="text-sm font-semibold text-[#36B347]">{age} years old</span>
-          )}
-        </div>
-      </div>
-      {error && <p className="text-xs text-red-400">{error}</p>}
-      <button
-        type="submit"
-        disabled={loading}
-        className="px-4 py-2.5 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50"
-      >
-        {loading ? "Saving…" : saved ? "Saved ✓" : "Save"}
-      </button>
-    </form>
-  );
-}
-
 // ── Document Upload ───────────────────────────────────────────────────────────
 
 function DocUpload({
@@ -794,258 +989,3 @@ function DocUpload({
     </div>
   );
 }
-
-// ── Driver Profile Form ───────────────────────────────────────────────────────
-
-function DriverProfileForm({
-  initial,
-  onSaved,
-}: {
-  initial: DriverProfile | null;
-  onSaved: (dp: DriverProfile) => void;
-}) {
-  const [phone, setPhone] = useState(initial?.phone ?? "");
-  const [whatsapp, setWhatsapp] = useState(initial?.whatsapp ?? "");
-  const [country, setCountry] = useState(initial?.country ?? "");
-  const [availability, setAvailability] = useState<
-    DriverProfile["availability"]
-  >(initial?.availability ?? "available");
-  const [licenseCats, setLicenseCats] = useState<string[]>(
-    initial?.license_cats ?? [],
-  );
-  const [yearsExp, setYearsExp] = useState<string>(
-    initial?.years_exp != null ? String(initial.years_exp) : "",
-  );
-  const [languages, setLanguages] = useState<string[]>(
-    initial?.languages ?? [],
-  );
-  const [bio, setBio] = useState(initial?.bio ?? "");
-  const [loading, setLoading] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  function toggleItem(arr: string[], set: (v: string[]) => void, val: string) {
-    set(arr.includes(val) ? arr.filter((x) => x !== val) : [...arr, val]);
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    const payload: DriverProfile = {
-      phone: phone || null,
-      whatsapp: whatsapp || null,
-      country: country || null,
-      availability,
-      license_cats: licenseCats,
-      years_exp: yearsExp !== "" ? Number(yearsExp) : null,
-      languages,
-      bio: bio || null,
-    };
-    try {
-      const { fetchWithAuth } = await import("@/lib/auth-client");
-      const res = await fetchWithAuth("/api/profile/driver", {
-        method: "PUT",
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const d = (await res.json()) as { error?: string; message?: string };
-        setError(d.error ?? d.message ?? "Failed to save.");
-        return;
-      }
-      onSaved(payload);
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
-    } catch {
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const inputCls =
-    "w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]";
-  const labelCls = "block text-xs text-slate-400 mb-1.5";
-  const sectionCls = "pt-5 border-t border-slate-800 space-y-4";
-
-  return (
-    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-5">
-      {/* Contact */}
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className={labelCls}>
-            <Phone className="inline w-3 h-3 mr-1 opacity-60" />
-            Phone number
-          </label>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className={inputCls}
-            placeholder="+31 6 12345678"
-          />
-        </div>
-        <div>
-          <label className={labelCls}>
-            <Phone className="inline w-3 h-3 mr-1 opacity-60" />
-            WhatsApp number
-          </label>
-          <input
-            type="tel"
-            value={whatsapp}
-            onChange={(e) => setWhatsapp(e.target.value)}
-            className={inputCls}
-            placeholder="+31 6 12345678"
-          />
-        </div>
-      </div>
-
-      {/* Location & availability */}
-      <div className={sectionCls}>
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div>
-            <label className={labelCls}>
-              <MapPin className="inline w-3 h-3 mr-1 opacity-60" />
-              Country of residence
-            </label>
-            <input
-              type="text"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              className={inputCls}
-              placeholder="Netherlands"
-            />
-          </div>
-          <div>
-            <label className={labelCls}>Availability</label>
-            <div className="flex gap-2 mt-1 flex-wrap">
-              {(
-                [
-                  [
-                    "available",
-                    "Available",
-                    "text-green-400 bg-green-400/10 border-green-400/30",
-                  ],
-                  [
-                    "open",
-                    "Open to offers",
-                    "text-amber-400 bg-amber-400/10 border-amber-400/30",
-                  ],
-                  [
-                    "unavailable",
-                    "Not available",
-                    "text-slate-400 bg-slate-800 border-slate-700",
-                  ],
-                ] as [DriverProfile["availability"], string, string][]
-              ).map(([val, lbl, cls]) => (
-                <button
-                  key={val}
-                  type="button"
-                  onClick={() => setAvailability(val)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                    availability === val
-                      ? cls
-                      : "text-slate-500 bg-slate-800/50 border-slate-700/50 hover:border-slate-600"
-                  }`}
-                >
-                  {lbl}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* License categories */}
-      <div className={sectionCls}>
-        <div>
-          <label className={labelCls}>License categories</label>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {LICENSE_CATS.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => toggleItem(licenseCats, setLicenseCats, cat)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
-                  licenseCats.includes(cat)
-                    ? "bg-[#1a7f45] border-[#36B347] text-white"
-                    : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Experience */}
-      <div className={sectionCls}>
-        <div className="max-w-[160px]">
-          <label className={labelCls}>Years of experience</label>
-          <input
-            type="number"
-            min={0}
-            max={60}
-            value={yearsExp}
-            onChange={(e) => setYearsExp(e.target.value)}
-            className={inputCls}
-            placeholder="e.g. 5"
-          />
-        </div>
-      </div>
-
-      {/* Languages */}
-      <div className={sectionCls}>
-        <div>
-          <label className={labelCls}>
-            <Globe className="inline w-3 h-3 mr-1 opacity-60" />
-            Languages spoken
-          </label>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {LANGUAGES.map((lang) => (
-              <button
-                key={lang}
-                type="button"
-                onClick={() => toggleItem(languages, setLanguages, lang)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                  languages.includes(lang)
-                    ? "bg-[#1a7f45] border-[#36B347] text-white"
-                    : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500"
-                }`}
-              >
-                {lang}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Bio */}
-      <div className={sectionCls}>
-        <div>
-          <label className={labelCls}>Short bio</label>
-          <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            rows={3}
-            maxLength={500}
-            className={`${inputCls} resize-none`}
-            placeholder="Experienced CE driver with 8 years of international freight…"
-          />
-          <p className="text-xs text-slate-500 mt-1">{bio.length}/500</p>
-        </div>
-      </div>
-
-      {error && <p className="text-sm text-red-400">{error}</p>}
-      <button
-        type="submit"
-        disabled={loading}
-        className="px-5 py-2.5 rounded-xl bg-[#1a7f45] hover:bg-[#36B347] text-white text-sm font-bold transition-colors disabled:opacity-50"
-      >
-        {loading ? "Saving…" : saved ? "Saved ✓" : "Save driver profile"}
-      </button>
-    </form>
-  );
-}
-

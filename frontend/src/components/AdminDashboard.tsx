@@ -29,6 +29,8 @@ import {
   X,
   Phone,
   Globe,
+  Download,
+  FileImage,
 } from "lucide-react";
 import {
   BarChart,
@@ -2930,6 +2932,40 @@ function AdminUsersTab({
                   </div>
                 )}
               </div>
+              {/* Documents */}
+              <div style={{ fontWeight: "bold", fontSize: 11, marginBottom: 5, borderBottom: "1px solid #808080", paddingBottom: 2, marginTop: 8 }}>Documents</div>
+              {(() => {
+                const docs = [
+                  { url: vu.user.licenseFrontUrl, label: "License Front" },
+                  { url: vu.user.licenseBackUrl, label: "License Back" },
+                  { url: vu.user.passportFrontUrl, label: "Passport Front" },
+                  { url: vu.user.passportBackUrl, label: "Passport Back" },
+                ];
+                const hasAny = docs.some((d) => d.url);
+                if (!hasAny) return (
+                  <div style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#fff", padding: 8, color: "#808080", textAlign: "center", fontSize: 11 }}>No documents uploaded yet.</div>
+                );
+                return (
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+                    {docs.map(({ url, label }) =>
+                      url ? (
+                        <div key={label} style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#fff", overflow: "hidden" }}>
+                          <img src={url} alt={label} style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", display: "block" }} />
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 4px" }}>
+                            <span style={{ fontSize: 10, color: "#444" }}>{label}</span>
+                            <a href={url.replace("/upload/", "/upload/fl_attachment/")} target="_blank" rel="noopener noreferrer"
+                              style={{ fontSize: 10, color: "#000080", textDecoration: "underline", cursor: "pointer" }}>Download</a>
+                          </div>
+                        </div>
+                      ) : (
+                        <div key={label} style={{ border: "2px solid", borderColor: "#808080 #fff #fff #808080", background: "#f0f0f0", aspectRatio: "3/2", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <span style={{ fontSize: 10, color: "#808080" }}>{label} — not uploaded</span>
+                        </div>
+                      )
+                    )}
+                  </div>
+                );
+              })()}
               {/* Footer */}
               <div style={{ padding: "4px 10px 8px", textAlign: "right", borderTop: "1px solid #808080" }}>
                 <button style={w98Btn} onClick={() => setViewUser(null)}>Close</button>
@@ -3227,6 +3263,55 @@ function AdminUsersTab({
                     )}
                   </div>
                 )}
+              </div>
+
+              {/* Documents */}
+              <div className="border-t border-slate-800 pt-4">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Documents</p>
+                {(() => {
+                  const docs = [
+                    { url: vu.user.licenseFrontUrl, label: "License Front" },
+                    { url: vu.user.licenseBackUrl, label: "License Back" },
+                    { url: vu.user.passportFrontUrl, label: "Passport Front" },
+                    { url: vu.user.passportBackUrl, label: "Passport Back" },
+                  ];
+                  const hasAny = docs.some((d) => d.url);
+                  if (!hasAny) return (
+                    <div className="rounded-xl bg-slate-800/50 border border-slate-700 p-4 text-sm text-slate-400 text-center">
+                      No documents uploaded yet.
+                    </div>
+                  );
+                  return (
+                    <div className="grid grid-cols-2 gap-2">
+                      {docs.map(({ url, label }) =>
+                        url ? (
+                          <div key={label} className="rounded-xl overflow-hidden border border-slate-700 bg-slate-800 group">
+                            <div className="relative aspect-[3/2]">
+                              <img src={url} alt={label} className="w-full h-full object-cover" />
+                              <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <a
+                                  href={url.replace("/upload/", "/upload/fl_attachment/")}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#1a7f45] hover:bg-[#36B347] text-white text-xs font-semibold transition-colors"
+                                >
+                                  <Download className="w-3 h-3" /> Download
+                                </a>
+                              </div>
+                            </div>
+                            <p className="text-[10px] text-center text-slate-400 py-1 px-2">{label}</p>
+                          </div>
+                        ) : (
+                          <div key={label} className="rounded-xl border border-dashed border-slate-700/50 bg-slate-800/30 flex flex-col items-center justify-center gap-1 aspect-[3/2]">
+                            <FileImage className="w-4 h-4 text-slate-600" />
+                            <p className="text-[10px] text-slate-600">{label}</p>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
             </div>
           </div>
