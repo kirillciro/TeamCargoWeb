@@ -5,7 +5,7 @@ import cors from "cors";
 import express from "express";
 import crypto from "crypto";
 import multer from "multer";
-import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary, type UploadApiOptions } from "cloudinary";
 import { z } from "zod";
 import { OAuth2Client } from "google-auth-library";
 import { pool } from "./db.js";
@@ -2261,50 +2261,68 @@ cloudinary.config({
 
 const avatarUpload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB for profile photos
   fileFilter: (_req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Only image files are allowed"));
-    }
+    if (file.mimetype.startsWith("image/")) cb(null, true);
+    else cb(new Error("Only image files are allowed"));
   },
 });
+
+const docUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB for documents
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) cb(null, true);
+    else cb(new Error("Only image files are allowed"));
+  },
+});
+
+/** Sanitise a name for use as a Cloudinary folder segment */
+function sanitizeFolder(name: string): string {
+  return name.trim().replace(/[^a-zA-Z0-9 _-]/g, "").replace(/\s+/g, "_") || "Unknown";
+}
+
+/** Cloudinary upload_stream wrapped in a promise */
+function cloudinaryUpload(
+  buffer: Buffer,
+  opts: UploadApiOptions,
+): Promise<{ secure_url: string }> {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream(opts, (err, result) => {
+        if (err || !result) reject(err ?? new Error("Upload failed"));
+        else resolve(result as { secure_url: string });
+      })
+      .end(buffer);
+  });
+}
 
 app.post(
   "/profile/avatar",
   requireAuth,
   avatarUpload.single("avatar"),
   async (req: AuthedRequest, res) => {
-    if (!req.file) {
-      res.status(400).json({ error: "No file uploaded" });
-      return;
-    }
+    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
     try {
-      const uploadResult = await new Promise<{ secure_url: string }>(
-        (resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                folder: "Team_Cargo_Web-User_Profile_Images",
-                public_id: `user_${req.userId}`,
-                overwrite: true,
-                transformation: [
-                  { width: 400, height: 400, crop: "fill", gravity: "face" },
-                ],
-              },
-              (err, result) => {
-                if (err || !result) reject(err ?? new Error("Upload failed"));
-                else resolve(result as { secure_url: string });
-              },
-            )
-            .end(req.file!.buffer);
-        },
+      // Fetch user's last name for folder naming
+      const userRow = await pool.query<{ last_name: string }>(
+        `SELECT last_name FROM users WHERE id = $1 LIMIT 1`,
+        [req.userId],
       );
+      const lastName = sanitizeFolder(userRow.rows[0]?.last_name ?? "Unknown");
+      const folder = `TeamCargoWeb/${lastName}/Profile Image`;
+
+      const uploadResult = await cloudinaryUpload(req.file.buffer, {
+        folder,
+        public_id: `avatar_${req.userId}`,
+        overwrite: true,
+        transformation: [{ width: 400, height: 400, crop: "fill", gravity: "face" }],
+      });
 
       const { rows } = await pool.query(
         `UPDATE users SET avatar_url = $1 WHERE id = $2
-         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url`,
+         RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at,
+                   avatar_url, license_front_url, license_back_url, passport_front_url, passport_back_url`,
         [uploadResult.secure_url, req.userId],
       );
       res.json(mapUser(rows[0] as UserRow));
@@ -2324,39 +2342,37 @@ const DOC_COLUMNS: Record<string, string> = {
   passport_back:  "passport_back_url",
 };
 
+const DOC_FOLDERS: Record<string, string> = {
+  license_front:  "Driving License",
+  license_back:   "Driving License",
+  passport_front: "Passport-ID",
+  passport_back:  "Passport-ID",
+};
+
 app.post(
   "/profile/documents/:docType",
   requireAuth,
-  avatarUpload.single("document"),
+  docUpload.single("document"),
   async (req: AuthedRequest, res) => {
     const { docType } = req.params as { docType: string };
     const column = DOC_COLUMNS[docType];
-    if (!column) {
-      res.status(400).json({ error: "Invalid document type" });
-      return;
-    }
-    if (!req.file) {
-      res.status(400).json({ error: "No file uploaded" });
-      return;
-    }
+    const docFolder = DOC_FOLDERS[docType];
+    if (!column || !docFolder) { res.status(400).json({ error: "Invalid document type" }); return; }
+    if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
     try {
-      const uploadResult = await new Promise<{ secure_url: string }>(
-        (resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                folder: "Team_Cargo_Web-User_Documents",
-                public_id: `user_${req.userId}_${docType}`,
-                overwrite: true,
-              },
-              (err, result) => {
-                if (err || !result) reject(err ?? new Error("Upload failed"));
-                else resolve(result as { secure_url: string });
-              },
-            )
-            .end(req.file!.buffer);
-        },
+      // Fetch user's last name for folder naming
+      const userRow = await pool.query<{ last_name: string }>(
+        `SELECT last_name FROM users WHERE id = $1 LIMIT 1`,
+        [req.userId],
       );
+      const lastName = sanitizeFolder(userRow.rows[0]?.last_name ?? "Unknown");
+      const folder = `TeamCargoWeb/${lastName}/${docFolder}`;
+
+      const uploadResult = await cloudinaryUpload(req.file.buffer, {
+        folder,
+        public_id: `${docType}_${req.userId}`,
+        overwrite: true,
+      });
 
       await pool.query(
         `UPDATE users SET ${column} = $1 WHERE id = $2`,
