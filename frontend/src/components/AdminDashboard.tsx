@@ -3,14 +3,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   Users,
   BarChart3,
   Mail,
   Search,
-  ShieldCheck,
-  ShieldOff,
   Trash2,
   Loader2,
   CheckCircle,
@@ -28,7 +27,6 @@ import {
   Truck,
   X,
   Phone,
-  Globe,
   Download,
   FileImage,
 } from "lucide-react";
@@ -817,7 +815,7 @@ export default function AdminDashboard({
               <AdminEmailsTab dict={dict} win98 />
             </Win98Window>
           ) : (
-            <div className="max-w-[83.6352rem] mx-auto px-2 pt-[100px] pb-[100px]">
+            <div className="max-w-[83.6352rem] mx-auto px-2 pt-25 pb-25">
               <AdminEmailsTab dict={dict} />
             </div>
           ))}
@@ -857,118 +855,6 @@ const W98IcUser = () => (
   >
     <circle cx="8" cy="5" r="3" fill="currentColor" />
     <path d="M2 15 Q2 10 8 10 Q14 10 14 15" fill="currentColor" />
-  </svg>
-);
-const W98IcUsers = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
-    style={{ display: "block", flexShrink: 0 }}
-  >
-    <circle cx="5" cy="5" r="2.5" fill="currentColor" />
-    <circle cx="11" cy="5" r="2.5" fill="currentColor" />
-    <path
-      d="M0 14 Q0 10 5 10 Q7 10 8 11 Q9 10 11 10 Q16 10 16 14"
-      fill="currentColor"
-    />
-  </svg>
-);
-const W98IcChart = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
-    style={{ display: "block", flexShrink: 0 }}
-  >
-    <rect x="1" y="9" width="3" height="6" fill="currentColor" />
-    <rect x="5" y="5" width="3" height="10" fill="currentColor" />
-    <rect x="9" y="2" width="3" height="13" fill="currentColor" />
-    <rect x="13" y="6" width="2" height="9" fill="currentColor" />
-    <rect x="0" y="15" width="16" height="1" fill="currentColor" />
-  </svg>
-);
-const W98IcCursor = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
-    style={{ display: "block", flexShrink: 0 }}
-  >
-    <polygon
-      points="3,1 3,13 6,10 9,15 11,14 8,9 13,9"
-      fill="currentColor"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-const W98IcGlobe = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    style={{ display: "block", flexShrink: 0 }}
-  >
-    <circle cx="8" cy="8" r="6" />
-    <ellipse cx="8" cy="8" rx="2.5" ry="6" />
-    <line x1="2" y1="8" x2="14" y2="8" />
-    <line x1="3" y1="5" x2="13" y2="5" />
-    <line x1="3" y1="11" x2="13" y2="11" />
-  </svg>
-);
-const W98IcPin = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
-    style={{ display: "block", flexShrink: 0 }}
-  >
-    <circle
-      cx="8"
-      cy="6"
-      r="4"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    />
-    <circle cx="8" cy="6" r="1.5" fill="currentColor" />
-    <path d="M5.5 9.2 Q8 15 8 15 Q8 15 10.5 9.2" fill="currentColor" />
-  </svg>
-);
-const W98IcDoc = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    style={{ display: "block", flexShrink: 0 }}
-  >
-    <polygon points="3,1 10,1 13,4 13,15 3,15" />
-    <polyline points="10,1 10,4 13,4" />
-    <line x1="5" y1="7" x2="11" y2="7" />
-    <line x1="5" y1="10" x2="11" y2="10" />
-    <line x1="5" y1="13" x2="9" y2="13" />
-  </svg>
-);
-const W98IcMonitor = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    style={{ display: "block", flexShrink: 0 }}
-  >
-    <rect x="1" y="2" width="14" height="9" />
-    <line x1="5" y1="11" x2="5" y2="14" />
-    <line x1="11" y1="11" x2="11" y2="14" />
-    <line x1="3" y1="14" x2="13" y2="14" />
   </svg>
 );
 const W98IcMail = () => (
@@ -3059,13 +2945,15 @@ function AdminUsersTab({
                             }}
                           >
                             {vu.user.avatarUrl ? (
-                              <img
+                              <Image
                                 src={vu.user.avatarUrl}
                                 alt="avatar"
+                                width={60}
+                                height={60}
                                 style={{
+                                  objectFit: "cover",
                                   width: "100%",
                                   height: "100%",
-                                  objectFit: "cover",
                                 }}
                               />
                             ) : (
@@ -3432,6 +3320,8 @@ function AdminUsersTab({
                                     style={{
                                       position: "relative",
                                       cursor: "zoom-in",
+                                      aspectRatio: "3/2",
+                                      width: "100%",
                                     }}
                                     onClick={(e) => {
                                       e.stopPropagation();
@@ -3439,15 +3329,12 @@ function AdminUsersTab({
                                     }}
                                     title="Click to enlarge"
                                   >
-                                    <img
+                                    <Image
                                       src={url}
                                       alt={label}
-                                      style={{
-                                        width: "100%",
-                                        aspectRatio: "3/2",
-                                        objectFit: "cover",
-                                        display: "block",
-                                      }}
+                                      fill
+                                      style={{ objectFit: "cover" }}
+                                      sizes="200px"
                                     />
                                     <div
                                       style={{
@@ -3587,15 +3474,19 @@ function AdminUsersTab({
             >
               ✕ Close
             </div>
-            <img
+            <Image
               src={previewUrl}
               alt="Preview"
+              width={1200}
+              height={900}
               style={{
                 maxWidth: "100%",
-                maxHeight: "100%",
+                maxHeight: "90vh",
                 objectFit: "contain",
                 border: "2px solid",
                 borderColor: "#fff #808080 #808080 #fff",
+                width: "auto",
+                height: "auto",
               }}
               onClick={(e) => e.stopPropagation()}
             />
@@ -3610,7 +3501,7 @@ function AdminUsersTab({
       {/* ── Image preview lightbox ── */}
       {previewUrl && (
         <div
-          className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4"
+          className="fixed inset-0 z-60 bg-black/90 flex items-center justify-center p-4"
           onClick={() => setPreviewUrl(null)}
         >
           <button
@@ -3619,10 +3510,13 @@ function AdminUsersTab({
           >
             <X className="w-6 h-6" />
           </button>
-          <img
+          <Image
             src={previewUrl}
             alt="Preview"
+            width={1200}
+            height={900}
             className="max-w-full max-h-full rounded-xl shadow-2xl object-contain"
+            style={{ width: "auto", height: "auto" }}
             onClick={(e) => e.stopPropagation()}
           />
         </div>
@@ -3749,7 +3643,7 @@ function AdminUsersTab({
                           )}
                         </span>
                         <span
-                          className={`text-[11px] font-medium min-w-[42px] text-left ${
+                          className={`text-[11px] font-medium min-w-10.5 text-left ${
                             u.isVerified ? "text-green-400" : "text-slate-400"
                           }`}
                         >
@@ -3791,7 +3685,7 @@ function AdminUsersTab({
                           )}
                         </span>
                         <span
-                          className={`text-[11px] font-medium min-w-[36px] text-left ${
+                          className={`text-[11px] font-medium min-w-9 text-left ${
                             u.role === "admin"
                               ? "text-amber-400"
                               : "text-slate-400"
@@ -3900,9 +3794,11 @@ function AdminUsersTab({
                         <div className="flex items-center gap-4">
                           <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#1a7f45] to-[#36B347] flex items-center justify-center text-2xl font-bold text-white shrink-0 overflow-hidden">
                             {vu.user.avatarUrl ? (
-                              <img
+                              <Image
                                 src={vu.user.avatarUrl}
                                 alt="avatar"
+                                width={64}
+                                height={64}
                                 className="w-full h-full object-cover"
                               />
                             ) : (
@@ -4094,12 +3990,14 @@ function AdminUsersTab({
                                     e.stopPropagation();
                                     setPreviewUrl(url);
                                   }}
-                                  className="relative aspect-[8/5] w-full block cursor-zoom-in group"
+                                  className="relative aspect-8/5 w-full block cursor-zoom-in group"
                                 >
-                                  <img
+                                  <Image
                                     src={url}
                                     alt={label}
-                                    className="absolute inset-0 w-full h-full object-cover"
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 640px) 50vw, 192px"
                                   />
                                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                     <svg
@@ -4140,7 +4038,7 @@ function AdminUsersTab({
                             ) : (
                               <div
                                 key={label}
-                                className="rounded-xl border border-dashed border-slate-700/50 bg-slate-800/30 aspect-[8/5] flex flex-col items-center justify-center gap-1.5"
+                                className="rounded-xl border border-dashed border-slate-700/50 bg-slate-800/30 aspect-8/5 flex flex-col items-center justify-center gap-1.5"
                               >
                                 <FileImage className="w-5 h-5 text-slate-600" />
                                 <p className="text-[10px] text-slate-600 text-center px-2">

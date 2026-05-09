@@ -1,6 +1,7 @@
 "use client";
 
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
+import Image from "next/image";
 import {
   Activity,
   Award,
@@ -830,6 +831,7 @@ export default function AdminCustomizationTab({
     svcCard4: false,
     svcCard5: false,
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [svcSavingKey, setSvcSavingKey] = useState<ServicesSectionKey | null>(
     null,
   );
@@ -893,6 +895,7 @@ export default function AdminCustomizationTab({
     aboutImgTopRight: false,
     aboutImgBottomRight: false,
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [aboutSavingKey, setAboutSavingKey] = useState<AboutSectionKey | null>(
     null,
   );
@@ -928,6 +931,7 @@ export default function AdminCustomizationTab({
     null,
   );
   const [housingIconPages, setHousingIconPages] = useState([0, 0, 0, 0]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [housingSectionSaved, setHousingSectionSaved] = useState<
     Record<HousingSectionKey, boolean>
   >({
@@ -939,6 +943,7 @@ export default function AdminCustomizationTab({
     housingImg2: false,
     housingBg: false,
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [housingSavingKey, setHousingSavingKey] =
     useState<HousingSectionKey | null>(null);
   const [housingTranslating, setHousingTranslating] = useState(false);
@@ -1000,6 +1005,7 @@ export default function AdminCustomizationTab({
     contactMapPin: false,
     contactImg: false,
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [contactSavingKey, setContactSavingKey] =
     useState<ContactSectionKey | null>(null);
   const [contactTranslating, setContactTranslating] = useState(false);
@@ -1142,8 +1148,9 @@ export default function AdminCustomizationTab({
     setpending: (v: boolean) => void,
     event: string,
   ) => {
-    const deadline = Date.now() + 120_000;
+    let deadline = 0;
     const attempt = async () => {
+      if (!deadline) deadline = Date.now() + 120_000;
       if (Date.now() > deadline) {
         setpending(false);
         return;
@@ -2414,6 +2421,7 @@ export default function AdminCustomizationTab({
             minWidth: 88,
           };
           const BTN_RED: React.CSSProperties = { ...BTN, color: "#cc0000" };
+          void BTN_RED;
           const BTN_LG: React.CSSProperties = {
             ...BTN,
             padding: "4px 22px",
@@ -2941,6 +2949,7 @@ export default function AdminCustomizationTab({
             ...BTN,
             color: "#800000",
           };
+          void BTN_RED;
           const BTN_LG: React.CSSProperties = {
             ...BTN,
             padding: "5px 20px",
@@ -5614,10 +5623,13 @@ export default function AdminCustomizationTab({
                   />
                 </div>
                 {card.img && (
-                  <img
+                  <Image
                     src={card.img}
                     alt=""
+                    width={400}
+                    height={96}
                     className="w-full h-24 object-cover rounded-lg"
+                    style={{ width: "100%", height: "auto" }}
                   />
                 )}
                 <CloudinaryLogoUpload
@@ -6594,10 +6606,13 @@ export default function AdminCustomizationTab({
                 Left Image
               </p>
               {aboutImgLeft && (
-                <img
+                <Image
                   src={aboutImgLeft}
                   alt=""
+                  width={400}
+                  height={112}
                   className="w-full h-28 object-cover rounded-lg"
+                  style={{ width: "100%", height: "auto" }}
                 />
               )}
               <CloudinaryLogoUpload
@@ -6610,10 +6625,13 @@ export default function AdminCustomizationTab({
                 Top Right Image
               </p>
               {aboutImgTopRight && (
-                <img
+                <Image
                   src={aboutImgTopRight}
                   alt=""
+                  width={400}
+                  height={112}
                   className="w-full h-28 object-cover rounded-lg"
+                  style={{ width: "100%", height: "auto" }}
                 />
               )}
               <CloudinaryLogoUpload
@@ -6626,10 +6644,13 @@ export default function AdminCustomizationTab({
                 Bottom Right Image
               </p>
               {aboutImgBottomRight && (
-                <img
+                <Image
                   src={aboutImgBottomRight}
                   alt=""
+                  width={400}
+                  height={112}
                   className="w-full h-28 object-cover rounded-lg"
+                  style={{ width: "100%", height: "auto" }}
                 />
               )}
               <CloudinaryLogoUpload
@@ -7313,9 +7334,11 @@ export default function AdminCustomizationTab({
               >
                 <div style={GRP}>
                   <span style={GRP_LBL}>Photo 1 (left column)</span>
-                  <img
+                  <Image
                     src={housingImg1 || "/images/living_1_webP.webp"}
                     alt=""
+                    width={400}
+                    height={140}
                     style={{
                       width: "100%",
                       height: 140,
@@ -7356,9 +7379,11 @@ export default function AdminCustomizationTab({
                 </div>
                 <div style={GRP}>
                   <span style={GRP_LBL}>Photo 2 (right column)</span>
-                  <img
+                  <Image
                     src={housingImg2 || "/images/living_2_webP.webp"}
                     alt=""
+                    width={400}
+                    height={140}
                     style={{
                       width: "100%",
                       height: 140,
@@ -7561,10 +7586,13 @@ export default function AdminCustomizationTab({
                 Photo 1
               </p>
               {housingImg1 && (
-                <img
+                <Image
                   src={housingImg1}
                   alt=""
+                  width={400}
+                  height={128}
                   className="w-full h-32 object-cover rounded-lg"
+                  style={{ width: "100%", height: "auto" }}
                 />
               )}
               <CloudinaryLogoUpload
@@ -7577,10 +7605,13 @@ export default function AdminCustomizationTab({
                 Photo 2
               </p>
               {housingImg2 && (
-                <img
+                <Image
                   src={housingImg2}
                   alt=""
+                  width={400}
+                  height={128}
                   className="w-full h-32 object-cover rounded-lg"
+                  style={{ width: "100%", height: "auto" }}
                 />
               )}
               <CloudinaryLogoUpload
@@ -7756,10 +7787,13 @@ export default function AdminCustomizationTab({
               Background / Side Image
             </p>
             {contactImg && (
-              <img
+              <Image
                 src={contactImg}
                 alt=""
+                width={400}
+                height={128}
                 className="w-full h-32 object-cover rounded-lg"
+                style={{ width: "100%", height: "auto" }}
               />
             )}
             <CloudinaryLogoUpload value={contactImg} onChange={setContactImg} />
@@ -8646,6 +8680,7 @@ export default function AdminCustomizationTab({
             borderBottom: "1px solid #fff",
             margin: "8px 0",
           };
+          void HR;
           const INPUT: React.CSSProperties = {
             fontFamily: F,
             fontSize: 11,

@@ -287,7 +287,7 @@ export default function HeroSection({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 bg-[var(--brand-green)] hover:bg-[var(--brand-mid)] text-[var(--brand-btn-text)] font-bold rounded-xl transition-all shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
+              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 bg-brand-green hover:bg-brand-mid text-brand-btn-text font-bold rounded-xl transition-all shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
               style={{ width: "40%" }}
             >
               <Phone className="w-4 h-4" />
