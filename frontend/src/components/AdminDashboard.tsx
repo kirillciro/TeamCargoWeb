@@ -2854,7 +2854,7 @@ function AdminUsersTab({
             style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.3)" }}
             onClick={(e) => { if (e.target === e.currentTarget) setViewUser(null); }}
           >
-            <div style={{ width: "100%", maxWidth: 560, background: "#c0c0c0", border: "2px solid", borderColor: "#fff #808080 #808080 #fff", boxShadow: "4px 4px 0 #000", fontFamily: "MS Sans Serif, Arial, sans-serif", fontSize: 11 }}>
+            <div style={{ width: "100%", maxWidth: 560, background: "#c0c0c0", border: "2px solid", borderColor: "#fff #808080 #808080 #fff", fontFamily: "MS Sans Serif, Arial, sans-serif", fontSize: 11 }}>
               {/* Title bar */}
               <div style={w98TitleBar}>
                 <span>User &amp; Driver Profile</span>
