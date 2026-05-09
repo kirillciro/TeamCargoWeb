@@ -72,6 +72,11 @@ body:has([data-admin]) {
   background: #020617;
 }
 
+/* Profile page — same fix */
+body:has([data-profile]) {
+  background: #020617;
+}
+
 /* ── Marquee (partner logos ticker) ─────────────────────── */
 @keyframes marquee {
   0% {

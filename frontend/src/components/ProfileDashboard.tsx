@@ -61,7 +61,7 @@ export default function ProfileDashboard({
   const fullName = `${user.firstName} ${user.lastName}`.trim();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pt-20 sm:pt-24">
+    <div data-profile className="min-h-screen bg-slate-950 text-white pt-20 sm:pt-24">
       {/* ── Top bar ── */}
       <div className="sticky top-16 sm:top-20 z-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
