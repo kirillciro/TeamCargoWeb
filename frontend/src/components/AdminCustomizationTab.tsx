@@ -2002,21 +2002,33 @@ export default function AdminCustomizationTab({
                 : "Header is always solid — no fade effect."}
             </p>
           </div>
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 flex items-center justify-between gap-4">
-            <span className="text-xs text-slate-400">
-              {headerSaved ? "Saved ✓" : "Changes are not yet saved."}
-            </span>
-            <button
-              onClick={() => {
-                localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
-                window.dispatchEvent(new Event("tc-header-settings-changed"));
-                setHeaderSaved(true);
-                setTimeout(() => setHeaderSaved(false), 2000);
-              }}
-              className="bg-amber-400 hover:bg-amber-300 text-amber-950 font-semibold text-sm px-5 py-2 rounded-lg transition-colors"
-            >
-              Save
-            </button>
+          <div className="rounded-2xl bg-amber-400/5 border border-amber-400/10 p-5 flex items-center justify-between gap-4 flex-wrap">
+            <p className="text-xs text-slate-400">
+              Apply header display settings across the entire site
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              <button
+                onClick={() => {
+                  localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
+                  window.dispatchEvent(new Event("tc-header-settings-changed"));
+                  setHeaderSaved(true);
+                  setTimeout(() => setHeaderSaved(false), 2000);
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 px-5 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-300 transition-colors"
+              >
+                {headerSaved ? "All Saved ✓" : "Save All"}
+              </button>
+              <button
+                onClick={() => {
+                  setHeaderTransparent(true);
+                  localStorage.removeItem(LS_HEADER);
+                  window.dispatchEvent(new Event("tc-header-settings-changed"));
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-red-800/50 px-5 py-2 text-sm font-medium text-red-400 hover:bg-red-900/20 transition-colors"
+              >
+                Restore Defaults
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -2109,19 +2121,31 @@ export default function AdminCustomizationTab({
               >
                 <span style={GRP_LBL}>Global Actions</span>
                 <span style={{ fontFamily: F, fontSize: 11 }}>
-                  {headerSaved ? "Saved ✓" : "Save header display settings"}
+                  Apply header display settings across the entire site
                 </span>
-                <button
-                  onClick={() => {
-                    localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
-                    window.dispatchEvent(new Event("tc-header-settings-changed"));
-                    setHeaderSaved(true);
-                    setTimeout(() => setHeaderSaved(false), 2000);
-                  }}
-                  style={BTN_LG}
-                >
-                  Save
-                </button>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <button
+                    onClick={() => {
+                      localStorage.setItem(LS_HEADER, JSON.stringify({ transparent: headerTransparent }));
+                      window.dispatchEvent(new Event("tc-header-settings-changed"));
+                      setHeaderSaved(true);
+                      setTimeout(() => setHeaderSaved(false), 2000);
+                    }}
+                    style={BTN_LG}
+                  >
+                    {headerSaved ? "All Saved ✓" : "Save All"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setHeaderTransparent(true);
+                      localStorage.removeItem(LS_HEADER);
+                      window.dispatchEvent(new Event("tc-header-settings-changed"));
+                    }}
+                    style={{ ...BTN_LG, color: "#cc0000" }}
+                  >
+                    Restore Defaults
+                  </button>
+                </div>
               </div>
             </div>
           );
