@@ -69,9 +69,7 @@ export default function FooterTab() {
     })
       .then(() => window.dispatchEvent(new Event("tc:footer-updated")))
       .catch((err: unknown) =>
-        setFooterSaveError(
-          err instanceof Error ? err.message : "Reset failed",
-        ),
+        setFooterSaveError(err instanceof Error ? err.message : "Reset failed"),
       );
   };
 
@@ -176,9 +174,7 @@ export default function FooterTab() {
             fetchWithAuth("/api/admin/customization/footer", {
               method: "DELETE",
             })
-              .then(() =>
-                window.dispatchEvent(new Event("tc:footer-updated")),
-              )
+              .then(() => window.dispatchEvent(new Event("tc:footer-updated")))
               .catch((err: unknown) =>
                 setFooterSaveError(
                   err instanceof Error ? err.message : "Reset failed",

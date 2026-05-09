@@ -54,8 +54,7 @@ export default function ColorsTab() {
                         value={colors[key]}
                         onChange={(e) => {
                           const v = e.target.value;
-                          if (/^#[0-9a-fA-F]{0,6}$/.test(v))
-                            applyColor(key, v);
+                          if (/^#[0-9a-fA-F]{0,6}$/.test(v)) applyColor(key, v);
                         }}
                         placeholder={defaultHex}
                         maxLength={7}
@@ -114,8 +113,7 @@ export default function ColorsTab() {
                       value={colors[key]}
                       onChange={(e) => {
                         const v = e.target.value;
-                        if (/^#[0-9a-fA-F]{0,6}$/.test(v))
-                          applyColor(key, v);
+                        if (/^#[0-9a-fA-F]{0,6}$/.test(v)) applyColor(key, v);
                       }}
                       placeholder="#040f08"
                       maxLength={7}

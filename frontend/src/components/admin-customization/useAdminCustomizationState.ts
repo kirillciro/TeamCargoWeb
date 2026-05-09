@@ -138,7 +138,7 @@ export function useAdminCustomizationState({
         contact: Record<string, string> | null;
         footer: Record<string, string> | null;
       };
-    const parse = <T,>(key: string): T | null => {
+    const parse = <T>(key: string): T | null => {
       try {
         const s = localStorage.getItem(key);
         return s ? (JSON.parse(s) as T) : null;

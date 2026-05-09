@@ -318,7 +318,11 @@ export const FONT_OPTIONS: FontOption[] = [
 ];
 
 // ── Icon option arrays ────────────────────────────────────────────────────
-export const HOUSING_ICON_OPTS: { id: string; Icon: LucideIcon; label: string }[][] = [
+export const HOUSING_ICON_OPTS: {
+  id: string;
+  Icon: LucideIcon;
+  label: string;
+}[][] = [
   [
     { id: "home", Icon: Home, label: "Home" },
     { id: "bed-double", Icon: BedDouble, label: "Bedroom" },
@@ -372,7 +376,11 @@ export const HOUSING_ICON_OPTS: { id: string; Icon: LucideIcon; label: string }[
   ],
 ];
 
-export const CONTACT_ICON_OPTS: { id: string; Icon: LucideIcon; label: string }[][] = [
+export const CONTACT_ICON_OPTS: {
+  id: string;
+  Icon: LucideIcon;
+  label: string;
+}[][] = [
   [
     { id: "phone", Icon: Phone, label: "Phone" },
     { id: "smartphone", Icon: Smartphone, label: "Mobile" },
@@ -521,7 +529,11 @@ export const BADGE_ICON_OPTS: Record<
   ],
 };
 
-export const TRUST_ICON_OPTS: { id: string; Icon: LucideIcon; label: string }[][] = [
+export const TRUST_ICON_OPTS: {
+  id: string;
+  Icon: LucideIcon;
+  label: string;
+}[][] = [
   [
     { id: "shield", Icon: Shield, label: "Shield" },
     { id: "shield-check", Icon: ShieldCheck, label: "Shield Check" },

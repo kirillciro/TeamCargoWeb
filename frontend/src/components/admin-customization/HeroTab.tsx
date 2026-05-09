@@ -629,9 +629,7 @@ export default function HeroTab() {
                     value={p.logo}
                     onChange={(url) =>
                       setPartners((prev) =>
-                        prev.map((x, j) =>
-                          j === i ? { ...x, logo: url } : x,
-                        ),
+                        prev.map((x, j) => (j === i ? { ...x, logo: url } : x)),
                       )
                     }
                   />

@@ -271,7 +271,16 @@ function extractLines(start, end) {
 
 // For each section, build the tab component file
 for (const section of SECTIONS) {
-  const { name, subtab, modernStart, modernEnd, win98Start, win98End, imports, extraState } = section;
+  const {
+    name,
+    subtab,
+    modernStart,
+    modernEnd,
+    win98Start,
+    win98End,
+    imports,
+    extraState,
+  } = section;
 
   // Extract JSX blocks — strip the outer conditional wrapper
   // Modern block: {subTab === "xxx" && !win98 && (...)}
@@ -306,10 +315,10 @@ export default function ${name}() {
 
   return (
     <>
-      ${modernJsx.split('\n').join('\n      ')}
+      ${modernJsx.split("\n").join("\n      ")}
 
       {win98 && (() => {
-        ${win98Jsx.split('\n').join('\n        ')}
+        ${win98Jsx.split("\n").join("\n        ")}
       })()}
     </>
   );

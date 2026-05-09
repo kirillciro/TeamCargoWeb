@@ -554,10 +554,7 @@ export default function ContactTab() {
                   <button
                     style={BTN}
                     onClick={() =>
-                      void persistContact(
-                        buildContactSource(),
-                        "contactLabels",
-                      )
+                      void persistContact(buildContactSource(), "contactLabels")
                     }
                     disabled={contactTranslating}
                   >
@@ -867,10 +864,7 @@ export default function ContactTab() {
                 style={{ width: "100%", height: "auto" }}
               />
             )}
-            <CloudinaryLogoUpload
-              value={contactImg}
-              onChange={setContactImg}
-            />
+            <CloudinaryLogoUpload value={contactImg} onChange={setContactImg} />
           </div>
 
           {/* Global Actions */}

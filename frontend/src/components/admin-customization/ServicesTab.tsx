@@ -197,10 +197,7 @@ export default function ServicesTab() {
                 <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
                   <button
                     onClick={() =>
-                      void persistServices(
-                        buildServicesSource(),
-                        "svcHeading",
-                      )
+                      void persistServices(buildServicesSource(), "svcHeading")
                     }
                     disabled={svcTranslating}
                     style={BTN}
