@@ -57,19 +57,32 @@ const LANGUAGES = [
 ];
 
 function computeCompleteness(
-  user: { firstName: string; lastName: string },
+  user: {
+    firstName: string;
+    lastName: string;
+    avatarUrl: string | null;
+    licenseFrontUrl: string | null;
+    licenseBackUrl: string | null;
+    passportFrontUrl: string | null;
+    passportBackUrl: string | null;
+  },
   dp: DriverProfile | null,
 ): number {
   let score = 0;
-  if (user.firstName && user.lastName) score += 10;
-  if (dp?.phone) score += 10;
-  if (dp?.whatsapp) score += 10;
-  if (dp?.country) score += 10;
-  if (dp?.license_cats?.length) score += 20;
-  if (dp?.years_exp !== null && dp?.years_exp !== undefined) score += 10;
-  if (dp?.languages?.length) score += 15;
+  if (user.firstName && user.lastName) score += 8;
+  if (user.avatarUrl) score += 7;
+  if (dp?.phone) score += 7;
+  if (dp?.whatsapp) score += 5;
+  if (dp?.country) score += 8;
+  if (dp?.license_cats?.length) score += 15;
+  if (dp?.years_exp !== null && dp?.years_exp !== undefined) score += 8;
+  if (dp?.languages?.length) score += 10;
   if (dp?.availability) score += 5;
-  if (dp?.bio) score += 10;
+  if (dp?.bio) score += 7;
+  if (user.licenseFrontUrl) score += 5;
+  if (user.licenseBackUrl) score += 5;
+  if (user.passportFrontUrl) score += 5;
+  if (user.passportBackUrl) score += 5;
   return score;
 }
 
