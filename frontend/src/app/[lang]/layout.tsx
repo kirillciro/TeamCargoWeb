@@ -18,5 +18,19 @@ export default async function LangLayout({
     notFound();
   }
 
-  return <>{children}</>;
+  // Patch <html lang> at the earliest possible moment so crawlers and
+  // screen-readers always see the correct language code. The root layout
+  // hardcodes lang="nl" because Next.js requires <html> there; this inline
+  // script overrides it synchronously before first paint — same pattern as
+  // the brand-color injection already used in the root layout.
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.setAttribute('lang','${lang}')`,
+        }}
+      />
+      {children}
+    </>
+  );
 }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/getDictionary";
 import { isSupportedLanguage, defaultLang } from "@/lib/i18n";
 import Header from "@/components/Header";
@@ -5,6 +6,22 @@ import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import AuthModal from "@/components/AuthModal";
 import { ShieldCheck, BarChart2, Settings } from "lucide-react";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const resolvedLang = isSupportedLanguage(lang) ? lang : defaultLang;
+  const dict = await getDictionary(resolvedLang);
+  return {
+    title: `${dict.cookies_page.title} | Team Cargo`,
+    alternates: { canonical: `${SITE_URL}/${resolvedLang}/cookies` },
+  };
+}
 
 export default async function CookiesPage({
   params,
@@ -18,7 +35,7 @@ export default async function CookiesPage({
 
   return (
     <AuthProvider>
-      <Header lang={resolvedLang} dict={dict} />
+      <Header lang={resolvedLang} dict={dict} forceOpaque />
       <main className="flex-1 bg-white pt-28 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <span className="text-[#36B347] text-xs font-bold uppercase tracking-[0.25em]">
