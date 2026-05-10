@@ -18,6 +18,7 @@ section[id] {
 
 :root {
   --brand-green: #36b347;
+  --brand-green-text: #166534;
   --brand-mid: #079441;
   --brand-dark: #006637;
   --brand-btn-text: #ffffff;
@@ -37,6 +38,7 @@ section[id] {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand-green: var(--brand-green);
+  --color-brand-green-text: var(--brand-green-text);
   --color-brand-mid: var(--brand-mid);
   --color-brand-dark: var(--brand-dark);
   --color-brand-btn-text: var(--brand-btn-text);
@@ -80,16 +82,17 @@ body:has([data-profile]) {
 /* ── Marquee (partner logos ticker) ─────────────────────── */
 @keyframes marquee {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .marquee-track {
   display: flex;
   width: max-content;
+  will-change: transform;
   animation: marquee 60s linear infinite;
 }
 

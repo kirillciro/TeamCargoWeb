@@ -96,11 +96,6 @@ const TAB_ICONS: Record<Tab, React.ElementType> = {
   settings: Settings,
 };
 
-const TAB_LABELS: Record<Tab, string> = {
-  overview: "Overview",
-  settings: "Settings",
-};
-
 export default function ProfileDashboard({
   lang,
   dict,
@@ -208,7 +203,9 @@ export default function ProfileDashboard({
                 className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Back to site</span>
+                <span className="hidden sm:inline">
+                  {dict.profile.back_to_site}
+                </span>
               </Link>
             </div>
           </div>
@@ -228,7 +225,9 @@ export default function ProfileDashboard({
                   }`}
                 >
                   <Icon className="w-4 h-4" />
-                  {TAB_LABELS[key]}
+                  {key === "overview"
+                    ? dict.profile.tab_overview
+                    : dict.profile.tab_settings}
                 </button>
               );
             })}
@@ -256,6 +255,7 @@ export default function ProfileDashboard({
             onDriverProfileSaved={setDriverProfile}
             onAvatarSaved={refreshUser}
             setActive={setActive}
+            dict={dict}
           />
         )}
       </div>
@@ -313,17 +313,17 @@ function ProfileOverview({
           </div>
           <div>
             <h1 className="text-xl font-bold text-white">
-              Welcome back, {user.firstName || "there"}!
+              {dict.profile.welcome_back}, {user.firstName || "there"}!
             </h1>
             <p className="text-slate-400 text-sm mt-0.5">{user.email}</p>
             <div className="flex flex-wrap gap-2 mt-2">
               {user.isVerified ? (
                 <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-green-400 bg-green-400/10 border border-green-400/20 rounded-full px-2.5 py-0.5">
-                  <ShieldCheck className="w-3 h-3" /> Verified
+                  <ShieldCheck className="w-3 h-3" /> {dict.profile.verified}
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 rounded-full px-2.5 py-0.5">
-                  Not verified
+                  {dict.profile.not_verified}
                 </span>
               )}
               {user.role === "admin" && (
@@ -342,10 +342,10 @@ function ProfileOverview({
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm font-bold text-white">
-                Profile completeness
+                {dict.profile.completeness_title}
               </p>
               <p className="text-xs text-slate-400 mt-0.5">
-                Complete your driver profile to be visible to employers
+                {dict.profile.completeness_sub}
               </p>
             </div>
             <span className="text-lg font-bold text-[#36B347]">
@@ -362,7 +362,7 @@ function ProfileOverview({
             onClick={() => setActive("settings")}
             className="mt-3 text-xs text-[#36B347] hover:text-[#4ade80] font-semibold transition-colors"
           >
-            Complete profile →
+            {dict.profile.complete_cta}
           </button>
         </div>
       )}
@@ -370,21 +370,27 @@ function ProfileOverview({
       {/* Info grid */}
       <div className="grid sm:grid-cols-2 gap-4">
         <InfoCard
-          label="Full name"
+          label={dict.profile.label_full_name}
           value={`${user.firstName} ${user.lastName}`.trim() || "—"}
         />
-        <InfoCard label="Email" value={user.email} />
+        <InfoCard label={dict.profile.label_email} value={user.email} />
         <InfoCard
-          label="Sign-in method"
-          value={user.provider === "local" ? "Email & Password" : user.provider}
+          label={dict.profile.label_signin_method}
+          value={
+            user.provider === "local"
+              ? dict.profile.signin_email
+              : user.provider
+          }
         />
-        <InfoCard label="Member since" value={joined} />
+        <InfoCard label={dict.profile.label_member_since} value={joined} />
       </div>
 
       {/* Quick links */}
       {user.role === "admin" && (
         <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5">
-          <h2 className="text-sm font-bold text-slate-300 mb-3">Admin tools</h2>
+          <h2 className="text-sm font-bold text-slate-300 mb-3">
+            {dict.profile.admin_tools}
+          </h2>
           <Link
             href={`/${lang}/admin`}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-400 text-amber-900 text-sm font-bold hover:bg-amber-300 transition-colors"
@@ -417,6 +423,7 @@ function ProfileSettings({
   dpLoading,
   onDriverProfileSaved,
   onAvatarSaved,
+  dict,
 }: {
   user: {
     email: string;
@@ -435,6 +442,7 @@ function ProfileSettings({
   onDriverProfileSaved: (dp: DriverProfile) => void;
   onAvatarSaved: () => Promise<void>;
   setActive: (tab: Tab) => void;
+  dict: Dictionary;
 }) {
   // ── DOB ──
   const [dob, setDob] = useState(user.dateOfBirth ?? "");
@@ -513,7 +521,7 @@ function ProfileSettings({
         }),
       ]);
       if (!dobRes.ok || !dpRes.ok) {
-        setSaveError("Failed to save some details. Please try again.");
+        setSaveError(dict.profile.save_error);
         return;
       }
       onDriverProfileSaved(dpPayload);
@@ -521,7 +529,7 @@ function ProfileSettings({
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch {
-      setSaveError("An unexpected error occurred.");
+      setSaveError(dict.profile.save_error_generic);
     } finally {
       setSaving(false);
     }
@@ -539,15 +547,18 @@ function ProfileSettings({
         <div className="p-6">
           <div className="flex items-center gap-2.5 mb-1">
             <UserCircle className="w-4 h-4 text-[#36B347]" />
-            <h2 className="text-sm font-bold text-white">Profile image</h2>
+            <h2 className="text-sm font-bold text-white">
+              {dict.profile.section_photo}
+            </h2>
           </div>
           <p className="text-xs text-slate-400 mb-5">
-            Click your photo to change it. Uploads immediately.
+            {dict.profile.photo_hint}
           </p>
           <AvatarUpload
             currentUrl={user.avatarUrl}
             initial={(user.firstName?.[0] ?? user.email[0]).toUpperCase()}
             onSaved={onAvatarSaved}
+            dict={dict}
           />
         </div>
 
@@ -556,28 +567,30 @@ function ProfileSettings({
           <div>
             <div className="flex items-center gap-2.5 mb-1">
               <IdCard className="w-4 h-4 text-[#36B347]" />
-              <h2 className="text-sm font-bold text-white">Personal details</h2>
+              <h2 className="text-sm font-bold text-white">
+                {dict.profile.section_personal}
+              </h2>
             </div>
             <p className="text-xs text-slate-400">
-              Your registered name and date of birth.
+              {dict.profile.personal_hint}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 max-w-sm">
             <div>
-              <p className={labelCls}>First name</p>
+              <p className={labelCls}>{dict.profile.label_first_name}</p>
               <div className="w-full bg-slate-800/40 border border-slate-700/60 rounded-lg px-3 py-2.5 text-sm text-slate-300 select-none">
                 {user.firstName || "—"}
               </div>
             </div>
             <div>
-              <p className={labelCls}>Last name</p>
+              <p className={labelCls}>{dict.profile.label_last_name}</p>
               <div className="w-full bg-slate-800/40 border border-slate-700/60 rounded-lg px-3 py-2.5 text-sm text-slate-300 select-none">
                 {user.lastName || "—"}
               </div>
             </div>
           </div>
           <div className="max-w-sm">
-            <label className={labelCls}>Date of birth</label>
+            <label className={labelCls}>{dict.profile.label_dob}</label>
             <div className="flex items-center gap-3">
               <input
                 type="date"
@@ -588,7 +601,7 @@ function ProfileSettings({
               />
               {age !== null && (
                 <span className="text-sm font-semibold text-[#36B347]">
-                  {age} years old
+                  {age} {dict.profile.years_old}
                 </span>
               )}
             </div>
@@ -600,15 +613,16 @@ function ProfileSettings({
           <div>
             <div className="flex items-center gap-2.5 mb-1">
               <Truck className="w-4 h-4 text-[#36B347]" />
-              <h2 className="text-sm font-bold text-white">Driver profile</h2>
+              <h2 className="text-sm font-bold text-white">
+                {dict.profile.section_driver}
+              </h2>
             </div>
-            <p className="text-xs text-slate-400">
-              Fill in your driver details so employers can find and contact you.
-            </p>
+            <p className="text-xs text-slate-400">{dict.profile.driver_hint}</p>
           </div>
           {dpLoading ? (
             <div className="flex items-center gap-2 text-slate-500 text-sm">
-              <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+              <Loader2 className="w-4 h-4 animate-spin" />{" "}
+              {dict.profile.loading}
             </div>
           ) : (
             <div className="space-y-5">
@@ -617,7 +631,7 @@ function ProfileSettings({
                 <div>
                   <label className={labelCls}>
                     <Phone className="inline w-3 h-3 mr-1 opacity-60" />
-                    Phone number
+                    {dict.profile.label_phone}
                   </label>
                   <input
                     type="tel"
@@ -632,7 +646,7 @@ function ProfileSettings({
                 <div>
                   <label className={labelCls}>
                     <Phone className="inline w-3 h-3 mr-1 opacity-60" />
-                    WhatsApp number
+                    {dict.profile.label_whatsapp}
                   </label>
                   <input
                     type="tel"
@@ -651,7 +665,7 @@ function ProfileSettings({
                 <div>
                   <label className={labelCls}>
                     <MapPin className="inline w-3 h-3 mr-1 opacity-60" />
-                    Country of residence
+                    {dict.profile.label_country}
                   </label>
                   <input
                     type="text"
@@ -664,23 +678,25 @@ function ProfileSettings({
                   />
                 </div>
                 <div>
-                  <label className={labelCls}>Availability</label>
+                  <label className={labelCls}>
+                    {dict.profile.label_availability}
+                  </label>
                   <div className="flex gap-2 mt-1 flex-wrap">
                     {(
                       [
                         [
                           "available",
-                          "Available",
+                          dict.profile.avail_available,
                           "text-green-400 bg-green-400/10 border-green-400/30",
                         ],
                         [
                           "open",
-                          "Open to offers",
+                          dict.profile.avail_open,
                           "text-amber-400 bg-amber-400/10 border-amber-400/30",
                         ],
                         [
                           "unavailable",
-                          "Not available",
+                          dict.profile.avail_unavailable,
                           "text-slate-400 bg-slate-800 border-slate-700",
                         ],
                       ] as [DriverProfile["availability"], string, string][]
@@ -706,7 +722,9 @@ function ProfileSettings({
 
               {/* License categories */}
               <div>
-                <label className={labelCls}>License categories</label>
+                <label className={labelCls}>
+                  {dict.profile.label_license_cats}
+                </label>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {LICENSE_CATS.map((cat) => (
                     <button
@@ -734,7 +752,9 @@ function ProfileSettings({
 
               {/* Experience */}
               <div className="max-w-40">
-                <label className={labelCls}>Years of experience</label>
+                <label className={labelCls}>
+                  {dict.profile.label_years_exp}
+                </label>
                 <input
                   type="number"
                   min={0}
@@ -752,7 +772,7 @@ function ProfileSettings({
               <div>
                 <label className={labelCls}>
                   <Globe className="inline w-3 h-3 mr-1 opacity-60" />
-                  Languages spoken
+                  {dict.profile.label_languages}
                 </label>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {LANGUAGES.map((lang) => (
@@ -781,7 +801,7 @@ function ProfileSettings({
 
               {/* Bio */}
               <div>
-                <label className={labelCls}>Short bio</label>
+                <label className={labelCls}>{dict.profile.label_bio}</label>
                 <textarea
                   value={dp.bio}
                   onChange={(e) =>
@@ -805,27 +825,26 @@ function ProfileSettings({
           <div>
             <div className="flex items-center gap-2.5 mb-1">
               <FileImage className="w-4 h-4 text-[#36B347]" />
-              <h2 className="text-sm font-bold text-white">Documents</h2>
+              <h2 className="text-sm font-bold text-white">
+                {dict.profile.section_documents}
+              </h2>
             </div>
-            <p className="text-xs text-slate-400">
-              Upload clear photos of your documents. Visible to admins only.
-              Uploads immediately.
-            </p>
+            <p className="text-xs text-slate-400">{dict.profile.docs_hint}</p>
           </div>
           <div className="space-y-5">
             <div>
               <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
-                Driving License
+                {dict.profile.doc_license}
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <DocUpload
-                  label="Front"
+                  label={dict.profile.doc_front}
                   docType="license_front"
                   currentUrl={user.licenseFrontUrl}
                   onSaved={onAvatarSaved}
                 />
                 <DocUpload
-                  label="Back"
+                  label={dict.profile.doc_back}
                   docType="license_back"
                   currentUrl={user.licenseBackUrl}
                   onSaved={onAvatarSaved}
@@ -834,17 +853,17 @@ function ProfileSettings({
             </div>
             <div>
               <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
-                Passport / ID Card
+                {dict.profile.doc_passport}
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <DocUpload
-                  label="Front"
+                  label={dict.profile.doc_front}
                   docType="passport_front"
                   currentUrl={user.passportFrontUrl}
                   onSaved={onAvatarSaved}
                 />
                 <DocUpload
-                  label="Back"
+                  label={dict.profile.doc_back}
                   docType="passport_back"
                   currentUrl={user.passportBackUrl}
                   onSaved={onAvatarSaved}
@@ -865,12 +884,12 @@ function ProfileSettings({
         >
           {saving ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Saving…
+              <Loader2 className="w-4 h-4 animate-spin" /> {dict.profile.saving}
             </>
           ) : saved ? (
-            "Saved ✓"
+            dict.profile.saved
           ) : (
-            "Save details"
+            dict.profile.save
           )}
         </button>
       </div>
@@ -884,10 +903,12 @@ function AvatarUpload({
   currentUrl,
   initial,
   onSaved,
+  dict,
 }: {
   currentUrl: string | null;
   initial: string;
   onSaved: () => Promise<void>;
+  dict: Dictionary;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(currentUrl);
@@ -963,7 +984,11 @@ function AvatarUpload({
           disabled={uploading}
           className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm text-white font-semibold transition-colors disabled:opacity-50"
         >
-          {uploading ? "Uploading…" : saved ? "Saved ✓" : "Change photo"}
+          {uploading
+            ? dict.profile.uploading
+            : saved
+              ? dict.profile.saved
+              : dict.profile.change_photo}
         </button>
         <p className="text-xs text-slate-500">JPG, PNG or WebP · max 5 MB</p>
         {error && <p className="text-xs text-red-400">{error}</p>}

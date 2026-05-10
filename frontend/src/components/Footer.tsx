@@ -45,10 +45,6 @@ export default function Footer({
   const [overrides, setOverrides] = useState<FooterOverrides>({});
 
   useEffect(() => {
-    let pollTimer: ReturnType<typeof setTimeout> | null = null;
-    let cancelled = false;
-    const deadline = Date.now() + 120_000;
-
     const fetchOverrides = async () => {
       try {
         const cached = localStorage.getItem(LS_FOOTER(lang));
@@ -61,12 +57,9 @@ export default function Footer({
         const res = await fetch(`/api/footer-overrides/${lang}`);
         if (res.ok) {
           const data = (await res.json()) as FooterOverrides;
-          const { _hasTranslations, ...rest } = data;
+          const { _hasTranslations: _, ...rest } = data;
           setOverrides(rest);
           localStorage.setItem(LS_FOOTER(lang), JSON.stringify(rest));
-          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
-            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
-          }
         }
       } catch {
         /* ignore */
@@ -77,8 +70,6 @@ export default function Footer({
     const handler = () => void fetchOverrides();
     window.addEventListener("tc:footer-updated", handler);
     return () => {
-      cancelled = true;
-      if (pollTimer) clearTimeout(pollTimer);
       window.removeEventListener("tc:footer-updated", handler);
     };
   }, [lang]);
@@ -104,7 +95,7 @@ export default function Footer({
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-20 gap-12 mb-14">
           {/* Brand block */}
           <div className="lg:w-72 shrink-0 flex flex-col order-2 lg:order-1">
-            <p className="text-white/65 text-sm leading-relaxed mb-4 tracking-wide">
+            <p className="text-white/80 text-sm leading-relaxed mb-4 tracking-wide">
               {taglineSub}
             </p>
             <p className="text-white/50 text-xs leading-relaxed mb-5">
@@ -117,13 +108,13 @@ export default function Footer({
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/60 hover:text-white text-xs transition-colors"
+                className="inline-flex items-center min-h-11 text-white/85 hover:text-white text-xs transition-colors"
               >
                 {phone}
               </a>
               <a
                 href={`mailto:${email}`}
-                className="text-white/60 hover:text-white text-xs transition-colors"
+                className="inline-flex items-center min-h-11 text-white/85 hover:text-white text-xs transition-colors"
               >
                 {email}
               </a>
@@ -144,12 +135,12 @@ export default function Footer({
                 <h3 className="text-white/50 font-bold text-[10px] uppercase tracking-[0.22em] mb-4">
                   {col.title}
                 </h3>
-                <ul className="space-y-3">
+                <ul className="space-y-1">
                   {col.links.map((link) => (
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="text-white/70 hover:text-white text-sm font-medium transition-colors"
+                        className="inline-flex items-center min-h-11 text-white/70 hover:text-white text-sm font-medium transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -163,10 +154,10 @@ export default function Footer({
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-white/40 text-xs">
+          <p className="text-white/50 text-xs">
             © {year} Team Cargo. {dict.footer.rights}
           </p>
-          <p className="text-white/35 text-xs">Geregistreerd in Nederland</p>
+          <p className="text-white/50 text-xs">Geregistreerd in Nederland</p>
         </div>
       </div>
     </footer>

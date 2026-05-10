@@ -223,6 +223,7 @@ export default function HeroSection({
           fill
           className="hidden md:block object-cover object-center brightness-110"
           priority
+          quality={60}
           sizes="(max-width: 767px) 0vw, 100vw"
         />
         {/* Mobile image (< md) */}
@@ -235,6 +236,7 @@ export default function HeroSection({
           fill
           className="block md:hidden object-cover object-center brightness-105"
           priority
+          quality={60}
           sizes="(max-width: 767px) 100vw, 0vw"
         />
         {/* Left-to-right gradient: solid left → steps down 40→30→20→10 after 50% */}
@@ -274,10 +276,10 @@ export default function HeroSection({
 
           {/* 1 TEAM · 1 MISSION — styled */}
           <p className="flex items-center gap-1.5 mb-7 font-extrabold uppercase tracking-[0.22em] text-sm sm:text-base">
-            <span className="text-white/40">1</span>
+            <span className="text-white/60">1</span>
             <span className="text-[#4dc95e]">{dict.hero.mission_words[0]}</span>
-            <span className="text-white/25 mx-1">&middot;</span>
-            <span className="text-white/40">1</span>
+            <span className="text-white/40 mx-1">&middot;</span>
+            <span className="text-white/60">1</span>
             <span className="text-[#4dc95e]">{dict.hero.mission_words[1]}</span>
           </p>
 
@@ -287,8 +289,20 @@ export default function HeroSection({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 bg-brand-green hover:bg-brand-mid text-brand-btn-text font-bold rounded-xl transition-all shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
-              style={{ width: "40%" }}
+              aria-label={dict.hero.cta_whatsapp}
+              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 font-bold rounded-xl shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
+              style={{
+                width: "40%",
+                background: "var(--brand-dark)",
+                color: "var(--brand-btn-text)",
+                transition: "background 0.15s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--brand-mid)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "var(--brand-dark)")
+              }
             >
               <Phone className="w-4 h-4" />
               {dict.hero.cta_whatsapp}
@@ -333,7 +347,7 @@ export default function HeroSection({
               >
                 {s.display}
               </span>
-              <span className="text-white/40 text-xs font-bold uppercase tracking-[0.18em] mt-1">
+              <span className="text-white/60 text-xs font-bold uppercase tracking-[0.18em] mt-1">
                 {s.label}
               </span>
             </div>
@@ -361,7 +375,7 @@ export default function HeroSection({
           backgroundColor: overrides.partnersBg ?? "var(--brand-partner-bg)",
         }}
       >
-        <p className="text-center text-gray-400 text-[10px] font-bold uppercase tracking-[0.3em] pt-4 pb-3">
+        <p className="text-center text-gray-600 text-[10px] font-bold uppercase tracking-[0.3em] pt-4 pb-3">
           {dict.hero.partners_label}
         </p>
         <div

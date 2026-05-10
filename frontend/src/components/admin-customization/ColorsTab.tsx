@@ -28,7 +28,7 @@ export default function ColorsTab() {
               {colorFields
                 .filter(
                   (f) =>
-                    f.key === "brandGreen" ||
+                    f.key === "brandDark" ||
                     f.key === "brandMid" ||
                     f.key === "brandBtnText",
                 )
@@ -68,7 +68,7 @@ export default function ColorsTab() {
               <div
                 className="px-5 py-2 text-sm font-bold rounded"
                 style={{
-                  backgroundColor: colors.brandGreen,
+                  backgroundColor: colors.brandDark,
                   color: colors.brandBtnText,
                 }}
               >
@@ -244,7 +244,7 @@ export default function ColorsTab() {
           };
           const btnFields = colorFields.filter(
             (f) =>
-              f.key === "brandGreen" ||
+              f.key === "brandDark" ||
               f.key === "brandMid" ||
               f.key === "brandBtnText",
           );
@@ -332,7 +332,7 @@ export default function ColorsTab() {
                     <button
                       style={{
                         ...PREVIEW_BTN,
-                        backgroundColor: colors.brandGreen,
+                        backgroundColor: colors.brandDark,
                         color: colors.brandBtnText,
                       }}
                     >

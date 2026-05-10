@@ -47,6 +47,23 @@ export default async function LandingPage({
 
   return (
     <>
+      {/* Preload the LCP hero image before the client component hydrates */}
+      <link
+        rel="preload"
+        as="image"
+        href="/teamCargo-trans-webP/cargo-trans-horizontal-3.webp"
+        // @ts-expect-error – fetchpriority is valid but not yet in @types/react
+        fetchpriority="high"
+        media="(min-width: 768px)"
+      />
+      <link
+        rel="preload"
+        as="image"
+        href="/teamCargo-trans-webP/cargo-trans-vertical-3.webp"
+        // @ts-expect-error – fetchpriority is valid but not yet in @types/react
+        fetchpriority="high"
+        media="(max-width: 767px)"
+      />
       <HeroSection dict={dict} lang={lang} />
       <ServicesSection dict={dict} lang={lang} />
       <AboutSection dict={dict} lang={lang} />

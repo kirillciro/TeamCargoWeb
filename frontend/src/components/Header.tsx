@@ -26,12 +26,14 @@ const NAV_LINKS = (lang: string, dict: Dictionary) => [
 export default function Header({
   lang,
   dict,
+  forceOpaque = false,
 }: {
   lang: string;
   dict: Dictionary;
+  forceOpaque?: boolean;
 }) {
   const { user, openAuth, logout } = useAuth();
-  const [scrollRatio, setScrollRatio] = useState(0);
+  const [scrollRatio, setScrollRatio] = useState(forceOpaque ? 1 : 0);
   const [isWin98, setIsWin98] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [headerTransparent, setHeaderTransparent] = useState(true);
@@ -72,6 +74,10 @@ export default function Header({
   }, []);
 
   useEffect(() => {
+    if (forceOpaque) {
+      setScrollRatio(1);
+      return;
+    }
     const onScroll = () => {
       if (!headerTransparent) {
         setScrollRatio(1);
@@ -84,7 +90,7 @@ export default function Header({
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [headerTransparent]);
+  }, [headerTransparent, forceOpaque]);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -152,7 +158,7 @@ export default function Header({
             </nav>
 
             {/* Right controls */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {/* Language */}
               <LanguageSwitcher currentLang={lang} />
 
@@ -164,16 +170,17 @@ export default function Header({
                 href="https://wa.me/393497080551"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-bold transition-colors duration-200"
+                aria-label="WhatsApp Team Cargo"
+                className="inline-flex items-center gap-2 h-11 px-4 rounded-lg text-sm font-bold transition-colors duration-200"
                 style={{
-                  background: "var(--brand-green)",
+                  background: "var(--brand-dark)",
                   color: "var(--brand-btn-text)",
                 }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.background = "var(--brand-mid)")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "var(--brand-green)")
+                  (e.currentTarget.style.background = "var(--brand-dark)")
                 }
               >
                 <MessageCircle className="w-4 h-4 shrink-0" />
@@ -186,7 +193,7 @@ export default function Header({
               {user?.role === "admin" && (
                 <Link
                   href={`/${lang}/admin`}
-                  className="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-amber-400 hover:bg-amber-300 text-amber-950 text-sm font-bold transition-colors duration-200"
+                  className="hidden md:inline-flex items-center gap-2 h-11 px-4 rounded-lg bg-amber-400 hover:bg-amber-300 text-amber-950 text-sm font-bold transition-colors duration-200"
                 >
                   <LayoutDashboard className="w-4 h-4 shrink-0" />
                   {dict.nav.admin_dashboard}
@@ -198,7 +205,7 @@ export default function Header({
                 <div className="hidden md:flex items-center gap-1.5">
                   <Link
                     href={`/${lang}/profile`}
-                    className="flex items-center gap-2 h-9 px-3 rounded-lg bg-white/8 border border-white/12 hover:bg-white/15 hover:border-white/25 text-white text-sm font-semibold transition-colors duration-200"
+                    className="flex items-center gap-2 h-11 px-3 rounded-lg bg-white/8 border border-white/12 hover:bg-white/15 hover:border-white/25 text-white text-sm font-semibold transition-colors duration-200"
                   >
                     <span className="w-6 h-6 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-[11px] font-bold flex items-center justify-center shrink-0">
                       {userInitial}
@@ -208,7 +215,7 @@ export default function Header({
                   <button
                     onClick={() => void logout()}
                     title={dict.nav.logout}
-                    className="w-9 h-9 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/15 transition-colors duration-200"
+                    className="w-11 h-11 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/15 transition-colors duration-200"
                   >
                     <LogOut className="w-4 h-4" />
                   </button>
@@ -216,7 +223,7 @@ export default function Header({
               ) : (
                 <button
                   onClick={() => openAuth("login")}
-                  className="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-white/25 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/40 transition-colors duration-200"
+                  className="hidden md:inline-flex items-center gap-2 h-11 px-4 rounded-lg border border-white/25 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/40 transition-colors duration-200"
                 >
                   <User className="w-4 h-4" />
                   {dict.nav.login}
@@ -226,7 +233,7 @@ export default function Header({
               {/* Hamburger */}
               <button
                 onClick={() => setMobileOpen(true)}
-                className="flex md:hidden items-center justify-center w-9 h-9 rounded-lg text-white hover:bg-white/10 border border-white/10 hover:border-white/25 transition-colors duration-200"
+                className="flex md:hidden items-center justify-center w-11 h-11 rounded-lg text-white hover:bg-white/10 border border-white/10 hover:border-white/25 transition-colors duration-200"
                 aria-label="Open menu"
               >
                 <Menu className="w-5 h-5" />
@@ -272,7 +279,7 @@ export default function Header({
           </Link>
           <button
             onClick={() => setMobileOpen(false)}
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-white hover:bg-white/10 border border-white/10 transition-colors"
+            className="w-11 h-11 flex items-center justify-center rounded-lg text-white hover:bg-white/10 border border-white/10 transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -289,7 +296,7 @@ export default function Header({
               className="flex items-center justify-between px-4 py-3.5 rounded-xl text-white/80 hover:text-white hover:bg-white/8 font-semibold text-sm transition-colors group"
             >
               {link.label}
-              <ChevronRight className="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors shrink-0" />
+              <ChevronRight className="w-4 h-4 text-white/50 group-hover:text-white/70 transition-colors shrink-0" />
             </a>
           ))}
 
@@ -339,14 +346,14 @@ export default function Header({
               rel="noopener noreferrer"
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors"
               style={{
-                background: "var(--brand-green)",
+                background: "var(--brand-dark)",
                 color: "var(--brand-btn-text)",
               }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.background = "var(--brand-mid)")
               }
               onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "var(--brand-green)")
+                (e.currentTarget.style.background = "var(--brand-dark)")
               }
               onClick={() => setMobileOpen(false)}
             >
@@ -358,7 +365,7 @@ export default function Header({
 
             {/* Language row */}
             <div className="px-4 py-2">
-              <p className="text-white/35 text-[10px] font-bold uppercase tracking-wider mb-2.5">
+              <p className="text-white/60 text-[10px] font-bold uppercase tracking-wider mb-2.5">
                 {dict.nav.language}
               </p>
               <LanguageSwitcher currentLang={lang} />
@@ -384,30 +391,30 @@ export default function Header({
 
         {/* Panel footer */}
         <div className="px-5 py-4 border-t border-white/10">
-          <p className="text-white/25 text-xs text-center mb-3">
+          <p className="text-white/50 text-xs text-center mb-3">
             Team Cargo &copy; Amsterdam
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link
               href={`/${lang}/privacy`}
               onClick={() => setMobileOpen(false)}
-              className="text-white/30 hover:text-white/60 text-[10px] transition-colors"
+              className="inline-flex items-center min-h-11 px-1 text-white/70 hover:text-white text-[10px] transition-colors"
             >
               Privacy
             </Link>
-            <span className="text-white/15 text-[10px]">&middot;</span>
+            <span className="text-white/40 text-[10px]">&middot;</span>
             <Link
               href={`/${lang}/cookies`}
               onClick={() => setMobileOpen(false)}
-              className="text-white/30 hover:text-white/60 text-[10px] transition-colors"
+              className="inline-flex items-center min-h-11 px-1 text-white/70 hover:text-white text-[10px] transition-colors"
             >
               Cookies
             </Link>
-            <span className="text-white/15 text-[10px]">&middot;</span>
+            <span className="text-white/40 text-[10px]">&middot;</span>
             <Link
               href={`/${lang}/terms`}
               onClick={() => setMobileOpen(false)}
-              className="text-white/30 hover:text-white/60 text-[10px] transition-colors"
+              className="inline-flex items-center min-h-11 px-1 text-white/70 hover:text-white text-[10px] transition-colors"
             >
               Terms
             </Link>

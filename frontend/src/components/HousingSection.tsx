@@ -116,10 +116,6 @@ export default function HousingSection({
   const [overrides, setOverrides] = useState<HousingOverrides>({});
 
   useEffect(() => {
-    let pollTimer: ReturnType<typeof setTimeout> | null = null;
-    let cancelled = false;
-    const deadline = Date.now() + 120_000;
-
     const fetchOverrides = async () => {
       try {
         const cached = localStorage.getItem(LS_HOUSING(lang));
@@ -132,12 +128,9 @@ export default function HousingSection({
         const res = await fetch(`/api/housing-overrides/${lang}`);
         if (res.ok) {
           const data = (await res.json()) as HousingOverrides;
-          const { _hasTranslations, ...rest } = data;
+          const { _hasTranslations: _, ...rest } = data;
           setOverrides(rest);
           localStorage.setItem(LS_HOUSING(lang), JSON.stringify(rest));
-          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
-            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
-          }
         }
       } catch {
         /* ignore */
@@ -148,8 +141,6 @@ export default function HousingSection({
     const handler = () => void fetchOverrides();
     window.addEventListener("tc:housing-updated", handler);
     return () => {
-      cancelled = true;
-      if (pollTimer) clearTimeout(pollTimer);
       window.removeEventListener("tc:housing-updated", handler);
     };
   }, [lang]);
@@ -209,7 +200,18 @@ export default function HousingSection({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-brand-green hover:bg-brand-mid text-brand-btn-text font-bold rounded-xl transition-colors text-[0.92rem] tracking-wide shadow-lg shadow-black/30"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold rounded-xl text-[0.92rem] tracking-wide shadow-lg shadow-black/30"
+              style={{
+                background: "var(--brand-dark)",
+                color: "var(--brand-btn-text)",
+                transition: "background 0.15s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--brand-mid)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "var(--brand-dark)")
+              }
             >
               <Phone className="w-4 h-4" />
               {o.cta || dict.housing.cta}

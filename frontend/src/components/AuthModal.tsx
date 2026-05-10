@@ -295,7 +295,18 @@ function AuthModalInner({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-brand-green hover:bg-brand-mid text-brand-btn-text font-bold rounded-xl transition-colors disabled:opacity-60 text-sm"
+                  className="w-full py-3.5 font-bold rounded-xl disabled:opacity-60 text-sm"
+                  style={{
+                    background: "var(--brand-dark)",
+                    color: "var(--brand-btn-text)",
+                    transition: "background 0.15s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "var(--brand-mid)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "var(--brand-dark)")
+                  }
                 >
                   {loading ? a.sending : a.send_reset_link}
                 </button>
@@ -403,7 +414,18 @@ function AuthModalInner({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-brand-green hover:bg-brand-mid text-brand-btn-text font-bold rounded-xl transition-colors disabled:opacity-60 text-sm tracking-wide"
+                  className="w-full py-3.5 font-bold rounded-xl disabled:opacity-60 text-sm tracking-wide"
+                  style={{
+                    background: "var(--brand-dark)",
+                    color: "var(--brand-btn-text)",
+                    transition: "background 0.15s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "var(--brand-mid)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "var(--brand-dark)")
+                  }
                 >
                   {loading ? a.loading : a.login_btn}
                 </button>
@@ -502,7 +524,18 @@ function AuthModalInner({
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 bg-brand-green hover:bg-brand-mid text-brand-btn-text font-bold rounded-xl transition-colors disabled:opacity-60 text-sm tracking-wide"
+                className="w-full py-3.5 font-bold rounded-xl disabled:opacity-60 text-sm tracking-wide"
+                style={{
+                  background: "var(--brand-dark)",
+                  color: "var(--brand-btn-text)",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "var(--brand-mid)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "var(--brand-dark)")
+                }
               >
                 {loading ? a.loading : a.register_btn}
               </button>

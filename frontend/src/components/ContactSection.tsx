@@ -77,10 +77,6 @@ export default function ContactSection({
   const [mapSrc, setMapSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    let pollTimer: ReturnType<typeof setTimeout> | null = null;
-    let cancelled = false;
-    const deadline = Date.now() + 120_000;
-
     const fetchOverrides = async () => {
       try {
         const cached = localStorage.getItem(LS_CONTACT(lang));
@@ -93,11 +89,8 @@ export default function ContactSection({
         const res = await fetch(`/api/contact-overrides/${lang}`);
         if (res.ok) {
           const data = (await res.json()) as ContactOverrides;
-          const { _hasTranslations, ...rest } = data;
+          const { _hasTranslations: _, ...rest } = data;
           setOverrides(rest);
-          // Lock in the map src from the authoritative API response.
-          // Using the functional updater so we only ever set it once — the
-          // first API response wins and subsequent polling won't reload the iframe.
           const q =
             rest.map_pin ||
             rest.map_address ||
@@ -106,9 +99,6 @@ export default function ContactSection({
             `https://maps.google.com/maps?q=${encodeURIComponent(q)}&output=embed&z=15`,
           );
           localStorage.setItem(LS_CONTACT(lang), JSON.stringify(rest));
-          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
-            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
-          }
         }
       } catch {
         /* ignore */
@@ -119,8 +109,6 @@ export default function ContactSection({
     const handler = () => void fetchOverrides();
     window.addEventListener("tc:contact-updated", handler);
     return () => {
-      cancelled = true;
-      if (pollTimer) clearTimeout(pollTimer);
       window.removeEventListener("tc:contact-updated", handler);
     };
   }, [lang]);
@@ -210,11 +198,23 @@ export default function ContactSection({
                     rel="noopener noreferrer"
                     className="flex items-start gap-4 group"
                   >
-                    <div className="w-11 h-11 rounded-xl bg-(--brand-green)/80 group-hover:bg-brand-green flex items-center justify-center shrink-0 transition-colors mt-0.5">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                      style={{
+                        background: "var(--brand-dark)",
+                        transition: "background 0.15s",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background = "var(--brand-mid)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = "var(--brand-dark)")
+                      }
+                    >
                       <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                      <p className="text-xs font-bold text-white/55 uppercase tracking-wider">
                         {label}
                       </p>
                       <p className="text-white group-hover:text-[#4dc95e] font-semibold text-[0.92rem] transition-colors">
@@ -227,7 +227,7 @@ export default function ContactSection({
             </div>
 
             <div className="relative z-10 mt-12 pt-8 border-t border-white/10">
-              <p className="text-white/30 text-xs font-bold uppercase tracking-widest">
+              <p className="text-white/50 text-xs font-bold uppercase tracking-widest">
                 Team Cargo &copy; 2026
               </p>
             </div>

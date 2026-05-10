@@ -32,6 +32,9 @@ export type AnalyticsSummary = {
     engagementRate: number;
     newUsersRate: number;
   };
+  pageViews: number;
+  bounceRate: number;
+  totalUsers: number;
 };
 
 export const SESSION_COLORS = ["#f59e0b", "#8b5cf6", "#38bdf8"];

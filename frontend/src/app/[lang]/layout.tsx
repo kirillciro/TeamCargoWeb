@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { isSupportedLanguage, languages } from "@/lib/i18n";
+import SetLang from "@/components/SetLang";
 
 export function generateStaticParams() {
   return languages.map((lang) => ({ lang }));
@@ -25,11 +26,7 @@ export default async function LangLayout({
   // the brand-color injection already used in the root layout.
   return (
     <>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `document.documentElement.setAttribute('lang','${lang}')`,
-        }}
-      />
+      <SetLang lang={lang} />
       {children}
     </>
   );

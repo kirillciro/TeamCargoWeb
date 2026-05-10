@@ -1385,6 +1385,134 @@ app.get(
   },
 );
 
+app.patch(
+  "/admin/users/:id/profile",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const userId = parseInt(String(req.params.id), 10);
+    if (isNaN(userId)) {
+      res.status(400).json({ error: "Invalid user id" });
+      return;
+    }
+    const { firstName, lastName, email, role, isVerified } = req.body as {
+      firstName?: string;
+      lastName?: string;
+      email?: string;
+      role?: string;
+      isVerified?: boolean;
+    };
+    const updates: string[] = [];
+    const params: unknown[] = [];
+    let idx = 1;
+    if (firstName !== undefined) {
+      updates.push(`first_name = $${idx++}`);
+      params.push(firstName.trim());
+    }
+    if (lastName !== undefined) {
+      updates.push(`last_name = $${idx++}`);
+      params.push(lastName.trim());
+    }
+    if (email !== undefined) {
+      updates.push(`email = $${idx++}`);
+      params.push(email.trim().toLowerCase());
+    }
+    if (role !== undefined) {
+      if (!["user", "admin"].includes(role)) {
+        res.status(400).json({ error: "Invalid role" });
+        return;
+      }
+      updates.push(`role = $${idx++}`);
+      params.push(role);
+    }
+    if (isVerified !== undefined) {
+      updates.push(`is_verified = $${idx++}`);
+      params.push(isVerified);
+    }
+    if (updates.length === 0) {
+      res.status(400).json({ error: "No fields to update" });
+      return;
+    }
+    params.push(userId);
+    const result = await pool.query(
+      `UPDATE users SET ${updates.join(", ")} WHERE id = $${idx}
+       RETURNING id, first_name, last_name, email, role, is_verified, provider, created_at, avatar_url,
+                 date_of_birth, license_front_url, license_back_url, passport_front_url, passport_back_url`,
+      params,
+    );
+    if (!result.rowCount) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    res.json({ user: mapUser(result.rows[0] as UserRow) });
+  },
+);
+
+app.patch(
+  "/admin/users/:id/driver-profile",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const userId = parseInt(String(req.params.id), 10);
+    if (isNaN(userId)) {
+      res.status(400).json({ error: "Invalid user id" });
+      return;
+    }
+    const {
+      phone,
+      whatsapp,
+      country,
+      availability,
+      license_cats,
+      years_exp,
+      languages,
+      bio,
+    } = req.body as {
+      phone?: string | null;
+      whatsapp?: string | null;
+      country?: string | null;
+      availability?: string;
+      license_cats?: string[];
+      years_exp?: number | null;
+      languages?: string[];
+      bio?: string | null;
+    };
+    if (
+      availability !== undefined &&
+      !["available", "open", "unavailable"].includes(availability)
+    ) {
+      res.status(400).json({ error: "Invalid availability" });
+      return;
+    }
+    await pool.query(
+      `INSERT INTO driver_profiles (user_id, phone, whatsapp, country, availability, license_cats, years_exp, languages, bio, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())
+       ON CONFLICT (user_id) DO UPDATE SET
+         phone = EXCLUDED.phone, whatsapp = EXCLUDED.whatsapp, country = EXCLUDED.country,
+         availability = EXCLUDED.availability, license_cats = EXCLUDED.license_cats,
+         years_exp = EXCLUDED.years_exp, languages = EXCLUDED.languages, bio = EXCLUDED.bio,
+         updated_at = NOW()`,
+      [
+        userId,
+        phone ?? null,
+        whatsapp ?? null,
+        country ?? null,
+        availability ?? "available",
+        license_cats ?? [],
+        years_exp ?? null,
+        languages ?? [],
+        bio ?? null,
+      ],
+    );
+    const dpResult = await pool.query(
+      `SELECT phone, whatsapp, country, availability, license_cats, years_exp, languages, bio
+       FROM driver_profiles WHERE user_id = $1`,
+      [userId],
+    );
+    res.json({ driverProfile: dpResult.rows[0] ?? null });
+  },
+);
+
 // ── Meta WhatsApp Webhooks ─────────────────────────────────────────────────
 
 // Verification handshake — Meta sends a GET to confirm the endpoint

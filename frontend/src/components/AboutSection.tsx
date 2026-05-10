@@ -178,10 +178,6 @@ export default function AboutSection({
   const [overrides, setOverrides] = useState<AboutOverrides>({});
 
   useEffect(() => {
-    let pollTimer: ReturnType<typeof setTimeout> | null = null;
-    let cancelled = false;
-    const deadline = Date.now() + 120_000;
-
     const fetchOverrides = async () => {
       // Instant paint from lang-scoped cache (avoids cross-language bleed)
       try {
@@ -201,10 +197,6 @@ export default function AboutSection({
           const { _hasTranslations, ...rest } = data;
           setOverrides(rest);
           localStorage.setItem(lsAbout(lang), JSON.stringify(rest));
-          // Poll until translations are ready (background AI job may still be running)
-          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
-            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
-          }
         }
       } catch {
         /* ignore */
@@ -215,8 +207,6 @@ export default function AboutSection({
     const handler = () => void fetchOverrides();
     window.addEventListener("tc:about-updated", handler);
     return () => {
-      cancelled = true;
-      if (pollTimer) clearTimeout(pollTimer);
       window.removeEventListener("tc:about-updated", handler);
     };
   }, [lang]);
@@ -257,7 +247,7 @@ export default function AboutSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section header */}
         <div className="text-center mb-10 sm:mb-14">
-          <span className="text-[#36B347] text-xs font-bold uppercase tracking-[0.25em]">
+          <span className="text-(--brand-green-text) text-xs font-bold uppercase tracking-[0.25em]">
             {effectiveLabel}
           </span>
           <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-[#36B347]" />
@@ -285,7 +275,7 @@ export default function AboutSection({
             <ul className="grid grid-cols-2 gap-2.5 mb-7">
               {effectiveValues.map((val) => (
                 <li key={val} className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#36B347] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-(--brand-green-text) shrink-0" />
                   <span className="text-gray-700 text-[0.92rem] font-semibold">
                     {val}
                   </span>
@@ -339,7 +329,7 @@ export default function AboutSection({
 
           {/* Right — 3-image mosaic */}
           <div className="relative mt-2 lg:mt-0">
-            <div className="grid grid-cols-[5fr_7fr] gap-3 h-72 sm:h-100 lg:h-130">
+            <div className="grid grid-cols-[5fr_7fr] gap-3 h-[28rem] sm:h-100 lg:h-130">
               {/* Left column — portrait, full height */}
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <Image
@@ -361,7 +351,7 @@ export default function AboutSection({
                     src={imgTopRight}
                     alt="Amazon driver with package"
                     fill
-                    className="object-cover object-top"
+                    className="object-cover object-center"
                     sizes="(max-width: 1024px) 45vw, 26vw"
                     unoptimized={imgTopRight.startsWith("http")}
                   />
@@ -384,7 +374,7 @@ export default function AboutSection({
               <p className="font-extrabold text-2xl leading-none">
                 {effectiveYearsNum}
               </p>
-              <p className="text-white/65 text-xs uppercase tracking-wider font-bold mt-1">
+              <p className="text-white text-xs uppercase tracking-wider font-bold mt-1">
                 {effectiveYears}
               </p>
             </div>

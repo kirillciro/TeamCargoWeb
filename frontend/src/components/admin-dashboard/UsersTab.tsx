@@ -8,36 +8,12 @@ import {
   Loader2,
   Truck,
   X,
-  Phone,
-  MapPin,
   Download,
   FileImage,
 } from "lucide-react";
 import { fetchWithAuth, type AuthUser } from "@/lib/auth-client";
 import type { Dictionary } from "@/lib/getDictionary";
 import type { DriverProfile } from "./types";
-
-// ── AdminInfoField ────────────────────────────────────────────────────────────
-
-function AdminInfoField({
-  label,
-  value,
-  icon,
-}: {
-  label: string;
-  value: string | null;
-  icon?: React.ReactNode;
-}) {
-  return (
-    <div className="rounded-xl bg-slate-800/50 border border-slate-700 p-3">
-      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1">
-        {icon}
-        {label}
-      </p>
-      <p className="text-sm text-white">{value ?? "—"}</p>
-    </div>
-  );
-}
 
 // ── AdminUsersTab ─────────────────────────────────────────────────────────────
 
@@ -63,6 +39,25 @@ export default function AdminUsersTab({
   } | null>(null);
   const [viewLoading, setViewLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  type EditState = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    isVerified: boolean;
+    availability: string;
+    phone: string;
+    whatsapp: string;
+    country: string;
+    yearsExp: string;
+    licenseCats: string;
+    languages: string;
+    bio: string;
+  };
+  const [editState, setEditState] = useState<EditState | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState<string | null>(null);
 
   const load = useCallback(async (q = "") => {
     try {
@@ -128,6 +123,7 @@ export default function AdminUsersTab({
   async function openView(u: AuthUser) {
     setViewUser({ user: u, driverProfile: null });
     setViewLoading(true);
+    setSaveMsg(null);
     try {
       const res = await fetchWithAuth(
         `/api/admin/users/${u.id}/driver-profile`,
@@ -137,8 +133,79 @@ export default function AdminUsersTab({
         driverProfile: DriverProfile | null;
       };
       setViewUser({ user: data.user, driverProfile: data.driverProfile });
+      const dp = data.driverProfile;
+      setEditState({
+        firstName: data.user.firstName ?? "",
+        lastName: data.user.lastName ?? "",
+        email: data.user.email ?? "",
+        role: data.user.role ?? "user",
+        isVerified: data.user.isVerified ?? false,
+        availability: dp?.availability ?? "available",
+        phone: dp?.phone ?? "",
+        whatsapp: dp?.whatsapp ?? "",
+        country: dp?.country ?? "",
+        yearsExp: dp?.years_exp != null ? String(dp.years_exp) : "",
+        licenseCats: (dp?.license_cats ?? []).join(", "),
+        languages: (dp?.languages ?? []).join(", "),
+        bio: dp?.bio ?? "",
+      });
     } finally {
       setViewLoading(false);
+    }
+  }
+
+  async function handleSaveProfile() {
+    if (!viewUser || !editState) return;
+    setSaving(true);
+    setSaveMsg(null);
+    try {
+      const [userRes, dpRes] = await Promise.all([
+        fetchWithAuth(`/api/admin/users/${viewUser.user.id}/profile`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            firstName: editState.firstName,
+            lastName: editState.lastName,
+            email: editState.email,
+            role: editState.role,
+            isVerified: editState.isVerified,
+          }),
+        }),
+        fetchWithAuth(`/api/admin/users/${viewUser.user.id}/driver-profile`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            availability: editState.availability,
+            phone: editState.phone || null,
+            whatsapp: editState.whatsapp || null,
+            country: editState.country || null,
+            years_exp: editState.yearsExp
+              ? parseInt(editState.yearsExp, 10)
+              : null,
+            license_cats: editState.licenseCats
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean),
+            languages: editState.languages
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean),
+            bio: editState.bio || null,
+          }),
+        }),
+      ]);
+      const userData = (await userRes.json()) as { user: AuthUser };
+      const dpData = (await dpRes.json()) as {
+        driverProfile: DriverProfile | null;
+      };
+      setViewUser({ user: userData.user, driverProfile: dpData.driverProfile });
+      setUsers((prev) =>
+        prev.map((x) => (x.id === userData.user.id ? userData.user : x)),
+      );
+      setSaveMsg("[OK] Saved successfully.");
+      setTimeout(() => setSaveMsg(null), 3000);
+    } catch (e: unknown) {
+      setSaveMsg(`[ERR] ${e instanceof Error ? e.message : "Save failed"}`);
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -791,93 +858,133 @@ export default function AdminUsersTab({
                               ).toUpperCase()
                             )}
                           </div>
-                          <div style={{ minWidth: 0 }}>
+                          <div style={{ minWidth: 0, flex: 1 }}>
                             <div
                               style={{
-                                fontWeight: "bold",
-                                fontSize: 12,
-                                marginBottom: 2,
-                              }}
-                            >
-                              {`${vu.user.firstName} ${vu.user.lastName}`.trim() ||
-                                "—"}
-                            </div>
-                            <div
-                              style={{
-                                fontSize: 10,
-                                color: "#444",
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                gap: 4,
                                 marginBottom: 4,
-                                wordBreak: "break-all",
                               }}
                             >
-                              {vu.user.email}
+                              {[
+                                {
+                                  key: "firstName" as const,
+                                  label: "First name",
+                                },
+                                {
+                                  key: "lastName" as const,
+                                  label: "Last name",
+                                },
+                              ].map(({ key, label }) => (
+                                <div key={key}>
+                                  <div
+                                    style={{
+                                      fontSize: 9,
+                                      color: "#808080",
+                                      marginBottom: 1,
+                                    }}
+                                  >
+                                    {label}
+                                  </div>
+                                  <input
+                                    value={editState?.[key] ?? ""}
+                                    onChange={(e) =>
+                                      setEditState((p) =>
+                                        p ? { ...p, [key]: e.target.value } : p,
+                                      )
+                                    }
+                                    style={{ ...w98Input, fontSize: 11 }}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                            <div style={{ marginBottom: 4 }}>
+                              <div
+                                style={{
+                                  fontSize: 9,
+                                  color: "#808080",
+                                  marginBottom: 1,
+                                }}
+                              >
+                                Email
+                              </div>
+                              <input
+                                value={editState?.email ?? ""}
+                                onChange={(e) =>
+                                  setEditState((p) =>
+                                    p ? { ...p, email: e.target.value } : p,
+                                  )
+                                }
+                                style={{ ...w98Input, fontSize: 11 }}
+                              />
                             </div>
                             <div
                               style={{
                                 display: "flex",
-                                gap: 3,
+                                gap: 8,
+                                alignItems: "center",
                                 flexWrap: "wrap" as const,
                               }}
                             >
-                              <span
-                                style={{
-                                  fontSize: 10,
-                                  border: "1px solid #808080",
-                                  padding: "0 3px",
-                                  background:
-                                    vu.user.role === "admin"
-                                      ? "#000080"
-                                      : "#c0c0c0",
-                                  color:
-                                    vu.user.role === "admin" ? "#fff" : "#000",
-                                }}
-                              >
-                                {vu.user.role}
-                              </span>
-                              {vu.user.isVerified ? (
-                                <span
+                              <div>
+                                <div
                                   style={{
-                                    fontSize: 10,
-                                    border: "1px solid #008000",
-                                    padding: "0 3px",
-                                    color: "#006400",
-                                    background: "#e0ffe0",
+                                    fontSize: 9,
+                                    color: "#808080",
+                                    marginBottom: 1,
                                   }}
                                 >
-                                  ✓ Verified
-                                </span>
-                              ) : (
-                                <span
+                                  Role
+                                </div>
+                                <select
+                                  value={editState?.role ?? "user"}
+                                  onChange={(e) =>
+                                    setEditState((p) =>
+                                      p ? { ...p, role: e.target.value } : p,
+                                    )
+                                  }
                                   style={{
-                                    fontSize: 10,
-                                    border: "1px solid #808000",
-                                    padding: "0 3px",
-                                    color: "#804000",
-                                    background: "#ffffd0",
+                                    ...w98Input,
+                                    width: "auto",
+                                    fontSize: 11,
                                   }}
                                 >
-                                  Unverified
-                                </span>
-                              )}
-                              <span
+                                  <option value="user">user</option>
+                                  <option value="admin">admin</option>
+                                </select>
+                              </div>
+                              <label
                                 style={{
-                                  fontSize: 10,
-                                  border: "1px solid #808080",
-                                  padding: "0 3px",
-                                  textTransform: "capitalize" as const,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 4,
+                                  fontSize: 11,
+                                  cursor: "pointer",
                                 }}
                               >
-                                {vu.user.provider}
-                              </span>
+                                <input
+                                  type="checkbox"
+                                  checked={editState?.isVerified ?? false}
+                                  onChange={(e) =>
+                                    setEditState((p) =>
+                                      p
+                                        ? { ...p, isVerified: e.target.checked }
+                                        : p,
+                                    )
+                                  }
+                                />
+                                Verified
+                              </label>
                             </div>
                             <div
                               style={{
-                                fontSize: 10,
+                                fontSize: 9,
                                 color: "#808080",
-                                marginTop: 3,
+                                marginTop: 4,
                               }}
                             >
-                              Joined{" "}
+                              {vu.user.provider} · Joined{" "}
                               {new Date(vu.user.createdAt).toLocaleDateString()}
                             </div>
                           </div>
@@ -906,165 +1013,131 @@ export default function AdminUsersTab({
                         >
                           Loading...
                         </div>
-                      ) : !dp ? (
+                      ) : (
                         <div
                           style={{
-                            border: "2px solid",
-                            borderColor: "#808080 #fff #fff #808080",
-                            background: "#fff",
-                            padding: 8,
-                            color: "#808080",
-                            textAlign: "center",
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr",
+                            gap: 4,
                           }}
                         >
-                          No driver profile filled in yet.
-                        </div>
-                      ) : (
-                        <div>
-                          <div style={{ marginBottom: 8 }}>
-                            <span
+                          <div>
+                            <div style={w98LabelStyle}>Availability</div>
+                            <select
+                              value={editState?.availability ?? "available"}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p
+                                    ? { ...p, availability: e.target.value }
+                                    : p,
+                                )
+                              }
                               style={{
-                                fontSize: 10,
-                                border: "1px solid",
-                                padding: "1px 6px",
-                                fontWeight: "bold",
-                                ...{
-                                  available: {
-                                    borderColor: "#008000",
-                                    color: "#006400",
-                                    background: "#e0ffe0",
-                                  },
-                                  open: {
-                                    borderColor: "#808000",
-                                    color: "#804000",
-                                    background: "#ffffd0",
-                                  },
-                                  unavailable: {
-                                    borderColor: "#808080",
-                                    color: "#444",
-                                    background: "#f0f0f0",
-                                  },
-                                }[dp.availability],
+                                ...w98Input,
+                                width: "100%",
+                                fontSize: 11,
                               }}
                             >
-                              {
-                                {
-                                  available: "● Available",
-                                  open: "◐ Open to offers",
-                                  unavailable: "○ Not available",
-                                }[dp.availability]
+                              <option value="available">Available</option>
+                              <option value="open">Open to offers</option>
+                              <option value="unavailable">Not available</option>
+                            </select>
+                          </div>
+                          <div>
+                            <div style={w98LabelStyle}>Years exp.</div>
+                            <input
+                              value={editState?.yearsExp ?? ""}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p ? { ...p, yearsExp: e.target.value } : p,
+                                )
                               }
-                            </span>
+                              style={{ ...w98Input, fontSize: 11 }}
+                            />
                           </div>
-                          <div
-                            style={{
-                              display: "grid",
-                              gridTemplateColumns: "1fr 1fr",
-                              gap: 4,
-                              marginBottom: 8,
-                            }}
-                          >
-                            {(
-                              [
-                                { label: "Phone", val: dp.phone },
-                                { label: "WhatsApp", val: dp.whatsapp },
-                                { label: "Country", val: dp.country },
-                                {
-                                  label: "Years exp.",
-                                  val:
-                                    dp.years_exp != null
-                                      ? `${dp.years_exp} yr`
-                                      : null,
-                                },
-                              ] as const
-                            ).map(({ label, val }) => (
-                              <div
-                                key={label}
-                                style={{
-                                  border: "2px solid",
-                                  borderColor: "#808080 #fff #fff #808080",
-                                  background: "#fff",
-                                  padding: "4px 6px",
-                                }}
-                              >
-                                <div style={w98LabelStyle}>{label}</div>
-                                <div style={w98ValStyle}>{val ?? "—"}</div>
-                              </div>
-                            ))}
+                          <div>
+                            <div style={w98LabelStyle}>Phone</div>
+                            <input
+                              value={editState?.phone ?? ""}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p ? { ...p, phone: e.target.value } : p,
+                                )
+                              }
+                              style={{ ...w98Input, fontSize: 11 }}
+                            />
                           </div>
-                          {dp.license_cats.length > 0 && (
-                            <div style={{ marginBottom: 8 }}>
-                              <div style={w98LabelStyle}>
-                                License categories
-                              </div>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexWrap: "wrap",
-                                  gap: 3,
-                                }}
-                              >
-                                {dp.license_cats.map((c) => (
-                                  <span
-                                    key={c}
-                                    style={{
-                                      fontSize: 10,
-                                      border: "1px solid #000080",
-                                      padding: "1px 5px",
-                                      background: "#e0e8ff",
-                                      color: "#000080",
-                                      fontWeight: "bold",
-                                    }}
-                                  >
-                                    {c}
-                                  </span>
-                                ))}
-                              </div>
+                          <div>
+                            <div style={w98LabelStyle}>WhatsApp</div>
+                            <input
+                              value={editState?.whatsapp ?? ""}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p ? { ...p, whatsapp: e.target.value } : p,
+                                )
+                              }
+                              style={{ ...w98Input, fontSize: 11 }}
+                            />
+                          </div>
+                          <div style={{ gridColumn: "1 / -1" }}>
+                            <div style={w98LabelStyle}>Country</div>
+                            <input
+                              value={editState?.country ?? ""}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p ? { ...p, country: e.target.value } : p,
+                                )
+                              }
+                              style={{ ...w98Input, fontSize: 11 }}
+                            />
+                          </div>
+                          <div style={{ gridColumn: "1 / -1" }}>
+                            <div style={w98LabelStyle}>
+                              License categories (comma-separated)
                             </div>
-                          )}
-                          {dp.languages.length > 0 && (
-                            <div style={{ marginBottom: 8 }}>
-                              <div style={w98LabelStyle}>Languages</div>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexWrap: "wrap",
-                                  gap: 3,
-                                }}
-                              >
-                                {dp.languages.map((l) => (
-                                  <span
-                                    key={l}
-                                    style={{
-                                      fontSize: 10,
-                                      border: "1px solid #808080",
-                                      padding: "1px 5px",
-                                      background: "#f0f0f0",
-                                    }}
-                                  >
-                                    {l}
-                                  </span>
-                                ))}
-                              </div>
+                            <input
+                              value={editState?.licenseCats ?? ""}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p ? { ...p, licenseCats: e.target.value } : p,
+                                )
+                              }
+                              placeholder="e.g. B, C, CE"
+                              style={{ ...w98Input, fontSize: 11 }}
+                            />
+                          </div>
+                          <div style={{ gridColumn: "1 / -1" }}>
+                            <div style={w98LabelStyle}>
+                              Languages (comma-separated)
                             </div>
-                          )}
-                          {dp.bio && (
-                            <div>
-                              <div style={w98LabelStyle}>Bio</div>
-                              <div
-                                style={{
-                                  border: "2px solid",
-                                  borderColor: "#808080 #fff #fff #808080",
-                                  background: "#fff",
-                                  padding: 6,
-                                  fontSize: 11,
-                                  lineHeight: 1.5,
-                                }}
-                              >
-                                {dp.bio}
-                              </div>
-                            </div>
-                          )}
+                            <input
+                              value={editState?.languages ?? ""}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p ? { ...p, languages: e.target.value } : p,
+                                )
+                              }
+                              placeholder="e.g. English, Dutch"
+                              style={{ ...w98Input, fontSize: 11 }}
+                            />
+                          </div>
+                          <div style={{ gridColumn: "1 / -1" }}>
+                            <div style={w98LabelStyle}>Bio</div>
+                            <textarea
+                              value={editState?.bio ?? ""}
+                              onChange={(e) =>
+                                setEditState((p) =>
+                                  p ? { ...p, bio: e.target.value } : p,
+                                )
+                              }
+                              rows={3}
+                              style={{
+                                ...w98Input,
+                                fontSize: 11,
+                                resize: "vertical" as const,
+                              }}
+                            />
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1259,11 +1332,41 @@ export default function AdminUsersTab({
                       padding: "5px 10px",
                       textAlign: "right",
                       borderTop: "1px solid #808080",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <button style={w98Btn} onClick={() => setViewUser(null)}>
-                      Close
-                    </button>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontFamily: "monospace",
+                        color: saveMsg?.startsWith("[OK]")
+                          ? "#006400"
+                          : "#800000",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {saveMsg ?? ""}
+                    </span>
+                    <div style={{ display: "flex", gap: 4 }}>
+                      <button style={w98Btn} onClick={() => setViewUser(null)}>
+                        Close
+                      </button>
+                      <button
+                        style={{
+                          ...w98Btn,
+                          background: "#000080",
+                          color: "#fff",
+                          borderColor: "#fff #808080 #808080 #fff",
+                          opacity: saving || viewLoading ? 0.5 : 1,
+                        }}
+                        disabled={saving || viewLoading}
+                        onClick={() => void handleSaveProfile()}
+                      >
+                        {saving ? "Saving..." : "Save"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1637,38 +1740,96 @@ export default function AdminUsersTab({
                               ).toUpperCase()
                             )}
                           </div>
-                          <div className="min-w-0">
-                            <p className="font-bold text-white text-base truncate">
-                              {`${vu.user.firstName} ${vu.user.lastName}`.trim() ||
-                                "—"}
-                            </p>
-                            <p className="text-slate-400 text-xs mt-0.5 truncate">
-                              {vu.user.email}
-                            </p>
-                            <div className="flex flex-wrap gap-1.5 mt-2">
-                              <span
-                                className={`text-[10px] font-semibold rounded-full px-2 py-0.5 border ${
-                                  vu.user.role === "admin"
-                                    ? "text-amber-400 bg-amber-400/10 border-amber-400/30"
-                                    : "text-slate-400 bg-slate-800 border-slate-700"
-                                }`}
-                              >
-                                {vu.user.role}
-                              </span>
-                              {vu.user.isVerified ? (
-                                <span className="text-[10px] font-semibold text-green-400 bg-green-400/10 border border-green-400/20 rounded-full px-2 py-0.5">
-                                  ✓ Verified
+                          <div className="min-w-0 flex-1">
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                  First name
+                                </label>
+                                <input
+                                  value={editState?.firstName ?? ""}
+                                  onChange={(e) =>
+                                    setEditState((p) =>
+                                      p
+                                        ? { ...p, firstName: e.target.value }
+                                        : p,
+                                    )
+                                  }
+                                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                  Last name
+                                </label>
+                                <input
+                                  value={editState?.lastName ?? ""}
+                                  onChange={(e) =>
+                                    setEditState((p) =>
+                                      p
+                                        ? { ...p, lastName: e.target.value }
+                                        : p,
+                                    )
+                                  }
+                                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                />
+                              </div>
+                            </div>
+                            <div className="mt-2">
+                              <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                Email
+                              </label>
+                              <input
+                                value={editState?.email ?? ""}
+                                onChange={(e) =>
+                                  setEditState((p) =>
+                                    p ? { ...p, email: e.target.value } : p,
+                                  )
+                                }
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                              />
+                            </div>
+                            <div className="mt-2 flex items-end gap-4 flex-wrap">
+                              <div>
+                                <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                  Role
+                                </label>
+                                <select
+                                  value={editState?.role ?? "user"}
+                                  onChange={(e) =>
+                                    setEditState((p) =>
+                                      p ? { ...p, role: e.target.value } : p,
+                                    )
+                                  }
+                                  className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                >
+                                  <option value="user">user</option>
+                                  <option value="admin">admin</option>
+                                </select>
+                              </div>
+                              <label className="flex items-center gap-2 cursor-pointer pb-1.5">
+                                <input
+                                  type="checkbox"
+                                  checked={editState?.isVerified ?? false}
+                                  onChange={(e) =>
+                                    setEditState((p) =>
+                                      p
+                                        ? { ...p, isVerified: e.target.checked }
+                                        : p,
+                                    )
+                                  }
+                                  className="w-3.5 h-3.5 accent-[#36B347]"
+                                />
+                                <span className="text-xs text-slate-300">
+                                  Verified
                                 </span>
-                              ) : (
-                                <span className="text-[10px] font-semibold text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 rounded-full px-2 py-0.5">
-                                  Unverified
-                                </span>
-                              )}
-                              <span className="text-[10px] text-slate-500 capitalize bg-slate-800 border border-slate-700 rounded-full px-2 py-0.5">
+                              </label>
+                            </div>
+                            <p className="text-slate-500 text-[10px] mt-2">
+                              <span className="capitalize">
                                 {vu.user.provider}
                               </span>
-                            </div>
-                            <p className="text-slate-500 text-[11px] mt-1.5">
+                              {" · "}
                               Joined{" "}
                               {new Date(vu.user.createdAt).toLocaleDateString()}
                             </p>
@@ -1685,111 +1846,108 @@ export default function AdminUsersTab({
                           <div className="flex justify-center py-8">
                             <Loader2 className="w-5 h-5 animate-spin text-slate-500" />
                           </div>
-                        ) : !dp ? (
-                          <div className="rounded-xl bg-slate-800/50 border border-slate-700 p-4 text-sm text-slate-400 text-center">
-                            No driver profile filled in yet.
-                          </div>
                         ) : (
-                          <div className="space-y-5">
-                            {/* Status badge */}
+                          <div className="space-y-3">
                             <div>
-                              {
-                                {
-                                  available: (
-                                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-400 bg-green-400/10 border border-green-400/30 rounded-full px-3 py-1">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
-                                      Available
-                                    </span>
-                                  ),
-                                  open: (
-                                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/30 rounded-full px-3 py-1">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
-                                      Open to offers
-                                    </span>
-                                  ),
-                                  unavailable: (
-                                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 bg-slate-800 border border-slate-700 rounded-full px-3 py-1">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-slate-500 inline-block" />
-                                      Not available
-                                    </span>
-                                  ),
-                                }[dp.availability]
-                              }
-                            </div>
-
-                            {/* Contact grid */}
-                            <div className="grid grid-cols-2 gap-2">
-                              <AdminInfoField
-                                label="Phone"
-                                value={dp.phone}
-                                icon={<Phone className="w-3 h-3" />}
-                              />
-                              <AdminInfoField
-                                label="WhatsApp"
-                                value={dp.whatsapp}
-                                icon={<Phone className="w-3 h-3" />}
-                              />
-                              <AdminInfoField
-                                label="Country"
-                                value={dp.country}
-                                icon={<MapPin className="w-3 h-3" />}
-                              />
-                              <AdminInfoField
-                                label="Years exp."
-                                value={
-                                  dp.years_exp != null
-                                    ? `${dp.years_exp} yr`
-                                    : null
+                              <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                Availability
+                              </label>
+                              <select
+                                value={editState?.availability ?? "available"}
+                                onChange={(e) =>
+                                  setEditState((p) =>
+                                    p
+                                      ? { ...p, availability: e.target.value }
+                                      : p,
+                                  )
                                 }
+                                className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50 w-full"
+                              >
+                                <option value="available">Available</option>
+                                <option value="open">Open to offers</option>
+                                <option value="unavailable">
+                                  Not available
+                                </option>
+                              </select>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              {(
+                                [
+                                  { key: "phone", label: "Phone" },
+                                  { key: "whatsapp", label: "WhatsApp" },
+                                  { key: "country", label: "Country" },
+                                  { key: "yearsExp", label: "Years exp." },
+                                ] as const
+                              ).map(({ key, label }) => (
+                                <div key={key}>
+                                  <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                    {label}
+                                  </label>
+                                  <input
+                                    value={editState?.[key] ?? ""}
+                                    onChange={(e) =>
+                                      setEditState((p) =>
+                                        p ? { ...p, [key]: e.target.value } : p,
+                                      )
+                                    }
+                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                License categories{" "}
+                                <span className="normal-case font-normal">
+                                  (comma-separated)
+                                </span>
+                              </label>
+                              <input
+                                value={editState?.licenseCats ?? ""}
+                                onChange={(e) =>
+                                  setEditState((p) =>
+                                    p
+                                      ? { ...p, licenseCats: e.target.value }
+                                      : p,
+                                  )
+                                }
+                                placeholder="e.g. B, C, CE"
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                               />
                             </div>
-
-                            {dp.license_cats.length > 0 && (
-                              <div>
-                                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                                  License categories
-                                </p>
-                                <div className="flex flex-wrap gap-1.5">
-                                  {dp.license_cats.map((c) => (
-                                    <span
-                                      key={c}
-                                      className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#1a7f45]/20 border border-[#36B347]/40 text-[#36B347]"
-                                    >
-                                      {c}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-
-                            {dp.languages.length > 0 && (
-                              <div>
-                                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                                  Languages
-                                </p>
-                                <div className="flex flex-wrap gap-1.5">
-                                  {dp.languages.map((l) => (
-                                    <span
-                                      key={l}
-                                      className="px-2.5 py-1 rounded-lg text-xs bg-slate-800 border border-slate-700 text-slate-300"
-                                    >
-                                      {l}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-
-                            {dp.bio && (
-                              <div>
-                                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                                  Bio
-                                </p>
-                                <p className="text-sm text-slate-300 bg-slate-800/50 rounded-xl border border-slate-700 p-3 leading-relaxed">
-                                  {dp.bio}
-                                </p>
-                              </div>
-                            )}
+                            <div>
+                              <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                Languages{" "}
+                                <span className="normal-case font-normal">
+                                  (comma-separated)
+                                </span>
+                              </label>
+                              <input
+                                value={editState?.languages ?? ""}
+                                onChange={(e) =>
+                                  setEditState((p) =>
+                                    p ? { ...p, languages: e.target.value } : p,
+                                  )
+                                }
+                                placeholder="e.g. English, Dutch"
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                                Bio
+                              </label>
+                              <textarea
+                                value={editState?.bio ?? ""}
+                                onChange={(e) =>
+                                  setEditState((p) =>
+                                    p ? { ...p, bio: e.target.value } : p,
+                                  )
+                                }
+                                rows={3}
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50 resize-y"
+                              />
+                            </div>
                           </div>
                         )}
                       </div>
@@ -1876,6 +2034,37 @@ export default function AdminUsersTab({
                           )}
                         </div>
                       )}
+                    </div>
+                  </div>
+                  {/* Footer */}
+                  <div className="flex items-center justify-between gap-3 px-5 py-3 border-t border-slate-800 shrink-0">
+                    <div className="text-xs">
+                      {saveMsg && (
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 font-medium ${saveMsg.startsWith("[OK]") ? "bg-green-500/10 text-green-400 ring-1 ring-green-500/30" : "bg-red-500/10 text-red-400 ring-1 ring-red-500/30"}`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full shrink-0 ${saveMsg.startsWith("[OK]") ? "bg-green-400" : "bg-red-400"}`}
+                          />
+                          {saveMsg.replace(/^\[OK\] |^\[ERR\] /, "")}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setViewUser(null)}
+                        className="rounded-lg border border-slate-700 px-4 py-1.5 text-xs text-slate-400 hover:bg-slate-800 transition-colors"
+                      >
+                        Close
+                      </button>
+                      <button
+                        onClick={() => void handleSaveProfile()}
+                        disabled={saving || viewLoading}
+                        className="rounded-lg bg-[#36B347] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#2a9438] disabled:opacity-50 flex items-center gap-1.5 transition-colors"
+                      >
+                        {saving && <Loader2 className="w-3 h-3 animate-spin" />}
+                        Save
+                      </button>
                     </div>
                   </div>
                 </div>

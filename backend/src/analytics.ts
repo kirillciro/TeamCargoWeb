@@ -32,6 +32,9 @@ export type AnalyticsSummary = {
     engagementRate: number; // 0–1
     newUsersRate: number; // 0–1
   };
+  pageViews: number; // total screen/page views, 30 days
+  bounceRate: number; // 0–1
+  totalUsers: number; // unique GA4 users, 30 days
 };
 
 // ── Auth ──────────────────────────────────────────────────────────────────
@@ -171,6 +174,9 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
         metrics: [
           { name: "averageSessionDuration" },
           { name: "engagementRate" },
+          { name: "screenPageViews" },
+          { name: "bounceRate" },
+          { name: "totalUsers" },
         ],
       },
     }),
@@ -222,6 +228,17 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
   const engagementRate = parseFloat(
     engagementRes.data.rows?.[0]?.metricValues?.[1]?.value ?? "0",
   );
+  const pageViews = parseInt(
+    engagementRes.data.rows?.[0]?.metricValues?.[2]?.value ?? "0",
+    10,
+  );
+  const bounceRate = parseFloat(
+    engagementRes.data.rows?.[0]?.metricValues?.[3]?.value ?? "0",
+  );
+  const totalUsers = parseInt(
+    engagementRes.data.rows?.[0]?.metricValues?.[4]?.value ?? "0",
+    10,
+  );
 
   const newVsRetRows = newVsRetRes.data.rows ?? [];
   const newSessions = newVsRetRows
@@ -245,5 +262,8 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
     trafficSources,
     topCountries,
     engagement: { avgSessionDuration, engagementRate, newUsersRate },
+    pageViews,
+    bounceRate,
+    totalUsers,
   };
 }

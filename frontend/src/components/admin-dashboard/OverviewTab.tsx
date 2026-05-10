@@ -281,7 +281,7 @@ export default function AdminOverviewTab({
               }}
             >
               <style>{`
-              .w98a-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: stretch; }
+              .w98a-top { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; align-items: stretch; }
               .w98a-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
               @media (max-width: 600px) {
                 .w98a-top { grid-template-columns: 1fr; }
@@ -330,6 +330,29 @@ export default function AdminOverviewTab({
                   {KV(dict.admin.stat_total_users, stats.totalUsers)}
                   {KV(dict.admin.stat_verified, stats.totalVerified)}
                   {KV(dict.admin.stat_unverified, stats.totalUnverified, true)}
+                </div>
+
+                {/* At a Glance */}
+                <div style={{ ...GRP }}>
+                  <span style={GRP_LBL}>At a Glance (30 days)</span>
+                  {analytics ? (
+                    <>
+                      {KV("Page Views", analytics.pageViews.toLocaleString())}
+                      {KV(
+                        "Bounce Rate",
+                        `${Math.round(analytics.bounceRate * 100)}%`,
+                      )}
+                      {KV(
+                        "Unique Visitors",
+                        analytics.totalUsers.toLocaleString(),
+                        true,
+                      )}
+                    </>
+                  ) : (
+                    <span style={{ fontSize: 11, color: "#808080" }}>
+                      No GA4 data
+                    </span>
+                  )}
                 </div>
 
                 {/* Sessions */}
@@ -467,56 +490,40 @@ export default function AdminOverviewTab({
                 </div>
               </div>
 
-              {/* Audience: Traffic Sources + Top Countries */}
+              {/* Traffic Sources | Top Countries | Top Pages | Devices — 4-col row */}
               {analytics && (
-                <div style={{ ...GRP }}>
-                  <span style={GRP_LBL}>Audience</span>
-                  <div className="w98a-2col">
-                    <div>
-                      <div
-                        style={{
-                          fontSize: 11,
-                          fontWeight: "bold",
-                          color: "#000080",
-                          marginBottom: 5,
-                        }}
-                      >
-                        Traffic Sources
-                      </div>
-                      <Win98Table
-                        rows={analytics.trafficSources.map((t) => [
-                          t.source,
-                          t.sessions.toLocaleString(),
-                        ])}
-                        headers={["Source", "Sessions"]}
-                      />
-                    </div>
-                    <div>
-                      <div
-                        style={{
-                          fontSize: 11,
-                          fontWeight: "bold",
-                          color: "#000080",
-                          marginBottom: 5,
-                        }}
-                      >
-                        Top Countries
-                      </div>
-                      <Win98Table
-                        rows={analytics.topCountries.map((c) => [
-                          c.country,
-                          c.sessions.toLocaleString(),
-                        ])}
-                        headers={["Country", "Sessions"]}
-                      />
-                    </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                    gap: 10,
+                    alignItems: "stretch",
+                  }}
+                >
+                  {/* Traffic Sources */}
+                  <div style={{ ...GRP }}>
+                    <span style={GRP_LBL}>Traffic Sources</span>
+                    <Win98Table
+                      rows={analytics.trafficSources.map((t) => [
+                        t.source,
+                        t.sessions.toLocaleString(),
+                      ])}
+                      headers={["Source", "Sessions"]}
+                    />
                   </div>
-                </div>
-              )}
 
-              {/* Top Pages | Devices — two separate GRP boxes side by side */}
-              {analytics && (
-                <div className="w98a-2col">
+                  {/* Top Countries */}
+                  <div style={{ ...GRP }}>
+                    <span style={GRP_LBL}>Top Countries</span>
+                    <Win98Table
+                      rows={analytics.topCountries.map((c) => [
+                        c.country,
+                        c.sessions.toLocaleString(),
+                      ])}
+                      headers={["Country", "Sessions"]}
+                    />
+                  </div>
+
                   {/* Top Pages */}
                   <div style={{ ...GRP }}>
                     <span style={GRP_LBL}>Top Pages</span>
@@ -638,6 +645,69 @@ export default function AdminOverviewTab({
           {/* ── GA4 Analytics ── */}
           {analytics && (
             <>
+              {/* ── At a Glance ── */}
+              <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                <div className="flex items-start justify-between mb-5">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                      At a Glance
+                    </p>
+                    <p className="text-[11px] text-slate-600 mt-0.5">
+                      Key website metrics for the last 30 days
+                    </p>
+                  </div>
+                  <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                    30 days
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {/* Page Views */}
+                  <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-orange-400" />
+                    <p className="text-[11px] text-slate-500 uppercase tracking-wide mb-2">
+                      Page Views
+                    </p>
+                    <p className="text-3xl font-bold tabular-nums tracking-tight text-orange-300">
+                      {analytics.pageViews.toLocaleString()}
+                    </p>
+                    <p className="text-[10px] text-slate-600 mt-1">
+                      total page loads
+                    </p>
+                  </div>
+                  {/* Bounce Rate */}
+                  <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-rose-400" />
+                    <p className="text-[11px] text-slate-500 uppercase tracking-wide mb-2">
+                      Bounce Rate
+                    </p>
+                    <p className="text-3xl font-bold tabular-nums tracking-tight text-rose-300">
+                      {Math.round(analytics.bounceRate * 100)}%
+                    </p>
+                    <div className="mt-2 h-1 rounded-full bg-slate-700 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-rose-400/60 transition-all duration-700"
+                        style={{
+                          width: `${Math.round(analytics.bounceRate * 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  {/* GA4 Unique Users */}
+                  <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-teal-400" />
+                    <p className="text-[11px] text-slate-500 uppercase tracking-wide mb-2">
+                      Unique Visitors
+                    </p>
+                    <p className="text-3xl font-bold tabular-nums tracking-tight text-teal-300">
+                      {analytics.totalUsers.toLocaleString()}
+                    </p>
+                    <p className="text-[10px] text-slate-600 mt-1">
+                      GA4 unique users
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Sessions bar chart + KPIs */}
               <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
                 <div className="flex items-start justify-between mb-5">
@@ -840,9 +910,98 @@ export default function AdminOverviewTab({
                 </div>
               </div>
 
-              {/* ── Traffic Sources + Countries row ── */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                {/* Traffic Sources — horizontal bar */}
+              {/* ── Top Pages (full width) ── */}
+              <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
+                <div className="flex items-start justify-between mb-5">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                      Top Pages
+                    </p>
+                    <p className="text-[11px] text-slate-600 mt-0.5">
+                      Most visited URLs — shows where users spend their time
+                    </p>
+                  </div>
+                  <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
+                    30 days
+                  </span>
+                </div>
+                <ResponsiveContainer
+                  width="100%"
+                  height={Math.max(200, analytics.topPages.length * 34)}
+                >
+                  <BarChart
+                    layout="vertical"
+                    data={analytics.topPages}
+                    margin={{ top: 0, right: 44, bottom: 0, left: 0 }}
+                    barCategoryGap="30%"
+                  >
+                    <defs>
+                      <linearGradient id="pg" x1="0" y1="0" x2="1" y2="0">
+                        <stop
+                          offset="0%"
+                          stopColor="#f59e0b"
+                          stopOpacity={0.9}
+                        />
+                        <stop
+                          offset="100%"
+                          stopColor="#f59e0b"
+                          stopOpacity={0.35}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid
+                      horizontal={false}
+                      stroke="#1e293b"
+                      strokeDasharray="4 4"
+                    />
+                    <XAxis
+                      type="number"
+                      tick={{ fill: "#334155", fontSize: 11 }}
+                      axisLine={false}
+                      tickLine={false}
+                      allowDecimals={false}
+                    />
+                    <YAxis
+                      dataKey="path"
+                      type="category"
+                      width={120}
+                      tick={{
+                        fill: "#94a3b8",
+                        fontSize: 11,
+                        fontFamily: "ui-monospace, monospace",
+                      }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip
+                      content={<ChartTooltip />}
+                      cursor={{ fill: "rgba(255,255,255,0.03)" }}
+                    />
+                    <Bar
+                      dataKey="sessions"
+                      radius={[0, 6, 6, 0]}
+                      fill="url(#pg)"
+                    >
+                      <LabelList
+                        dataKey="sessions"
+                        position="right"
+                        style={{
+                          fill: "#64748b",
+                          fontSize: 11,
+                          fontWeight: 600,
+                        }}
+                        formatter={(v: unknown) =>
+                          Number(v) > 0 ? Number(v).toLocaleString() : ""
+                        }
+                      />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* ── Audience: Traffic Sources | Top Countries | Devices (3 col) ── */}
+              <div className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4">
+                {/* Traffic Sources */}
                 <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
                   <div className="flex items-start justify-between mb-5">
                     <div>
@@ -850,85 +1009,51 @@ export default function AdminOverviewTab({
                         Traffic Sources
                       </p>
                       <p className="text-[11px] text-slate-600 mt-0.5">
-                        Where visitors come from — search, direct, referral, or
-                        ads
+                        Where visitors come from
                       </p>
                     </div>
                     <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
                       30 days
                     </span>
                   </div>
-                  <ResponsiveContainer
-                    width="100%"
-                    height={Math.max(180, analytics.trafficSources.length * 34)}
-                  >
-                    <BarChart
-                      layout="vertical"
-                      data={analytics.trafficSources}
-                      margin={{ top: 0, right: 44, bottom: 0, left: 0 }}
-                      barCategoryGap="30%"
-                    >
-                      <defs>
-                        <linearGradient id="tg" x1="0" y1="0" x2="1" y2="0">
-                          <stop
-                            offset="0%"
-                            stopColor="#8b5cf6"
-                            stopOpacity={0.9}
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="#8b5cf6"
-                            stopOpacity={0.3}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid
-                        horizontal={false}
-                        stroke="#1e293b"
-                        strokeDasharray="4 4"
-                      />
-                      <XAxis
-                        type="number"
-                        tick={{ fill: "#334155", fontSize: 11 }}
-                        axisLine={false}
-                        tickLine={false}
-                        allowDecimals={false}
-                      />
-                      <YAxis
-                        dataKey="source"
-                        type="category"
-                        width={110}
-                        tick={{ fill: "#94a3b8", fontSize: 11 }}
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <Tooltip
-                        content={<ChartTooltip />}
-                        cursor={{ fill: "rgba(255,255,255,0.03)" }}
-                      />
-                      <Bar
-                        dataKey="sessions"
-                        radius={[0, 6, 6, 0]}
-                        fill="url(#tg)"
-                      >
-                        <LabelList
-                          dataKey="sessions"
-                          position="right"
-                          style={{
-                            fill: "#64748b",
-                            fontSize: 11,
-                            fontWeight: 600,
-                          }}
-                          formatter={(v: unknown) =>
-                            Number(v) > 0 ? Number(v).toLocaleString() : ""
-                          }
-                        />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <div className="space-y-2.5">
+                    {(() => {
+                      const total = analytics.trafficSources.reduce(
+                        (s, t) => s + t.sessions,
+                        0,
+                      );
+                      return analytics.trafficSources.map((t, i) => {
+                        const pct =
+                          total > 0
+                            ? Math.round((t.sessions / total) * 100)
+                            : 0;
+                        return (
+                          <div key={i}>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-sm text-slate-300 flex-1 truncate">
+                                {t.source}
+                              </span>
+                              <span className="text-xs font-bold tabular-nums text-violet-300">
+                                {pct}%
+                              </span>
+                              <span className="text-xs text-slate-600 tabular-nums w-6 text-right shrink-0">
+                                {t.sessions}
+                              </span>
+                            </div>
+                            <div className="h-1 rounded-full bg-slate-800 overflow-hidden">
+                              <div
+                                className="h-full rounded-full bg-violet-400/60 transition-all duration-700"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      });
+                    })()}
+                  </div>
                 </div>
 
-                {/* Top Countries — list with inline progress */}
+                {/* Top Countries */}
                 <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
                   <div className="flex items-start justify-between mb-5">
                     <div>
@@ -936,7 +1061,7 @@ export default function AdminOverviewTab({
                         Top Countries
                       </p>
                       <p className="text-[11px] text-slate-600 mt-0.5">
-                        Geographic breakdown of your visitors by session count
+                        Geographic breakdown
                       </p>
                     </div>
                     <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
@@ -949,7 +1074,7 @@ export default function AdminOverviewTab({
                       0,
                     );
                     return (
-                      <div className="space-y-3">
+                      <div className="space-y-2.5">
                         {analytics.topCountries.map((c, i) => {
                           const pct =
                             total > 0
@@ -958,7 +1083,7 @@ export default function AdminOverviewTab({
                           const opacity = 1 - i * 0.09;
                           return (
                             <div key={c.country}>
-                              <div className="flex items-center gap-2 mb-1.5">
+                              <div className="flex items-center gap-2 mb-1">
                                 <MapPin className="w-3 h-3 text-slate-600 shrink-0" />
                                 <span className="text-sm text-slate-300 flex-1 truncate">
                                   {c.country}
@@ -966,7 +1091,7 @@ export default function AdminOverviewTab({
                                 <span className="text-sm font-bold tabular-nums text-slate-300">
                                   {pct}%
                                 </span>
-                                <span className="text-xs text-slate-600 tabular-nums w-7 text-right shrink-0">
+                                <span className="text-xs text-slate-600 tabular-nums w-6 text-right shrink-0">
                                   {c.sessions}
                                 </span>
                               </div>
@@ -986,100 +1111,8 @@ export default function AdminOverviewTab({
                     );
                   })()}
                 </div>
-              </div>
 
-              {/* Top Pages + Devices row */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                {/* Top Pages — horizontal bar chart */}
-                <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
-                  <div className="flex items-start justify-between mb-5">
-                    <div>
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                        Top Pages
-                      </p>
-                      <p className="text-[11px] text-slate-600 mt-0.5">
-                        Most visited URLs — shows where users spend their time
-                      </p>
-                    </div>
-                    <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
-                      30 days
-                    </span>
-                  </div>
-                  <ResponsiveContainer
-                    width="100%"
-                    height={Math.max(200, analytics.topPages.length * 34)}
-                  >
-                    <BarChart
-                      layout="vertical"
-                      data={analytics.topPages}
-                      margin={{ top: 0, right: 44, bottom: 0, left: 0 }}
-                      barCategoryGap="30%"
-                    >
-                      <defs>
-                        <linearGradient id="pg" x1="0" y1="0" x2="1" y2="0">
-                          <stop
-                            offset="0%"
-                            stopColor="#f59e0b"
-                            stopOpacity={0.9}
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="#f59e0b"
-                            stopOpacity={0.35}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid
-                        horizontal={false}
-                        stroke="#1e293b"
-                        strokeDasharray="4 4"
-                      />
-                      <XAxis
-                        type="number"
-                        tick={{ fill: "#334155", fontSize: 11 }}
-                        axisLine={false}
-                        tickLine={false}
-                        allowDecimals={false}
-                      />
-                      <YAxis
-                        dataKey="path"
-                        type="category"
-                        width={90}
-                        tick={{
-                          fill: "#94a3b8",
-                          fontSize: 11,
-                          fontFamily: "ui-monospace, monospace",
-                        }}
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <Tooltip
-                        content={<ChartTooltip />}
-                        cursor={{ fill: "rgba(255,255,255,0.03)" }}
-                      />
-                      <Bar
-                        dataKey="sessions"
-                        radius={[0, 6, 6, 0]}
-                        fill="url(#pg)"
-                      >
-                        <LabelList
-                          dataKey="sessions"
-                          position="right"
-                          style={{
-                            fill: "#64748b",
-                            fontSize: 11,
-                            fontWeight: 600,
-                          }}
-                          formatter={(v: unknown) =>
-                            Number(v) > 0 ? Number(v).toLocaleString() : ""
-                          }
-                        />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Devices — donut chart */}
+                {/* Devices */}
                 <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6">
                   <div className="flex items-start justify-between mb-5">
                     <div>
@@ -1087,7 +1120,7 @@ export default function AdminOverviewTab({
                         Devices
                       </p>
                       <p className="text-[11px] text-slate-600 mt-0.5">
-                        What type of device visitors use to access your site
+                        Device type breakdown
                       </p>
                     </div>
                     <span className="text-[10px] text-slate-600 font-medium shrink-0 mt-0.5">
@@ -1095,7 +1128,6 @@ export default function AdminOverviewTab({
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-5">
-                    {/* Donut with center label */}
                     <div className="relative w-full">
                       <ResponsiveContainer width="100%" height={170}>
                         <PieChart>
@@ -1122,7 +1154,6 @@ export default function AdminOverviewTab({
                           <Tooltip content={<DeviceTooltip />} />
                         </PieChart>
                       </ResponsiveContainer>
-                      {/* Center label */}
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                         <p className="text-2xl font-bold text-white tabular-nums leading-none">
                           {totalDeviceSessions.toLocaleString()}
@@ -1132,7 +1163,6 @@ export default function AdminOverviewTab({
                         </p>
                       </div>
                     </div>
-                    {/* Legend */}
                     <div className="w-full space-y-2.5">
                       {analytics.deviceCategory.map((d, i) => {
                         const DevIcon =

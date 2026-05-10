@@ -1255,9 +1255,9 @@ export function useAdminCustomizationState({
   // ── Color fields config (depends on dict) ─────────────────────────────────
   const colorFields: { key: ColorKey; label: string; default: string }[] = [
     {
-      key: "brandGreen",
+      key: "brandDark",
       label: dict.admin.custom_color_primary,
-      default: COLOR_DEFAULTS.brandGreen,
+      default: COLOR_DEFAULTS.brandDark,
     },
     {
       key: "brandMid",
@@ -1265,9 +1265,9 @@ export function useAdminCustomizationState({
       default: COLOR_DEFAULTS.brandMid,
     },
     {
-      key: "brandDark",
+      key: "brandGreen",
       label: dict.admin.custom_color_dark,
-      default: COLOR_DEFAULTS.brandDark,
+      default: COLOR_DEFAULTS.brandGreen,
     },
     {
       key: "brandBtnText",

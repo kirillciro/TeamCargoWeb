@@ -59,10 +59,6 @@ export default function ServicesSection({
   const [overrides, setOverrides] = useState<ServicesOverrides>({});
 
   useEffect(() => {
-    let pollTimer: ReturnType<typeof setTimeout> | null = null;
-    let cancelled = false;
-    const deadline = Date.now() + 120_000;
-
     const fetchOverrides = async () => {
       // Instant paint from lang-scoped cache (avoids cross-language bleed)
       try {
@@ -78,13 +74,9 @@ export default function ServicesSection({
           const data = (await res.json()) as ServicesOverrides & {
             _hasTranslations?: boolean;
           };
-          const { _hasTranslations, ...rest } = data;
+          const { _hasTranslations: _, ...rest } = data;
           setOverrides(rest as ServicesOverrides);
           localStorage.setItem(lsServices(lang), JSON.stringify(rest));
-          // Poll until translations are ready (background AI job may still be running)
-          if (!_hasTranslations && !cancelled && Date.now() < deadline) {
-            pollTimer = setTimeout(() => void fetchOverrides(), 5000);
-          }
         }
       } catch {
         /* ignore */
@@ -95,8 +87,6 @@ export default function ServicesSection({
     const handler = () => void fetchOverrides();
     window.addEventListener("tc:services-updated", handler);
     return () => {
-      cancelled = true;
-      if (pollTimer) clearTimeout(pollTimer);
       window.removeEventListener("tc:services-updated", handler);
     };
   }, [lang]);
@@ -119,7 +109,7 @@ export default function ServicesSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col flex-1 w-full min-h-0">
         {/* Header */}
         <div className="text-center mb-8 shrink-0">
-          <span className="text-[#36B347] text-xs font-bold uppercase tracking-[0.25em]">
+          <span className="text-(--brand-green-text) text-xs font-bold uppercase tracking-[0.25em]">
             {effectiveLabel}
           </span>
           <h2

@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import WebVitals from "@/components/WebVitals";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
+// Allow TypeScript to recognise window.gtag injected by GA4
+declare global {
+  interface Window {
+    gtag: (...args: unknown[]) => void;
+  }
+}
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
 
 export const metadata: Metadata = {
   title: "Team Cargo — 1 team · 1 missie",
@@ -44,6 +51,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        <WebVitals />
         {/* ── Google Analytics 4 ── */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-17RWXXE1Y6"

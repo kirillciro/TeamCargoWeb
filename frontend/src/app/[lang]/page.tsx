@@ -14,8 +14,7 @@ import CookieBanner from "@/components/CookieBanner";
 import VerifiedBanner from "@/components/VerifiedBanner";
 import { Suspense } from "react";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
 
 export async function generateMetadata({
   params,
@@ -27,7 +26,7 @@ export async function generateMetadata({
   const dict = await getDictionary(resolvedLang);
 
   const title = `Team Cargo — ${dict.hero.slogan}`;
-  const description = dict.hero.description ?? "Professioneel transport en logistiek.";
+  const description = dict.hero.tagline;
   const canonical = `${SITE_URL}/${resolvedLang}`;
 
   return {
@@ -67,8 +66,7 @@ export default async function LangRootPage({
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             name: "Team Cargo",
-            description:
-              "Professioneel transport en logistiek.",
+            description: "Professioneel transport en logistiek.",
             url: SITE_URL,
             logo: `${SITE_URL}/logo.svg`,
             "@id": SITE_URL,
