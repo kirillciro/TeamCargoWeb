@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getDictionary } from "@/lib/getDictionary";
 import { isSupportedLanguage, defaultLang } from "@/lib/i18n";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 import { AuthProvider } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import AuthModal from "@/components/AuthModal";

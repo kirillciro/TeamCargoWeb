@@ -1,5 +1,6 @@
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/getDictionary";
-import { isSupportedLanguage, defaultLang } from "@/lib/i18n";
+import { isSupportedLanguage, defaultLang, languages } from "@/lib/i18n";
 import { AuthProvider } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import AuthModal from "@/components/AuthModal";
@@ -13,6 +14,40 @@ import CookieBanner from "@/components/CookieBanner";
 import VerifiedBanner from "@/components/VerifiedBanner";
 import { Suspense } from "react";
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const resolvedLang = isSupportedLanguage(lang) ? lang : defaultLang;
+  const dict = await getDictionary(resolvedLang);
+
+  const title = `Team Cargo — ${dict.hero.slogan}`;
+  const description = dict.hero.description ?? "Professioneel transport en logistiek.";
+  const canonical = `${SITE_URL}/${resolvedLang}`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical,
+      languages: Object.fromEntries(
+        languages.map((l) => [l, `${SITE_URL}/${l}`]),
+      ),
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      locale: resolvedLang,
+    },
+  };
+}
+
 export default async function LangRootPage({
   params,
 }: {
@@ -24,6 +59,22 @@ export default async function LangRootPage({
 
   return (
     <AuthProvider>
+      {/* JSON-LD: LocalBusiness structured data for Google rich results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "Team Cargo",
+            description:
+              "Professioneel transport en logistiek.",
+            url: SITE_URL,
+            logo: `${SITE_URL}/logo.svg`,
+            "@id": SITE_URL,
+          }),
+        }}
+      />
       <Header lang={resolvedLang} dict={dict} />
       <main className="flex-1">
         <HeroSection dict={dict} lang={resolvedLang} />

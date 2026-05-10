@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+# Private — no crawling
+Disallow: /*/admin
+Disallow: /*/profile
+
+Sitemap: https://teamcargo.be/sitemap.xml

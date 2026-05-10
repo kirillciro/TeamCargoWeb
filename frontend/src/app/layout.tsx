@@ -2,13 +2,31 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
+
 export const metadata: Metadata = {
   title: "Team Cargo — 1 team · 1 missie",
   description:
     "Wij maken onze klanten en die van uw tevreden. Professioneel transport en logistiek.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    title: "Team Cargo — 1 team · 1 missie",
+    description:
+      "Wij maken onze klanten en die van uw tevreden. Professioneel transport en logistiek.",
+    url: SITE_URL,
+    siteName: "Team Cargo",
+    images: [
+      {
+        url: "/teamCargo-trans-webP/cargo-trans-horizontal-1.webp",
+        width: 1200,
+        height: 630,
+        alt: "Team Cargo — transport en logistiek",
+      },
+    ],
+    type: "website",
+    locale: "nl_NL",
+  },
 };
 
 export default function RootLayout({
