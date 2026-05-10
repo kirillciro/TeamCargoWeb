@@ -2,74 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import {
-  CheckCircle2,
-  Users,
-  UserCheck,
-  UsersRound,
-  UserStar,
-  UserCog,
-  PersonStanding,
-  HardHat,
-  Briefcase,
-  BriefcaseBusiness,
-  Truck,
-  TruckElectric,
-  Car,
-  Bus,
-  Bike,
-  Fuel,
-  Package,
-  ShieldCheck,
-  Award,
-  Trophy,
-  Medal,
-  Star,
-  CircleStar,
-  BadgeCheck,
-  Crown,
-  Sparkles,
-  Zap,
-  Bolt,
-  Flame,
-  Target,
-  Goal,
-  ThumbsUp,
-  Handshake,
-  HeartHandshake,
-  HandHelping,
-  TrendingUp,
-  Activity,
-  CircleGauge,
-  Timer,
-  Route,
-  Navigation,
-  Navigation2,
-  Waypoints,
-  TrafficCone,
-  Rocket,
-  Wrench,
-  MapPin,
-  MapPinCheck,
-  MapPinHouse,
-  MapPinned,
-  LocateFixed,
-  Compass,
-  Milestone,
-  Signpost,
-  Globe,
-  Plane,
-  Ship,
-  Building,
-  Building2,
-  Landmark,
-  Warehouse,
-  Factory,
-  Home,
-  Flag,
-  Mountain,
-  type LucideIcon,
-} from "lucide-react";
+import { CheckCircle2, Users, MapPin, type LucideIcon } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
 const lsAbout = (lang: string) => `tc_about_overrides_${lang}`;
@@ -78,73 +11,6 @@ const DEFAULT_IMGS = {
   imgLeft: "/teamCargo-trans-webP/TeamCargoGeletEdited.webp",
   imgTopRight: "/images/amazon_courier_webP.webp",
   imgBottomRight: "/images/cargoTeam_webP.webp",
-};
-
-const BADGE_ICON_MAP: Record<string, LucideIcon> = {
-  users: Users,
-  "user-check": UserCheck,
-  "users-round": UsersRound,
-  "user-star": UserStar,
-  "user-cog": UserCog,
-  "person-standing": PersonStanding,
-  "hard-hat": HardHat,
-  briefcase: Briefcase,
-  "briefcase-biz": BriefcaseBusiness,
-  truck: Truck,
-  "truck-electric": TruckElectric,
-  car: Car,
-  bus: Bus,
-  bike: Bike,
-  fuel: Fuel,
-  package: Package,
-  "shield-check": ShieldCheck,
-  award: Award,
-  trophy: Trophy,
-  medal: Medal,
-  star: Star,
-  "circle-star": CircleStar,
-  "badge-check": BadgeCheck,
-  crown: Crown,
-  sparkles: Sparkles,
-  zap: Zap,
-  bolt: Bolt,
-  flame: Flame,
-  target: Target,
-  goal: Goal,
-  "thumbs-up": ThumbsUp,
-  handshake: Handshake,
-  "heart-handshake": HeartHandshake,
-  "hand-helping": HandHelping,
-  "trending-up": TrendingUp,
-  activity: Activity,
-  "circle-gauge": CircleGauge,
-  timer: Timer,
-  route: Route,
-  navigation: Navigation,
-  "navigation-2": Navigation2,
-  waypoints: Waypoints,
-  "traffic-cone": TrafficCone,
-  rocket: Rocket,
-  wrench: Wrench,
-  "map-pin": MapPin,
-  "map-pin-check": MapPinCheck,
-  "map-pin-house": MapPinHouse,
-  "map-pinned": MapPinned,
-  "locate-fixed": LocateFixed,
-  compass: Compass,
-  milestone: Milestone,
-  signpost: Signpost,
-  globe: Globe,
-  plane: Plane,
-  ship: Ship,
-  building: Building,
-  "building-2": Building2,
-  landmark: Landmark,
-  warehouse: Warehouse,
-  factory: Factory,
-  home: Home,
-  flag: Flag,
-  mountain: Mountain,
 };
 
 type AboutOverrides = {
@@ -182,7 +48,7 @@ export default function AboutSection({
       // Instant paint from lang-scoped cache (avoids cross-language bleed)
       try {
         const cached = localStorage.getItem(lsAbout(lang));
-        setOverrides(cached ? (JSON.parse(cached) as AboutOverrides) : {});
+        if (cached) setOverrides(JSON.parse(cached) as AboutOverrides);
       } catch {
         /* ignore */
       }
@@ -195,7 +61,9 @@ export default function AboutSection({
             _hasTranslations?: boolean;
           };
           const { _hasTranslations, ...rest } = data;
-          setOverrides(rest);
+          setOverrides((prev) =>
+            JSON.stringify(prev) === JSON.stringify(rest) ? prev : rest,
+          );
           localStorage.setItem(lsAbout(lang), JSON.stringify(rest));
         }
       } catch {
@@ -212,6 +80,20 @@ export default function AboutSection({
   }, [lang]);
 
   const o = overrides;
+
+  const [badgeIconMap, setBadgeIconMap] = useState<Record<
+    string,
+    LucideIcon
+  > | null>(null);
+  useEffect(() => {
+    if ((o.driversIcon || o.locationIcon) && !badgeIconMap) {
+      void import("@/components/AboutIconMap").then((m) =>
+        setBadgeIconMap(m.BADGE_ICON_MAP),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [o.driversIcon, o.locationIcon]);
+
   const effectiveLabel = o.label || dict.about.label;
   const effectiveTitle = o.title || dict.about.title;
   const effectiveDesc = o.description || dict.about.description;
@@ -228,12 +110,12 @@ export default function AboutSection({
   const effectiveYearsNum = o.yearsActiveNum || "7+";
   const effectiveLocation = o.location || dict.about.location;
   const DriversIconComp: LucideIcon =
-    o.driversIcon && BADGE_ICON_MAP[o.driversIcon]
-      ? BADGE_ICON_MAP[o.driversIcon]
+    o.driversIcon && badgeIconMap?.[o.driversIcon]
+      ? badgeIconMap[o.driversIcon]
       : Users;
   const LocationIconComp: LucideIcon =
-    o.locationIcon && BADGE_ICON_MAP[o.locationIcon]
-      ? BADGE_ICON_MAP[o.locationIcon]
+    o.locationIcon && badgeIconMap?.[o.locationIcon]
+      ? badgeIconMap[o.locationIcon]
       : MapPin;
   const imgLeft = o.imgLeft || DEFAULT_IMGS.imgLeft;
   const imgTopRight = o.imgTopRight || DEFAULT_IMGS.imgTopRight;
@@ -338,7 +220,7 @@ export default function AboutSection({
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 1024px) 35vw, 20vw"
-                  priority
+                  loading="lazy"
                   unoptimized={imgLeft.startsWith("http")}
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent" />

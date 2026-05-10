@@ -8,80 +8,9 @@ import {
   Utensils,
   MapPin,
   Phone,
-  BedDouble,
-  Coffee,
-  Bath,
-  DoorOpen,
-  Armchair,
-  Sofa,
-  Sun,
-  Key,
-  Lamp,
-  Lightbulb,
-  Refrigerator,
-  WashingMachine,
-  CookingPot,
-  Wind,
-  Tv,
-  Bed,
-  Warehouse,
-  Building,
-  Building2,
-  Truck,
-  Car,
-  Bus,
-  Bike,
-  Route,
-  Shield,
-  ShieldCheck,
-  Star,
-  Award,
-  Sparkles,
-  Heart,
-  Users,
-  CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
-
-const PERK_ICON_MAP: Record<string, LucideIcon> = {
-  home: Home,
-  wifi: Wifi,
-  utensils: Utensils,
-  "map-pin": MapPin,
-  "bed-double": BedDouble,
-  coffee: Coffee,
-  bath: Bath,
-  "door-open": DoorOpen,
-  armchair: Armchair,
-  sofa: Sofa,
-  sun: Sun,
-  key: Key,
-  lamp: Lamp,
-  lightbulb: Lightbulb,
-  refrigerator: Refrigerator,
-  "washing-machine": WashingMachine,
-  "cooking-pot": CookingPot,
-  wind: Wind,
-  tv: Tv,
-  bed: Bed,
-  warehouse: Warehouse,
-  building: Building,
-  "building-2": Building2,
-  truck: Truck,
-  car: Car,
-  bus: Bus,
-  bike: Bike,
-  route: Route,
-  shield: Shield,
-  "shield-check": ShieldCheck,
-  star: Star,
-  award: Award,
-  sparkles: Sparkles,
-  heart: Heart,
-  users: Users,
-  "check-circle-2": CheckCircle2,
-};
 
 const DEFAULT_PERK_ICONS: LucideIcon[] = [Home, Wifi, Utensils, MapPin];
 
@@ -114,12 +43,16 @@ export default function HousingSection({
   lang?: string;
 }) {
   const [overrides, setOverrides] = useState<HousingOverrides>({});
+  const [perkIconMap, setPerkIconMap] = useState<Record<
+    string,
+    LucideIcon
+  > | null>(null);
 
   useEffect(() => {
     const fetchOverrides = async () => {
       try {
         const cached = localStorage.getItem(LS_HOUSING(lang));
-        setOverrides(cached ? (JSON.parse(cached) as HousingOverrides) : {});
+        if (cached) setOverrides(JSON.parse(cached) as HousingOverrides);
       } catch {
         /* ignore */
       }
@@ -129,7 +62,9 @@ export default function HousingSection({
         if (res.ok) {
           const data = (await res.json()) as HousingOverrides;
           const { _hasTranslations: _, ...rest } = data;
-          setOverrides(rest);
+          setOverrides((prev) =>
+            JSON.stringify(prev) === JSON.stringify(rest) ? prev : rest,
+          );
           localStorage.setItem(LS_HOUSING(lang), JSON.stringify(rest));
         }
       } catch {
@@ -153,6 +88,15 @@ export default function HousingSection({
     o.perk3 || dict.housing.perks[3],
   ];
   const perkIconKeys = [o.perk0Icon, o.perk1Icon, o.perk2Icon, o.perk3Icon];
+
+  useEffect(() => {
+    if (perkIconKeys.some(Boolean) && !perkIconMap) {
+      void import("@/components/PerkIconMap").then((m) =>
+        setPerkIconMap(m.PERK_ICON_MAP),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [o.perk0Icon, o.perk1Icon, o.perk2Icon, o.perk3Icon]);
 
   return (
     <section
@@ -181,7 +125,7 @@ export default function HousingSection({
               {perksText.map((text, i) => {
                 const iconKey = perkIconKeys[i];
                 const ResolvedIcon: LucideIcon =
-                  (iconKey ? PERK_ICON_MAP[iconKey] : undefined) ??
+                  (iconKey ? perkIconMap?.[iconKey] : undefined) ??
                   DEFAULT_PERK_ICONS[i % DEFAULT_PERK_ICONS.length];
                 return (
                   <li key={i} className="flex items-center gap-3.5">
@@ -200,6 +144,7 @@ export default function HousingSection({
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Ask about housing options via WhatsApp"
               className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold rounded-xl text-[0.92rem] tracking-wide shadow-lg shadow-black/30"
               style={{
                 background: "var(--brand-dark)",

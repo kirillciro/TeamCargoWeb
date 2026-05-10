@@ -2,7 +2,13 @@
 
 html {
   scroll-behavior: smooth;
-  zoom: 0.75;
+}
+
+/* Desktop zoom — keeps design proportions on large screens */
+@media (min-width: 1024px) {
+  html {
+    zoom: 0.75;
+  }
 }
 
 /* Offset anchor targets to clear the fixed header + add a small visual gap */

@@ -2,24 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  Phone,
-  Mail,
-  MapPin,
-  Smartphone,
-  MessageCircle,
-  AtSign,
-  Inbox,
-  MailOpen,
-  Navigation,
-  Globe,
-  Building,
-  Home,
-  Handshake,
-  HeartHandshake,
-  Compass,
-  type LucideIcon,
-} from "lucide-react";
+import { Phone, Mail, MapPin, type LucideIcon } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
 type ContactOverrides = {
@@ -42,26 +25,6 @@ type ContactOverrides = {
   _hasTranslations?: boolean;
 };
 
-const CONTACT_ROW_ICON_MAP: Record<string, LucideIcon> = {
-  phone: Phone,
-  smartphone: Smartphone,
-  "message-circle": MessageCircle,
-  mail: Mail,
-  "at-sign": AtSign,
-  inbox: Inbox,
-  "mail-open": MailOpen,
-  "map-pin": MapPin,
-  navigation: Navigation,
-  globe: Globe,
-  building: Building,
-  home: Home,
-  handshake: Handshake,
-  "heart-handshake": HeartHandshake,
-  compass: Compass,
-};
-
-const DEFAULT_ROW_ICONS: LucideIcon[] = [Phone, Mail, MapPin];
-
 const LS_CONTACT = (lang: string) => `tc_contact_overrides_${lang}`;
 
 export default function ContactSection({
@@ -80,7 +43,7 @@ export default function ContactSection({
     const fetchOverrides = async () => {
       try {
         const cached = localStorage.getItem(LS_CONTACT(lang));
-        setOverrides(cached ? (JSON.parse(cached) as ContactOverrides) : {});
+        if (cached) setOverrides(JSON.parse(cached) as ContactOverrides);
       } catch {
         /* ignore */
       }
@@ -90,7 +53,9 @@ export default function ContactSection({
         if (res.ok) {
           const data = (await res.json()) as ContactOverrides;
           const { _hasTranslations: _, ...rest } = data;
-          setOverrides(rest);
+          setOverrides((prev) =>
+            JSON.stringify(prev) === JSON.stringify(rest) ? prev : rest,
+          );
           const q =
             rest.map_pin ||
             rest.map_address ||
@@ -114,6 +79,20 @@ export default function ContactSection({
   }, [lang]);
 
   const o = overrides;
+
+  const [contactIconMap, setContactIconMap] = useState<Record<
+    string,
+    LucideIcon
+  > | null>(null);
+  useEffect(() => {
+    if ((o.phoneIcon || o.emailIcon || o.addressIcon) && !contactIconMap) {
+      void import("@/components/ContactIconMap").then((m) =>
+        setContactIconMap(m.CONTACT_ROW_ICON_MAP),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [o.phoneIcon, o.emailIcon, o.addressIcon]);
+
   const whatsappNumber = o.whatsapp_number || "393497080551";
   const emailAddress = o.email_address || "info@teamcargo.nl";
   const mapAddress = o.map_address || "Poortland 146, 1046 BD Amsterdam";
@@ -123,25 +102,20 @@ export default function ContactSection({
 
   const contactRows = [
     {
-      Icon:
-        (o.phoneIcon ? CONTACT_ROW_ICON_MAP[o.phoneIcon] : undefined) ??
-        DEFAULT_ROW_ICONS[0],
+      Icon: (o.phoneIcon ? contactIconMap?.[o.phoneIcon] : undefined) ?? Phone,
       label: o.phone || "WhatsApp",
       value: `+${whatsappNumber.replace(/[^0-9]/g, "").replace(/^31/, "31 ")}`,
       href: whatsappHref,
     },
     {
-      Icon:
-        (o.emailIcon ? CONTACT_ROW_ICON_MAP[o.emailIcon] : undefined) ??
-        DEFAULT_ROW_ICONS[1],
+      Icon: (o.emailIcon ? contactIconMap?.[o.emailIcon] : undefined) ?? Mail,
       label: o.email || "E-mail",
       value: emailAddress,
       href: emailHref,
     },
     {
       Icon:
-        (o.addressIcon ? CONTACT_ROW_ICON_MAP[o.addressIcon] : undefined) ??
-        DEFAULT_ROW_ICONS[2],
+        (o.addressIcon ? contactIconMap?.[o.addressIcon] : undefined) ?? MapPin,
       label: o.address || "Adres",
       value: mapAddress,
       href: mapHref,

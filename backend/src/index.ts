@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import crypto from "crypto";
 import multer from "multer";
 import { v2 as cloudinary, type UploadApiOptions } from "cloudinary";
@@ -50,6 +52,29 @@ import { getAnalyticsSummary } from "./analytics.js";
 
 const app = express();
 
+// Trust Railway / Render reverse-proxy so req.ip is the real client IP
+app.set("trust proxy", 1);
+
+// ── Rate limiters ──────────────────────────────────────────────────────────
+
+/** 10 attempts per 15 min — login, register */
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again later." },
+});
+
+/** 5 attempts per hour — password-reset, resend-verification */
+const strictLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again later." },
+});
+
 const allowedOrigins = [
   process.env.FRONTEND_URL ?? "http://localhost:3000",
   "http://localhost:3000",
@@ -70,7 +95,8 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json());
+app.use(helmet());
+app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -166,7 +192,7 @@ app.get("/health", async (_req, res) => {
 
 // ── Auth: Register ─────────────────────────────────────────────────────────
 
-app.post("/auth/register", async (req, res) => {
+app.post("/auth/register", authLimiter, async (req, res) => {
   const parsed = registerSchema.safeParse(req.body);
   if (!parsed.success) {
     res
@@ -236,7 +262,7 @@ app.post("/auth/register", async (req, res) => {
 
 // ── Auth: Login ────────────────────────────────────────────────────────────
 
-app.post("/auth/login", async (req, res) => {
+app.post("/auth/login", authLimiter, async (req, res) => {
   const parsed = loginSchema.safeParse(req.body);
   if (!parsed.success) {
     res
@@ -392,7 +418,7 @@ app.get("/auth/verify-email", async (req, res) => {
 
 // ── Auth: Resend verification email ───────────────────────────────────────
 
-app.post("/auth/resend-verification", async (req, res) => {
+app.post("/auth/resend-verification", strictLimiter, async (req, res) => {
   const { email } = req.body as { email?: string };
   if (!email) {
     res.status(400).json({ message: "Email is required" });
@@ -457,7 +483,7 @@ app.post("/auth/resend-verification", async (req, res) => {
 
 // ── Auth: Forgot password ──────────────────────────────────────────────────
 
-app.post("/auth/forgot-password", async (req, res) => {
+app.post("/auth/forgot-password", strictLimiter, async (req, res) => {
   const { email } = req.body as { email?: string };
   if (!email) {
     res.status(400).json({ message: "Email is required" });
@@ -2590,6 +2616,22 @@ app.post(
     }
   },
 );
+
+// ── Startup env validation ────────────────────────────────────────────────
+if (process.env.NODE_ENV === "production") {
+  const REQUIRED_ENV = [
+    "JWT_ACCESS_SECRET",
+    "JWT_REFRESH_SECRET",
+    "DATABASE_URL",
+    "FRONTEND_URL",
+    "BACKEND_URL",
+  ];
+  const missing = REQUIRED_ENV.filter((k) => !process.env[k]);
+  if (missing.length) {
+    console.error(`[startup] Missing required env vars: ${missing.join(", ")}`);
+    process.exit(1);
+  }
+}
 
 const PORT = Number(process.env.PORT ?? 4000);
 app.listen(PORT, () => {

@@ -62,7 +62,7 @@ function propertyId() {
 }
 
 function metricVal(
-  rows: { metricValues?: { value?: string }[] }[] | null | undefined,
+  rows: { metricValues?: { value?: string | null }[] }[] | null | undefined,
   rowIndex = 0,
   metricIndex = 0,
 ): number {
@@ -124,7 +124,7 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
         dimensions: [{ name: "pagePath" }],
         metrics: [{ name: "sessions" }],
         orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-        limit: 8,
+        limit: "8",
       },
     }),
     // Device category breakdown (last 30 days)
@@ -152,7 +152,7 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
         dimensions: [{ name: "sessionSourceMedium" }],
         metrics: [{ name: "sessions" }],
         orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-        limit: 8,
+        limit: "8",
       },
     }),
     // Top countries (last 30 days, top 8)
@@ -163,7 +163,7 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
         dimensions: [{ name: "country" }],
         metrics: [{ name: "sessions" }],
         orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-        limit: 8,
+        limit: "8",
       },
     }),
     // Engagement metrics (last 30 days)

@@ -152,12 +152,20 @@ function AuthModalInner({
         if (e.target === overlayRef.current) closeAuth();
       }}
     >
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
+        className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+      >
         {/* Green top bar */}
         <div className="bg-[#1a7f45] px-6 py-5">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-white font-extrabold text-xl tracking-tight">
+              <h2
+                id="auth-modal-title"
+                className="text-white font-extrabold text-xl tracking-tight"
+              >
                 {registerSuccess
                   ? a.verify_email_title
                   : showForgot

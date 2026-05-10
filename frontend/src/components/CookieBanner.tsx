@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { X, Cookie } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
@@ -15,11 +14,31 @@ export default function CookieBanner({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("cookie_consent");
-    if (!stored) {
-      const t = setTimeout(() => setVisible(true), 800);
-      return () => clearTimeout(t);
-    }
+    if (typeof window === "undefined") return;
+    if (localStorage.getItem("cookie_consent")) return;
+
+    let cancelled = false;
+    const show = () => {
+      if (cancelled) return;
+      setVisible(true);
+      cleanup();
+    };
+    const cleanup = () => {
+      window.removeEventListener("scroll", show);
+      window.removeEventListener("pointerdown", show);
+      window.removeEventListener("keydown", show);
+    };
+    // Wait for first user interaction OR ~3.5s of idle, whichever comes first.
+    // This keeps the banner out of the LCP window without hiding it indefinitely.
+    window.addEventListener("scroll", show, { passive: true, once: true });
+    window.addEventListener("pointerdown", show, { passive: true, once: true });
+    window.addEventListener("keydown", show, { once: true });
+    const t = setTimeout(show, 3500);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+      cleanup();
+    };
   }, []);
 
   function accept() {
@@ -62,19 +81,19 @@ export default function CookieBanner({
                 </p>
                 <p className="text-white/55 text-xs leading-relaxed">
                   {dict.cookie_banner.description}{" "}
-                  <Link
+                  <a
                     href={`/${lang}/cookies`}
                     className="text-[#4dc95e] hover:underline"
                   >
                     {dict.cookie_banner.cookie_policy_link}
-                  </Link>{" "}
+                  </a>{" "}
                   &middot;{" "}
-                  <Link
+                  <a
                     href={`/${lang}/privacy`}
                     className="text-[#4dc95e] hover:underline"
                   >
                     {dict.cookie_banner.privacy_policy_link}
-                  </Link>
+                  </a>
                 </p>
               </div>
             </div>

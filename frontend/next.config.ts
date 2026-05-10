@@ -4,8 +4,13 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
   images: {
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
+    deviceSizes: [640, 828, 1080, 1200, 1920],
+    qualities: [60, 75],
     remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },
   async headers() {

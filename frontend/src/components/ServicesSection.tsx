@@ -63,7 +63,7 @@ export default function ServicesSection({
       // Instant paint from lang-scoped cache (avoids cross-language bleed)
       try {
         const cached = localStorage.getItem(lsServices(lang));
-        setOverrides(cached ? (JSON.parse(cached) as ServicesOverrides) : {});
+        if (cached) setOverrides(JSON.parse(cached) as ServicesOverrides);
       } catch {
         /* ignore */
       }
@@ -75,7 +75,11 @@ export default function ServicesSection({
             _hasTranslations?: boolean;
           };
           const { _hasTranslations: _, ...rest } = data;
-          setOverrides(rest as ServicesOverrides);
+          setOverrides((prev) =>
+            JSON.stringify(prev) === JSON.stringify(rest as ServicesOverrides)
+              ? prev
+              : (rest as ServicesOverrides),
+          );
           localStorage.setItem(lsServices(lang), JSON.stringify(rest));
         }
       } catch {
@@ -136,6 +140,8 @@ export default function ServicesSection({
                   src={svc.img}
                   alt={svc.title}
                   fill
+                  loading="lazy"
+                  quality={60}
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   unoptimized={svc.img.startsWith("http")}

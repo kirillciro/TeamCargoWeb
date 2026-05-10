@@ -2,56 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import {
-  Phone,
-  Mail,
-  Shield,
-  ShieldCheck,
-  BadgeCheck,
-  CheckCircle2,
-  Award,
-  Medal,
-  Trophy,
-  Star,
-  CircleStar,
-  Crown,
-  Sparkles,
-  Zap,
-  Flame,
-  Target,
-  Goal,
-  Users,
-  UserCheck,
-  UsersRound,
-  Handshake,
-  HeartHandshake,
-  HandHelping,
-  ThumbsUp,
-  HardHat,
-  Briefcase,
-  PersonStanding,
-  TrendingUp,
-  Activity,
-  Rocket,
-  Timer,
-  CircleGauge,
-  Truck,
-  Car,
-  Route,
-  Navigation,
-  Compass,
-  Globe,
-  MapPin,
-  Flag,
-  Milestone,
-  Wrench,
-  Fuel,
-  Waypoints,
-  TrafficCone,
-  Plane,
-  Ship,
-  type LucideIcon,
-} from "lucide-react";
+import { Phone, Mail, Shield, type LucideIcon } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 
 function useCountUp(target: number, duration = 5000, start = false) {
@@ -69,54 +20,6 @@ function useCountUp(target: number, duration = 5000, start = false) {
   }, [start, target, duration]);
   return count;
 }
-
-const TRUST_ICON_MAP: Record<string, LucideIcon> = {
-  shield: Shield,
-  "shield-check": ShieldCheck,
-  "badge-check": BadgeCheck,
-  "check-circle-2": CheckCircle2,
-  award: Award,
-  medal: Medal,
-  trophy: Trophy,
-  star: Star,
-  "circle-star": CircleStar,
-  crown: Crown,
-  sparkles: Sparkles,
-  zap: Zap,
-  flame: Flame,
-  target: Target,
-  goal: Goal,
-  users: Users,
-  "user-check": UserCheck,
-  "users-round": UsersRound,
-  handshake: Handshake,
-  "heart-handshake": HeartHandshake,
-  "hand-helping": HandHelping,
-  "thumbs-up": ThumbsUp,
-  "hard-hat": HardHat,
-  briefcase: Briefcase,
-  "person-standing": PersonStanding,
-  "trending-up": TrendingUp,
-  activity: Activity,
-  rocket: Rocket,
-  timer: Timer,
-  "circle-gauge": CircleGauge,
-  truck: Truck,
-  car: Car,
-  route: Route,
-  navigation: Navigation,
-  compass: Compass,
-  globe: Globe,
-  "map-pin": MapPin,
-  flag: Flag,
-  milestone: Milestone,
-  wrench: Wrench,
-  fuel: Fuel,
-  waypoints: Waypoints,
-  "traffic-cone": TrafficCone,
-  plane: Plane,
-  ship: Ship,
-};
 
 const PARTNERS = [
   { name: "Amazon", logo: "/partners/amazon_logo.svg" },
@@ -176,10 +79,12 @@ export default function HeroSection({
         const res = await fetch(`/api/hero-overrides/${lang}`);
         if (res.ok) {
           const data = (await res.json()) as HeroOverrides;
-          setOverrides(data);
+          setOverrides((prev) =>
+            JSON.stringify(prev) === JSON.stringify(data) ? prev : data,
+          );
         }
       } catch {
-        setOverrides({});
+        /* ignore */
       }
     };
     void load();
@@ -203,8 +108,21 @@ export default function HeroSection({
   const c12 = useCountUp(7, 5000, counting);
   const c5 = useCountUp(5, 5000, counting);
 
+  const [trustIconMap, setTrustIconMap] = useState<Record<
+    string,
+    LucideIcon
+  > | null>(null);
+  useEffect(() => {
+    if (overrides.trustIcon && !trustIconMap) {
+      void import("@/components/TrustIconMap").then((m) =>
+        setTrustIconMap(m.TRUST_ICON_MAP),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [overrides.trustIcon]);
+
   const TrustIcon: LucideIcon =
-    (overrides.trustIcon && TRUST_ICON_MAP[overrides.trustIcon]) || Shield;
+    (overrides.trustIcon && trustIconMap?.[overrides.trustIcon]) || Shield;
 
   return (
     <section
@@ -236,7 +154,7 @@ export default function HeroSection({
           fill
           className="block md:hidden object-cover object-center brightness-105"
           priority
-          quality={60}
+          quality={75}
           sizes="(max-width: 767px) 100vw, 0vw"
         />
         {/* Left-to-right gradient: solid left → steps down 40→30→20→10 after 50% */}
@@ -398,6 +316,9 @@ export default function HeroSection({
                   alt={partner.name}
                   width={140}
                   height={50}
+                  loading="lazy"
+                  quality={60}
+                  sizes="(max-width: 640px) 96px, 160px"
                   className="h-6 sm:h-10 w-auto object-contain"
                 />
               </div>

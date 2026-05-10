@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { getDictionary } from "@/lib/getDictionary";
 import { languages } from "@/lib/i18n";
 import HeroSection from "@/components/HeroSection";
-import ServicesSection from "@/components/ServicesSection";
-import AboutSection from "@/components/AboutSection";
-import HousingSection from "@/components/HousingSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
+
+// Split below-fold sections into separate JS chunks to reduce initial parse time
+const ServicesSection = dynamic(() => import("@/components/ServicesSection"));
+const AboutSection = dynamic(() => import("@/components/AboutSection"));
+const HousingSection = dynamic(() => import("@/components/HousingSection"));
+const ContactSection = dynamic(() => import("@/components/ContactSection"));
+const Footer = dynamic(() => import("@/components/Footer"));
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamcargo.be";
 
@@ -47,23 +50,6 @@ export default async function LandingPage({
 
   return (
     <>
-      {/* Preload the LCP hero image before the client component hydrates */}
-      <link
-        rel="preload"
-        as="image"
-        href="/teamCargo-trans-webP/cargo-trans-horizontal-3.webp"
-        // @ts-expect-error – fetchpriority is valid but not yet in @types/react
-        fetchpriority="high"
-        media="(min-width: 768px)"
-      />
-      <link
-        rel="preload"
-        as="image"
-        href="/teamCargo-trans-webP/cargo-trans-vertical-3.webp"
-        // @ts-expect-error – fetchpriority is valid but not yet in @types/react
-        fetchpriority="high"
-        media="(max-width: 767px)"
-      />
       <HeroSection dict={dict} lang={lang} />
       <ServicesSection dict={dict} lang={lang} />
       <AboutSection dict={dict} lang={lang} />
