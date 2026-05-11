@@ -57,16 +57,8 @@ export default function HeroSection({
   lang?: string;
 }) {
   const revealRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
   const [counting, setCounting] = useState(false);
   const [overrides, setOverrides] = useState<HeroOverrides>({});
-
-  useEffect(() => {
-    // Lock height to initial innerHeight — prevents iOS address bar resize zoom
-    if (sectionRef.current) {
-      sectionRef.current.style.height = `${window.innerHeight}px`;
-    }
-  }, []);
 
   // Derive the active partner list — override list when set, else hardcoded defaults
   const activePartners = overrides.partners?.length
@@ -132,7 +124,6 @@ export default function HeroSection({
 
   return (
     <section
-      ref={sectionRef}
       className="relative flex flex-col overflow-hidden h-svh lg:h-[calc(100dvh/0.75)]"
     >
       {/* Background photo */}
