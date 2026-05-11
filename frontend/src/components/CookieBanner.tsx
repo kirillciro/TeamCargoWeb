@@ -15,7 +15,10 @@ export default function CookieBanner({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (localStorage.getItem("cookie_consent")) return;
+    if (
+      localStorage.getItem("cookie_consent") ||
+      document.cookie.split(";").some((c) => c.trim().startsWith("cookie_consent="))
+    ) return;
 
     let cancelled = false;
     const show = () => {
@@ -43,11 +46,13 @@ export default function CookieBanner({
 
   function accept() {
     localStorage.setItem("cookie_consent", "accepted");
+    document.cookie = "cookie_consent=accepted; max-age=31536000; path=/; SameSite=Lax";
     setVisible(false);
   }
 
   function reject() {
     localStorage.setItem("cookie_consent", "rejected");
+    document.cookie = "cookie_consent=rejected; max-age=31536000; path=/; SameSite=Lax";
     setVisible(false);
   }
 
