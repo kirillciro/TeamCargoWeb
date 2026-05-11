@@ -126,7 +126,7 @@ export default function HeroSection({
 
   return (
     <section
-      className="relative flex flex-col overflow-hidden h-dvh lg:h-[calc(100dvh/0.75)]"
+      className="relative flex flex-col overflow-hidden h-[100svh] lg:h-[calc(100dvh/0.75)]"
     >
       {/* Background photo */}
       <div className="absolute inset-0">
