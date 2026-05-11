@@ -61,6 +61,12 @@ export default function HeroSection({
   const revealRef = useRef<HTMLDivElement>(null);
   const [counting, setCounting] = useState(false);
   const [overrides, setOverrides] = useState<HeroOverrides>({});
+  const [heroHeight, setHeroHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Lock to initial innerHeight (address bar visible) — prevents iOS scroll zoom
+    setHeroHeight(window.innerHeight);
+  }, []);
 
   // Derive the active partner list — override list when set, else hardcoded defaults
   const activePartners = overrides.partners?.length
@@ -126,7 +132,8 @@ export default function HeroSection({
 
   return (
     <section
-      className="relative flex flex-col overflow-hidden h-[100svh] lg:h-[calc(100dvh/0.75)]"
+      className="relative flex flex-col overflow-hidden lg:h-[calc(100dvh/0.75)]"
+      style={heroHeight ? { height: heroHeight } : { height: '100svh' }}
     >
       {/* Background photo */}
       <div className="absolute inset-0">
