@@ -29,7 +29,6 @@ const PARTNERS = [
   { name: "Transmission", logo: "/partners/transmission_logo.svg" },
 ];
 
-const PARTNERS_LOOP = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
 
 type HeroOverrides = {
   slogan?: string;
@@ -59,13 +58,15 @@ export default function HeroSection({
   lang?: string;
 }) {
   const revealRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [counting, setCounting] = useState(false);
   const [overrides, setOverrides] = useState<HeroOverrides>({});
-  const [heroHeight, setHeroHeight] = useState<number | null>(null);
 
   useEffect(() => {
-    // Lock to initial innerHeight (address bar visible) — prevents iOS scroll zoom
-    setHeroHeight(window.innerHeight);
+    // Lock height to initial innerHeight — prevents iOS address bar resize zoom
+    if (sectionRef.current) {
+      sectionRef.current.style.height = `${window.innerHeight}px`;
+    }
   }, []);
 
   // Derive the active partner list — override list when set, else hardcoded defaults
@@ -132,8 +133,8 @@ export default function HeroSection({
 
   return (
     <section
-      className="relative flex flex-col overflow-hidden lg:h-[calc(100dvh/0.75)]"
-      style={heroHeight ? { height: heroHeight } : { height: '100svh' }}
+      ref={sectionRef}
+      className="relative flex flex-col overflow-hidden h-svh lg:h-[calc(100dvh/0.75)]"
     >
       {/* Background photo */}
       <div className="absolute inset-0">
