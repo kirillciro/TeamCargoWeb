@@ -170,9 +170,9 @@ export default function HeroSection({
       <div className="shrink-0 h-16 sm:h-20" />
 
       {/* Main content */}
-      <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-3 sm:py-4 w-full lg:w-[80%]">
+      <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-2 sm:py-4 w-full lg:w-[80%]">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-10 w-fit -mt-6">
+        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4 sm:mb-6 w-fit">
           <span className="w-2 h-2 rounded-full bg-[#4dc95e] animate-pulse shrink-0" />
           <span className="text-white/90 text-xs font-bold uppercase tracking-[0.2em]">
             {overrides.badge || dict.hero.badge}
@@ -182,9 +182,9 @@ export default function HeroSection({
         {/* Headline */}
         <div ref={revealRef} className="reveal">
           <h1
-            className="text-white font-extrabold leading-[1.06] tracking-widest uppercase mb-5"
+            className="text-white font-extrabold leading-[1.06] tracking-widest uppercase mb-3 sm:mb-5"
             style={{
-              fontSize: "clamp(2.2rem, 4.5vw, 4.2rem)",
+              fontSize: "clamp(1.75rem, 4.5vw, 4.2rem)",
               letterSpacing: "0.04em",
             }}
           >
@@ -192,7 +192,7 @@ export default function HeroSection({
           </h1>
 
           {/* 1 TEAM · 1 MISSION — styled */}
-          <p className="flex items-center gap-1.5 mb-7 font-extrabold uppercase tracking-[0.22em] text-sm sm:text-base">
+          <p className="flex items-center gap-1.5 mb-4 sm:mb-7 font-extrabold uppercase tracking-[0.22em] text-sm sm:text-base">
             <span className="text-white/60">1</span>
             <span className="text-[#4dc95e]">{dict.hero.mission_words[0]}</span>
             <span className="text-white/40 mx-1">&middot;</span>
@@ -201,15 +201,14 @@ export default function HeroSection({
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-row gap-3 mb-7">
+          <div className="flex flex-row gap-3 mb-4 sm:mb-7">
             <a
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
               aria-label={dict.hero.cta_whatsapp}
-              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 font-bold rounded-xl shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
+              className="inline-flex items-center justify-center gap-2 py-3 sm:py-3.5 font-bold rounded-xl shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide flex-1"
               style={{
-                width: "40%",
                 background: "var(--brand-dark)",
                 color: "var(--brand-btn-text)",
                 transition: "background 0.15s",
@@ -226,8 +225,7 @@ export default function HeroSection({
             </a>
             <a
               href="mailto:info@teamcargo.nl"
-              className="inline-flex items-center justify-center gap-2 py-2.5 sm:py-3.5 border-2 border-white/30 hover:border-white/70 hover:bg-white/10 text-white font-bold rounded-xl transition-all text-sm sm:text-[0.92rem] tracking-wide"
-              style={{ width: "40%" }}
+              className="inline-flex items-center justify-center gap-2 py-3 sm:py-3.5 border-2 border-white/30 hover:border-white/70 hover:bg-white/10 text-white font-bold rounded-xl transition-all text-sm sm:text-[0.92rem] tracking-wide flex-1"
             >
               <Mail className="w-4 h-4" />
               info@teamcargo.nl
@@ -236,7 +234,7 @@ export default function HeroSection({
         </div>
 
         {/* Stats */}
-        <div className="mt-8 flex flex-wrap gap-x-10 gap-y-3 border-t border-white/10 pt-6">
+        <div className="mt-4 sm:mt-8 mb-3 sm:mb-0 flex flex-wrap gap-x-8 gap-y-2 sm:gap-x-10 sm:gap-y-3 border-t border-white/10 pt-4 sm:pt-6">
           {[
             {
               display: overrides.stat1Value || `${c500}+`,
