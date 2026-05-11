@@ -29,7 +29,6 @@ const PARTNERS = [
   { name: "Transmission", logo: "/partners/transmission_logo.svg" },
 ];
 
-
 type HeroOverrides = {
   slogan?: string;
   badge?: string;
