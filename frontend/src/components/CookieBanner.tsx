@@ -17,8 +17,11 @@ export default function CookieBanner({
     if (typeof window === "undefined") return;
     if (
       localStorage.getItem("cookie_consent") ||
-      document.cookie.split(";").some((c) => c.trim().startsWith("cookie_consent="))
-    ) return;
+      document.cookie
+        .split(";")
+        .some((c) => c.trim().startsWith("cookie_consent="))
+    )
+      return;
 
     let cancelled = false;
     const show = () => {
@@ -44,15 +47,23 @@ export default function CookieBanner({
     };
   }, []);
 
-  function accept() {
-    localStorage.setItem("cookie_consent", "accepted");
-    document.cookie = "cookie_consent=accepted; max-age=31536000; path=/; SameSite=Lax";
+  async function saveConsent(value: "accepted" | "rejected") {
+    localStorage.setItem("cookie_consent", value);
+    // Set via server-side HTTP header to bypass Safari ITP 7-day cap on JS cookies
+    await fetch("/api/cookie-consent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value }),
+    }).catch(() => {/* non-blocking */});
     setVisible(false);
   }
 
+  function accept() {
+    void saveConsent("accepted");
+  }
+
   function reject() {
-    localStorage.setItem("cookie_consent", "rejected");
-    document.cookie = "cookie_consent=rejected; max-age=31536000; path=/; SameSite=Lax";
+    void saveConsent("rejected");
     setVisible(false);
   }
 
