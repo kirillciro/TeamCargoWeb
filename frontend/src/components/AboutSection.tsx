@@ -211,40 +211,44 @@ export default function AboutSection({
 
           {/* Right — 3-image mosaic */}
           <div className="relative mt-2 lg:mt-0">
-            {/* Mobile: horizontal strip of 3 images */}
-            <div className="grid grid-cols-3 gap-2 h-44 sm:h-64 lg:hidden">
-              <div className="relative rounded-xl overflow-hidden shadow-lg">
+            {/* Mobile + tablet: portrait left, two landscape stacked right */}
+            <div className="grid grid-cols-[2fr_3fr] gap-2 h-72 sm:h-96 lg:hidden">
+              {/* Left — portrait 4:5 */}
+              <div className="relative rounded-xl overflow-hidden shadow-xl">
                 <Image
                   src={imgLeft}
                   alt="Team Cargo driver in hi-vis vest"
                   fill
                   className="object-cover object-center"
-                  sizes="33vw"
+                  sizes="(max-width: 1024px) 28vw"
                   loading="lazy"
                   unoptimized={imgLeft.startsWith("http")}
                 />
               </div>
-              <div className="relative rounded-xl overflow-hidden shadow-lg">
-                <Image
-                  src={imgTopRight}
-                  alt="Amazon driver with package"
-                  fill
-                  className="object-cover object-center"
-                  sizes="33vw"
-                  loading="lazy"
-                  unoptimized={imgTopRight.startsWith("http")}
-                />
-              </div>
-              <div className="relative rounded-xl overflow-hidden shadow-lg ring-2 ring-white">
-                <Image
-                  src={imgBottomRight}
-                  alt="Team Cargo team"
-                  fill
-                  className="object-cover object-center"
-                  sizes="33vw"
-                  loading="lazy"
-                  unoptimized={imgBottomRight.startsWith("http")}
-                />
+              {/* Right — two landscape images stacked */}
+              <div className="flex flex-col gap-2">
+                <div className="relative flex-1 rounded-xl overflow-hidden shadow-lg">
+                  <Image
+                    src={imgTopRight}
+                    alt="Amazon driver with package"
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 1024px) 42vw"
+                    loading="lazy"
+                    unoptimized={imgTopRight.startsWith("http")}
+                  />
+                </div>
+                <div className="relative flex-1 rounded-xl overflow-hidden shadow-lg ring-2 ring-white">
+                  <Image
+                    src={imgBottomRight}
+                    alt="Team Cargo team"
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 1024px) 42vw"
+                    loading="lazy"
+                    unoptimized={imgBottomRight.startsWith("http")}
+                  />
+                </div>
               </div>
             </div>
 
