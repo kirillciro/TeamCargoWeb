@@ -611,7 +611,7 @@ export default function HeroTab() {
             </div>
             <div className="space-y-2">
               {partners.map((p, i) => (
-                <div key={i} className="flex items-center gap-2">
+                <div key={i} className="flex flex-wrap items-center gap-2">
                   <input
                     type="text"
                     value={p.name}
@@ -623,24 +623,26 @@ export default function HeroTab() {
                       )
                     }
                     placeholder="Name (e.g. FedEx)"
-                    className="w-28 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    className="w-28 shrink-0 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                   />
-                  <CloudinaryLogoUpload
-                    value={p.logo}
-                    onChange={(url) =>
-                      setPartners((prev) =>
-                        prev.map((x, j) => (j === i ? { ...x, logo: url } : x)),
-                      )
-                    }
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removePartner(p.logo, i)}
-                    className="text-slate-500 hover:text-red-400 transition-colors shrink-0 text-lg leading-none"
-                    title="Remove"
-                  >
-                    ×
-                  </button>
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <CloudinaryLogoUpload
+                      value={p.logo}
+                      onChange={(url) =>
+                        setPartners((prev) =>
+                          prev.map((x, j) => (j === i ? { ...x, logo: url } : x)),
+                        )
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removePartner(p.logo, i)}
+                      className="text-slate-500 hover:text-red-400 transition-colors shrink-0 text-lg leading-none"
+                      title="Remove"
+                    >
+                      ×
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
