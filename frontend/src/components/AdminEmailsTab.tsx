@@ -448,7 +448,7 @@ function FolderSidebar({
   }
 
   return (
-    <nav className="flex flex-col gap-0.5 p-2">
+    <nav className="flex flex-row flex-wrap md:flex-col gap-0.5 p-1 md:p-2">
       {FOLDER_META.map(({ key, labelKey, Icon, color }) => {
         const label = dict.admin[labelKey] as string;
         const unread = counts[key]?.unread ?? 0;
@@ -458,7 +458,7 @@ function FolderSidebar({
           <button
             key={key}
             onClick={() => onSelect(key)}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors text-left ${
+            className={`flex items-center gap-1.5 md:gap-3 rounded-lg px-2 md:px-3 py-1.5 md:py-2.5 text-xs md:text-sm font-medium transition-colors text-left ${
               isActive
                 ? "bg-blue-50 text-blue-700"
                 : "text-slate-600 hover:bg-slate-100"
@@ -1677,7 +1677,18 @@ export default function AdminEmailsTab({
           dict={dict}
           win98
         />
+        <style>{`
+          @media (max-width: 640px) {
+            .w98em-main { height: auto !important; overflow-y: auto !important; }
+            .w98em-panes { flex-direction: column !important; overflow-y: visible !important; }
+            .w98em-sidebar { width: 100% !important; border-right: none !important; border-bottom: 2px solid #808080 !important; flex-shrink: 0 !important; }
+            .w98em-content { flex-direction: column !important; overflow: visible !important; }
+            .w98em-list { border-right: none !important; border-bottom: 2px solid #808080 !important; max-height: 220px !important; flex: none !important; }
+            .w98em-detail { flex: none !important; min-height: 200px !important; overflow: auto !important; }
+          }
+        `}</style>
         <div
+          className="w98em-main"
           style={{
             fontFamily: "MS Sans Serif, Arial, sans-serif",
             fontSize: 11,
@@ -1758,9 +1769,10 @@ export default function AdminEmailsTab({
           </div>
 
           {/* Three-pane content */}
-          <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+          <div className="w98em-panes" style={{ flex: 1, display: "flex", overflow: "hidden" }}>
             {/* Folder sidebar */}
             <div
+              className="w98em-sidebar"
               style={{
                 width: 130,
                 flexShrink: 0,
@@ -1792,6 +1804,7 @@ export default function AdminEmailsTab({
 
             {/* Email list + detail — side by side, 50/50 */}
             <div
+              className="w98em-content"
               style={{
                 flex: 1,
                 display: "flex",
@@ -1801,6 +1814,7 @@ export default function AdminEmailsTab({
             >
               {/* LEFT: Email list pane */}
               <div
+                className="w98em-list"
                 style={{
                   flex: 1,
                   borderRight: "2px solid #808080",
@@ -2065,7 +2079,7 @@ export default function AdminEmailsTab({
               </div>
 
               {/* RIGHT: Email detail pane */}
-              <div style={{ flex: 1, overflow: "hidden", background: "#fff" }}>
+              <div className="w98em-detail" style={{ flex: 1, overflow: "hidden", background: "#fff" }}>
                 {selectedId ? (
                   <EmailDetailPanel
                     key={selectedId}
@@ -2119,7 +2133,7 @@ export default function AdminEmailsTab({
   return (
     <>
       <AppModal modal={modal} onClose={() => setModal(null)} dict={dict} />
-      <div className="relative flex h-[calc(100vh-180px)] min-h-96 rounded-xl border border-slate-200 overflow-hidden bg-white">
+      <div className="relative flex flex-col md:flex-row h-[calc(100vh-180px)] min-h-96 rounded-xl border border-slate-200 overflow-hidden bg-white">
         {/* ── Sync overlay ── */}
         {syncing && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-white/70 backdrop-blur-sm rounded-xl pointer-events-all">
@@ -2130,8 +2144,8 @@ export default function AdminEmailsTab({
           </div>
         )}
         {/* ── Folder sidebar ── */}
-        <div className="w-44 shrink-0 border-r border-slate-100 flex flex-col">
-          <div className="p-3 border-b border-slate-100">
+        <div className="shrink-0 w-full md:w-44 border-b md:border-b-0 md:border-r border-slate-100 flex flex-col">
+          <div className="p-2 md:p-3 border-b border-slate-100 shrink-0">
             <button
               onClick={() => void handleSync()}
               disabled={syncing}
@@ -2158,7 +2172,7 @@ export default function AdminEmailsTab({
 
         {/* ── Email list ── */}
         <div
-          className={`w-72 shrink-0 border-r border-slate-100 flex flex-col ${
+          className={`flex-1 md:flex-none md:w-72 md:shrink-0 border-b md:border-b-0 md:border-r border-slate-100 flex flex-col ${
             selectedId ? "hidden md:flex" : "flex"
           }`}
         >
