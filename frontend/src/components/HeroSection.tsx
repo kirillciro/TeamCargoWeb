@@ -123,9 +123,7 @@ export default function HeroSection({
     (overrides.trustIcon && trustIconMap?.[overrides.trustIcon]) || Shield;
 
   return (
-    <section
-      className="relative flex flex-col overflow-hidden h-svh lg:h-[calc(100dvh/0.75)]"
-    >
+    <section className="relative flex flex-col overflow-hidden h-svh lg:h-[calc(100dvh/0.75)]">
       {/* Background photo */}
       <div className="absolute inset-0">
         {/* Desktop image (md+) */}
@@ -170,7 +168,7 @@ export default function HeroSection({
       {/* Main content */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-2 sm:py-4 w-full lg:w-[80%]">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4 sm:mb-6 w-fit">
+        <div className="inline-flex self-start items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4 sm:mb-6 w-fit">
           <span className="w-2 h-2 rounded-full bg-[#4dc95e] animate-pulse shrink-0" />
           <span className="text-white/90 text-xs font-bold uppercase tracking-[0.2em]">
             {overrides.badge || dict.hero.badge}
