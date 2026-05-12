@@ -54,7 +54,9 @@ export default function CookieBanner({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ value }),
-    }).catch(() => {/* non-blocking */});
+    }).catch(() => {
+      /* non-blocking */
+    });
     setVisible(false);
   }
 
