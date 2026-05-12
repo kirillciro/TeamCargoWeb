@@ -442,7 +442,7 @@ export default function ServicesTab() {
                   value={svcLabel}
                   onChange={(e) => setSvcLabel(e.target.value)}
                   placeholder="OUR SERVICES"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -452,7 +452,7 @@ export default function ServicesTab() {
                   value={svcTitle}
                   onChange={(e) => setSvcTitle(e.target.value)}
                   placeholder="What We Offer"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>
@@ -480,7 +480,7 @@ export default function ServicesTab() {
                       )
                     }
                     placeholder="Title"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                   />
                   <textarea
                     value={card.desc}
@@ -493,7 +493,7 @@ export default function ServicesTab() {
                       )
                     }
                     placeholder="Description"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
                   />
                 </div>
                 {card.img && (

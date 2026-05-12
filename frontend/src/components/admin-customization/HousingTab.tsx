@@ -851,7 +851,7 @@ export default function HousingTab() {
                   value={housingLabel}
                   onChange={(e) => setHousingLabel(e.target.value)}
                   placeholder="HOUSING"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -861,7 +861,7 @@ export default function HousingTab() {
                   value={housingTitle}
                   onChange={(e) => setHousingTitle(e.target.value)}
                   placeholder="Your New Home"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>
@@ -878,7 +878,7 @@ export default function HousingTab() {
                 value={housingCta}
                 onChange={(e) => setHousingCta(e.target.value)}
                 placeholder="Get Started"
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
               />
             </div>
             <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 space-y-3">
@@ -897,7 +897,7 @@ export default function HousingTab() {
                   value={housingBg}
                   onChange={(e) => setHousingBg(e.target.value)}
                   placeholder="#0d2e18"
-                  className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
                 <div
                   className="w-8 h-8 rounded border border-slate-600 shrink-0"
@@ -916,7 +916,7 @@ export default function HousingTab() {
               value={housingDesc}
               onChange={(e) => setHousingDesc(e.target.value)}
               rows={4}
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
             />
           </div>
 
@@ -940,7 +940,7 @@ export default function HousingTab() {
                       )
                     }
                     placeholder={`Perk ${i + 1}`}
-                    className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                   />
                 </div>
               ))}

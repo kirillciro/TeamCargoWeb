@@ -58,7 +58,7 @@ export default function ColorsTab() {
                         }}
                         placeholder={defaultHex}
                         maxLength={7}
-                        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none"
+                        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono focus:outline-none"
                       />
                     </div>
                   </div>
@@ -117,7 +117,7 @@ export default function ColorsTab() {
                       }}
                       placeholder="#040f08"
                       maxLength={7}
-                      className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none"
+                      className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono focus:outline-none"
                     />
                   </div>
                   <div

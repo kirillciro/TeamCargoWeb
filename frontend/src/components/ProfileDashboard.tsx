@@ -170,7 +170,7 @@ export default function ProfileDashboard({
                   initial
                 )}
               </div>
-              <span className="font-semibold text-sm text-white">
+              <span className="font-semibold text-base text-white">
                 {fullName || user.email}
               </span>
               {user.role === "admin" && (
@@ -536,7 +536,7 @@ function ProfileSettings({
   }
 
   const inputCls =
-    "w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]";
+    "w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347]";
   const labelCls = "block text-xs text-slate-400 mb-1.5";
   const age = calcAge(dob);
 
@@ -597,7 +597,7 @@ function ProfileSettings({
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
                 max={new Date().toISOString().slice(0, 10)}
-                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347] [color-scheme:dark]"
+                className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-[#36B347]/50 focus:border-[#36B347] [color-scheme:dark]"
               />
               {age !== null && (
                 <span className="text-sm font-semibold text-[#36B347]">
@@ -982,7 +982,7 @@ function AvatarUpload({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm text-white font-semibold transition-colors disabled:opacity-50"
+          className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-base text-white font-semibold transition-colors disabled:opacity-50"
         >
           {uploading
             ? dict.profile.uploading

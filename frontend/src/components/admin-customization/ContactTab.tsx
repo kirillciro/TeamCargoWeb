@@ -745,7 +745,7 @@ export default function ContactTab() {
                   value={contactTitle}
                   onChange={(e) => setContactTitle(e.target.value)}
                   placeholder="Contact Us"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -755,7 +755,7 @@ export default function ContactTab() {
                   value={contactSubtitle}
                   onChange={(e) => setContactSubtitle(e.target.value)}
                   placeholder="Get in touch"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>
@@ -774,7 +774,7 @@ export default function ContactTab() {
                   value={contactPhoneLabel}
                   onChange={(e) => setContactPhoneLabel(e.target.value)}
                   placeholder="Phone"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -784,7 +784,7 @@ export default function ContactTab() {
                   value={contactEmailLabel}
                   onChange={(e) => setContactEmailLabel(e.target.value)}
                   placeholder="Email"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -794,7 +794,7 @@ export default function ContactTab() {
                   value={contactAddressLabel}
                   onChange={(e) => setContactAddressLabel(e.target.value)}
                   placeholder="Address"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>
@@ -813,7 +813,7 @@ export default function ContactTab() {
                   value={contactWhatsapp}
                   onChange={(e) => setContactWhatsapp(e.target.value)}
                   placeholder="+31 6 00000000"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -823,7 +823,7 @@ export default function ContactTab() {
                   value={contactEmailAddress}
                   onChange={(e) => setContactEmailAddress(e.target.value)}
                   placeholder="info@teamcargo.nl"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -833,7 +833,7 @@ export default function ContactTab() {
                   value={contactMapAddress}
                   onChange={(e) => setContactMapAddress(e.target.value)}
                   placeholder="Amsterdam, Netherlands"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -843,7 +843,7 @@ export default function ContactTab() {
                   value={contactMapPin}
                   onChange={(e) => setContactMapPin(e.target.value)}
                   placeholder="Our Location"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>

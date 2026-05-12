@@ -90,7 +90,7 @@ export default function HeroTab() {
               onChange={(e) => setSlogan(e.target.value)}
               rows={3}
               placeholder="Start Your Driving Job in the Netherlands — We Handle the Rest."
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
             />
             <div className="flex items-center gap-2">
               <button
@@ -130,7 +130,7 @@ export default function HeroTab() {
               value={badge}
               onChange={(e) => setBadge(e.target.value)}
               placeholder="Driver Recruitment · Amsterdam, NL"
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
             />
             <div className="flex items-center gap-2">
               <button
@@ -256,7 +256,7 @@ export default function HeroTab() {
                 value={trustLine}
                 onChange={(e) => setTrustLine(e.target.value)}
                 placeholder="No experience with Dutch paperwork? No problem — we guide you step by step."
-                className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -329,7 +329,7 @@ export default function HeroTab() {
                   }
                 }}
                 maxLength={7}
-                className="max-w-35 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                className="max-w-35 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
               />
               <div
                 className="flex-1 h-10 rounded-lg flex items-center justify-center gap-2 text-xs font-medium"
@@ -412,7 +412,7 @@ export default function HeroTab() {
                   }
                 }}
                 maxLength={7}
-                className="max-w-35 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                className="max-w-35 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
               />
               <div
                 className="flex-1 h-10 rounded-lg flex items-center justify-center border border-slate-700 text-xs font-medium"
@@ -533,14 +533,14 @@ export default function HeroTab() {
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
                     placeholder={defaultVal}
-                    className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono text-center focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono text-center focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                   />
                   <input
                     type="text"
                     value={label}
                     onChange={(e) => setLabel(e.target.value)}
                     placeholder={defaultLabel}
-                    className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                   />
                 </div>
               ),
@@ -623,7 +623,7 @@ export default function HeroTab() {
                       )
                     }
                     placeholder="Name (e.g. FedEx)"
-                    className="w-28 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    className="w-28 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                   />
                   <CloudinaryLogoUpload
                     value={p.logo}

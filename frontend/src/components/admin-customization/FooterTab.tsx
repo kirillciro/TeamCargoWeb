@@ -349,7 +349,7 @@ export default function FooterTab() {
               value={footerTaglineSub}
               onChange={(e) => setFooterTaglineSub(e.target.value)}
               placeholder="Your tagline here"
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
             />
           </div>
 
@@ -369,7 +369,7 @@ export default function FooterTab() {
                   value={footerAddressLine1}
                   onChange={(e) => setFooterAddressLine1(e.target.value)}
                   placeholder="Streetname 1"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -379,7 +379,7 @@ export default function FooterTab() {
                   value={footerPhone}
                   onChange={(e) => setFooterPhone(e.target.value)}
                   placeholder="+31 6 00000000"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -391,7 +391,7 @@ export default function FooterTab() {
                   value={footerAddressLine2}
                   onChange={(e) => setFooterAddressLine2(e.target.value)}
                   placeholder="Netherlands"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -401,7 +401,7 @@ export default function FooterTab() {
                   value={footerEmail}
                   onChange={(e) => setFooterEmail(e.target.value)}
                   placeholder="info@teamcargo.nl"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>

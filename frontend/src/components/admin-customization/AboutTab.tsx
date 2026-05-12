@@ -862,7 +862,7 @@ export default function AboutTab() {
                   value={aboutLabel}
                   onChange={(e) => setAboutLabel(e.target.value)}
                   placeholder="ABOUT US"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -872,7 +872,7 @@ export default function AboutTab() {
                   value={aboutTitle}
                   onChange={(e) => setAboutTitle(e.target.value)}
                   placeholder="Who We Are"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>
@@ -889,7 +889,7 @@ export default function AboutTab() {
                 value={aboutDesc}
                 onChange={(e) => setAboutDesc(e.target.value)}
                 rows={3}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
               />
             </div>
             <div className="space-y-1.5">
@@ -898,7 +898,7 @@ export default function AboutTab() {
                 value={aboutDesc2}
                 onChange={(e) => setAboutDesc2(e.target.value)}
                 rows={3}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 resize-none"
               />
             </div>
           </div>
@@ -915,7 +915,7 @@ export default function AboutTab() {
                 value={aboutValuesTitle}
                 onChange={(e) => setAboutValuesTitle(e.target.value)}
                 placeholder="Our Values"
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
               />
             </div>
             <div className="grid sm:grid-cols-2 gap-3">
@@ -930,7 +930,7 @@ export default function AboutTab() {
                     )
                   }
                   placeholder={`Value ${i + 1}`}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               ))}
             </div>
@@ -949,7 +949,7 @@ export default function AboutTab() {
                   value={aboutDriversPlaced}
                   onChange={(e) => setAboutDriversPlaced(e.target.value)}
                   placeholder="500+"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -959,7 +959,7 @@ export default function AboutTab() {
                   value={aboutYearsActive}
                   onChange={(e) => setAboutYearsActive(e.target.value)}
                   placeholder="Years Active"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -969,7 +969,7 @@ export default function AboutTab() {
                   value={aboutYearsActiveNum}
                   onChange={(e) => setAboutYearsActiveNum(e.target.value)}
                   placeholder="5+"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
               <div className="space-y-1.5">
@@ -979,7 +979,7 @@ export default function AboutTab() {
                   value={aboutLocation}
                   onChange={(e) => setAboutLocation(e.target.value)}
                   placeholder="Amsterdam, NL"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                 />
               </div>
             </div>

@@ -109,7 +109,7 @@ export default function CloudinaryLogoUpload({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Drop image or paste URL"
-        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
       />
 
       {/* Clear */}
