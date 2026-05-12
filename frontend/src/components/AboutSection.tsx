@@ -211,7 +211,45 @@ export default function AboutSection({
 
           {/* Right — 3-image mosaic */}
           <div className="relative mt-2 lg:mt-0">
-            <div className="grid grid-cols-[5fr_7fr] gap-3 h-[28rem] sm:h-100 lg:h-130">
+            {/* Mobile: horizontal strip of 3 images */}
+            <div className="grid grid-cols-3 gap-2 h-44 sm:h-64 lg:hidden">
+              <div className="relative rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={imgLeft}
+                  alt="Team Cargo driver in hi-vis vest"
+                  fill
+                  className="object-cover object-center"
+                  sizes="33vw"
+                  loading="lazy"
+                  unoptimized={imgLeft.startsWith("http")}
+                />
+              </div>
+              <div className="relative rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={imgTopRight}
+                  alt="Amazon driver with package"
+                  fill
+                  className="object-cover object-center"
+                  sizes="33vw"
+                  loading="lazy"
+                  unoptimized={imgTopRight.startsWith("http")}
+                />
+              </div>
+              <div className="relative rounded-xl overflow-hidden shadow-lg ring-2 ring-white">
+                <Image
+                  src={imgBottomRight}
+                  alt="Team Cargo team"
+                  fill
+                  className="object-cover object-center"
+                  sizes="33vw"
+                  loading="lazy"
+                  unoptimized={imgBottomRight.startsWith("http")}
+                />
+              </div>
+            </div>
+
+            {/* Desktop: two-column mosaic */}
+            <div className="hidden lg:grid grid-cols-[5fr_7fr] gap-3 h-130">
               {/* Left column — portrait, full height */}
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <Image
@@ -219,7 +257,7 @@ export default function AboutSection({
                   alt="Team Cargo driver in hi-vis vest"
                   fill
                   className="object-cover object-center"
-                  sizes="(max-width: 1024px) 35vw, 20vw"
+                  sizes="20vw"
                   loading="lazy"
                   unoptimized={imgLeft.startsWith("http")}
                 />
@@ -234,7 +272,7 @@ export default function AboutSection({
                     alt="Amazon driver with package"
                     fill
                     className="object-cover object-center"
-                    sizes="(max-width: 1024px) 45vw, 26vw"
+                    sizes="26vw"
                     unoptimized={imgTopRight.startsWith("http")}
                   />
                 </div>
@@ -244,15 +282,15 @@ export default function AboutSection({
                     alt="Team Cargo team"
                     fill
                     className="object-cover object-center"
-                    sizes="(max-width: 1024px) 45vw, 26vw"
+                    sizes="26vw"
                     unoptimized={imgBottomRight.startsWith("http")}
                   />
                 </div>
               </div>
             </div>
 
-            {/* Floating badge */}
-            <div className="absolute bottom-4 left-3 sm:left-5 bg-[#1a7f45] text-white rounded-2xl px-5 py-4 shadow-2xl z-10">
+            {/* Floating badge — desktop only */}
+            <div className="hidden lg:block absolute bottom-4 left-5 bg-[#1a7f45] text-white rounded-2xl px-5 py-4 shadow-2xl z-10">
               <p className="font-extrabold text-2xl leading-none">
                 {effectiveYearsNum}
               </p>
