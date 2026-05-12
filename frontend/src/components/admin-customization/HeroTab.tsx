@@ -614,43 +614,61 @@ export default function HeroTab() {
               </button>
             </div>
             <div className="space-y-2">
-              {partners.filter((p) => p.logo !== "/partners/strunix_tech_logo.svg").map((p, i) => (
-                <div key={i} className="flex flex-wrap items-center gap-2">
-                  <input
-                    type="text"
-                    value={p.name}
-                    onChange={(e) =>
-                      setPartners((prev) =>
-                        prev.map((x, j) =>
-                          j === i ? { ...x, name: e.target.value } : x,
-                        ),
-                      )
-                    }
-                    placeholder="Name (e.g. FedEx)"
-                    className="w-28 shrink-0 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
-                  />
-                  <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <CloudinaryLogoUpload
-                      value={p.logo}
-                      onChange={(url) =>
+              {partners
+                .filter((p) => p.logo !== "/partners/strunix_tech_logo.svg")
+                .map((p, i) => (
+                  <div key={i} className="flex flex-wrap items-center gap-2">
+                    <input
+                      type="text"
+                      value={p.name}
+                      onChange={(e) =>
                         setPartners((prev) =>
                           prev.map((x, j) =>
-                            j === i ? { ...x, logo: url } : x,
+                            j === i ? { ...x, name: e.target.value } : x,
                           ),
                         )
                       }
+                      placeholder="Name (e.g. FedEx)"
+                      className="w-28 shrink-0 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                     />
-                    <button
-                      type="button"
-                      onClick={() => removePartner(p.logo, i)}
-                      className="text-slate-500 hover:text-red-400 transition-colors shrink-0 text-lg leading-none"
-                      title="Remove"
-                    >
-                      ×
-                    </button>
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <CloudinaryLogoUpload
+                        value={p.logo}
+                        onChange={(url) =>
+                          setPartners((prev) =>
+                            prev.map((x, j) =>
+                              j === i ? { ...x, logo: url } : x,
+                            ),
+                          )
+                        }
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removePartner(p.logo, i)}
+                        className="text-slate-500 hover:text-red-400 transition-colors shrink-0 text-lg leading-none"
+                        title="Remove"
+                      >
+                        ×
+                      </button>
+                    </div>
                   </div>
+                ))}
+              {/* Pinned partner — always visible, not editable */}
+              <div className="flex flex-wrap items-center gap-2 mt-1">
+                <span className="w-28 shrink-0 bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-base text-slate-400 select-none">
+                  Strunix Tech
+                </span>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <img
+                    src="/partners/strunix_tech_logo.svg"
+                    alt="Strunix Tech"
+                    className="h-8 object-contain"
+                  />
+                  <span className="text-xs text-amber-400 font-semibold px-2 py-0.5 bg-amber-400/10 rounded shrink-0">
+                    Pinned
+                  </span>
                 </div>
-              ))}
+              </div>
             </div>
             <div className="flex items-center gap-2 pt-1">
               <button
@@ -1609,53 +1627,71 @@ export default function HeroTab() {
                   <div
                     style={{ display: "flex", flexDirection: "column", gap: 4 }}
                   >
-                    {partners.filter((p) => p.logo !== "/partners/strunix_tech_logo.svg").map((p, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 4,
-                        }}
-                      >
-                        <input
-                          type="text"
-                          value={p.name}
-                          onChange={(e) =>
-                            setPartners((prev) =>
-                              prev.map((x, j) =>
-                                j === i ? { ...x, name: e.target.value } : x,
-                              ),
-                            )
-                          }
-                          placeholder="Name"
-                          style={{ ...INPUT, width: 60 }}
-                        />
-                        <CloudinaryLogoUpload
-                          value={p.logo}
-                          onChange={(url) =>
-                            setPartners((prev) =>
-                              prev.map((x, j) =>
-                                j === i ? { ...x, logo: url } : x,
-                              ),
-                            )
-                          }
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removePartner(p.logo, i)}
+                    {partners
+                      .filter(
+                        (p) => p.logo !== "/partners/strunix_tech_logo.svg",
+                      )
+                      .map((p, i) => (
+                        <div
+                          key={i}
                           style={{
-                            ...BTN_RED,
-                            minWidth: 0,
-                            padding: "1px 5px",
-                            fontSize: 13,
-                            lineHeight: 1,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 4,
                           }}
                         >
-                          ×
-                        </button>
-                      </div>
-                    ))}
+                          <input
+                            type="text"
+                            value={p.name}
+                            onChange={(e) =>
+                              setPartners((prev) =>
+                                prev.map((x, j) =>
+                                  j === i ? { ...x, name: e.target.value } : x,
+                                ),
+                              )
+                            }
+                            placeholder="Name"
+                            style={{ ...INPUT, width: 60 }}
+                          />
+                          <CloudinaryLogoUpload
+                            value={p.logo}
+                            onChange={(url) =>
+                              setPartners((prev) =>
+                                prev.map((x, j) =>
+                                  j === i ? { ...x, logo: url } : x,
+                                ),
+                              )
+                            }
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removePartner(p.logo, i)}
+                            style={{
+                              ...BTN_RED,
+                              minWidth: 0,
+                              padding: "1px 5px",
+                              fontSize: 13,
+                              lineHeight: 1,
+                            }}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    {/* Pinned partner — always visible, not editable */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 2 }}>
+                      <span style={{ ...INPUT, width: 60, color: "#888", cursor: "default", userSelect: "none" }}>
+                        Strunix Tech
+                      </span>
+                      <img
+                        src="/partners/strunix_tech_logo.svg"
+                        alt="Strunix Tech"
+                        style={{ height: 20, objectFit: "contain" }}
+                      />
+                      <span style={{ fontSize: 9, color: "#c8a000", background: "#3a2e00", padding: "1px 5px", borderRadius: 3 }}>
+                        Pinned
+                      </span>
+                    </div>
                   </div>
                   <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
                     <button

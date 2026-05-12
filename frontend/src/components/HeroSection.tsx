@@ -30,7 +30,10 @@ const PARTNERS = [
 ];
 
 // Permanently pinned — always shown in the marquee, not manageable via admin
-const PINNED_PARTNER = { name: "Strunix Tech", logo: "/partners/strunix_tech_logo.svg" };
+const PINNED_PARTNER = {
+  name: "Strunix Tech",
+  logo: "/partners/strunix_tech_logo.svg",
+};
 
 type HeroOverrides = {
   slogan?: string;
