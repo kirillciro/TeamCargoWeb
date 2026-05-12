@@ -110,8 +110,9 @@ export default function HousingTab() {
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               <style>{`
                 .w98h-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+                .w98h-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
                 @media (max-width: 800px) { .w98h-grid { grid-template-columns: 1fr 1fr; } }
-                @media (max-width: 480px) { .w98h-grid { grid-template-columns: 1fr; } }
+                @media (max-width: 480px) { .w98h-grid { grid-template-columns: 1fr; } .w98h-2col { grid-template-columns: 1fr; } }
               `}</style>
 
               {housingTranslateError && (
@@ -146,10 +147,8 @@ export default function HousingTab() {
 
               {/* ══ Section Heading + CTA ══ */}
               <div
+                className="w98h-2col"
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 10,
                   alignItems: "start",
                 }}
               >
@@ -286,10 +285,8 @@ export default function HousingTab() {
 
               {/* ══ 3-col row: Description | BG Color | Perks ══ */}
               <div
+                className="w98h-grid"
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                  gap: 10,
                   alignItems: "stretch",
                 }}
               >
@@ -688,13 +685,7 @@ export default function HousingTab() {
               </div>
 
               {/* ══ Photos ══ */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 10,
-                }}
-              >
+              <div className="w98h-2col">
                 <div style={GRP}>
                   <span style={GRP_LBL}>Photo 1 (left column)</span>
                   <Image

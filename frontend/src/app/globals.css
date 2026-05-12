@@ -2,6 +2,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Prevent marquee animation from causing horizontal document scroll on mobile */
+  overflow-x: clip;
 }
 
 /* Desktop zoom — keeps design proportions on large screens */
