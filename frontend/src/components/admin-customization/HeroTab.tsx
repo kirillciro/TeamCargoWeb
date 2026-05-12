@@ -1762,7 +1762,7 @@ export default function HeroTab() {
                   <div
                     style={{
                       width: "100%",
-                      height: 72,
+                      height: 144,
                       overflow: "hidden",
                       border: "2px solid",
                       borderColor: "#808080 #fff #fff #808080",
@@ -1837,8 +1837,8 @@ export default function HeroTab() {
                   </p>
                   <div
                     style={{
-                      width: "100%",
-                      height: 72,
+                      width: 120,
+                      height: 168,
                       overflow: "hidden",
                       border: "2px solid",
                       borderColor: "#808080 #fff #fff #808080",
