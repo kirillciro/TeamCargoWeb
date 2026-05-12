@@ -1479,7 +1479,7 @@ export default function AdminUsersTab({
           </div>
         ) : (
           <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-x-auto">
-            <table className="w-full min-w-[640px] text-sm">
+            <table className="w-full min-w-160 text-sm">
               <thead>
                 <tr className="border-b border-slate-800 text-slate-500 text-xs font-semibold uppercase tracking-wider">
                   <th className="px-4 py-3 text-left">{dict.admin.col_user}</th>
@@ -1738,7 +1738,7 @@ export default function AdminUsersTab({
                             )}
                           </div>
                           <div className="min-w-0 flex-1">
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               <div>
                                 <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
                                   First name
@@ -1867,7 +1867,7 @@ export default function AdminUsersTab({
                                 </option>
                               </select>
                             </div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {(
                                 [
                                   { key: "phone", label: "Phone" },
@@ -1960,7 +1960,7 @@ export default function AdminUsersTab({
                           No documents uploaded yet.
                         </div>
                       ) : (
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {docs.map(({ url, label }) =>
                             url ? (
                               <div

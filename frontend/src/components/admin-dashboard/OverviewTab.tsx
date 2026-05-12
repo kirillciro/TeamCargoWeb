@@ -492,14 +492,7 @@ export default function AdminOverviewTab({
 
               {/* Traffic Sources | Top Countries | Top Pages | Devices — 4-col row */}
               {analytics && (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                    gap: 10,
-                    alignItems: "stretch",
-                  }}
-                >
+                <div className="w98a-top">
                   {/* Traffic Sources */}
                   <div style={{ ...GRP }}>
                     <span style={GRP_LBL}>Traffic Sources</span>
@@ -660,7 +653,7 @@ export default function AdminOverviewTab({
                     30 days
                   </span>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {/* Page Views */}
                   <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-orange-400" />
@@ -724,7 +717,7 @@ export default function AdminOverviewTab({
                   </span>
                 </div>
                 {/* KPI row */}
-                <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                   {[
                     {
                       label: "Today",
@@ -848,7 +841,7 @@ export default function AdminOverviewTab({
                     30 days
                   </span>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {/* Avg session duration */}
                   <div className="rounded-xl bg-slate-800/40 border border-slate-700/50 px-4 py-3.5 relative overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-violet-400" />
