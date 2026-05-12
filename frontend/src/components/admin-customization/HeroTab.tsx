@@ -463,7 +463,7 @@ export default function HeroTab() {
             <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
               {dict.admin.custom_hero_stats}
             </p>
-            <div className="grid grid-cols-[1fr_120px_1fr] gap-3 items-center">
+            <div className="hidden sm:grid grid-cols-[1fr_120px_1fr] gap-3 items-center">
               <span />
               <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide text-center">
                 {dict.admin.custom_hero_stat_value}
@@ -521,27 +521,31 @@ export default function HeroTab() {
                 setVal,
                 setLabel,
               }) => (
-                <div
-                  key={id}
-                  className="grid grid-cols-[1fr_120px_1fr] gap-3 items-center"
-                >
-                  <span className="text-xs text-slate-500 font-medium">
+                <div key={id}>
+                  {/* Mobile: stat name as label above inputs */}
+                  <p className="text-xs text-slate-500 font-medium mb-1.5 sm:hidden">
                     {defaultLabel}
-                  </span>
-                  <input
-                    type="text"
-                    value={val}
-                    onChange={(e) => setVal(e.target.value)}
-                    placeholder={defaultVal}
-                    className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono text-center focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
-                  />
-                  <input
-                    type="text"
-                    value={label}
-                    onChange={(e) => setLabel(e.target.value)}
-                    placeholder={defaultLabel}
-                    className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
-                  />
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-[1fr_120px_1fr] gap-2 sm:gap-3 items-center">
+                    {/* Desktop: stat name in first column */}
+                    <span className="hidden sm:block text-xs text-slate-500 font-medium">
+                      {defaultLabel}
+                    </span>
+                    <input
+                      type="text"
+                      value={val}
+                      onChange={(e) => setVal(e.target.value)}
+                      placeholder={defaultVal}
+                      className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white font-mono text-center focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    />
+                    <input
+                      type="text"
+                      value={label}
+                      onChange={(e) => setLabel(e.target.value)}
+                      placeholder={defaultLabel}
+                      className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                    />
+                  </div>
                 </div>
               ),
             )}
@@ -630,7 +634,9 @@ export default function HeroTab() {
                       value={p.logo}
                       onChange={(url) =>
                         setPartners((prev) =>
-                          prev.map((x, j) => (j === i ? { ...x, logo: url } : x)),
+                          prev.map((x, j) =>
+                            j === i ? { ...x, logo: url } : x,
+                          ),
                         )
                       }
                     />
