@@ -1478,8 +1478,8 @@ export default function AdminUsersTab({
             <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         ) : (
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-x-auto">
+            <table className="w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-b border-slate-800 text-slate-500 text-xs font-semibold uppercase tracking-wider">
                   <th className="px-4 py-3 text-left">{dict.admin.col_user}</th>
