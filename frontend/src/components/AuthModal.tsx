@@ -296,7 +296,7 @@ function AuthModalInner({
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.target.value)}
                       placeholder={a.email}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -385,7 +385,7 @@ function AuthModalInner({
                       type="email"
                       required
                       placeholder={a.email}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -414,7 +414,7 @@ function AuthModalInner({
                       required
                       minLength={6}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -458,7 +458,7 @@ function AuthModalInner({
                       type="text"
                       required
                       placeholder={a.first_name}
-                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -473,7 +473,7 @@ function AuthModalInner({
                       type="text"
                       required
                       placeholder={a.last_name}
-                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                     />
                   </div>
                 </label>
@@ -490,7 +490,7 @@ function AuthModalInner({
                     type="email"
                     required
                     placeholder={a.email}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                   />
                 </div>
               </label>
@@ -507,7 +507,7 @@ function AuthModalInner({
                     required
                     minLength={8}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                   />
                 </div>
               </label>
@@ -524,7 +524,7 @@ function AuthModalInner({
                     required
                     minLength={8}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent"
                   />
                 </div>
               </label>
