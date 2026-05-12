@@ -227,7 +227,7 @@ export default function AdminUsersTab({
     };
     const w98Input: React.CSSProperties = {
       fontFamily: "inherit",
-      fontSize: 11,
+      fontSize: 16,
       background: "#fff",
       color: "#000",
       border: "2px solid",
@@ -894,7 +894,7 @@ export default function AdminUsersTab({
                                         p ? { ...p, [key]: e.target.value } : p,
                                       )
                                     }
-                                    style={{ ...w98Input, fontSize: 11 }}
+                                    style={{ ...w98Input }}
                                   />
                                 </div>
                               ))}
@@ -916,7 +916,7 @@ export default function AdminUsersTab({
                                     p ? { ...p, email: e.target.value } : p,
                                   )
                                 }
-                                style={{ ...w98Input, fontSize: 11 }}
+                                style={{ ...w98Input }}
                               />
                             </div>
                             <div
@@ -947,7 +947,6 @@ export default function AdminUsersTab({
                                   style={{
                                     ...w98Input,
                                     width: "auto",
-                                    fontSize: 11,
                                   }}
                                 >
                                   <option value="user">user</option>
@@ -1035,7 +1034,6 @@ export default function AdminUsersTab({
                               style={{
                                 ...w98Input,
                                 width: "100%",
-                                fontSize: 11,
                               }}
                             >
                               <option value="available">Available</option>
@@ -1052,7 +1050,7 @@ export default function AdminUsersTab({
                                   p ? { ...p, yearsExp: e.target.value } : p,
                                 )
                               }
-                              style={{ ...w98Input, fontSize: 11 }}
+                              style={{ ...w98Input }}
                             />
                           </div>
                           <div>
@@ -1064,7 +1062,7 @@ export default function AdminUsersTab({
                                   p ? { ...p, phone: e.target.value } : p,
                                 )
                               }
-                              style={{ ...w98Input, fontSize: 11 }}
+                              style={{ ...w98Input }}
                             />
                           </div>
                           <div>
@@ -1076,7 +1074,7 @@ export default function AdminUsersTab({
                                   p ? { ...p, whatsapp: e.target.value } : p,
                                 )
                               }
-                              style={{ ...w98Input, fontSize: 11 }}
+                              style={{ ...w98Input }}
                             />
                           </div>
                           <div style={{ gridColumn: "1 / -1" }}>
@@ -1088,7 +1086,7 @@ export default function AdminUsersTab({
                                   p ? { ...p, country: e.target.value } : p,
                                 )
                               }
-                              style={{ ...w98Input, fontSize: 11 }}
+                              style={{ ...w98Input }}
                             />
                           </div>
                           <div style={{ gridColumn: "1 / -1" }}>
@@ -1103,7 +1101,7 @@ export default function AdminUsersTab({
                                 )
                               }
                               placeholder="e.g. B, C, CE"
-                              style={{ ...w98Input, fontSize: 11 }}
+                              style={{ ...w98Input }}
                             />
                           </div>
                           <div style={{ gridColumn: "1 / -1" }}>
@@ -1118,7 +1116,7 @@ export default function AdminUsersTab({
                                 )
                               }
                               placeholder="e.g. English, Dutch"
-                              style={{ ...w98Input, fontSize: 11 }}
+                              style={{ ...w98Input }}
                             />
                           </div>
                           <div style={{ gridColumn: "1 / -1" }}>
@@ -1133,7 +1131,6 @@ export default function AdminUsersTab({
                               rows={3}
                               style={{
                                 ...w98Input,
-                                fontSize: 11,
                                 resize: "vertical" as const,
                               }}
                             />
@@ -1755,7 +1752,7 @@ export default function AdminUsersTab({
                                         : p,
                                     )
                                   }
-                                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                                 />
                               </div>
                               <div>
@@ -1771,7 +1768,7 @@ export default function AdminUsersTab({
                                         : p,
                                     )
                                   }
-                                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                                 />
                               </div>
                             </div>
@@ -1786,7 +1783,7 @@ export default function AdminUsersTab({
                                     p ? { ...p, email: e.target.value } : p,
                                   )
                                 }
-                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                               />
                             </div>
                             <div className="mt-2 flex items-end gap-4 flex-wrap">
@@ -1801,7 +1798,7 @@ export default function AdminUsersTab({
                                       p ? { ...p, role: e.target.value } : p,
                                     )
                                   }
-                                  className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                  className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                                 >
                                   <option value="user">user</option>
                                   <option value="admin">admin</option>
@@ -1861,7 +1858,7 @@ export default function AdminUsersTab({
                                       : p,
                                   )
                                 }
-                                className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50 w-full"
+                                className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50 w-full"
                               >
                                 <option value="available">Available</option>
                                 <option value="open">Open to offers</option>
@@ -1890,7 +1887,7 @@ export default function AdminUsersTab({
                                         p ? { ...p, [key]: e.target.value } : p,
                                       )
                                     }
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                                   />
                                 </div>
                               ))}
@@ -1912,7 +1909,7 @@ export default function AdminUsersTab({
                                   )
                                 }
                                 placeholder="e.g. B, C, CE"
-                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                               />
                             </div>
                             <div>
@@ -1930,7 +1927,7 @@ export default function AdminUsersTab({
                                   )
                                 }
                                 placeholder="e.g. English, Dutch"
-                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50"
                               />
                             </div>
                             <div>
@@ -1945,7 +1942,7 @@ export default function AdminUsersTab({
                                   )
                                 }
                                 rows={3}
-                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50 resize-y"
+                                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-base text-white focus:outline-none focus:ring-1 focus:ring-[#36B347]/50 resize-y"
                               />
                             </div>
                           </div>
