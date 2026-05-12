@@ -617,7 +617,7 @@ export default function HeroTab() {
               {partners
                 .filter((p) => p.logo !== "/partners/strunix_tech_logo.svg")
                 .map((p, i) => (
-                  <div key={i} className="flex flex-wrap items-center gap-2">
+                  <div key={i} className="flex flex-col gap-2 border border-slate-800 rounded-xl p-3">
                     <input
                       type="text"
                       value={p.name}
@@ -629,9 +629,9 @@ export default function HeroTab() {
                         )
                       }
                       placeholder="Name (e.g. FedEx)"
-                      className="w-28 shrink-0 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
+                      className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-base text-white focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400"
                     />
-                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
                       <CloudinaryLogoUpload
                         value={p.logo}
                         onChange={(url) =>
@@ -654,18 +654,18 @@ export default function HeroTab() {
                   </div>
                 ))}
               {/* Pinned partner — always visible, not editable */}
-              <div className="flex flex-wrap items-center gap-2 mt-1">
-                <span className="w-28 shrink-0 bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-base text-slate-400 select-none">
+              <div className="flex flex-col gap-2 border border-amber-400/20 rounded-xl p-3">
+                <span className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-base text-slate-400 select-none">
                   Strunix Tech
                 </span>
-                <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div className="flex items-center gap-3">
                   <img
                     src="/partners/strunix_tech_logo.svg"
                     alt="Strunix Tech"
                     className="h-8 object-contain"
                   />
-                  <span className="text-xs text-amber-400 font-semibold px-2 py-0.5 bg-amber-400/10 rounded shrink-0">
-                    Pinned
+                  <span className="text-xs text-amber-400 font-semibold px-2 py-0.5 bg-amber-400/10 rounded">
+                    Pinned — cannot be removed
                   </span>
                 </div>
               </div>
@@ -1679,8 +1679,23 @@ export default function HeroTab() {
                         </div>
                       ))}
                     {/* Pinned partner — always visible, not editable */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 2 }}>
-                      <span style={{ ...INPUT, width: 60, color: "#888", cursor: "default", userSelect: "none" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                        marginTop: 2,
+                      }}
+                    >
+                      <span
+                        style={{
+                          ...INPUT,
+                          width: 60,
+                          color: "#888",
+                          cursor: "default",
+                          userSelect: "none",
+                        }}
+                      >
                         Strunix Tech
                       </span>
                       <img
@@ -1688,7 +1703,15 @@ export default function HeroTab() {
                         alt="Strunix Tech"
                         style={{ height: 20, objectFit: "contain" }}
                       />
-                      <span style={{ fontSize: 9, color: "#c8a000", background: "#3a2e00", padding: "1px 5px", borderRadius: 3 }}>
+                      <span
+                        style={{
+                          fontSize: 9,
+                          color: "#c8a000",
+                          background: "#3a2e00",
+                          padding: "1px 5px",
+                          borderRadius: 3,
+                        }}
+                      >
                         Pinned
                       </span>
                     </div>
