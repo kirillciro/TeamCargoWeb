@@ -614,7 +614,7 @@ export default function HeroTab() {
               </button>
             </div>
             <div className="space-y-2">
-              {partners.map((p, i) => (
+              {partners.filter((p) => p.logo !== "/partners/strunix_tech_logo.svg").map((p, i) => (
                 <div key={i} className="flex flex-wrap items-center gap-2">
                   <input
                     type="text"
@@ -1609,7 +1609,7 @@ export default function HeroTab() {
                   <div
                     style={{ display: "flex", flexDirection: "column", gap: 4 }}
                   >
-                    {partners.map((p, i) => (
+                    {partners.filter((p) => p.logo !== "/partners/strunix_tech_logo.svg").map((p, i) => (
                       <div
                         key={i}
                         style={{

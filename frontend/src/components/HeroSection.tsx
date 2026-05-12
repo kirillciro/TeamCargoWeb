@@ -29,6 +29,9 @@ const PARTNERS = [
   { name: "Transmission", logo: "/partners/transmission_logo.svg" },
 ];
 
+// Permanently pinned — always shown in the marquee, not manageable via admin
+const PINNED_PARTNER = { name: "Strunix Tech", logo: "/partners/strunix_tech_logo.svg" };
+
 type HeroOverrides = {
   slogan?: string;
   badge?: string;
@@ -61,9 +64,11 @@ export default function HeroSection({
   const [overrides, setOverrides] = useState<HeroOverrides>({});
 
   // Derive the active partner list — override list when set, else hardcoded defaults
-  const activePartners = overrides.partners?.length
-    ? overrides.partners
-    : PARTNERS;
+  // Always append the pinned partner regardless of admin overrides
+  const activePartners = [
+    ...(overrides.partners?.length ? overrides.partners : PARTNERS),
+    PINNED_PARTNER,
+  ];
   const partnersLoop = [
     ...activePartners,
     ...activePartners,

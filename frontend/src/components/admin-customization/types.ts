@@ -202,6 +202,12 @@ export const DEFAULT_SVC_CARDS = DEFAULT_SVC_IMGS.map((img) => ({
   img,
 }));
 
+// ── Permanently pinned partner — only changeable via code ──────────────────
+export const PINNED_PARTNER = {
+  name: "Strunix Tech",
+  logo: "/partners/strunix_tech_logo.svg",
+} as const;
+
 export const DEFAULT_PARTNERS = [
   { name: "Amazon", logo: "/partners/amazon_logo.svg" },
   { name: "FedEx", logo: "/partners/fedex_logo.svg" },

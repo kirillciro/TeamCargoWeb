@@ -501,6 +501,8 @@ export function useAdminCustomizationState({
   };
 
   const removePartner = (logo: string, index: number) => {
+    // Guard: never allow removing the pinned partner
+    if (logo === "/partners/strunix_tech_logo.svg") return;
     setPartners((prev) => prev.filter((_, j) => j !== index));
     const publicId = cloudinaryPublicId(logo);
     if (publicId) {
