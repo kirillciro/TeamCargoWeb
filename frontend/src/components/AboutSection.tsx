@@ -252,8 +252,8 @@ export default function AboutSection({
               </div>
             </div>
 
-            {/* Desktop: two-column mosaic */}
-            <div className="hidden lg:grid grid-cols-[5fr_7fr] gap-3 h-130">
+            {/* Desktop: two-column mosaic — portrait left, landscape stacked right */}
+            <div className="hidden lg:grid grid-cols-[2fr_3fr] gap-3 h-130">
               {/* Left column — portrait, full height */}
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <Image
