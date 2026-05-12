@@ -617,7 +617,10 @@ export default function HeroTab() {
               {partners
                 .filter((p) => p.logo !== "/partners/strunix_tech_logo.svg")
                 .map((p, i) => (
-                  <div key={i} className="flex flex-col gap-2 border border-slate-800 rounded-xl p-3">
+                  <div
+                    key={i}
+                    className="flex flex-col gap-2 border border-slate-800 rounded-xl p-3"
+                  >
                     <input
                       type="text"
                       value={p.name}

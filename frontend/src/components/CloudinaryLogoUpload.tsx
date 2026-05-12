@@ -66,7 +66,7 @@ export default function CloudinaryLogoUpload({
 
   return (
     <div className="flex items-center gap-2 flex-1 min-w-0">
-      {/* Drop zone / trigger */
+      {/* Drop zone / trigger */}
       <div
         onClick={() => !uploading && inputRef.current?.click()}
         onDragOver={(e) => {
