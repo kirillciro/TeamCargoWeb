@@ -1769,7 +1769,10 @@ export default function AdminEmailsTab({
           </div>
 
           {/* Three-pane content */}
-          <div className="w98em-panes" style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+          <div
+            className="w98em-panes"
+            style={{ flex: 1, display: "flex", overflow: "hidden" }}
+          >
             {/* Folder sidebar */}
             <div
               className="w98em-sidebar"
@@ -2079,7 +2082,10 @@ export default function AdminEmailsTab({
               </div>
 
               {/* RIGHT: Email detail pane */}
-              <div className="w98em-detail" style={{ flex: 1, overflow: "hidden", background: "#fff" }}>
+              <div
+                className="w98em-detail"
+                style={{ flex: 1, overflow: "hidden", background: "#fff" }}
+              >
                 {selectedId ? (
                   <EmailDetailPanel
                     key={selectedId}

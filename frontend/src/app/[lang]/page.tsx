@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { getDictionary } from "@/lib/getDictionary";
 import { isSupportedLanguage, defaultLang, languages } from "@/lib/i18n";
 import { AuthProvider } from "@/context/AuthContext";
@@ -55,6 +56,8 @@ export default async function LangRootPage({
   const { lang } = await params;
   const resolvedLang = isSupportedLanguage(lang) ? lang : defaultLang;
   const dict = await getDictionary(resolvedLang);
+  const cookieStore = await cookies();
+  const hasConsent = !!cookieStore.get("cookie_consent")?.value;
 
   return (
     <AuthProvider>
@@ -83,7 +86,7 @@ export default async function LangRootPage({
         <Footer lang={resolvedLang} dict={dict} />
       </main>
       <AuthModal dict={dict} />
-      <CookieBanner lang={resolvedLang} dict={dict} />
+      {!hasConsent && <CookieBanner lang={resolvedLang} dict={dict} />}
       <Suspense>
         <VerifiedBanner dict={dict} />
       </Suspense>
