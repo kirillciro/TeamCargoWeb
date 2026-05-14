@@ -176,9 +176,9 @@ export default function HeroSection({
       {/* Main content */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-2 sm:py-4 w-full lg:w-[80%]">
         {/* Badge */}
-        <div className="inline-flex self-start items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4 sm:mb-6 w-fit">
-          <span className="w-2 h-2 rounded-full bg-[#4dc95e] animate-pulse shrink-0" />
-          <span className="text-white/90 text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em]">
+        <div className="inline-flex self-start items-center gap-1.5 sm:gap-2 bg-white/10 border border-white/20 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 mb-4 sm:mb-6 w-fit">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#4dc95e] animate-pulse shrink-0" />
+          <span className="text-white/90 text-[9px] sm:text-xs font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] whitespace-nowrap">
             {overrides.badge || dict.hero.badge}
           </span>
         </div>
