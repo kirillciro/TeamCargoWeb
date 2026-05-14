@@ -4,6 +4,8 @@ html {
   scroll-behavior: smooth;
   /* Prevent marquee animation from causing horizontal document scroll on mobile */
   overflow-x: clip;
+  /* Prevent white flash in iOS Safari safe area / browser chrome area */
+  background-color: #080c12;
 }
 
 /* Desktop zoom — keeps design proportions on large screens */

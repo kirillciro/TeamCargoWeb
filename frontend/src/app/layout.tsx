@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   description:
     "Wij maken onze klanten en die van uw tevreden. Professioneel transport en logistiek.",
   metadataBase: new URL(SITE_URL),
+  themeColor: "#080c12",
   verification: {
     google: "IhqgWj7hZv7zZOGztKYwiGBAfKhs3Hotk-h6fhuSgPo",
   },
