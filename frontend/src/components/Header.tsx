@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  X,
   LayoutDashboard,
   ChevronRight,
   Phone,
@@ -232,50 +231,49 @@ export default function Header({
               {/* Hamburger */}
               <button
                 onClick={() => setMobileOpen((v) => !v)}
-                className="flex md:hidden items-center justify-center w-11 h-11 rounded-lg text-white hover:bg-white/10 border border-white/10 hover:border-white/25 transition-colors duration-200"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileOpen}
+                className="flex md:hidden"
+                style={{
+                  position: "relative",
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  border: `1px solid ${mobileOpen ? "rgba(77,201,94,0.5)" : "rgba(255,255,255,0.12)"}`,
+                  background: mobileOpen ? "rgba(77,201,94,0.12)" : "rgba(255,255,255,0.05)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  transition: "background 0.25s, border-color 0.25s",
+                  flexShrink: 0,
+                }}
               >
-                <span className="flex flex-col justify-center items-center w-5 h-5 gap-0 relative">
-                  {/* Top bar */}
-                  <span
-                    style={{
-                      display: "block",
-                      width: "20px",
-                      height: "2px",
-                      borderRadius: "2px",
-                      backgroundColor: "currentColor",
-                      transformOrigin: "center",
-                      transition: "transform 0.3s cubic-bezier(0.23,1,0.32,1), opacity 0.2s",
-                      transform: mobileOpen ? "translateY(6px) rotate(45deg)" : "translateY(-4px) rotate(0deg)",
-                    }}
-                  />
-                  {/* Middle bar */}
-                  <span
-                    style={{
-                      display: "block",
-                      width: "20px",
-                      height: "2px",
-                      borderRadius: "2px",
-                      backgroundColor: "currentColor",
-                      transition: "opacity 0.2s, transform 0.3s cubic-bezier(0.23,1,0.32,1)",
-                      opacity: mobileOpen ? 0 : 1,
-                      transform: mobileOpen ? "scaleX(0)" : "scaleX(1)",
-                    }}
-                  />
-                  {/* Bottom bar */}
-                  <span
-                    style={{
-                      display: "block",
-                      width: "20px",
-                      height: "2px",
-                      borderRadius: "2px",
-                      backgroundColor: "currentColor",
-                      transformOrigin: "center",
-                      transition: "transform 0.3s cubic-bezier(0.23,1,0.32,1), opacity 0.2s",
-                      transform: mobileOpen ? "translateY(-6px) rotate(-45deg)" : "translateY(4px) rotate(0deg)",
-                    }}
-                  />
+                {/* Animated bars */}
+                <span style={{ position: "relative", width: 18, height: 14, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <span style={{
+                    display: "block", height: 2, borderRadius: 2,
+                    background: mobileOpen ? "#4dc95e" : "rgba(255,255,255,0.9)",
+                    transformOrigin: "center",
+                    transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), background 0.25s",
+                    transform: mobileOpen ? "translateY(6px) rotate(45deg)" : "none",
+                  }} />
+                  <span style={{
+                    display: "block", height: 2, borderRadius: 2,
+                    background: mobileOpen ? "#4dc95e" : "rgba(255,255,255,0.9)",
+                    transformOrigin: "center",
+                    transition: "transform 0.25s cubic-bezier(0.23,1,0.32,1), opacity 0.2s, background 0.25s",
+                    opacity: mobileOpen ? 0 : 1,
+                    transform: mobileOpen ? "scaleX(0)" : "scaleX(1)",
+                    width: mobileOpen ? 18 : 14,
+                  }} />
+                  <span style={{
+                    display: "block", height: 2, borderRadius: 2,
+                    background: mobileOpen ? "#4dc95e" : "rgba(255,255,255,0.9)",
+                    transformOrigin: "center",
+                    transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), background 0.25s",
+                    transform: mobileOpen ? "translateY(-6px) rotate(-45deg)" : "none",
+                  }} />
                 </span>
               </button>
             </div>
@@ -308,7 +306,7 @@ export default function Header({
         aria-label="Navigation menu"
       >
         {/* Panel header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+        <div className="flex items-center px-5 py-4 border-b border-white/10">
           <Link href={`/${lang}`} onClick={() => setMobileOpen(false)}>
             <Image
               src="/logo.svg"
@@ -318,13 +316,6 @@ export default function Header({
               className="h-11 w-auto object-contain"
             />
           </Link>
-          <button
-            onClick={() => setMobileOpen(false)}
-            className="w-11 h-11 flex items-center justify-center rounded-lg text-white hover:bg-white/10 border border-white/10 transition-colors"
-            aria-label="Close menu"
-          >
-            <X className="w-5 h-5" />
-          </button>
         </div>
 
         {/* Nav links */}
