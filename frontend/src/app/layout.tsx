@@ -3,10 +3,22 @@ import Script from "next/script";
 import "./globals.css";
 import WebVitals from "@/components/WebVitals";
 
-// Allow TypeScript to recognise window.gtag injected by GA4
+// Allow TypeScript to recognise window.gtag injected by GA4 and window.google from GSI
 declare global {
   interface Window {
     gtag: (...args: unknown[]) => void;
+    google?: {
+      accounts: {
+        id: {
+          initialize: (config: {
+            client_id: string;
+            callback: (response: { credential: string }) => void;
+          }) => void;
+          prompt: () => void;
+          cancel: () => void;
+        };
+      };
+    };
   }
 }
 
@@ -56,6 +68,11 @@ export default function RootLayout({
         />
         {children}
         <WebVitals />
+        {/* ── Google Identity Services ── */}
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          strategy="afterInteractive"
+        />
         {/* ── Google Analytics 4 ── load on first user interaction (or 6s idle) to keep TBT minimal */}
         <Script
           id="ga4-defer"

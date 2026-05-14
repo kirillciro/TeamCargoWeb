@@ -7,7 +7,8 @@ import { apiForgotPassword, apiResendVerification } from "@/lib/auth-client";
 import type { Dictionary } from "@/lib/getDictionary";
 
 export default function AuthModal({ dict }: { dict: Dictionary }) {
-  const { authOpen, authTab, closeAuth, login, register } = useAuth();
+  const { authOpen, authTab, closeAuth, login, register, loginWithGoogle } =
+    useAuth();
   if (!authOpen) return null;
   return (
     <AuthModalInner
@@ -16,6 +17,7 @@ export default function AuthModal({ dict }: { dict: Dictionary }) {
       closeAuth={closeAuth}
       login={login}
       register={register}
+      loginWithGoogle={loginWithGoogle}
       dict={dict}
     />
   );
@@ -26,6 +28,7 @@ function AuthModalInner({
   closeAuth,
   login,
   register,
+  loginWithGoogle,
   dict,
 }: {
   initTab: "login" | "register";
@@ -37,6 +40,7 @@ function AuthModalInner({
     email: string,
     password: string,
   ) => Promise<void>;
+  loginWithGoogle: (credential: string) => Promise<void>;
   dict: Dictionary;
 }) {
   const a = dict.auth;
@@ -333,7 +337,19 @@ function AuthModalInner({
               <button
                 type="button"
                 onClick={() => {
-                  /* wire up Google OAuth */
+                  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+                  if (!clientId || !window.google) return;
+                  window.google.accounts.id.initialize({
+                    client_id: clientId,
+                    callback: ({ credential }) => {
+                      void loginWithGoogle(credential).catch((err) => {
+                        setError(
+                          err instanceof Error ? err.message : a.error_generic,
+                        );
+                      });
+                    },
+                  });
+                  window.google.accounts.id.prompt();
                 }}
                 className="w-full flex items-center justify-center gap-3 bg-[#131314] hover:bg-[#2a2a2b] border border-[#131314] rounded-xl py-3 text-sm font-semibold text-white transition-colors mb-4"
               >

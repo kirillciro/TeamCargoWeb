@@ -72,10 +72,7 @@ export default function Header({
   }, []);
 
   useEffect(() => {
-    if (forceOpaque) {
-      setScrollRatio(1);
-      return;
-    }
+    if (forceOpaque) return;
     const onScroll = () => {
       if (!headerTransparent) {
         setScrollRatio(1);
@@ -240,7 +237,9 @@ export default function Header({
                   height: 44,
                   borderRadius: 12,
                   border: `1px solid ${mobileOpen ? "rgba(77,201,94,0.5)" : "rgba(255,255,255,0.12)"}`,
-                  background: mobileOpen ? "rgba(77,201,94,0.12)" : "rgba(255,255,255,0.05)",
+                  background: mobileOpen
+                    ? "rgba(77,201,94,0.12)"
+                    : "rgba(255,255,255,0.05)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -250,30 +249,64 @@ export default function Header({
                 }}
               >
                 {/* Animated bars */}
-                <span style={{ position: "relative", width: 18, height: 14, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                  <span style={{
-                    display: "block", height: 2, borderRadius: 2,
-                    background: mobileOpen ? "#4dc95e" : "rgba(255,255,255,0.9)",
-                    transformOrigin: "center",
-                    transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), background 0.25s",
-                    transform: mobileOpen ? "translateY(6px) rotate(45deg)" : "none",
-                  }} />
-                  <span style={{
-                    display: "block", height: 2, borderRadius: 2,
-                    background: mobileOpen ? "#4dc95e" : "rgba(255,255,255,0.9)",
-                    transformOrigin: "center",
-                    transition: "transform 0.25s cubic-bezier(0.23,1,0.32,1), opacity 0.2s, background 0.25s",
-                    opacity: mobileOpen ? 0 : 1,
-                    transform: mobileOpen ? "scaleX(0)" : "scaleX(1)",
-                    width: mobileOpen ? 18 : 14,
-                  }} />
-                  <span style={{
-                    display: "block", height: 2, borderRadius: 2,
-                    background: mobileOpen ? "#4dc95e" : "rgba(255,255,255,0.9)",
-                    transformOrigin: "center",
-                    transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), background 0.25s",
-                    transform: mobileOpen ? "translateY(-6px) rotate(-45deg)" : "none",
-                  }} />
+                <span
+                  style={{
+                    position: "relative",
+                    width: 18,
+                    height: 14,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "block",
+                      height: 2,
+                      borderRadius: 2,
+                      background: mobileOpen
+                        ? "#4dc95e"
+                        : "rgba(255,255,255,0.9)",
+                      transformOrigin: "center",
+                      transition:
+                        "transform 0.35s cubic-bezier(0.23,1,0.32,1), background 0.25s",
+                      transform: mobileOpen
+                        ? "translateY(6px) rotate(45deg)"
+                        : "none",
+                    }}
+                  />
+                  <span
+                    style={{
+                      display: "block",
+                      height: 2,
+                      borderRadius: 2,
+                      background: mobileOpen
+                        ? "#4dc95e"
+                        : "rgba(255,255,255,0.9)",
+                      transformOrigin: "center",
+                      transition:
+                        "transform 0.25s cubic-bezier(0.23,1,0.32,1), opacity 0.2s, background 0.25s",
+                      opacity: mobileOpen ? 0 : 1,
+                      transform: mobileOpen ? "scaleX(0)" : "scaleX(1)",
+                      width: mobileOpen ? 18 : 14,
+                    }}
+                  />
+                  <span
+                    style={{
+                      display: "block",
+                      height: 2,
+                      borderRadius: 2,
+                      background: mobileOpen
+                        ? "#4dc95e"
+                        : "rgba(255,255,255,0.9)",
+                      transformOrigin: "center",
+                      transition:
+                        "transform 0.35s cubic-bezier(0.23,1,0.32,1), background 0.25s",
+                      transform: mobileOpen
+                        ? "translateY(-6px) rotate(-45deg)"
+                        : "none",
+                    }}
+                  />
                 </span>
               </button>
             </div>
