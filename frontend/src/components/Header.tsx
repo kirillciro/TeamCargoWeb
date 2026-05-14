@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  Menu,
   X,
   LayoutDashboard,
   ChevronRight,
@@ -232,11 +231,52 @@ export default function Header({
 
               {/* Hamburger */}
               <button
-                onClick={() => setMobileOpen(true)}
+                onClick={() => setMobileOpen((v) => !v)}
                 className="flex md:hidden items-center justify-center w-11 h-11 rounded-lg text-white hover:bg-white/10 border border-white/10 hover:border-white/25 transition-colors duration-200"
-                aria-label="Open menu"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileOpen}
               >
-                <Menu className="w-5 h-5" />
+                <span className="flex flex-col justify-center items-center w-5 h-5 gap-0 relative">
+                  {/* Top bar */}
+                  <span
+                    style={{
+                      display: "block",
+                      width: "20px",
+                      height: "2px",
+                      borderRadius: "2px",
+                      backgroundColor: "currentColor",
+                      transformOrigin: "center",
+                      transition: "transform 0.3s cubic-bezier(0.23,1,0.32,1), opacity 0.2s",
+                      transform: mobileOpen ? "translateY(6px) rotate(45deg)" : "translateY(-4px) rotate(0deg)",
+                    }}
+                  />
+                  {/* Middle bar */}
+                  <span
+                    style={{
+                      display: "block",
+                      width: "20px",
+                      height: "2px",
+                      borderRadius: "2px",
+                      backgroundColor: "currentColor",
+                      transition: "opacity 0.2s, transform 0.3s cubic-bezier(0.23,1,0.32,1)",
+                      opacity: mobileOpen ? 0 : 1,
+                      transform: mobileOpen ? "scaleX(0)" : "scaleX(1)",
+                    }}
+                  />
+                  {/* Bottom bar */}
+                  <span
+                    style={{
+                      display: "block",
+                      width: "20px",
+                      height: "2px",
+                      borderRadius: "2px",
+                      backgroundColor: "currentColor",
+                      transformOrigin: "center",
+                      transition: "transform 0.3s cubic-bezier(0.23,1,0.32,1), opacity 0.2s",
+                      transform: mobileOpen ? "translateY(-6px) rotate(-45deg)" : "translateY(4px) rotate(0deg)",
+                    }}
+                  />
+                </span>
               </button>
             </div>
           </div>
