@@ -407,8 +407,8 @@ export default function AdminDashboard({
         <div className="w-full px-4 sm:px-6">
           {/* Brand row */}
           <div
-            className="flex items-center justify-between gap-2 min-w-0 overflow-hidden"
-            style={win98 ? { padding: "6px 0" } : { height: "auto", minHeight: 56 }}
+            className="flex flex-wrap items-center gap-x-3 gap-y-2"
+            style={win98 ? { padding: "6px 0" } : { minHeight: 56, paddingTop: 8, paddingBottom: 8 }}
           >
             {/* Left: identity */}
             <div
@@ -416,6 +416,8 @@ export default function AdminDashboard({
                 display: "flex",
                 alignItems: "center",
                 gap: win98 ? 8 : 12,
+                flex: "1 1 auto",
+                minWidth: 0,
               }}
             >
               {win98 ? (
@@ -479,10 +481,8 @@ export default function AdminDashboard({
                 display: "flex",
                 alignItems: "center",
                 flexWrap: "wrap",
-                justifyContent: "flex-end",
                 gap: win98 ? 6 : 8,
-                flexShrink: 0,
-                maxWidth: "60%",
+                flex: "0 1 auto",
               }}
             >
               {/* Win98 toggle */}
