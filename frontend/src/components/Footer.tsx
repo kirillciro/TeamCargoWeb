@@ -97,29 +97,66 @@ export default function Footer({
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-20 gap-12 mb-14">
           {/* Brand block */}
           <div className="lg:w-72 shrink-0 flex flex-col order-2 lg:order-1">
-            <p className="text-white/80 text-sm leading-relaxed mb-4 tracking-wide">
+            <p className="text-white/80 text-sm leading-relaxed mb-6 tracking-wide">
               {taglineSub}
             </p>
-            <p className="text-white/50 text-xs leading-relaxed mb-5">
-              {addressLine1}
-              <br />
-              {addressLine2}
-            </p>
-            <div className="flex flex-col gap-2 mb-6">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center min-h-11 text-white/85 hover:text-white text-xs transition-colors"
-              >
-                {phone}
-              </a>
-              <a
-                href={`mailto:${email}`}
-                className="inline-flex items-center min-h-11 text-white/85 hover:text-white text-xs transition-colors"
-              >
-                {email}
-              </a>
+
+            {/* Contact details */}
+            <div className="flex flex-col gap-3 mb-6">
+              {/* Address */}
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 shrink-0 w-7 h-7 rounded-md bg-white/8 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 text-[#4dc95e]">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                    <circle cx="12" cy="9" r="2.5"/>
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.18em] mb-0.5">Address</p>
+                  <p className="text-white/75 text-xs leading-relaxed">
+                    {addressLine1}<br />{addressLine2}
+                  </p>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 shrink-0 w-7 h-7 rounded-md bg-white/8 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 text-[#4dc95e]">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.7 9.81 19.79 19.79 0 01.67 1.18 2 2 0 012.65.01h3a2 2 0 012 1.72c.13 1 .37 1.97.72 2.91a2 2 0 01-.45 2.11L6.91 7.75a16 16 0 006.29 6.29l1-1a2 2 0 012.11-.45c.94.35 1.91.59 2.91.72a2 2 0 011.78 2.01z"/>
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.18em] mb-0.5">Tel</p>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white/75 hover:text-white text-xs transition-colors"
+                  >
+                    {phone}
+                  </a>
+                </div>
+              </div>
+
+              {/* Email */}
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 shrink-0 w-7 h-7 rounded-md bg-white/8 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 text-[#4dc95e]">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M2 7l10 7 10-7"/>
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.18em] mb-0.5">Email</p>
+                  <a
+                    href={`mailto:${email}`}
+                    className="text-white/75 hover:text-white text-xs transition-colors"
+                  >
+                    {email}
+                  </a>
+                </div>
+              </div>
             </div>
             <Image
               src="/logo.svg"
