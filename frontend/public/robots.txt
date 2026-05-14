@@ -7,4 +7,4 @@ Allow: /
 Disallow: /*/admin
 Disallow: /*/profile
 
-Sitemap: https://teamcargo.be/sitemap.xml
+Sitemap: https://teamcargoweb.vercel.app/sitemap.xml
