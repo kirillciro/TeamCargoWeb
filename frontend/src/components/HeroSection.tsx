@@ -229,7 +229,7 @@ export default function HeroSection({
             </a>
             <a
               href="mailto:info@teamcargo.nl"
-              className="inline-flex items-center justify-center gap-2 flex-1 py-3 sm:py-3.5 border border-white/70 bg-white/20 hover:border-white/40 hover:bg-black/60 text-white/70 font-bold rounded-xl transition-all text-sm sm:text-[0.92rem] tracking-wide"
+              className="inline-flex items-center justify-center gap-2 flex-1 py-3 sm:py-3.5 border border-white/70 bg-white/5 hover:border-white/40 hover:bg-black/60 text-white/70 font-bold rounded-xl transition-all text-sm sm:text-[0.92rem] tracking-wide"
             >
               <Mail className="w-4 h-4" />
               info@teamcargo.nl
