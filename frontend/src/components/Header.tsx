@@ -240,7 +240,6 @@ export default function Header({
                   background: mobileOpen
                     ? "rgba(77,201,94,0.12)"
                     : "rgba(255,255,255,0.05)",
-                  display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
