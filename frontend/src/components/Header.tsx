@@ -283,7 +283,7 @@ export default function Header({
 
       {/* Backdrop */}
       <div
-        className={`fixed top-20 sm:top-24 inset-x-0 bottom-0 z-30 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+        className={`fixed top-20 sm:top-24 inset-x-0 bottom-0 z-49 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           mobileOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -295,7 +295,7 @@ export default function Header({
       {/* Mobile slide-in panel */}
       <div
         ref={panelRef}
-        className={`fixed top-20 sm:top-24 right-0 z-40 flex flex-col transition-transform duration-300 ease-in-out md:hidden border-l border-t border-white/10`}
+        className={`fixed top-20 sm:top-24 right-0 z-50 flex flex-col transition-transform duration-300 ease-in-out md:hidden border-l border-t border-white/10`}
         style={{
           width: "min(300px, 82vw)",
           height: "calc(100dvh - 5rem)",
