@@ -205,13 +205,13 @@ export default function HeroSection({
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-7">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-7 w-full">
             <a
               href="https://wa.me/31685352412"
               target="_blank"
               rel="noopener noreferrer"
               aria-label={dict.hero.cta_whatsapp}
-              className="inline-flex items-center justify-center gap-2 py-3 sm:py-3.5 font-bold rounded-xl shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide flex-1"
+              className="inline-flex items-center justify-center gap-2 w-full sm:flex-1 py-3 sm:py-3.5 font-bold rounded-xl shadow-lg shadow-black/30 text-sm sm:text-[0.92rem] tracking-wide"
               style={{
                 background: "var(--brand-dark)",
                 color: "var(--brand-btn-text)",
@@ -229,7 +229,7 @@ export default function HeroSection({
             </a>
             <a
               href="mailto:info@teamcargo.nl"
-              className="inline-flex items-center justify-center gap-2 py-3 sm:py-3.5 border border-white/20 bg-white/5 hover:border-white/70 hover:bg-white/10 text-white/80 font-bold rounded-xl transition-all text-sm sm:text-[0.92rem] tracking-wide flex-1"
+              className="inline-flex items-center justify-center gap-2 w-full sm:flex-1 py-3 sm:py-3.5 border border-white/20 bg-white/5 hover:border-white/70 hover:bg-white/10 text-white/80 font-bold rounded-xl transition-all text-sm sm:text-[0.92rem] tracking-wide"
             >
               <Mail className="w-4 h-4" />
               info@teamcargo.nl
