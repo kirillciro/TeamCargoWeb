@@ -192,10 +192,24 @@ export default function Footer({
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-white/50 text-xs">
-            © {year} Team Cargo. {dict.footer.rights}
-          </p>
+        <div className="pt-8 border-t border-white/8 flex flex-col gap-4">
+          {/* Company registration details */}
+          <div className="flex flex-wrap gap-x-6 gap-y-1">
+            <span className="text-white/35 text-[10px] tracking-wide">
+              <span className="text-white/50 font-semibold">Company:</span> Team Cargo Nederland B.V.
+            </span>
+            <span className="text-white/35 text-[10px] tracking-wide">
+              <span className="text-white/50 font-semibold">KVK:</span> 84820667
+            </span>
+            <span className="text-white/35 text-[10px] tracking-wide">
+              <span className="text-white/50 font-semibold">Safe No.:</span> NL05973986
+            </span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-white/50 text-xs">
+              © {year} Team Cargo. {dict.footer.rights}
+            </p>
 
           {/* Social icons */}
           <div className="flex items-center gap-1">
@@ -235,6 +249,7 @@ export default function Footer({
           </div>
 
           <p className="text-white/50 text-xs">Geregistreerd in Nederland</p>
+          </div>
         </div>
       </div>
     </footer>
