@@ -215,7 +215,7 @@ export default function Footer({
               alt="Team Cargo"
               width={180}
               height={60}
-              className="h-14 w-auto object-contain object-center sm:object-left mt-auto self-center sm:self-start"
+              className="h-14 w-auto object-contain object-left mt-auto self-start"
             />
           </div>
 
@@ -248,8 +248,12 @@ export default function Footer({
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Left: copyright + registration */}
             <div className="flex flex-col items-center gap-1 text-center sm:items-start sm:text-left order-2 sm:order-1">
-              <p className="text-white/50 text-xs">© {year} Team Cargo. {dict.footer.rights}</p>
-              <p className="text-white/35 text-xs">Geregistreerd in Nederland</p>
+              <p className="text-white/50 text-xs">
+                © {year} Team Cargo. {dict.footer.rights}
+              </p>
+              <p className="text-white/35 text-xs">
+                Geregistreerd in Nederland
+              </p>
             </div>
 
             {/* Social icons */}
