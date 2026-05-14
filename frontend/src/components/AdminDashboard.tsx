@@ -133,7 +133,7 @@ export default function AdminDashboard({
     <div
       data-admin
       data-win98={win98 ? "1" : undefined}
-      className={`min-h-screen pt-20 sm:pt-24${win98 ? "" : " bg-slate-950 text-white"}`}
+      className={`min-h-screen pt-20 sm:pt-24 overflow-x-hidden${win98 ? "" : " bg-slate-950 text-white"}`}
       style={
         win98
           ? {
@@ -407,8 +407,8 @@ export default function AdminDashboard({
         <div className="w-full px-4 sm:px-6">
           {/* Brand row */}
           <div
-            className="flex items-center justify-between gap-4"
-            style={win98 ? { padding: "6px 0" } : { height: 56 }}
+            className="flex items-center justify-between gap-2 min-w-0 overflow-hidden"
+            style={win98 ? { padding: "6px 0" } : { height: "auto", minHeight: 56 }}
           >
             {/* Left: identity */}
             <div
@@ -478,7 +478,11 @@ export default function AdminDashboard({
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: win98 ? 6 : 12,
+                flexWrap: "wrap",
+                justifyContent: "flex-end",
+                gap: win98 ? 6 : 8,
+                flexShrink: 0,
+                maxWidth: "60%",
               }}
             >
               {/* Win98 toggle */}
