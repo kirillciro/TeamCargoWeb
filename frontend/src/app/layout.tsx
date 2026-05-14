@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   description:
     "Wij maken onze klanten en die van uw tevreden. Professioneel transport en logistiek.",
   metadataBase: new URL(SITE_URL),
+  verification: {
+    google: "IhqgWj7hZv7zZOGztKYwiGBAfKhs3Hotk-h6fhuSgPo",
+  },
   openGraph: {
     title: "Team Cargo — 1 team · 1 missie",
     description:
