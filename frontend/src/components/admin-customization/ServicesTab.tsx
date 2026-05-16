@@ -32,7 +32,6 @@ export default function ServicesTab() {
   const defaultTitles = [
     "Driver Job Placement",
     "Documents Support",
-    "Accommodation",
     "Ongoing Support",
     "Reliable Opportunities",
     "Local Transport",
@@ -40,7 +39,6 @@ export default function ServicesTab() {
   const defaultDescs = [
     "We connect drivers with delivery jobs at trusted logistics companies in Amsterdam and surrounding areas.",
     "We help you handle all necessary paperwork to legally work in the Netherlands.",
-    "We provide housing options (shared rooms or apartments) depending on your contract.",
     "We stay available to assist you before and after you start working.",
     "We work with established logistics partners to offer stable, long-term jobs.",
     "We arrange local transport solutions to get you to and from your workplace.",
