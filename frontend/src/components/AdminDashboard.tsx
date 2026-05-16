@@ -408,7 +408,11 @@ export default function AdminDashboard({
           {/* Brand row */}
           <div
             className="flex flex-wrap items-center gap-x-3 gap-y-2"
-            style={win98 ? { padding: "6px 0" } : { minHeight: 56, paddingTop: 8, paddingBottom: 8 }}
+            style={
+              win98
+                ? { padding: "6px 0" }
+                : { minHeight: 56, paddingTop: 8, paddingBottom: 8 }
+            }
           >
             {/* Left: identity */}
             <div

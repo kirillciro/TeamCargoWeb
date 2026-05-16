@@ -53,10 +53,6 @@
         "desc": "Vi hjælper dig med at håndtere alle nødvendige papirer for lovligt at arbejde i Holland."
       },
       {
-        "title": "Indkvartering",
-        "desc": "Vi tilbyder indkvarteringsmuligheder (delte værelser eller lejligheder) afhængigt af din kontrakt."
-      },
-      {
         "title": "Løbende støtte",
         "desc": "Vi er tilgængelige for at hjælpe dig før og efter, at du starter arbejdet."
       },
@@ -81,7 +77,7 @@
       "Sikkerhed"
     ],
     "label": "Om os",
-    "description2": "Vi samarbejder med pålidelige partnere som GLS, FedEx, Amazon og DPD og hjælper chauffører med at finde beskæftigelse hurtigt og pålideligt. Fra ansøgning til onboarding tilbyder vi fuld support — herunder dokumentvejledning og indkvartering for chauffører, der flytter fra udlandet.",
+    "description2": "Vi samarbejder med pålidelige partnere som GLS, FedEx, Amazon og DPD og hjælper chauffører med at finde beskæftigelse hurtigt og pålideligt. Fra ansøgning til onboarding tilbyder vi fuld support.",
     "drivers_placed": "500+ anbragte chauffører",
     "years_active": "År aktive",
     "location": "Amsterdam, Holland"
@@ -143,18 +139,6 @@
     "rights": "Alle rettigheder forbeholdes.",
     "terms": "Vilkår og betingelser",
     "tagline_sub": "Chaufførrekruttering — Amsterdam"
-  },
-  "housing": {
-    "label": "For chauffører der flytter",
-    "title": "Vi hjælper dig også med at finde bolig",
-    "description": "Flytter du til Holland fra udlandet? Vi arrangerer ren, behagelig bolig til dig — så du kan fokusere på dit nye job uden at bekymre dig om, hvor du skal sove. Ingen skjulte omkostninger, ingen stress.",
-    "perks": [
-      "Fuldt møbleret lejlighed inkluderet",
-      "Internet og forsyninger dækket",
-      "Delt køkken og stue",
-      "Tæt på dit arbejdsdepot"
-    ],
-    "cta": "Spørg om boligmuligheder"
   },
   "cookie_banner": {
     "title": "Vi bruger cookies",
@@ -266,8 +250,7 @@
     "s2_intro": "Vi leverer:",
     "s2_items": [
       "Jobplacering af chauffører hos partner-logistikvirksomheder (GLS, FedEx, Amazon, DPD)",
-      "Hjælp til dokumentation og onboarding",
-      "Indkvarteringsstøtte (afhængigt af kontrakten)"
+      "Hjælp til dokumentation og onboarding"
     ],
     "s2_note": "Vi garanterer ikke jobplacering i alle tilfælde. Ansættelse afhænger af partnernes krav og kandidatens kvalifikationer.",
     "s3_title": "3. Brugeransvar",
@@ -284,18 +267,11 @@
       "Endelige ansættelsesbeslutninger træffes af partnervirksomheder",
       "Jobtilbud kan variere afhængigt af tilgængelighed og kvalifikationer"
     ],
-    "s5_title": "5. Indkvartering",
-    "s5_items": [
-      "Indkvartering kan leveres afhængigt af arbejdskontrakten",
-      "Boligforhold, omkostninger og regler vil blive defineret i din aftale",
-      "Du er ansvarlig for at respektere boligregler og ejendom"
-    ],
     "s6_title": "6. Ansvar",
     "s6_intro": "Team Cargo er ikke ansvarlig for:",
     "s6_items": [
       "Beslutninger truffet af partnervirksomheder",
-      "Ændringer i arbejdsvilkår efter placering",
-      "Tab eller skader under ansættelse eller indkvartering"
+      "Ændringer i arbejdsvilkår efter placering"
     ],
     "s6_note": "Team Cargo fungerer som mellemmand mellem kandidater og arbejdsgivere.",
     "s7_title": "7. Betalinger og gebyrer",
@@ -309,8 +285,7 @@
     "s9_intro": "Vi forbeholder os retten til at nægte eller afslutte tjenester, hvis:",
     "s9_items": [
       "Falske eller vildledende oplysninger gives",
-      "Disse Vilkår overtrædes",
-      "Upassende adfærd opstår under ansættelse eller indkvartering"
+      "Disse Vilkår overtrædes"
     ],
     "s10_title": "10. Privatliv",
     "s10_p": "Dine personoplysninger håndteres i overensstemmelse med vores",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Tillidsbjælkes baggrund",
     "custom_subtab_services": "Servicsektion",
     "custom_subtab_about": "Om os-sektion",
-    "custom_subtab_housing": "Boligsektion",
     "custom_subtab_contact": "Kontaktsektion",
     "custom_subtab_footer": "Sidefod",
     "set_as_default": "Angiv som standard",

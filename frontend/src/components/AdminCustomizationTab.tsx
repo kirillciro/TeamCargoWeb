@@ -2,7 +2,7 @@
 "use client";
 
 import React, { Suspense, lazy } from "react";
-import { Palette, Type, LayoutGrid, Users, Home, Mail } from "lucide-react";
+import { Palette, Type, LayoutGrid, Users, Mail } from "lucide-react";
 import type { Dictionary } from "@/lib/getDictionary";
 import {
   AdminCustomizationProvider,
@@ -16,7 +16,6 @@ const FontsTab = lazy(() => import("./admin-customization/FontsTab"));
 const HeroTab = lazy(() => import("./admin-customization/HeroTab"));
 const ServicesTab = lazy(() => import("./admin-customization/ServicesTab"));
 const AboutTab = lazy(() => import("./admin-customization/AboutTab"));
-const HousingTab = lazy(() => import("./admin-customization/HousingTab"));
 const ContactTab = lazy(() => import("./admin-customization/ContactTab"));
 const FooterTab = lazy(() => import("./admin-customization/FooterTab"));
 
@@ -43,7 +42,6 @@ function AdminTabSwitcher() {
             ["hero", "Hero"],
             ["services", "Services"],
             ["about", "About"],
-            ["housing", "Housing"],
             ["contact", "Contact"],
             ["footer", "Footer"],
           ] as [SubTab, string][]
@@ -82,7 +80,6 @@ function AdminTabSwitcher() {
     hero: "Hero",
     services: "Services",
     about: "About",
-    housing: "Housing",
     contact: "Contact",
     footer: "Footer",
   };
@@ -93,7 +90,6 @@ function AdminTabSwitcher() {
     hero: Type,
     services: LayoutGrid,
     about: Users,
-    housing: Home,
     contact: Mail,
     footer: LayoutGrid,
   };
@@ -131,7 +127,6 @@ function AdminTabContent() {
       {subTab === "hero" && <HeroTab />}
       {subTab === "services" && <ServicesTab />}
       {subTab === "about" && <AboutTab />}
-      {subTab === "housing" && <HousingTab />}
       {subTab === "contact" && <ContactTab />}
       {subTab === "footer" && <FooterTab />}
     </Suspense>

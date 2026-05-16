@@ -100,7 +100,6 @@ export const LS_HERO = "tc_hero_overrides";
 export const LS_HEADER = "tc_header_settings";
 export const LS_SERVICES = "tc_services_overrides";
 export const LS_ABOUT = "tc_about_overrides";
-export const LS_HOUSING = "tc_housing_overrides";
 export const LS_FONT = "tc_brand_font";
 export const LS_CONTACT = "tc_contact_overrides";
 export const LS_FOOTER = "tc_footer_overrides";
@@ -136,7 +135,6 @@ export type SubTab =
   | "hero"
   | "services"
   | "about"
-  | "housing"
   | "contact"
   | "footer";
 
@@ -169,15 +167,6 @@ export type AboutSectionKey =
   | "aboutImgLeft"
   | "aboutImgTopRight"
   | "aboutImgBottomRight";
-
-export type HousingSectionKey =
-  | "housingHeading"
-  | "housingDescription"
-  | "housingPerks"
-  | "housingCta"
-  | "housingImg1"
-  | "housingImg2"
-  | "housingBg";
 
 export type ContactSectionKey =
   | "contactHeading"
@@ -324,64 +313,6 @@ export const FONT_OPTIONS: FontOption[] = [
 ];
 
 // ── Icon option arrays ────────────────────────────────────────────────────
-export const HOUSING_ICON_OPTS: {
-  id: string;
-  Icon: LucideIcon;
-  label: string;
-}[][] = [
-  [
-    { id: "home", Icon: Home, label: "Home" },
-    { id: "bed-double", Icon: BedDouble, label: "Bedroom" },
-    { id: "sofa", Icon: Sofa, label: "Living room" },
-    { id: "armchair", Icon: Armchair, label: "Armchair" },
-    { id: "door-open", Icon: DoorOpen, label: "Door" },
-    { id: "key", Icon: Key, label: "Key" },
-    { id: "lightbulb", Icon: Lightbulb, label: "Light" },
-    { id: "lamp", Icon: Lamp, label: "Lamp" },
-    { id: "wifi", Icon: Wifi, label: "WiFi" },
-    { id: "tv", Icon: Tv, label: "TV" },
-    { id: "refrigerator", Icon: Refrigerator, label: "Fridge" },
-    { id: "washing-machine", Icon: WashingMachine, label: "Washer" },
-    { id: "cooking-pot", Icon: CookingPot, label: "Cooking" },
-    { id: "utensils", Icon: Utensils, label: "Kitchen" },
-    { id: "coffee", Icon: Coffee, label: "Coffee" },
-  ],
-  [
-    { id: "bath", Icon: Bath, label: "Bathroom" },
-    { id: "bed", Icon: Bed, label: "Bed" },
-    { id: "sun", Icon: Sun, label: "Sunny" },
-    { id: "wind", Icon: Wind, label: "Air" },
-    { id: "map-pin", Icon: MapPin, label: "Location" },
-    { id: "route", Icon: Route, label: "Route" },
-    { id: "building", Icon: Building, label: "Building" },
-    { id: "building-2", Icon: Building2, label: "Complex" },
-    { id: "warehouse", Icon: Warehouse, label: "Warehouse" },
-    { id: "truck", Icon: Truck, label: "Truck" },
-    { id: "car", Icon: Car, label: "Car" },
-    { id: "bus", Icon: Bus, label: "Bus" },
-    { id: "bike", Icon: Bike, label: "Bike" },
-    { id: "shield", Icon: Shield, label: "Safe" },
-    { id: "shield-check", Icon: ShieldCheck, label: "Secure" },
-  ],
-  [
-    { id: "star", Icon: Star, label: "Star" },
-    { id: "award", Icon: Award, label: "Award" },
-    { id: "sparkles", Icon: Sparkles, label: "Premium" },
-    { id: "heart", Icon: Heart, label: "Heart" },
-    { id: "users", Icon: Users, label: "Community" },
-    { id: "check-circle-2", Icon: CheckCircle2, label: "Checked" },
-    { id: "package", Icon: Package, label: "Package" },
-    { id: "briefcase", Icon: Briefcase, label: "Work" },
-    { id: "handshake", Icon: Handshake, label: "Deal" },
-    { id: "thumbs-up", Icon: ThumbsUp, label: "Good" },
-    { id: "zap", Icon: Zap, label: "Fast" },
-    { id: "target", Icon: Target, label: "Target" },
-    { id: "flag", Icon: Flag, label: "Flag" },
-    { id: "mountain", Icon: Mountain, label: "Mountain" },
-    { id: "globe", Icon: Globe, label: "Global" },
-  ],
-];
-
 export const CONTACT_ICON_OPTS: {
   id: string;
   Icon: LucideIcon;

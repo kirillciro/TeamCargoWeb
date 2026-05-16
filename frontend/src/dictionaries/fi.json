@@ -53,10 +53,6 @@
         "desc": "Autamme sinua hoitamaan kaikki tarvittavat paperityöt lailliseen työskentelyyn Alankomaissa."
       },
       {
-        "title": "Majoitus",
-        "desc": "Tarjoamme majoitusvaihtoehtoja (jaetut huoneet tai asunnot) sopimuksesta riippuen."
-      },
-      {
         "title": "Jatkuva tuki",
         "desc": "Olemme käytettävissäsi ennen ja jälkeen työn aloittamisen."
       },
@@ -143,18 +139,6 @@
     "rights": "Kaikki oikeudet pidätetään.",
     "terms": "Käyttöehdot",
     "tagline_sub": "Kuljettajien rekrytointi — Amsterdam"
-  },
-  "housing": {
-    "label": "Muuttaville kuljettajille",
-    "title": "Autamme myös löytämään asunnon",
-    "description": "Muutatteko Alankomaihin ulkomailta? Järjestämme teille puhtaan, mukavan asumisen — jotta voitte keskittyä uuteen työhönne ilman huolia nukkumapaikasta. Ei piilokustannuksia, ei stressiä.",
-    "perks": [
-      "Täysin kalustettu asunto mukana",
-      "Internet ja sähkölaskut katettuna",
-      "Jaettu keittiö ja oleskelutila",
-      "Lähellä työdepotasi"
-    ],
-    "cta": "Kysy asumismahdollisuuksista"
   },
   "cookie_banner": {
     "title": "Käytämme evästeitä",
@@ -266,8 +250,7 @@
     "s2_intro": "Tarjoamme:",
     "s2_items": [
       "Kuljettajien työnsijoituksen kumppanilogistiikkayrityksiin (GLS, FedEx, Amazon, DPD)",
-      "Apua dokumentaatiossa ja perehdytyksessä",
-      "Majoitustukea (sopimuksen mukaan)"
+      "Apua dokumentaatiossa ja perehdytyksessä"
     ],
     "s2_note": "Emme takaa työnsijoitusta kaikissa tapauksissa. Työllistyminen riippuu kumppaniyritysten vaatimuksista ja ehdokkaan pätevyyksistä.",
     "s3_title": "3. Käyttäjän vastuut",
@@ -283,12 +266,6 @@
       "Hakemuksen jättäminen ei takaa työllistymistä",
       "Lopulliset rekrytointipäätökset tekevät kumppaniyritykset",
       "Työtarjoukset voivat vaihdella saatavuuden ja pätevyyksien mukaan"
-    ],
-    "s5_title": "5. Majoitus",
-    "s5_items": [
-      "Majoitusta voidaan tarjota työsopimuksen mukaan",
-      "Asumisehdot, kustannukset ja säännöt määritellään sopimuksessasi",
-      "Olet vastuussa asumissääntöjen ja omaisuuden kunnioittamisesta"
     ],
     "s6_title": "6. Vastuu",
     "s6_intro": "Team Cargo ei ole vastuussa seuraavista:",
@@ -412,7 +389,6 @@
     "custom_hero_trust_bg": "Luottamuspalkin tausta",
     "custom_subtab_services": "Palvelut-osio",
     "custom_subtab_about": "Tietoja-osio",
-    "custom_subtab_housing": "Asuminen-osio",
     "custom_subtab_contact": "Yhteystiedot-osio",
     "custom_subtab_footer": "Alatunniste",
     "set_as_default": "Aseta oletukseksi",

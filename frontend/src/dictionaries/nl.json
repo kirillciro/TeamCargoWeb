@@ -53,10 +53,6 @@
         "desc": "Wij helpen u met alle benodigde papieren om legaal in Nederland te werken."
       },
       {
-        "title": "Accommodatie",
-        "desc": "Wij bieden huisvestingsopties (gedeelde kamers of appartementen) afhankelijk van uw contract."
-      },
-      {
         "title": "Doorlopende ondersteuning",
         "desc": "Wij blijven beschikbaar om u te helpen voor en na uw werkstart."
       },
@@ -81,7 +77,7 @@
       "Veiligheid"
     ],
     "label": "Over ons",
-    "description2": "Wij werken samen met vertrouwde partners zoals GLS, FedEx, Amazon en DPD, en helpen chauffeurs snel en betrouwbaar aan werk. Van sollicitatie tot onboarding bieden wij volledige ondersteuning — inclusief documentbegeleiding en accommodatie voor chauffeurs die vanuit het buitenland komen.",
+    "description2": "Wij werken samen met vertrouwde partners zoals GLS, FedEx, Amazon en DPD, en helpen chauffeurs snel en betrouwbaar aan werk. Van sollicitatie tot onboarding bieden wij volledige ondersteuning.",
     "drivers_placed": "500+ chauffeurs geplaatst",
     "years_active": "Jaar actief",
     "location": "Amsterdam, Nederland"
@@ -144,18 +140,6 @@
     "terms": "Algemene Voorwaarden",
     "tagline_sub": "Chauffeurs recruitment — Amsterdam"
   },
-  "housing": {
-    "label": "Voor chauffeurs die verhuizen",
-    "title": "We helpen u ook woonruimte te vinden",
-    "description": "Verhuist u vanuit het buitenland naar Nederland? Wij regelen schone, comfortabele woonruimte voor u — zodat u zich kunt concentreren op uw nieuwe baan zonder zorgen over een slaapplek. Geen verborgen kosten, geen stress.",
-    "perks": [
-      "Volledig gemeubileerd appartement inbegrepen",
-      "Internet en nutsvoorzieningen inbegrepen",
-      "Gedeelde keuken en woonruimte",
-      "Dicht bij uw werkdepot"
-    ],
-    "cta": "Vraag naar woonopties"
-  },
   "cookie_banner": {
     "title": "Wij gebruiken cookies",
     "description": "Wij gebruiken essentiële en analytische cookies om uw ervaring te verbeteren. Door op Accepteren te klikken, stemt u in met ons gebruik van cookies.",
@@ -169,7 +153,7 @@
     "title": "Privacybeleid",
     "last_updated": "Laatst bijgewerkt: april 2026",
     "s1_title": "1. Wie zijn wij",
-    "s1_p": "Team Cargo is een chauffeurswervingsbureau gevestigd in Amsterdam, Nederland. Wij verbinden chauffeurs met logistieke bedrijven en ondersteunen hen bij plaatsing, documentatie en accommodatie.",
+    "s1_p": "Team Cargo is een chauffeurswervingsbureau gevestigd in Amsterdam, Nederland. Wij verbinden chauffeurs met logistieke bedrijven en ondersteunen hen bij plaatsing, documentatie.",
     "s1_email": "E-mail:",
     "s2_title": "2. Welke gegevens verzamelen wij",
     "s2_intro": "Wij kunnen de volgende persoonsgegevens verzamelen:",
@@ -266,8 +250,7 @@
     "s2_intro": "Wij bieden:",
     "s2_items": [
       "Baanavbemiddeling voor chauffeurs bij partner logistiekbedrijven (GLS, FedEx, Amazon, DPD)",
-      "Hulp bij documentatie en onboarding",
-      "Accommodatieondersteuning (afhankelijk van het contract)"
+      "Hulp bij documentatie en onboarding"
     ],
     "s2_note": "Wij garanderen geen baanplaatsing in alle gevallen. Tewerkstelling is afhankelijk van de eisen van partnerbedrijven en de kwalificaties van de kandidaat.",
     "s3_title": "3. Verantwoordelijkheden van de gebruiker",
@@ -284,18 +267,11 @@
       "Definitieve aanwervingsbeslissingen worden genomen door partnerbedrijven",
       "Jobaanbiedingen kunnen variëren afhankelijk van beschikbaarheid en kwalificaties"
     ],
-    "s5_title": "5. Accommodatie",
-    "s5_items": [
-      "Accommodatie kan worden verstrekt afhankelijk van het arbeidscontract",
-      "Huisvestingsomstandigheden, kosten en regels worden vastgesteld in uw overeenkomst",
-      "U bent verantwoordelijk voor het respecteren van de huisvestingsregels en het eigendom"
-    ],
     "s6_title": "6. Aansprakelijkheid",
     "s6_intro": "Team Cargo is niet verantwoordelijk voor:",
     "s6_items": [
       "Beslissingen genomen door partnerbedrijven",
-      "Wijzigingen in arbeidsomstandigheden na plaatsing",
-      "Verlies of schade tijdens tewerkstelling of accommodatie"
+      "Wijzigingen in arbeidsomstandigheden na plaatsing"
     ],
     "s6_note": "Team Cargo treedt op als tussenpersoon tussen kandidaten en werkgevers.",
     "s7_title": "7. Betalingen en kosten",
@@ -309,8 +285,7 @@
     "s9_intro": "Wij behouden ons het recht voor om diensten te weigeren of te beëindigen als:",
     "s9_items": [
       "Valse of misleidende informatie wordt verstrekt",
-      "Deze Voorwaarden worden geschonden",
-      "Wangedrag plaatsvindt tijdens tewerkstelling of accommodatie"
+      "Deze Voorwaarden worden geschonden"
     ],
     "s10_title": "10. Privacy",
     "s10_p": "Uw persoonsgegevens worden verwerkt in overeenstemming met ons",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Achtergrond vertrouwensbalk",
     "custom_subtab_services": "Dienstensectie",
     "custom_subtab_about": "Over ons sectie",
-    "custom_subtab_housing": "Woningsectie",
     "custom_subtab_contact": "Contactsectie",
     "custom_subtab_footer": "Voettekst",
     "set_as_default": "Instellen als standaard",

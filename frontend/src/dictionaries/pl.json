@@ -53,10 +53,6 @@
         "desc": "Pomagamy w załatwieniu wszystkich niezbędnych formalności do legalnej pracy w Holandii."
       },
       {
-        "title": "Zakwaterowanie",
-        "desc": "Oferujemy opcje zakwaterowania (pokoje dzielone lub apartamenty) zależnie od umowy."
-      },
-      {
         "title": "Stałe wsparcie",
         "desc": "Jesteśmy dostępni, aby pomagać przed i po rozpoczęciu pracy."
       },
@@ -81,7 +77,7 @@
       "Bezpieczeństwo"
     ],
     "label": "O nas",
-    "description2": "Współpracujemy z zaufanymi partnerami, takimi jak GLS, FedEx, Amazon i DPD, pomagając kierowcom szybko i niezawodnie znaleźć zatrudnienie. Od aplikacji do onboardingu zapewniamy pełne wsparcie — w tym pomoc dokumentacyjną i zakwaterowanie dla kierowców przeprowadzających się z zagranicy.",
+    "description2": "Współpracujemy z zaufanymi partnerami, takimi jak GLS, FedEx, Amazon i DPD, pomagając kierowcom szybko i niezawodnie znaleźć zatrudnienie. Od aplikacji do onboardingu zapewniamy pełne wsparcie.",
     "drivers_placed": "500+ kierowców zatrudnionych",
     "years_active": "Lat działalności",
     "location": "Amsterdam, Holandia"
@@ -143,18 +139,6 @@
     "rights": "Wszelkie prawa zastrzeżone.",
     "terms": "Regulamin",
     "tagline_sub": "Rekrutacja kierowców — Amsterdam"
-  },
-  "housing": {
-    "label": "Dla kierowców przeprowadzających się",
-    "title": "Pomagamy również znaleźć zakwaterowanie",
-    "description": "Przeprowadzasz się do Holandii z zagranicy? Organizujemy dla Ciebie czyste, komfortowe zakwaterowanie — abyś mógł skupić się na nowej pracy bez martwienia się o nocleg. Bez ukrytych kosztów, bez stresu.",
-    "perks": [
-      "W pełni umeblowane mieszkanie w cenie",
-      "Internet i media w cenie",
-      "Wspólna kuchnia i salon",
-      "W pobliżu Twojego magazynu pracy"
-    ],
-    "cta": "Zapytaj o opcje zakwaterowania"
   },
   "cookie_banner": {
     "title": "Używamy plików cookie",
@@ -266,8 +250,7 @@
     "s2_intro": "Świadczymy:",
     "s2_items": [
       "Pośrednictwo pracy dla kierowców w partnerskich firmach logistycznych (GLS, FedEx, Amazon, DPD)",
-      "Pomoc przy dokumentacji i wdrożeniu",
-      "Wsparcie w zakwaterowaniu (w zależności od umowy)"
+      "Pomoc przy dokumentacji i wdrożeniu"
     ],
     "s2_note": "Nie gwarantujemy pośrednictwa pracy we wszystkich przypadkach. Zatrudnienie zależy od wymagań firm partnerskich i kwalifikacji kandydata.",
     "s3_title": "3. Obowiązki użytkownika",
@@ -284,18 +267,11 @@
       "Ostateczne decyzje o zatrudnieniu podejmują firmy partnerskie",
       "Oferty pracy mogą się różnić w zależności od dostępności i kwalifikacji"
     ],
-    "s5_title": "5. Zakwaterowanie",
-    "s5_items": [
-      "Zakwaterowanie może być zapewnione w zależności od umowy o pracę",
-      "Warunki mieszkaniowe, koszty i zasady zostaną określone w Twojej umowie",
-      "Jesteś odpowiedzialny za przestrzeganie zasad mieszkaniowych i poszanowanie mienia"
-    ],
     "s6_title": "6. Odpowiedzialność",
     "s6_intro": "Team Cargo nie ponosi odpowiedzialności za:",
     "s6_items": [
       "Decyzje podejmowane przez firmy partnerskie",
-      "Zmiany warunków pracy po zatrudnieniu",
-      "Straty lub szkody podczas zatrudnienia lub zakwaterowania"
+      "Zmiany warunków pracy po zatrudnieniu"
     ],
     "s6_note": "Team Cargo działa jako pośrednik między kandydatami a pracodawcami.",
     "s7_title": "7. Płatności i opłaty",
@@ -309,8 +285,7 @@
     "s9_intro": "Zastrzegamy sobie prawo do odmowy lub zakończenia usług, jeśli:",
     "s9_items": [
       "Podane zostaną fałszywe lub wprowadzające w błąd informacje",
-      "Niniejszy Regulamin zostanie naruszony",
-      "Dojdzie do niewłaściwego zachowania podczas zatrudnienia lub zakwaterowania"
+      "Niniejszy Regulamin zostanie naruszony"
     ],
     "s10_title": "10. Prywatność",
     "s10_p": "Twoje dane osobowe są przetwarzane zgodnie z naszą",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Tło paska zaufania",
     "custom_subtab_services": "Sekcja Usługi",
     "custom_subtab_about": "Sekcja O nas",
-    "custom_subtab_housing": "Sekcja Mieszkania",
     "custom_subtab_contact": "Sekcja Kontakt",
     "custom_subtab_footer": "Stopka",
     "set_as_default": "Ustaw jako domyślny",

@@ -53,10 +53,6 @@
         "desc": "Vă ajutăm să gestionați toate documentele necesare pentru a lucra legal în Olanda."
       },
       {
-        "title": "Cazare",
-        "desc": "Oferim opțiuni de cazare (camere comune sau apartamente) în funcție de contractul dvs."
-      },
-      {
         "title": "Suport continuu",
         "desc": "Rămânem disponibili pentru a vă ajuta înainte și după ce începeți să lucrați."
       },
@@ -81,7 +77,7 @@
       "Siguranță"
     ],
     "label": "Despre noi",
-    "description2": "Lucrăm cu parteneri de încredere precum GLS, FedEx, Amazon și DPD, ajutând șoferii să găsească angajare rapid și fiabil. De la aplicare până la integrare, oferim suport complet — inclusiv orientare documentară și cazare pentru șoferii care se mută din străinătate.",
+    "description2": "Lucrăm cu parteneri de încredere precum GLS, FedEx, Amazon și DPD, ajutând șoferii să găsească angajare rapid și fiabil. De la aplicare până la integrare, oferim suport complet.",
     "drivers_placed": "500+ șoferi plasați",
     "years_active": "Ani de activitate",
     "location": "Amsterdam, Țările de Jos"
@@ -143,18 +139,6 @@
     "rights": "Toate drepturile rezervate.",
     "terms": "Termeni și Condiții",
     "tagline_sub": "Recrutare șoferi — Amsterdam"
-  },
-  "housing": {
-    "label": "Pentru șoferi care se mută",
-    "title": "Te ajutăm și să găsești locuință",
-    "description": "Te muți în Olanda din străinătate? Organizăm cazare curată și confortabilă pentru tine — pentru a te putea concentra pe noul tău loc de muncă fără să te îngrijorezi unde să dormi. Fără costuri ascunse, fără stres.",
-    "perks": [
-      "Apartament complet mobilat inclus",
-      "Internet și utilități acoperite",
-      "Bucătărie și spațiu de locuit comun",
-      "Situat aproape de depoul tău de lucru"
-    ],
-    "cta": "Întreabă despre opțiunile de cazare"
   },
   "cookie_banner": {
     "title": "Folosim cookie-uri",
@@ -266,8 +250,7 @@
     "s2_intro": "Oferim:",
     "s2_items": [
       "Plasarea șoferilor la companii partenere de logistică (GLS, FedEx, Amazon, DPD)",
-      "Asistență cu documentația și integrarea",
-      "Sprijin pentru cazare (în funcție de contract)"
+      "Asistență cu documentația și integrarea"
     ],
     "s2_note": "Nu garantăm plasarea locurilor de muncă în toate cazurile. Angajarea depinde de cerințele companiilor partenere și de calificările candidatului.",
     "s3_title": "3. Responsabilitățile utilizatorului",
@@ -283,12 +266,6 @@
       "Depunerea unei cereri nu garantează angajarea",
       "Deciziile finale de angajare sunt luate de companiile partenere",
       "Ofertele de muncă pot varia în funcție de disponibilitate și calificări"
-    ],
-    "s5_title": "5. Cazare",
-    "s5_items": [
-      "Cazarea poate fi asigurată în funcție de contractul de muncă",
-      "Condițiile de locuire, costurile și regulile vor fi definite în acordul dvs.",
-      "Ești responsabil de respectarea regulilor de locuire și a proprietății"
     ],
     "s6_title": "6. Răspundere",
     "s6_intro": "Team Cargo nu este responsabilă pentru:",
@@ -412,7 +389,6 @@
     "custom_hero_trust_bg": "Fundal bară de încredere",
     "custom_subtab_services": "Secțiunea Servicii",
     "custom_subtab_about": "Secțiunea Despre",
-    "custom_subtab_housing": "Secțiunea Locuințe",
     "custom_subtab_contact": "Secțiunea Contact",
     "custom_subtab_footer": "Subsol",
     "set_as_default": "Setează ca implicit",

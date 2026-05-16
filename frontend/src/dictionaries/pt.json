@@ -53,10 +53,6 @@
         "desc": "Ajudamos a tratar de todos os documentos necessários para trabalhar legalmente nos Países Baixos."
       },
       {
-        "title": "Alojamento",
-        "desc": "Fornecemos opções de alojamento (quartos partilhados ou apartamentos) conforme o seu contrato."
-      },
-      {
         "title": "Suporte contínuo",
         "desc": "Permanecemos disponíveis para ajudá-lo antes e depois de começar a trabalhar."
       },
@@ -81,7 +77,7 @@
       "Segurança"
     ],
     "label": "Sobre nós",
-    "description2": "Trabalhamos com parceiros de confiança como a GLS, FedEx, Amazon e DPD, ajudando os motoristas a encontrar emprego de forma rápida e fiável. Da candidatura ao onboarding, oferecemos apoio completo — incluindo orientação documental e alojamento para motoristas que se mudam do estrangeiro.",
+    "description2": "Trabalhamos com parceiros de confiança como a GLS, FedEx, Amazon e DPD, ajudando os motoristas a encontrar emprego de forma rápida e fiável. Da candidatura ao onboarding, oferecemos apoio completo.",
     "drivers_placed": "500+ motoristas colocados",
     "years_active": "Anos ativos",
     "location": "Amsterdão, Países Baixos"
@@ -143,18 +139,6 @@
     "rights": "Todos os direitos reservados.",
     "terms": "Termos e Condições",
     "tagline_sub": "Recrutamento de motoristas — Amsterdam"
-  },
-  "housing": {
-    "label": "Para motoristas que se mudam",
-    "title": "Também ajudamos a encontrar alojamento",
-    "description": "A mudar-se para os Países Baixos do estrangeiro? Organizamos alojamento limpo e confortável para si — para que possa concentrar-se no seu novo emprego sem se preocupar com onde dormir. Sem custos ocultos, sem stress.",
-    "perks": [
-      "Apartamento totalmente mobilado incluído",
-      "Internet e serviços cobertos",
-      "Cozinha e sala de estar partilhadas",
-      "Perto do seu depósito de trabalho"
-    ],
-    "cta": "Pergunte sobre opções de alojamento"
   },
   "cookie_banner": {
     "title": "Usamos cookies",
@@ -284,12 +268,6 @@
       "As decisões finais de contratação são tomadas pelas empresas parceiras",
       "As ofertas de emprego podem variar dependendo da disponibilidade e qualificações"
     ],
-    "s5_title": "5. Acomodação",
-    "s5_items": [
-      "A acomodação pode ser fornecida dependendo do contrato de trabalho",
-      "As condições de moradia, custos e regras serão definidos no seu acordo",
-      "Você é responsável por respeitar as regras de moradia e a propriedade"
-    ],
     "s6_title": "6. Responsabilidade",
     "s6_intro": "Team Cargo não é responsável por:",
     "s6_items": [
@@ -412,7 +390,6 @@
     "custom_hero_trust_bg": "Fundo barra de confiança",
     "custom_subtab_services": "Seção Serviços",
     "custom_subtab_about": "Seção Sobre",
-    "custom_subtab_housing": "Seção Moradia",
     "custom_subtab_contact": "Seção Contato",
     "custom_subtab_footer": "Rodapé",
     "set_as_default": "Definir como padrão",

@@ -53,10 +53,6 @@
         "desc": "Vi hjälper dig att hantera alla nödvändiga papper för att arbeta lagligt i Nederländerna."
       },
       {
-        "title": "Boende",
-        "desc": "Vi erbjuder boendelösningar (delade rum eller lägenheter) beroende på ditt kontrakt."
-      },
-      {
         "title": "Löpande stöd",
         "desc": "Vi finns tillgängliga för att hjälpa dig före och efter att du börjar arbeta."
       },
@@ -81,7 +77,7 @@
       "Säkerhet"
     ],
     "label": "Om oss",
-    "description2": "Vi arbetar med betrodda partners som GLS, FedEx, Amazon och DPD och hjälper chaufförer att hitta anställning snabbt och pålitligt. Från ansökan till introduktion erbjuder vi fullt stöd — inklusive dokumentvägledning och boende för chaufförer som flyttar från utlandet.",
+    "description2": "Vi arbetar med betrodda partners som GLS, FedEx, Amazon och DPD och hjälper chaufförer att hitta anställning snabbt och pålitligt. Från ansökan till introduktion erbjuder vi fullt stöd.",
     "drivers_placed": "500+ placerade förare",
     "years_active": "År aktiva",
     "location": "Amsterdam, Nederländerna"
@@ -143,18 +139,6 @@
     "rights": "Alla rättigheter förbehållna.",
     "terms": "Villkor",
     "tagline_sub": "Chaufförsrekrytering — Amsterdam"
-  },
-  "housing": {
-    "label": "För förare som flyttar",
-    "title": "Vi hjälper dig också att hitta boende",
-    "description": "Flyttar du till Nederländerna från utlandet? Vi ordnar rent, bekvämt boende åt dig — så att du kan fokusera på ditt nya jobb utan att oroa dig för var du ska sova. Inga dolda kostnader, ingen stress.",
-    "perks": [
-      "Fullt möblerad lägenhet ingår",
-      "Internet och el ingår",
-      "Delat kök och vardagsrum",
-      "Nära ditt arbetsdepå"
-    ],
-    "cta": "Fråga om boendealternativ"
   },
   "cookie_banner": {
     "title": "Vi använder cookies",
@@ -284,12 +268,6 @@
       "Slutliga anställningsbeslut fattas av partnerföretag",
       "Jobberbjudanden kan variera beroende på tillgänglighet och kvalifikationer"
     ],
-    "s5_title": "5. Boende",
-    "s5_items": [
-      "Boende kan tillhandahållas beroende på arbetsavtalet",
-      "Boendeförhållanden, kostnader och regler definieras i ditt avtal",
-      "Du ansvarar för att respektera boendevillkor och egendom"
-    ],
     "s6_title": "6. Ansvar",
     "s6_intro": "Team Cargo ansvarar inte för:",
     "s6_items": [
@@ -412,7 +390,6 @@
     "custom_hero_trust_bg": "Bakgrund för förtroendefält",
     "custom_subtab_services": "Tjänstesektion",
     "custom_subtab_about": "Om oss-sektion",
-    "custom_subtab_housing": "Bostadssektion",
     "custom_subtab_contact": "Kontaktsektion",
     "custom_subtab_footer": "Sidfot",
     "set_as_default": "Ange som standard",

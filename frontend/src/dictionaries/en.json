@@ -53,10 +53,6 @@
         "desc": "We help you handle all necessary paperwork to legally work in the Netherlands."
       },
       {
-        "title": "Accommodation",
-        "desc": "We provide housing options (shared rooms or apartments) depending on your contract."
-      },
-      {
         "title": "Ongoing Support",
         "desc": "We stay available to assist you before and after you start working."
       },
@@ -81,7 +77,7 @@
       "Safety"
     ],
     "label": "About us",
-    "description2": "We work with trusted partners such as GLS, FedEx, Amazon, and DPD, helping drivers secure employment quickly and reliably. From application to onboarding, we provide full support — including document guidance and accommodation for drivers relocating from abroad.",
+    "description2": "We work with trusted partners such as GLS, FedEx, Amazon, and DPD, helping drivers secure employment quickly and reliably. From application to onboarding, we provide full support.",
     "drivers_placed": "500+ Drivers placed",
     "years_active": "Years active",
     "location": "Amsterdam, Netherlands"
@@ -144,18 +140,6 @@
     "terms": "Terms & Conditions",
     "tagline_sub": "Driver recruitment — Amsterdam"
   },
-  "housing": {
-    "label": "For relocating drivers",
-    "title": "We also help you find housing",
-    "description": "Moving to the Netherlands from abroad? We arrange clean, comfortable housing for you — so you can focus on your new job without worrying about where to sleep. No hidden costs, no stress.",
-    "perks": [
-      "Fully furnished apartment included",
-      "Internet & utilities covered",
-      "Shared kitchen and living space",
-      "Located close to your work depot"
-    ],
-    "cta": "Ask about housing options"
-  },
   "cookie_banner": {
     "title": "We use cookies",
     "description": "We use essential and analytics cookies to improve your experience. By clicking Accept, you consent to our use of cookies.",
@@ -169,7 +153,7 @@
     "title": "Privacy Policy",
     "last_updated": "Last updated: April 2026",
     "s1_title": "1. Who We Are",
-    "s1_p": "Team Cargo is a driver recruitment agency based in Amsterdam, Netherlands. We connect drivers with logistics companies and support them with job placement, documentation, and accommodation.",
+    "s1_p": "Team Cargo is a driver recruitment agency based in Amsterdam, Netherlands. We connect drivers with logistics companies and support them with job placement, documentation.",
     "s1_email": "Email:",
     "s2_title": "2. What Data We Collect",
     "s2_intro": "We may collect the following personal data:",
@@ -266,8 +250,7 @@
     "s2_intro": "We provide:",
     "s2_items": [
       "Driver job placement with partner logistics companies (GLS, FedEx, Amazon, DPD)",
-      "Assistance with documentation and onboarding",
-      "Accommodation support (depending on the contract)"
+      "Assistance with documentation and onboarding"
     ],
     "s2_note": "We do not guarantee job placement in all cases. Employment depends on partner company requirements and candidate qualifications.",
     "s3_title": "3. User Responsibilities",
@@ -284,18 +267,11 @@
       "Final hiring decisions are made by partner companies",
       "Job offers may vary depending on availability and qualifications"
     ],
-    "s5_title": "5. Accommodation",
-    "s5_items": [
-      "Accommodation may be provided depending on the job contract",
-      "Housing conditions, costs, and rules will be defined in your agreement",
-      "You are responsible for respecting housing rules and property"
-    ],
     "s6_title": "6. Liability",
     "s6_intro": "Team Cargo is not responsible for:",
     "s6_items": [
       "Decisions made by partner companies",
-      "Changes in job conditions after placement",
-      "Loss or damages during employment or accommodation"
+      "Changes in job conditions after placement"
     ],
     "s6_note": "Team Cargo acts as an intermediary between candidates and employers.",
     "s7_title": "7. Payments & Fees",
@@ -309,8 +285,7 @@
     "s9_intro": "We reserve the right to refuse or terminate services if:",
     "s9_items": [
       "False or misleading information is provided",
-      "These Terms are violated",
-      "Misconduct occurs during employment or accommodation"
+      "These Terms are violated"
     ],
     "s10_title": "10. Privacy",
     "s10_p": "Your personal data is handled according to our",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Trust Bar Background",
     "custom_subtab_services": "Services Section",
     "custom_subtab_about": "About Section",
-    "custom_subtab_housing": "Housing Section",
     "custom_subtab_contact": "Contact Section",
     "custom_subtab_footer": "Footer",
     "set_as_default": "Set as default",

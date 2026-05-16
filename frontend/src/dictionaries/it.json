@@ -53,10 +53,6 @@
         "desc": "Ti aiutiamo a gestire tutte le pratiche burocratiche necessarie per lavorare legalmente nei Paesi Bassi."
       },
       {
-        "title": "Alloggio",
-        "desc": "Forniamo opzioni abitative (stanze condivise o appartamenti) in base al tuo contratto."
-      },
-      {
         "title": "Supporto continuo",
         "desc": "Restiamo disponibili per assisterti prima e dopo l'inizio del lavoro."
       },
@@ -81,7 +77,7 @@
       "Sicurezza"
     ],
     "label": "Chi siamo",
-    "description2": "Lavoriamo con partner affidabili come GLS, FedEx, Amazon e DPD, aiutando gli autisti a trovare lavoro in modo rapido e affidabile. Dalla domanda all'inserimento, forniamo supporto completo — inclusa la guida documentale e l'alloggio per i conducenti che si trasferiscono dall'estero.",
+    "description2": "Lavoriamo con partner affidabili come GLS, FedEx, Amazon e DPD, aiutando gli autisti a trovare lavoro in modo rapido e affidabile. Dalla domanda all'inserimento, forniamo supporto completo.",
     "drivers_placed": "500+ autisti inseriti",
     "years_active": "Anni di attività",
     "location": "Amsterdam, Paesi Bassi"
@@ -143,18 +139,6 @@
     "rights": "Tutti i diritti riservati.",
     "terms": "Termini e Condizioni",
     "tagline_sub": "Reclutamento autisti — Amsterdam"
-  },
-  "housing": {
-    "label": "Per i conducenti che si trasferiscono",
-    "title": "Ti aiutiamo anche a trovare un alloggio",
-    "description": "Ti trasferisci nei Paesi Bassi dall'estero? Organizziamo un alloggio pulito e confortevole per te — così puoi concentrarti sul tuo nuovo lavoro senza preoccuparti di dove dormire. Nessun costo nascosto, nessuno stress.",
-    "perks": [
-      "Appartamento completamente arredato incluso",
-      "Internet e utenze incluse",
-      "Cucina e spazio comune condivisi",
-      "Situato vicino al tuo deposito di lavoro"
-    ],
-    "cta": "Chiedi delle opzioni di alloggio"
   },
   "cookie_banner": {
     "title": "Utilizziamo i cookie",
@@ -284,18 +268,11 @@
       "Le decisioni finali di assunzione spettano alle aziende partner",
       "Le offerte di lavoro possono variare a seconda della disponibilità e delle qualifiche"
     ],
-    "s5_title": "5. Alloggio",
-    "s5_items": [
-      "L'alloggio può essere fornito a seconda del contratto di lavoro",
-      "Le condizioni abitative, i costi e le regole saranno definiti nel tuo accordo",
-      "Sei responsabile del rispetto delle regole abitative e della proprietà"
-    ],
     "s6_title": "6. Responsabilità",
     "s6_intro": "Team Cargo non è responsabile per:",
     "s6_items": [
       "Decisioni prese dalle aziende partner",
-      "Modifiche alle condizioni lavorative dopo l'inserimento",
-      "Perdite o danni durante l'impiego o l'alloggio"
+      "Modifiche alle condizioni lavorative dopo l'inserimento"
     ],
     "s6_note": "Team Cargo agisce come intermediario tra candidati e datori di lavoro.",
     "s7_title": "7. Pagamenti e commissioni",
@@ -309,8 +286,7 @@
     "s9_intro": "Ci riserviamo il diritto di rifiutare o terminare i servizi se:",
     "s9_items": [
       "Vengono fornite informazioni false o fuorvianti",
-      "Questi Termini vengono violati",
-      "Si verifica una cattiva condotta durante l'impiego o l'alloggio"
+      "Questi Termini vengono violati"
     ],
     "s10_title": "10. Privacy",
     "s10_p": "I tuoi dati personali vengono trattati secondo la nostra",
@@ -412,7 +388,6 @@
     "custom_hero_trust_bg": "Sfondo barra di fiducia",
     "custom_subtab_services": "Sezione Servizi",
     "custom_subtab_about": "Sezione Chi siamo",
-    "custom_subtab_housing": "Sezione Alloggi",
     "custom_subtab_contact": "Sezione Contatti",
     "custom_subtab_footer": "Piè di pagina",
     "set_as_default": "Imposta come predefinito",

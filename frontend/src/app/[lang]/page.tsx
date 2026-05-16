@@ -8,7 +8,6 @@ import AuthModal from "@/components/AuthModal";
 import HeroSection from "@/components/HeroSection";
 import ServicesSection from "@/components/ServicesSection";
 import AboutSection from "@/components/AboutSection";
-import HousingSection from "@/components/HousingSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
@@ -81,7 +80,6 @@ export default async function LangRootPage({
         <HeroSection dict={dict} lang={resolvedLang} />
         <ServicesSection dict={dict} lang={resolvedLang} />
         <AboutSection dict={dict} lang={resolvedLang} />
-        <HousingSection dict={dict} lang={resolvedLang} />
         <ContactSection dict={dict} lang={resolvedLang} />
         <Footer lang={resolvedLang} dict={dict} />
       </main>

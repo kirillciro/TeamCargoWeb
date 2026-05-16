@@ -53,10 +53,6 @@
         "desc": "Aitame korraldada kõiki vajalikke dokumente Hollandis legaalseks töötamiseks."
       },
       {
-        "title": "Majutus",
-        "desc": "Pakume majutusvõimalusi (jagatud toad või korterid) sõltuvalt teie lepingust."
-      },
-      {
         "title": "Pidev tugi",
         "desc": "Oleme kättesaadavad, et aidata enne ja pärast töö alustamist."
       },
@@ -81,7 +77,7 @@
       "Ohutus"
     ],
     "label": "Meist",
-    "description2": "Teeme koostööd usaldusväärsete partneritega nagu GLS, FedEx, Amazon ja DPD, aidates juhtidel leida tööd kiiresti ja usaldusväärselt. Avaldusest kuni tööle asumiseni pakume täielikku tuge — sealhulgas dokumendinõustamist ja majutust välismaalt saabuvate juhtide jaoks.",
+    "description2": "Teeme koostööd usaldusväärsete partneritega nagu GLS, FedEx, Amazon ja DPD, aidates juhtidel leida tööd kiiresti ja usaldusväärselt. Avaldusest kuni tööle asumiseni pakume täielikku tuge.",
     "drivers_placed": "500+ paigutatud juhti",
     "years_active": "Aastat tegutsenud",
     "location": "Amsterdam, Holland"
@@ -143,18 +139,6 @@
     "rights": "Kõik õigused kaitstud.",
     "terms": "Tingimused",
     "tagline_sub": "Juhtide värbamine — Amsterdam"
-  },
-  "housing": {
-    "label": "Kolimist plaanivatele juhtidele",
-    "title": "Aitame leida ka eluaseme",
-    "description": "Kolite Hollandisse välismaalt? Korraldame teile puhta ja mugava eluaseme — et saaksite keskenduda uuele tööle, muretsemata magamiskoha pärast. Varjatud kulusid ei ole, stressi ei ole.",
-    "perks": [
-      "Täielikult sisustatud korter kaasas",
-      "Internet ja kommunaalteenused kaetud",
-      "Ühine köök ja elutuba",
-      "Töödepoost lähedal"
-    ],
-    "cta": "Küsige eluasemevõimaluste kohta"
   },
   "cookie_banner": {
     "title": "Kasutame küpsiseid",
@@ -266,8 +250,7 @@
     "s2_intro": "Pakume:",
     "s2_items": [
       "Juhide töökoha vahendamine partnerlogistikaettevõtetes (GLS, FedEx, Amazon, DPD)",
-      "Abi dokumentatsiooni ja sisseelamisega",
-      "Majutustoetus (sõltuvalt lepingust)"
+      "Abi dokumentatsiooni ja sisseelamisega"
     ],
     "s2_note": "Me ei garanteeri töökoha vahendamist kõigil juhtudel. Tööhõive sõltub partnerettevõtete nõuetest ja kandidaadi kvalifikatsioonist.",
     "s3_title": "3. Kasutaja kohustused",
@@ -284,18 +267,11 @@
       "Lõplikud värbamisotsused teevad partnerettevõtted",
       "Töökohad võivad varieeruda sõltuvalt saadavusest ja kvalifikatsioonist"
     ],
-    "s5_title": "5. Majutus",
-    "s5_items": [
-      "Majutust võib pakkuda sõltuvalt töölepingust",
-      "Elamistingimused, kulud ja reeglid määratletakse teie lepingus",
-      "Olete vastutav elamiseeskirjade austamise ja vara kaitsmise eest"
-    ],
     "s6_title": "6. Vastutus",
     "s6_intro": "Team Cargo ei vastuta:",
     "s6_items": [
       "Partnerrettevõtete langetatud otsuste eest",
-      "Töötingimuste muutuste eest pärast tööle asumist",
-      "Kaotuste ega kahjude eest töötamise või majutuse ajal"
+      "Töötingimuste muutuste eest pärast tööle asumist"
     ],
     "s6_note": "Team Cargo tegutseb vahendajana kandidaatide ja tööandjate vahel.",
     "s7_title": "7. Maksed ja tasud",
@@ -309,8 +285,7 @@
     "s9_intro": "Jätame endale õiguse teenuseid keelduda või lõpetada, kui:",
     "s9_items": [
       "Esitatakse valesid või eksitavaid andmeid",
-      "Rikutakse neid tingimusi",
-      "Esineb sobimatu käitumine töötamise või majutuse ajal"
+      "Rikutakse neid tingimusi"
     ],
     "s10_title": "10. Privaatsus",
     "s10_p": "Teie isikuandmeid töödeldakse vastavalt meie",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Usalduslindi taust",
     "custom_subtab_services": "Teenuste jaotis",
     "custom_subtab_about": "Meist jaotis",
-    "custom_subtab_housing": "Eluaseme jaotis",
     "custom_subtab_contact": "Kontakti jaotis",
     "custom_subtab_footer": "Jalus",
     "set_as_default": "Määra vaikimisi",

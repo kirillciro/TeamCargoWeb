@@ -53,10 +53,6 @@
         "desc": "Pomáháme vám se všemi nezbytnými dokumenty pro legální práci v Nizozemsku."
       },
       {
-        "title": "Ubytování",
-        "desc": "Nabízíme možnosti ubytování (sdílené pokoje nebo byty) podle vaší smlouvy."
-      },
-      {
         "title": "Průběžná podpora",
         "desc": "Zůstáváme k dispozici, abychom vám pomohli před i po zahájení práce."
       },
@@ -81,7 +77,7 @@
       "Bezpečnost"
     ],
     "label": "O nás",
-    "description2": "Spolupracujeme s důvěryhodnými partnery, jako jsou GLS, FedEx, Amazon a DPD, a pomáháme řidičům rychle a spolehlivě najít zaměstnání. Od podání žádosti až po nástup do práce poskytujeme úplnou podporu — včetně pomoci s dokumenty a ubytování pro řidiče přesouvající se ze zahraničí.",
+    "description2": "Spolupracujeme s důvěryhodnými partnery, jako jsou GLS, FedEx, Amazon a DPD, a pomáháme řidičům rychle a spolehlivě najít zaměstnání. Od podání žádosti až po nástup do práce poskytujeme úplnou podporu.",
     "drivers_placed": "500+ umístěných řidičů",
     "years_active": "Let aktivní",
     "location": "Amsterdam, Nizozemsko"
@@ -143,18 +139,6 @@
     "rights": "Všechna práva vyhrazena.",
     "terms": "Obchodní podmínky",
     "tagline_sub": "Nábor řidičů — Amsterdam"
-  },
-  "housing": {
-    "label": "Pro stěhující se řidiče",
-    "title": "Pomůžeme vám také najít ubytování",
-    "description": "Stěhujete se do Nizozemska ze zahraničí? Zajišťujeme pro vás čisté, pohodlné ubytování — abyste se mohli soustředit na novou práci bez obav o místo spaní. Žádné skryté náklady, žádný stres.",
-    "perks": [
-      "Plně zařízený apartmán v ceně",
-      "Internet a energie zahrnuty",
-      "Sdílená kuchyně a obývací prostor",
-      "V blízkosti vašeho pracovního depa"
-    ],
-    "cta": "Zeptejte se na možnosti ubytování"
   },
   "cookie_banner": {
     "title": "Používáme cookies",
@@ -284,18 +268,11 @@
       "Konečná rozhodnutí o náboru přijímají partnerské firmy",
       "Pracovní nabídky se mohou lišit v závislosti na dostupnosti a kvalifikacích"
     ],
-    "s5_title": "5. Ubytování",
-    "s5_items": [
-      "Ubytování může být poskytnuto v závislosti na pracovní smlouvě",
-      "Podmínky bydlení, náklady a pravidla budou definovány ve vaší smlouvě",
-      "Jste zodpovědní za dodržování pravidel bydlení a ochranu majetku"
-    ],
     "s6_title": "6. Odpovědnost",
     "s6_intro": "Team Cargo není zodpovědná za:",
     "s6_items": [
       "Rozhodnutí partnerských firem",
-      "Změny pracovních podmínek po umístění",
-      "Ztráty nebo škody během zaměstnání nebo ubytování"
+      "Změny pracovních podmínek po umístění"
     ],
     "s6_note": "Team Cargo vystupuje jako zprostředkovatel mezi kandidáty a zaměstnavateli.",
     "s7_title": "7. Platby a poplatky",
@@ -309,8 +286,7 @@
     "s9_intro": "Vyhrazujeme si právo odmítnout nebo ukončit služby, pokud:",
     "s9_items": [
       "Jsou poskytnuty nepravdivé nebo zavádějící informace",
-      "Jsou porušeny tyto podmínky",
-      "Dojde k nevhodnému chování během zaměstnání nebo ubytování"
+      "Jsou porušeny tyto podmínky"
     ],
     "s10_title": "10. Ochrana soukromí",
     "s10_p": "Vaše osobní údaje jsou zpracovávány v souladu s našimi",
@@ -412,7 +388,6 @@
     "custom_hero_trust_bg": "Pozadí pásu důvěry",
     "custom_subtab_services": "Sekce Služby",
     "custom_subtab_about": "Sekce O nás",
-    "custom_subtab_housing": "Sekce Bydlení",
     "custom_subtab_contact": "Kontaktní sekce",
     "custom_subtab_footer": "Zápatí",
     "set_as_default": "Nastavit jako výchozí",

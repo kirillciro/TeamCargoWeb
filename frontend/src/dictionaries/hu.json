@@ -53,10 +53,6 @@
         "desc": "Segítünk az összes szükséges papírmunka intézésében a hollandiai legális munkavállaláshoz."
       },
       {
-        "title": "Szállás",
-        "desc": "Szálláslehetőségeket kínálunk (megosztott szobák vagy lakások) a szerződéstől függően."
-      },
-      {
         "title": "Folyamatos támogatás",
         "desc": "A munkakezdés előtt és után is rendelkezésre állunk."
       },
@@ -143,18 +139,6 @@
     "rights": "Minden jog fenntartva.",
     "terms": "Általános Szerződési Feltételek",
     "tagline_sub": "Sofőr toborzás — Amsterdam"
-  },
-  "housing": {
-    "label": "Átköltöző sofőrök számára",
-    "title": "Segítünk szállást is találni",
-    "description": "Hollandiába költözik külföldről? Tiszta, kényelmes szállást szervezünk önnek — hogy az új munkájára összpontosíthasson anélkül, hogy aggódnia kellene az alvóhely miatt. Rejtett költségek nincsenek, stressz nincs.",
-    "perks": [
-      "Teljesen berendezett lakás beleértve",
-      "Internet és közüzemi szolgáltatások fedezve",
-      "Közös konyha és nappali",
-      "Munkadepó közelében"
-    ],
-    "cta": "Érdeklődjön a szállásopcióról"
   },
   "cookie_banner": {
     "title": "Sütiket használunk",
@@ -266,8 +250,7 @@
     "s2_intro": "Nyújtunk:",
     "s2_items": [
       "Sofőrök elhelyezését partner logisztikai vállalatoknál (GLS, FedEx, Amazon, DPD)",
-      "Segítség a dokumentációban és a beilleszkedésben",
-      "Szállásszolgáltatás (a szerződéstől függően)"
+      "Segítség a dokumentációban és a beilleszkedésben"
     ],
     "s2_note": "Nem garantálunk állásközvetítést minden esetben. A foglalkoztatás a partnervállalatoknak és a jelölt képesítéseinek követelményeitől függ.",
     "s3_title": "3. Felhasználói felelősségek",
@@ -284,18 +267,11 @@
       "A végső felvételi döntéseket a partneretek hozzák",
       "A munkaakaratok a rendelkezésre állástól és a képesítéstől függően változhatnak"
     ],
-    "s5_title": "5. Szállás",
-    "s5_items": [
-      "A szállást a munkaszerződéstől függően biztosíthatjuk",
-      "A lakhatási feltételek, költségek és szabályok az Ön megállapodásában kerülnek meghatározásra",
-      "Ön felelős a lakhatási szabályok és a tulajdon tiszteletben tartásáért"
-    ],
     "s6_title": "6. Felelősség",
     "s6_intro": "A Team Cargo nem felelős a következőkért:",
     "s6_items": [
       "A partnervállalatoknak meghozott döntések",
-      "A munkakörülmények elhelyezés utáni változásai",
-      "A foglalkoztatás vagy szállás során bekövetkező veszteségek vagy károk"
+      "A munkakörülmények elhelyezés utáni változásai"
     ],
     "s6_note": "A Team Cargo közvetítőként jár el a jelöltek és a munkáltatók között.",
     "s7_title": "7. Kifizetések és díjak",
@@ -309,8 +285,7 @@
     "s9_intro": "Fenntartjuk a jogot a szolgáltatások megtagadására vagy megszüntetésére, ha:",
     "s9_items": [
       "Hamis vagy megtévesztő információkat adnak meg",
-      "Megsértik ezeket a Feltételeket",
-      "Nem megfelelő magatartás történik a foglalkoztatás vagy szállás alatt"
+      "Megsértik ezeket a Feltételeket"
     ],
     "s10_title": "10. Adatvédelem",
     "s10_p": "Személyes adatait az",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Bizalom sáv háttere",
     "custom_subtab_services": "Szolgáltatások szekció",
     "custom_subtab_about": "Rólunk szekció",
-    "custom_subtab_housing": "Lakhatás szekció",
     "custom_subtab_contact": "Kapcsolat szekció",
     "custom_subtab_footer": "Lábléc",
     "set_as_default": "Beállítás alapértelmezettként",

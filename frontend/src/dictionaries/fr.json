@@ -53,10 +53,6 @@
         "desc": "Nous vous aidons à gérer toutes les formalités pour travailler légalement aux Pays-Bas."
       },
       {
-        "title": "Hébergement",
-        "desc": "Nous proposons des options d'hébergement (chambres partagées ou appartements) selon votre contrat."
-      },
-      {
         "title": "Assistance continue",
         "desc": "Nous restons disponibles pour vous aider avant et après votre prise de poste."
       },
@@ -143,18 +139,6 @@
     "rights": "Tous droits réservés.",
     "terms": "CGU",
     "tagline_sub": "Recrutement de chauffeurs — Amsterdam"
-  },
-  "housing": {
-    "label": "Pour les chauffeurs en relocalisation",
-    "title": "Nous vous aidons aussi à trouver un logement",
-    "description": "Vous déménagez aux Pays-Bas depuis l'étranger ? Nous organisons un logement propre et confortable pour vous — afin que vous puissiez vous concentrer sur votre nouvel emploi sans vous soucier d'où dormir. Sans frais cachés, sans stress.",
-    "perks": [
-      "Appartement entièrement meublé inclus",
-      "Internet et charges comprises",
-      "Cuisine et espace de vie partagés",
-      "Situé près de votre dépôt de travail"
-    ],
-    "cta": "Renseignez-vous sur les options de logement"
   },
   "cookie_banner": {
     "title": "Nous utilisons des cookies",
@@ -266,8 +250,7 @@
     "s2_intro": "Nous fournissons :",
     "s2_items": [
       "Placement de chauffeurs auprès d'entreprises partenaires de logistique (GLS, FedEx, Amazon, DPD)",
-      "Assistance avec la documentation et l'intégration",
-      "Soutien à l'hébergement (selon le contrat)"
+      "Assistance avec la documentation et l'intégration"
     ],
     "s2_note": "Nous ne garantissons pas le placement dans tous les cas. L'emploi dépend des exigences des sociétés partenaires et des qualifications du candidat.",
     "s3_title": "3. Responsabilités de l'utilisateur",
@@ -284,18 +267,11 @@
       "Les décisions finales d'embauche sont prises par les entreprises partenaires",
       "Les offres d'emploi peuvent varier selon la disponibilité et les qualifications"
     ],
-    "s5_title": "5. Hébergement",
-    "s5_items": [
-      "L'hébergement peut être fourni selon le contrat de travail",
-      "Les conditions de logement, les coûts et les règles seront définis dans votre accord",
-      "Vous êtes responsable du respect des règles du logement et des biens"
-    ],
     "s6_title": "6. Responsabilité",
     "s6_intro": "Team Cargo n'est pas responsable de :",
     "s6_items": [
       "Les décisions prises par les entreprises partenaires",
-      "Les changements de conditions de travail après le placement",
-      "Les pertes ou dommages pendant l'emploi ou l'hébergement"
+      "Les changements de conditions de travail après le placement"
     ],
     "s6_note": "Team Cargo agit en tant qu'intermédiaire entre les candidats et les employeurs.",
     "s7_title": "7. Paiements et frais",
@@ -309,8 +285,7 @@
     "s9_intro": "Nous nous réservons le droit de refuser ou de résilier les services si :",
     "s9_items": [
       "Des informations fausses ou trompeuses sont fournies",
-      "Ces Conditions sont violées",
-      "Un comportement inapproprié se produit pendant l'emploi ou l'hébergement"
+      "Ces Conditions sont violées"
     ],
     "s10_title": "10. Confidentialité",
     "s10_p": "Vos données personnelles sont traitées conformément à notre",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Arrière-plan barre de confiance",
     "custom_subtab_services": "Section Services",
     "custom_subtab_about": "Section À propos",
-    "custom_subtab_housing": "Section Logement",
     "custom_subtab_contact": "Section Contact",
     "custom_subtab_footer": "Pied de page",
     "set_as_default": "Définir par défaut",

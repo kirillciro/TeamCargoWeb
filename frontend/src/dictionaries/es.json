@@ -53,10 +53,6 @@
         "desc": "Le ayudamos a gestionar todos los trámites necesarios para trabajar legalmente en los Países Bajos."
       },
       {
-        "title": "Alojamiento",
-        "desc": "Ofrecemos opciones de alojamiento (habitaciones compartidas o apartamentos) según su contrato."
-      },
-      {
         "title": "Apoyo continuo",
         "desc": "Permanecemos disponibles para ayudarle antes y después de comenzar a trabajar."
       },
@@ -81,7 +77,7 @@
       "Seguridad"
     ],
     "label": "Sobre nosotros",
-    "description2": "Trabajamos con socios de confianza como GLS, FedEx, Amazon y DPD, ayudando a los conductores a conseguir empleo de forma rápida y fiable. Desde la solicitud hasta la incorporación, brindamos apoyo completo — incluyendo orientación documental y alojamiento para conductores que se trasladan desde el extranjero.",
+    "description2": "Trabajamos con socios de confianza como GLS, FedEx, Amazon y DPD, ayudando a los conductores a conseguir empleo de forma rápida y fiable. Desde la solicitud hasta la incorporación, brindamos apoyo completo.",
     "drivers_placed": "500+ conductores colocados",
     "years_active": "Años activos",
     "location": "Ámsterdam, Países Bajos"
@@ -143,18 +139,6 @@
     "rights": "Todos los derechos reservados.",
     "terms": "Términos y Condiciones",
     "tagline_sub": "Reclutamiento de conductores — Amsterdam"
-  },
-  "housing": {
-    "label": "Para conductores que se reubican",
-    "title": "También te ayudamos a encontrar alojamiento",
-    "description": "¿Te mudas a los Países Bajos desde el extranjero? Organizamos alojamiento limpio y cómodo para ti — para que puedas concentrarte en tu nuevo trabajo sin preocuparte por dónde dormir. Sin costes ocultos, sin estrés.",
-    "perks": [
-      "Apartamento totalmente amueblado incluido",
-      "Internet y servicios cubiertos",
-      "Cocina y sala de estar compartidas",
-      "Cerca de tu depósito de trabajo"
-    ],
-    "cta": "Pregunta sobre opciones de alojamiento"
   },
   "cookie_banner": {
     "title": "Usamos cookies",
@@ -266,8 +250,7 @@
     "s2_intro": "Proporcionamos:",
     "s2_items": [
       "Colocación de conductores en empresas de logística asociadas (GLS, FedEx, Amazon, DPD)",
-      "Asistencia con documentación e incorporación",
-      "Apoyo de alojamiento (según el contrato)"
+      "Asistencia con documentación e incorporación"
     ],
     "s2_note": "No garantizamos la colocación laboral en todos los casos. El empleo depende de los requisitos de las empresas asociadas y las calificaciones del candidato.",
     "s3_title": "3. Responsabilidades del usuario",
@@ -284,18 +267,11 @@
       "Las decisiones finales de contratación las toman las empresas asociadas",
       "Las ofertas de trabajo pueden variar según la disponibilidad y las calificaciones"
     ],
-    "s5_title": "5. Alojamiento",
-    "s5_items": [
-      "El alojamiento puede proporcionarse según el contrato de trabajo",
-      "Las condiciones de vivienda, los costos y las reglas se definirán en su acuerdo",
-      "Usted es responsable de respetar las reglas de vivienda y la propiedad"
-    ],
     "s6_title": "6. Responsabilidad",
     "s6_intro": "Team Cargo no es responsable de:",
     "s6_items": [
       "Decisiones tomadas por empresas asociadas",
-      "Cambios en las condiciones laborales después de la colocación",
-      "Pérdidas o daños durante el empleo o el alojamiento"
+      "Cambios en las condiciones laborales después de la colocación"
     ],
     "s6_note": "Team Cargo actúa como intermediario entre candidatos y empleadores.",
     "s7_title": "7. Pagos y tarifas",
@@ -309,8 +285,7 @@
     "s9_intro": "Nos reservamos el derecho de rechazar o terminar servicios si:",
     "s9_items": [
       "Se proporciona información falsa o engañosa",
-      "Se violan estos Términos",
-      "Se produce una conducta inapropiada durante el empleo o el alojamiento"
+      "Se violan estos Términos"
     ],
     "s10_title": "10. Privacidad",
     "s10_p": "Sus datos personales se gestionan de acuerdo con nuestra",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Fondo barra de confianza",
     "custom_subtab_services": "Sección Servicios",
     "custom_subtab_about": "Sección Acerca de",
-    "custom_subtab_housing": "Sección Vivienda",
     "custom_subtab_contact": "Sección Contacto",
     "custom_subtab_footer": "Pie de página",
     "set_as_default": "Establecer como predeterminado",

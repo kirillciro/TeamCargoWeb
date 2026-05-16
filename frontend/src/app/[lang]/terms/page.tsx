@@ -98,17 +98,6 @@ export default async function TermsPage({
 
             <section>
               <h2 className="text-lg font-bold text-gray-900 mb-2">
-                {t.s5_title}
-              </h2>
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                {t.s5_items.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-bold text-gray-900 mb-2">
                 {t.s6_title}
               </h2>
               <p>{t.s6_intro}</p>

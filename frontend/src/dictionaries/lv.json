@@ -53,10 +53,6 @@
         "desc": "Mēs palīdzam kārtot visus nepieciešamos dokumentus legālai darbam Nīderlandē."
       },
       {
-        "title": "Izmitināšana",
-        "desc": "Mēs nodrošinām mājokļa iespējas (koplietošanas istabas vai dzīvokļi) atkarībā no jūsu līguma."
-      },
-      {
         "title": "Pastāvīgs atbalsts",
         "desc": "Mēs esam pieejami, lai palīdzētu pirms un pēc darba uzsākšanas."
       },
@@ -143,18 +139,6 @@
     "rights": "Visas tiesības aizsargātas.",
     "terms": "Noteikumi un nosacījumi",
     "tagline_sub": "Šoferu rekrutēšana — Amsterdama"
-  },
-  "housing": {
-    "label": "Pārvietojošajiem šoferiem",
-    "title": "Mēs arī palīdzam atrast mājokli",
-    "description": "Pārceļaties uz Nīderlandi no ārvalstīm? Mēs noorganizējam tīru, komfortablu mājokli jums — lai varētu koncentrēties uz jauno darbu, neuztraucoties par nakšņošanas vietu. Bez slēptajām izmaksām, bez stresa.",
-    "perks": [
-      "Pilnībā iekārtots dzīvoklis iekļauts",
-      "Internets un komunālie pakalpojumi segti",
-      "Koplietojamā virtuve un dzīvojamā telpa",
-      "Netālu no jūsu darba depo"
-    ],
-    "cta": "Jautājiet par mājokļa iespējām"
   },
   "cookie_banner": {
     "title": "Mēs izmantojam sīkdatnes",
@@ -284,12 +268,6 @@
       "Galīgos lēmumus par pieņemšanu darbā pieņem partneru uzņēmumi",
       "Darba piedāvājumi var atšķirties atkarībā no pieejamības un kvalifikācijas"
     ],
-    "s5_title": "5. Mājoklis",
-    "s5_items": [
-      "Mājokli var nodrošināt atkarībā no darba līguma",
-      "Dzīves apstākļi, izmaksas un noteikumi tiks noteikti jūsu līgumā",
-      "Jūs esat atbildīgs par dzīves noteikumu ievērošanu un īpašuma aizsardzību"
-    ],
     "s6_title": "6. Atbildība",
     "s6_intro": "Team Cargo nav atbildīga par:",
     "s6_items": [
@@ -412,7 +390,6 @@
     "custom_hero_trust_bg": "Uzticamības joslas fons",
     "custom_subtab_services": "Pakalpojumu sadaļa",
     "custom_subtab_about": "Par mums sadaļa",
-    "custom_subtab_housing": "Mājokļu sadaļa",
     "custom_subtab_contact": "Kontaktu sadaļa",
     "custom_subtab_footer": "Kājene",
     "set_as_default": "Iestatīt kā noklusējumu",

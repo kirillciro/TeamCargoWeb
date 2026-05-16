@@ -7,7 +7,6 @@ import HeroSection from "@/components/HeroSection";
 // Split below-fold sections into separate JS chunks to reduce initial parse time
 const ServicesSection = dynamic(() => import("@/components/ServicesSection"));
 const AboutSection = dynamic(() => import("@/components/AboutSection"));
-const HousingSection = dynamic(() => import("@/components/HousingSection"));
 const ContactSection = dynamic(() => import("@/components/ContactSection"));
 const Footer = dynamic(() => import("@/components/Footer"));
 
@@ -53,7 +52,6 @@ export default async function LandingPage({
       <HeroSection dict={dict} lang={lang} />
       <ServicesSection dict={dict} lang={lang} />
       <AboutSection dict={dict} lang={lang} />
-      <HousingSection dict={dict} lang={lang} />
       <ContactSection dict={dict} lang={lang} />
       <Footer lang={lang} dict={dict} />
     </>

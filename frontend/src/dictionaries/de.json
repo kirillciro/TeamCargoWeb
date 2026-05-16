@@ -53,10 +53,6 @@
         "desc": "Wir helfen Ihnen bei allen notwendigen Formalitäten für eine legale Arbeit in den Niederlanden."
       },
       {
-        "title": "Unterkunft",
-        "desc": "Wir bieten Wohnmöglichkeiten (Zimmer oder Wohnungen) je nach Ihrem Vertrag an."
-      },
-      {
         "title": "Laufende Unterstützung",
         "desc": "Wir stehen Ihnen vor und nach Arbeitsbeginn zur Verfügung."
       },
@@ -81,7 +77,7 @@
       "Sicherheit"
     ],
     "label": "Über uns",
-    "description2": "Wir arbeiten mit vertrauenswürdigen Partnern wie GLS, FedEx, Amazon und DPD zusammen und helfen Fahrern, schnell und zuverlässig eine Beschäftigung zu finden. Von der Bewerbung bis zum Onboarding bieten wir vollständige Unterstützung — einschließlich Dokumentenberatung und Unterkunft für Fahrer, die aus dem Ausland umziehen.",
+    "description2": "Wir arbeiten mit vertrauenswürdigen Partnern wie GLS, FedEx, Amazon und DPD zusammen und helfen Fahrern, schnell und zuverlässig eine Beschäftigung zu finden. Von der Bewerbung bis zum Onboarding bieten wir vollständige Unterstützung.",
     "drivers_placed": "500+ Fahrer vermittelt",
     "years_active": "Jahre aktiv",
     "location": "Amsterdam, Niederlande"
@@ -143,18 +139,6 @@
     "rights": "Alle Rechte vorbehalten.",
     "terms": "AGB",
     "tagline_sub": "Fahrerrekrutierung — Amsterdam"
-  },
-  "housing": {
-    "label": "Für umziehende Fahrer",
-    "title": "Wir helfen Ihnen auch bei der Wohnungssuche",
-    "description": "Ziehen Sie aus dem Ausland in die Niederlande? Wir organisieren saubere, komfortable Unterkunft für Sie — damit Sie sich auf Ihren neuen Job konzentrieren können, ohne sich Sorgen um Ihren Schlafplatz zu machen. Keine versteckten Kosten, kein Stress.",
-    "perks": [
-      "Vollständig möbliertes Apartment inklusive",
-      "Internet & Nebenkosten inklusive",
-      "Gemeinschaftliche Küche und Wohnbereich",
-      "In der Nähe Ihres Arbeitsdepots"
-    ],
-    "cta": "Nach Wohnoptionen fragen"
   },
   "cookie_banner": {
     "title": "Wir verwenden Cookies",
@@ -266,8 +250,7 @@
     "s2_intro": "Wir bieten:",
     "s2_items": [
       "Fahrervermittlung bei Partner-Logistikunternehmen (GLS, FedEx, Amazon, DPD)",
-      "Unterstützung bei Dokumentation und Onboarding",
-      "Unterkunftshilfe (je nach Vertrag)"
+      "Unterstützung bei Dokumentation und Onboarding"
     ],
     "s2_note": "Wir garantieren keine Arbeitsvermittlung in allen Fällen. Die Beschäftigung hängt von den Anforderungen der Partnerunternehmen und den Qualifikationen des Bewerbers ab.",
     "s3_title": "3. Pflichten des Nutzers",
@@ -284,18 +267,11 @@
       "Endgültige Einstellungsentscheidungen werden von Partnerunternehmen getroffen",
       "Stellenangebote können je nach Verfügbarkeit und Qualifikationen variieren"
     ],
-    "s5_title": "5. Unterkunft",
-    "s5_items": [
-      "Unterkunft kann je nach Arbeitsvertrag bereitgestellt werden",
-      "Wohnbedingungen, Kosten und Regeln werden in Ihrer Vereinbarung festgelegt",
-      "Sie sind verantwortlich für die Einhaltung der Wohnregeln und den Schutz des Eigentums"
-    ],
     "s6_title": "6. Haftung",
     "s6_intro": "Team Cargo ist nicht verantwortlich für:",
     "s6_items": [
       "Entscheidungen der Partnerunternehmen",
-      "Änderungen der Arbeitsbedingungen nach der Vermittlung",
-      "Verluste oder Schäden während der Beschäftigung oder Unterkunft"
+      "Änderungen der Arbeitsbedingungen nach der Vermittlung"
     ],
     "s6_note": "Team Cargo agiert als Vermittler zwischen Bewerbern und Arbeitgebern.",
     "s7_title": "7. Zahlungen und Gebühren",
@@ -309,8 +285,7 @@
     "s9_intro": "Wir behalten uns das Recht vor, Dienste zu verweigern oder zu beenden, wenn:",
     "s9_items": [
       "Falsche oder irreführende Informationen angegeben werden",
-      "Diese Bedingungen verletzt werden",
-      "Fehlverhalten während der Beschäftigung oder Unterkunft auftritt"
+      "Diese Bedingungen verletzt werden"
     ],
     "s10_title": "10. Datenschutz",
     "s10_p": "Ihre persönlichen Daten werden gemäß unserer",
@@ -412,7 +387,6 @@
     "custom_hero_trust_bg": "Hintergrund der Vertrauensleiste",
     "custom_subtab_services": "Dienste-Bereich",
     "custom_subtab_about": "Über uns-Bereich",
-    "custom_subtab_housing": "Wohnbereich",
     "custom_subtab_contact": "Kontakt-Bereich",
     "custom_subtab_footer": "Fußzeile",
     "set_as_default": "Als Standard festlegen",

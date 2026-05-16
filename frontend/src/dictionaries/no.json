@@ -53,10 +53,6 @@
         "desc": "Vi hjelper deg med alle nødvendige papirer for å jobbe lovlig i Nederland."
       },
       {
-        "title": "Innkvartering",
-        "desc": "Vi tilbyr innkvarteringsalternativer (delte rom eller leiligheter) avhengig av kontrakten din."
-      },
-      {
         "title": "Løpende støtte",
         "desc": "Vi er tilgjengelige for å hjelpe deg før og etter at du starter arbeidet."
       },
@@ -143,18 +139,6 @@
     "rights": "Alle rettigheter forbeholdt.",
     "terms": "Vilkår og betingelser",
     "tagline_sub": "Sjåførrekruttering — Amsterdam"
-  },
-  "housing": {
-    "label": "For sjåfører som flytter",
-    "title": "Vi hjelper deg også med å finne bolig",
-    "description": "Flytter du til Nederland fra utlandet? Vi arrangerer ren, komfortabel bolig for deg — slik at du kan fokusere på den nye jobben uten å bekymre deg for hvor du skal sove. Ingen skjulte kostnader, ingen stress.",
-    "perks": [
-      "Fullt møblert leilighet inkludert",
-      "Internett og strøm dekket",
-      "Delt kjøkken og stue",
-      "Nær ditt arbeidsdepot"
-    ],
-    "cta": "Spør om boligalternativer"
   },
   "cookie_banner": {
     "title": "Vi bruker informasjonskapsler",
@@ -284,12 +268,6 @@
       "Endelige ansettelsesavgjørelser tas av partnerselskaper",
       "Jobbtilbud kan variere avhengig av tilgjengelighet og kvalifikasjoner"
     ],
-    "s5_title": "5. Bolig",
-    "s5_items": [
-      "Bolig kan tilbys avhengig av arbeidsavtalen",
-      "Boforhold, kostnader og regler vil bli definert i avtalen din",
-      "Du er ansvarlig for å respektere boligregler og eiendom"
-    ],
     "s6_title": "6. Ansvar",
     "s6_intro": "Team Cargo er ikke ansvarlig for:",
     "s6_items": [
@@ -412,7 +390,6 @@
     "custom_hero_trust_bg": "Bakgrunn for tillitslinje",
     "custom_subtab_services": "Tjenesteseksjon",
     "custom_subtab_about": "Om oss-seksjon",
-    "custom_subtab_housing": "Boligseksjon",
     "custom_subtab_contact": "Kontaktseksjon",
     "custom_subtab_footer": "Bunntekst",
     "set_as_default": "Angi som standard",
