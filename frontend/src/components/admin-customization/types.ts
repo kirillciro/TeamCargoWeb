@@ -182,7 +182,6 @@ export const DEFAULT_SVC_IMGS = [
   "/images/dpd_courier_2_webP.webp",
   "/images/dpd_courier_webP.webp",
   "/images/fedex_courier_webP.webp",
-  "/images/gls_courier_webP.webp",
 ];
 
 export const DEFAULT_SVC_CARDS = DEFAULT_SVC_IMGS.map((img) => ({
