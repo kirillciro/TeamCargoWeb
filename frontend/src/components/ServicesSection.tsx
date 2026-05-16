@@ -5,7 +5,6 @@ import Image from "next/image";
 import {
   Truck,
   FileText,
-  Home,
   Clock,
   Handshake,
   MapPin,
@@ -24,7 +23,7 @@ const DEFAULT_IMGS = [
   "/images/gls_courier_webP.webp",
 ];
 
-const ICONS: LucideIcon[] = [Truck, FileText, Home, Clock, Handshake, MapPin];
+const ICONS: LucideIcon[] = [Truck, FileText, Clock, Handshake, MapPin];
 
 type ServicesOverrides = {
   title?: string;
@@ -39,14 +38,11 @@ type ServicesOverrides = {
   item3Desc?: string;
   item4Title?: string;
   item4Desc?: string;
-  item5Title?: string;
-  item5Desc?: string;
   img0?: string;
   img1?: string;
   img2?: string;
   img3?: string;
   img4?: string;
-  img5?: string;
 };
 
 export default function ServicesSection({
@@ -125,14 +121,18 @@ export default function ServicesSection({
           <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-[#36B347]" />
         </div>
 
-        {/* 6-card grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 lg:flex-1 lg:min-h-0 pb-8 lg:pb-12">
+        {/* 5-card grid: 3 top + 2 bottom centered */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-5 lg:flex-1 lg:min-h-0 pb-8 lg:pb-12">
           {effectiveItems.map((svc, i) => {
             const Icon = ICONS[i % ICONS.length];
+            const isBottom = i >= 3;
+            const isLastMobile = i === 4;
             return (
               <div
                 key={i}
-                className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-default"
+                className={`group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-default${
+                  isBottom ? " lg:col-span-3" : " lg:col-span-2"
+                }${isLastMobile ? " sm:col-span-2" : ""}`}
                 style={{ minHeight: "220px" }}
               >
                 {/* Background photo */}
