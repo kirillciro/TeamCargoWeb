@@ -15,7 +15,6 @@ import {
   LS_HERO,
   LS_SERVICES,
   LS_ABOUT,
-  LS_HOUSING,
   LS_CONTACT,
   LS_FOOTER,
   type ColorKey,
@@ -23,10 +22,20 @@ import {
   type SectionKey,
   type ServicesSectionKey,
   type AboutSectionKey,
-  type HousingSectionKey,
   type ContactSectionKey,
   type FontOption,
 } from "./types";
+
+const LS_HOUSING = "tc_housing_overrides";
+
+type HousingSectionKey =
+  | "housingHeading"
+  | "housingDescription"
+  | "housingPerks"
+  | "housingCta"
+  | "housingImg1"
+  | "housingImg2"
+  | "housingBg";
 
 export function useAdminCustomizationState({
   dict,
