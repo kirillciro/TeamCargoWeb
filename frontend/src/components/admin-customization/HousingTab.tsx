@@ -5,6 +5,7 @@ import { Loader2, Check, Save } from "lucide-react";
 import Image from "next/image";
 import CloudinaryLogoUpload from "../CloudinaryLogoUpload";
 import { useAdminCustomization } from "./AdminCustomizationContext";
+import { HOUSING_ICON_OPTS } from "./types";
 
 export default function HousingTab() {
   const {

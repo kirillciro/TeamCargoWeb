@@ -353,6 +353,44 @@ export const CONTACT_ICON_OPTS: {
   ],
 ];
 
+// ── Housing perk icon options (paginated) ────────────────────────────────
+export const HOUSING_ICON_OPTS: { id: string; Icon: LucideIcon; label: string }[][] = [
+  [
+    { id: "home", Icon: Home, label: "Home" },
+    { id: "bed-double", Icon: BedDouble, label: "Bedroom" },
+    { id: "bed", Icon: Bed, label: "Bed" },
+    { id: "bath", Icon: Bath, label: "Bathroom" },
+    { id: "sofa", Icon: Sofa, label: "Living Room" },
+    { id: "armchair", Icon: Armchair, label: "Armchair" },
+    { id: "door-open", Icon: DoorOpen, label: "Door" },
+    { id: "key", Icon: Key, label: "Key" },
+    { id: "lamp", Icon: Lamp, label: "Lamp" },
+    { id: "lightbulb", Icon: Lightbulb, label: "Lighting" },
+    { id: "refrigerator", Icon: Refrigerator, label: "Fridge" },
+    { id: "washing-machine", Icon: WashingMachine, label: "Laundry" },
+    { id: "cooking-pot", Icon: CookingPot, label: "Kitchen" },
+    { id: "utensils", Icon: Utensils, label: "Dining" },
+    { id: "coffee", Icon: Coffee, label: "Coffee" },
+  ],
+  [
+    { id: "tv", Icon: Tv, label: "TV" },
+    { id: "wifi", Icon: Wifi, label: "WiFi" },
+    { id: "wind", Icon: Wind, label: "A/C" },
+    { id: "sun", Icon: Sun, label: "Sunny" },
+    { id: "building", Icon: Building, label: "Building" },
+    { id: "building-2", Icon: Building2, label: "Apartment" },
+    { id: "map-pin", Icon: MapPin, label: "Location" },
+    { id: "map-pin-house", Icon: MapPinHouse, label: "Address" },
+    { id: "shield-check", Icon: ShieldCheck, label: "Secure" },
+    { id: "shield", Icon: Shield, label: "Safe" },
+    { id: "check-circle-2", Icon: CheckCircle2, label: "Included" },
+    { id: "sparkles", Icon: Sparkles, label: "Premium" },
+    { id: "star", Icon: Star, label: "Top rated" },
+    { id: "heart", Icon: Heart, label: "Favourite" },
+    { id: "users", Icon: Users, label: "Shared" },
+  ],
+];
+
 export const BADGE_ICON_OPTS: Record<
   "drivers" | "location",
   { id: string; Icon: LucideIcon; label: string }[][]
