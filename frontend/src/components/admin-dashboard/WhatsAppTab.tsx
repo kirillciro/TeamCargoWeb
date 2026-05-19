@@ -324,41 +324,155 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
 
         {/* Win98 Message History panel */}
         <div style={{ ...W98_RAISED, padding: 16, background: "#c0c0c0", display: "flex", flexDirection: "column", gap: 10 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ background: "#000080", color: "#fff", padding: "3px 8px", fontSize: 12, fontWeight: "bold" }}>
-              Message Log ({messages.length})
+
+          {/* Title bar + action buttons */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+            <div style={{ background: "#000080", color: "#fff", padding: "3px 8px", fontSize: 12, fontWeight: "bold", flex: 1, minWidth: 120 }}>
+              Message Log ({messages.length}{(filterYear || filterMonth || filterDay) ? ", filtered" : ""})
             </div>
-            <button onClick={() => void fetchMessages()} style={{ padding: "1px 8px", fontSize: 11, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0" }}>
+            {selectedIds.size > 0 && (
+              <button
+                onClick={() => void handleDeleteSelected()}
+                style={{ padding: "1px 8px", fontSize: 11, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0", color: "#800000", fontWeight: "bold" }}
+              >
+                Delete {selectedIds.size}
+              </button>
+            )}
+            <button
+              onClick={() => void handleDeleteAll()}
+              disabled={deletingAll || messages.length === 0}
+              style={{ padding: "1px 8px", fontSize: 11, ...W98_RAISED, cursor: deletingAll || messages.length === 0 ? "default" : "pointer", background: "#c0c0c0", color: "#800000", fontWeight: "bold", opacity: messages.length === 0 ? 0.5 : 1 }}
+            >
+              {deletingAll ? "Deleting..." : "Delete All"}
+            </button>
+            <button
+              onClick={() => void fetchMessages(filterYear, filterMonth, filterDay)}
+              style={{ padding: "1px 8px", fontSize: 11, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0" }}
+            >
               Refresh
             </button>
           </div>
+
+          {/* Filter row */}
+          <div style={{ ...W98_SUNKEN, background: "#fff", padding: "6px 8px", display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 11, whiteSpace: "nowrap" }}>Filter:</span>
+            <select
+              value={filterYear}
+              onChange={(e) => setFilterYear(e.target.value)}
+              style={{ fontSize: 11, padding: "1px 2px", ...W98_SUNKEN, background: "#fff" }}
+            >
+              <option value="">All years</option>
+              {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((y) => (
+                <option key={y} value={String(y)}>{y}</option>
+              ))}
+            </select>
+            <select
+              value={filterMonth}
+              onChange={(e) => setFilterMonth(e.target.value)}
+              style={{ fontSize: 11, padding: "1px 2px", ...W98_SUNKEN, background: "#fff" }}
+            >
+              <option value="">All months</option>
+              {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m, i) => (
+                <option key={i} value={String(i + 1)}>{m}</option>
+              ))}
+            </select>
+            <select
+              value={filterDay}
+              onChange={(e) => setFilterDay(e.target.value)}
+              style={{ fontSize: 11, padding: "1px 2px", ...W98_SUNKEN, background: "#fff" }}
+            >
+              <option value="">All days</option>
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <option key={d} value={String(d)}>{d}</option>
+              ))}
+            </select>
+            <button
+              onClick={applyFilter}
+              style={{ padding: "1px 8px", fontSize: 11, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0" }}
+            >
+              Apply
+            </button>
+            {(filterYear || filterMonth || filterDay) && (
+              <button
+                onClick={clearFilter}
+                style={{ padding: "1px 6px", fontSize: 11, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0" }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
           {messages.length === 0 ? (
-            <div style={{ fontSize: 11, color: "#808080" }}>No messages sent yet.</div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, maxHeight: 340, overflowY: "auto" }}>
-              {messages.map((msg) => {
-                const open = expandedIds.has(msg.id);
-                return (
-                  <div key={msg.id} style={{ ...W98_SUNKEN, background: "#fff", padding: "4px 8px" }}>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", userSelect: "none" }}
-                      onClick={() => toggleExpand(msg.id)}
-                    >
-                      <span style={{ fontSize: 11, fontFamily: "monospace", color: "#555", whiteSpace: "nowrap" }}>{fmtDate(msg.sent_at)}</span>
-                      <span style={{ fontSize: 11, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{msg.subject || "(no subject)"}</span>
-                      <span style={{ fontSize: 10, color: "#0000aa" }}>{open ? "▲" : "▼"}</span>
-                    </div>
-                    {open && (
-                      <div style={{ marginTop: 6, borderTop: "1px solid #ccc", paddingTop: 6, display: "flex", flexDirection: "column", gap: 4 }}>
-                        <div style={{ fontSize: 10, color: "#555" }}>To: {(msg.recipients as string[]).join(", ")}</div>
-                        {msg.sent_by && <div style={{ fontSize: 10, color: "#555" }}>By: {msg.sent_by}</div>}
-                        <pre style={{ margin: 0, fontSize: 10, whiteSpace: "pre-wrap", wordBreak: "break-word", fontFamily: "monospace", color: "#222" }}>{msg.message_text}</pre>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            <div style={{ fontSize: 11, color: "#808080" }}>
+              {(filterYear || filterMonth || filterDay) ? "No messages match the filter." : "No messages sent yet."}
             </div>
+          ) : (
+            <>
+              {/* Select all row */}
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <input
+                  type="checkbox"
+                  checked={selectedIds.size === messages.length}
+                  onChange={toggleSelectAll}
+                  style={{ cursor: "pointer" }}
+                />
+                <span style={{ fontSize: 11, color: "#444" }}>Select all</span>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 3, maxHeight: 380, overflowY: "auto" }}>
+                {messages.map((msg) => {
+                  const open = expandedIds.has(msg.id);
+                  const selected = selectedIds.has(msg.id);
+                  const deleting = deletingIds.has(msg.id);
+                  return (
+                    <div
+                      key={msg.id}
+                      style={{ ...W98_SUNKEN, background: selected ? "#fffbe6" : "#fff", padding: "4px 8px" }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <input
+                          type="checkbox"
+                          checked={selected}
+                          onChange={() => toggleSelect(msg.id)}
+                          style={{ cursor: "pointer", flexShrink: 0 }}
+                        />
+                        <div
+                          style={{ display: "flex", alignItems: "center", gap: 6, flex: 1, cursor: "pointer", userSelect: "none", overflow: "hidden" }}
+                          onClick={() => toggleExpand(msg.id)}
+                        >
+                          <span style={{ fontSize: 10, color: "#0000aa", flexShrink: 0 }}>{open ? "▲" : "▼"}</span>
+                          <span style={{ fontSize: 11, fontFamily: "monospace", color: "#555", whiteSpace: "nowrap", flexShrink: 0 }}>{fmtDate(msg.sent_at)}</span>
+                          <span style={{ fontSize: 11, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{msg.subject || "(no subject)"}</span>
+                          <span style={{ fontSize: 10, color: "#555", whiteSpace: "nowrap", flexShrink: 0 }}>{(msg.recipients as string[]).length} rcpt</span>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            setDeletingIds((p) => new Set([...p, msg.id]));
+                            await fetchWithAuth(`/api/admin/whatsapp/messages/${msg.id}`, { method: "DELETE" });
+                            setDeletingIds((p) => { const n = new Set(p); n.delete(msg.id); return n; });
+                            setMessages((prev) => prev.filter((m) => m.id !== msg.id));
+                          }}
+                          disabled={deleting}
+                          title="Delete"
+                          style={{ padding: "0px 4px", fontSize: 10, ...W98_RAISED, cursor: deleting ? "wait" : "pointer", background: "#c0c0c0", color: "#800000", flexShrink: 0 }}
+                        >
+                          {deleting ? "…" : "✕"}
+                        </button>
+                      </div>
+                      {open && (
+                        <div style={{ marginTop: 6, borderTop: "1px solid #ccc", paddingTop: 6, display: "flex", flexDirection: "column", gap: 4 }}>
+                          <div style={{ fontSize: 10, color: "#000080", fontFamily: "monospace" }}>
+                            To: {(msg.recipients as string[]).join(", ")}
+                          </div>
+                          {msg.sent_by && <div style={{ fontSize: 10, color: "#555" }}>By: {msg.sent_by}</div>}
+                          <pre style={{ margin: 0, fontSize: 10, whiteSpace: "pre-wrap", wordBreak: "break-word", fontFamily: "monospace", color: "#222", ...W98_SUNKEN, background: "#f8f8f8", padding: "4px 6px", maxHeight: 160, overflowY: "auto" }}>{msg.message_text}</pre>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </div>
       </div>
