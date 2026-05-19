@@ -216,7 +216,10 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
   // ── Win98 theme ────────────────────────────────────────────────────────
   if (win98) {
     return (
-      <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 12, maxWidth: 520 }}>
+      <div style={{ padding: 16, display: "flex", flexDirection: "row", gap: 12, alignItems: "flex-start", flexWrap: "wrap" }}>
+
+        {/* ── Left column: Connection + Recipients ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: 340, minWidth: 280, flexShrink: 0 }}>
 
         {/* Connection panel */}
         <div style={{ ...W98_RAISED, padding: 16, background: "#c0c0c0", display: "flex", flexDirection: "column", gap: 10 }}>
@@ -321,6 +324,11 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
             )}
           </div>
         </div>
+
+        </div>{/* end left column */}
+
+        {/* ── Right column: Message Log ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1, minWidth: 280 }}>
 
         {/* Win98 Message History panel */}
         <div style={{ ...W98_RAISED, padding: 16, background: "#c0c0c0", display: "flex", flexDirection: "column", gap: 10 }}>
@@ -475,6 +483,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
             </>
           )}
         </div>
+
+        </div>{/* end right column */}
       </div>
     );
   }
