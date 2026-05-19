@@ -1267,18 +1267,22 @@ app.post(
          WHERE id = $2`,
         [sid, extractionId],
       );
-      // Persist to message log
-      await pool.query(
-        `INSERT INTO whatsapp_messages (extraction_id, subject, message_text, recipients, sent_by)
-         VALUES ($1, $2, $3, $4, $5)`,
-        [
-          extractionId,
-          row.subject,
-          messageText,
-          JSON.stringify(recipients),
-          req.userEmail ?? null,
-        ],
-      );
+      // Persist to message log — wrapped so a missing table never breaks sends
+      try {
+        await pool.query(
+          `INSERT INTO whatsapp_messages (extraction_id, subject, message_text, recipients, sent_by)
+           VALUES ($1, $2, $3, $4, $5)`,
+          [
+            extractionId,
+            row.subject,
+            messageText,
+            JSON.stringify(recipients),
+            req.userEmail ?? null,
+          ],
+        );
+      } catch (logErr) {
+        console.warn("[whatsapp-log] Failed to persist message log (table may not exist yet):", logErr instanceof Error ? logErr.message : logErr);
+      }
       res.json({ success: true, messageSid: sid });
     } catch (err) {
       console.error("[send-whatsapp]", err);
@@ -1403,19 +1407,70 @@ app.delete(
   },
 );
 
-// GET /admin/whatsapp/messages — last 100 sent messages, newest first
+// GET /admin/whatsapp/messages?year=&month=&day= — filtered message log
 app.get(
   "/admin/whatsapp/messages",
   requireAuth,
   requireAdmin,
-  async (_req: AuthedRequest, res) => {
+  async (req: AuthedRequest, res) => {
+    const { year, month, day } = req.query as Record<string, string | undefined>;
+    const conditions: string[] = [];
+    const params: (string | number)[] = [];
+
+    if (year) {
+      params.push(parseInt(year, 10));
+      conditions.push(`EXTRACT(YEAR  FROM sent_at) = $${params.length}`);
+    }
+    if (month) {
+      params.push(parseInt(month, 10));
+      conditions.push(`EXTRACT(MONTH FROM sent_at) = $${params.length}`);
+    }
+    if (day) {
+      params.push(parseInt(day, 10));
+      conditions.push(`EXTRACT(DAY   FROM sent_at) = $${params.length}`);
+    }
+
+    const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const result = await pool.query(
       `SELECT id, extraction_id, subject, message_text, recipients, sent_by, sent_at
        FROM whatsapp_messages
+       ${where}
        ORDER BY sent_at DESC
-       LIMIT 100`,
+       LIMIT 500`,
+      params,
     );
     res.json({ messages: result.rows });
+  },
+);
+
+// DELETE /admin/whatsapp/messages/:id — delete a single message
+app.delete(
+  "/admin/whatsapp/messages/:id",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const id = parseInt(String(req.params.id), 10);
+    await pool.query("DELETE FROM whatsapp_messages WHERE id = $1", [id]);
+    res.json({ success: true });
+  },
+);
+
+// DELETE /admin/whatsapp/messages — delete by ids array, or all if ids omitted
+app.delete(
+  "/admin/whatsapp/messages",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const { ids } = req.body as { ids?: number[] };
+    if (Array.isArray(ids) && ids.length > 0) {
+      await pool.query(
+        `DELETE FROM whatsapp_messages WHERE id = ANY($1::int[])`,
+        [ids],
+      );
+    } else {
+      await pool.query("DELETE FROM whatsapp_messages");
+    }
+    res.json({ success: true });
   },
 );
 

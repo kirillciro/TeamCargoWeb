@@ -10,6 +10,7 @@ import {
   Phone,
   Plus,
   RefreshCw,
+  Trash2,
   Wifi,
   WifiOff,
   X,
@@ -48,6 +49,14 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
 
   const [messages, setMessages] = useState<WaMessage[]>([]);
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [deletingIds, setDeletingIds] = useState<Set<number>>(new Set());
+  const [deletingAll, setDeletingAll] = useState(false);
+
+  // Filter state
+  const [filterYear, setFilterYear] = useState<string>("");
+  const [filterMonth, setFilterMonth] = useState<string>("");
+  const [filterDay, setFilterDay] = useState<string>("");
 
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -80,12 +89,19 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
     }
   }, []);
 
-  const fetchMessages = useCallback(async () => {
-    const res = await fetchWithAuth("/api/admin/whatsapp/messages");
+  const fetchMessages = useCallback(async (year = filterYear, month = filterMonth, day = filterDay) => {
+    const params = new URLSearchParams();
+    if (year)  params.set("year",  year);
+    if (month) params.set("month", month);
+    if (day)   params.set("day",   day);
+    const qs = params.toString() ? `?${params.toString()}` : "";
+    const res = await fetchWithAuth(`/api/admin/whatsapp/messages${qs}`);
     if (res.ok) {
       const data = (await res.json()) as { messages: WaMessage[] };
       setMessages(data.messages ?? []);
+      setSelectedIds(new Set());
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -148,6 +164,46 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
+
+  const toggleSelect = (id: number) =>
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+
+  const toggleSelectAll = () =>
+    setSelectedIds((prev) =>
+      prev.size === messages.length
+        ? new Set()
+        : new Set(messages.map((m) => m.id)),
+    );
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.size === 0) return;
+    if (!confirm(`Delete ${selectedIds.size} selected message${selectedIds.size !== 1 ? "s" : ""}?`)) return;
+    setDeletingIds(new Set(selectedIds));
+    await fetchWithAuth("/api/admin/whatsapp/messages", {
+      method: "DELETE",
+      body: JSON.stringify({ ids: [...selectedIds] }),
+    });
+    setDeletingIds(new Set());
+    await fetchMessages(filterYear, filterMonth, filterDay);
+  };
+
+  const handleDeleteAll = async () => {
+    if (!confirm("Delete ALL WhatsApp message logs? This cannot be undone.")) return;
+    setDeletingAll(true);
+    await fetchWithAuth("/api/admin/whatsapp/messages", { method: "DELETE" });
+    setDeletingAll(false);
+    await fetchMessages(filterYear, filterMonth, filterDay);
+  };
+
+  const applyFilter = () => void fetchMessages(filterYear, filterMonth, filterDay);
+  const clearFilter = () => {
+    setFilterYear(""); setFilterMonth(""); setFilterDay("");
+    void fetchMessages("", "", "");
+  };
 
   const fmtDate = (iso: string) => {
     const d = new Date(iso);
@@ -463,62 +519,165 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
 
         {/* ── Message History card ── */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 sm:p-7 flex flex-col gap-5 h-full">
-          <div className="flex items-center justify-between">
+
+          {/* Header */}
+          <div className="flex items-center justify-between gap-2 flex-wrap">
             <div>
               <h2 className="text-white font-semibold text-base">Message Log</h2>
               <p className="text-slate-400 text-xs mt-0.5">
-                {messages.length === 0 ? "No messages sent yet" : `${messages.length} message${messages.length !== 1 ? "s" : ""} sent`}
+                {messages.length === 0 ? "No messages" : `${messages.length} message${messages.length !== 1 ? "s" : ""}`}
+                {(filterYear || filterMonth || filterDay) && " (filtered)"}
               </p>
             </div>
-            <button
-              onClick={() => void fetchMessages()}
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-1.5 transition-colors"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              Refresh
-            </button>
+            <div className="flex items-center gap-2 flex-wrap">
+              {selectedIds.size > 0 && (
+                <button
+                  onClick={() => void handleDeleteSelected()}
+                  className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 border border-red-500/40 hover:border-red-400 rounded-lg px-3 py-1.5 transition-colors"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Delete {selectedIds.size}
+                </button>
+              )}
+              <button
+                onClick={() => void handleDeleteAll()}
+                disabled={deletingAll || messages.length === 0}
+                className="flex items-center gap-1.5 text-xs text-white bg-red-600 hover:bg-red-500 rounded-lg px-3 py-1.5 transition-colors disabled:opacity-40"
+              >
+                {deletingAll ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                Delete All
+              </button>
+              <button
+                onClick={() => void fetchMessages(filterYear, filterMonth, filterDay)}
+                className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-1.5 transition-colors"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                Refresh
+              </button>
+            </div>
           </div>
 
+          {/* Filter row */}
+          <div className="flex flex-wrap items-end gap-2 bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2.5">
+            <span className="text-xs text-slate-400 shrink-0 self-center">Filter:</span>
+            <select
+              value={filterYear}
+              onChange={(e) => setFilterYear(e.target.value)}
+              className="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-slate-200 outline-none"
+            >
+              <option value="">All years</option>
+              {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((y) => (
+                <option key={y} value={String(y)}>{y}</option>
+              ))}
+            </select>
+            <select
+              value={filterMonth}
+              onChange={(e) => setFilterMonth(e.target.value)}
+              className="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-slate-200 outline-none"
+            >
+              <option value="">All months</option>
+              {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m, i) => (
+                <option key={i} value={String(i + 1)}>{m}</option>
+              ))}
+            </select>
+            <select
+              value={filterDay}
+              onChange={(e) => setFilterDay(e.target.value)}
+              className="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-slate-200 outline-none"
+            >
+              <option value="">All days</option>
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <option key={d} value={String(d)}>{d}</option>
+              ))}
+            </select>
+            <button
+              onClick={applyFilter}
+              className="px-3 py-1 text-xs bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/30 text-amber-400 rounded transition-colors"
+            >
+              Apply
+            </button>
+            {(filterYear || filterMonth || filterDay) && (
+              <button onClick={clearFilter} className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+                Clear
+              </button>
+            )}
+          </div>
+
+          {/* Messages */}
           {messages.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-6 text-slate-600">
+            <div className="flex flex-col items-center gap-2 py-8 text-slate-600">
               <MessageSquare className="w-8 h-8 opacity-30" />
-              <p className="text-sm">Messages will appear here after sending.</p>
+              <p className="text-sm">{(filterYear || filterMonth || filterDay) ? "No messages match the filter." : "Messages will appear here after sending."}</p>
             </div>
           ) : (
-            <ul className="flex flex-col gap-2 overflow-y-auto max-h-150 lg:max-h-[calc(100vh-12rem)]">
-              {messages.map((msg) => {
-                const open = expandedIds.has(msg.id);
-                return (
-                  <li key={msg.id} className="bg-slate-800/60 border border-slate-700 rounded-lg overflow-hidden">
-                    <button
-                      onClick={() => toggleExpand(msg.id)}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-slate-700/40 transition-colors"
-                    >
-                      {open
-                        ? <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
-                        : <ChevronRight className="w-4 h-4 text-slate-500 shrink-0" />
-                      }
-                      <span className="text-xs font-mono text-slate-400 shrink-0">{fmtDate(msg.sent_at)}</span>
-                      <span className="text-sm text-slate-200 truncate flex-1">{msg.subject || "(no subject)"}</span>
-                      <span className="text-xs text-slate-500 shrink-0">{(msg.recipients as string[]).length} recipient{(msg.recipients as string[]).length !== 1 ? "s" : ""}</span>
-                    </button>
-                    {open && (
-                      <div className="border-t border-slate-700 px-4 py-3 flex flex-col gap-2">
-                        <div className="flex flex-wrap gap-1.5">
-                          {(msg.recipients as string[]).map((r) => (
-                            <span key={r} className="text-xs font-mono bg-slate-700 text-slate-300 rounded px-2 py-0.5">{r}</span>
-                          ))}
-                        </div>
-                        {msg.sent_by && (
-                          <p className="text-xs text-slate-500">Sent by {msg.sent_by}</p>
-                        )}
-                        <pre className="mt-1 text-xs text-slate-300 whitespace-pre-wrap wrap-break-word font-mono bg-slate-900/60 rounded-lg px-3 py-2 max-h-64 overflow-y-auto">{msg.message_text}</pre>
+            <>
+              {/* Select all row */}
+              <div className="flex items-center gap-2 px-1">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.size === messages.length}
+                  onChange={toggleSelectAll}
+                  className="accent-amber-400 cursor-pointer"
+                />
+                <span className="text-xs text-slate-500">Select all</span>
+              </div>
+
+              <ul className="flex flex-col gap-2 overflow-y-auto max-h-150 lg:max-h-[calc(100vh-22rem)]">
+                {messages.map((msg) => {
+                  const open = expandedIds.has(msg.id);
+                  const selected = selectedIds.has(msg.id);
+                  const deleting = deletingIds.has(msg.id);
+                  return (
+                    <li key={msg.id} className={`border rounded-lg overflow-hidden transition-colors ${selected ? "bg-amber-400/5 border-amber-400/30" : "bg-slate-800/60 border-slate-700"}`}>
+                      <div className="flex items-center gap-2 px-3 py-2.5">
+                        <input
+                          type="checkbox"
+                          checked={selected}
+                          onChange={() => toggleSelect(msg.id)}
+                          className="accent-amber-400 cursor-pointer shrink-0"
+                        />
+                        <button
+                          onClick={() => toggleExpand(msg.id)}
+                          className="flex items-center gap-2 flex-1 text-left min-w-0"
+                        >
+                          {open
+                            ? <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
+                            : <ChevronRight className="w-4 h-4 text-slate-500 shrink-0" />
+                          }
+                          <span className="text-xs font-mono text-slate-400 shrink-0">{fmtDate(msg.sent_at)}</span>
+                          <span className="text-sm text-slate-200 truncate flex-1">{msg.subject || "(no subject)"}</span>
+                          <span className="text-xs text-slate-500 shrink-0">{(msg.recipients as string[]).length} rcpt</span>
+                        </button>
+                        <button
+                          onClick={async () => {
+                            setDeletingIds((p) => new Set([...p, msg.id]));
+                            await fetchWithAuth(`/api/admin/whatsapp/messages/${msg.id}`, { method: "DELETE" });
+                            setDeletingIds((p) => { const n = new Set(p); n.delete(msg.id); return n; });
+                            setMessages((prev) => prev.filter((m) => m.id !== msg.id));
+                          }}
+                          disabled={deleting}
+                          className="text-slate-600 hover:text-red-400 transition-colors p-0.5 rounded shrink-0"
+                          title="Delete"
+                        >
+                          {deleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                        </button>
                       </div>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+                      {open && (
+                        <div className="border-t border-slate-700 px-4 py-3 flex flex-col gap-2">
+                          <div className="flex flex-wrap gap-1.5">
+                            {(msg.recipients as string[]).map((r) => (
+                              <span key={r} className="text-xs font-mono bg-slate-700 text-slate-300 rounded px-2 py-0.5">{r}</span>
+                            ))}
+                          </div>
+                          {msg.sent_by && <p className="text-xs text-slate-500">Sent by {msg.sent_by}</p>}
+                          <pre className="mt-1 text-xs text-slate-300 whitespace-pre-wrap wrap-break-word font-mono bg-slate-900/60 rounded-lg px-3 py-2 max-h-64 overflow-y-auto">{msg.message_text}</pre>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
           )}
         </div>
 
