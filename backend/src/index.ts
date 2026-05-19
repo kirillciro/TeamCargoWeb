@@ -22,7 +22,14 @@ import { sendVerificationEmail, sendPasswordResetEmail } from "./email.js";
 import type { SafeUser } from "./types.js";
 import { syncAllFolders, imapDeleteEmails } from "./email-sync.js";
 import { extractFromPdfBuffer, type CargoData } from "./ai-extract.js";
-import { sendCargoWhatsApp } from "./whatsapp.js";
+import {
+  sendCargoWhatsApp,
+  formatCargoMessage,
+  initWhatsApp,
+  getWhatsAppStatus,
+  getQrCode,
+  resetConnection,
+} from "./whatsapp.js";
 import {
   translateHeroTexts,
   type HeroTexts,
@@ -1207,7 +1214,7 @@ app.get(
   },
 );
 
-// Send extracted data to WhatsApp via Twilio
+// Send extracted data to WhatsApp via Baileys
 app.post(
   "/admin/extractions/:id/send-whatsapp",
   requireAuth,
@@ -1237,12 +1244,40 @@ app.post(
     }
 
     try {
-      const sid = await sendCargoWhatsApp(row.extracted_json, row.subject);
+      // Load recipients from DB; fall back to WHATSAPP_TO env var
+      const recipRow = await pool.query(
+        "SELECT value FROM app_settings WHERE key = 'whatsapp_recipients'",
+      );
+      const dbNumbers: string[] = recipRow.rows[0]?.value?.numbers ?? [];
+      const envNumber = process.env.WHATSAPP_TO
+        ? [process.env.WHATSAPP_TO]
+        : [];
+      const recipients = dbNumbers.length > 0 ? dbNumbers : envNumber;
+
+      if (recipients.length === 0) {
+        res.status(400).json({ message: "No WhatsApp recipients configured. Add one in the WhatsApp tab." });
+        return;
+      }
+
+      const messageText = formatCargoMessage(row.extracted_json, row.subject);
+      const sid = await sendCargoWhatsApp(row.extracted_json, row.subject, recipients);
       await pool.query(
         `UPDATE cargo_extractions
          SET status = 'sent', whatsapp_message_sid = $1, whatsapp_sent_at = NOW(), updated_at = NOW()
          WHERE id = $2`,
         [sid, extractionId],
+      );
+      // Persist to message log
+      await pool.query(
+        `INSERT INTO whatsapp_messages (extraction_id, subject, message_text, recipients, sent_by)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          extractionId,
+          row.subject,
+          messageText,
+          JSON.stringify(recipients),
+          req.userEmail ?? null,
+        ],
       );
       res.json({ success: true, messageSid: sid });
     } catch (err) {
@@ -1251,6 +1286,136 @@ app.post(
         err instanceof Error ? err.message : "WhatsApp send failed.";
       res.status(500).json({ message });
     }
+  },
+);
+
+// ── WhatsApp connection management ────────────────────────────────────────
+
+// GET /admin/whatsapp/status — returns connection state and whether QR is ready
+app.get(
+  "/admin/whatsapp/status",
+  requireAuth,
+  requireAdmin,
+  (_req: AuthedRequest, res) => {
+    res.json(getWhatsAppStatus());
+  },
+);
+
+// GET /admin/whatsapp/qr — returns base64 QR image to scan with the phone
+app.get(
+  "/admin/whatsapp/qr",
+  requireAuth,
+  requireAdmin,
+  (_req: AuthedRequest, res) => {
+    const qr = getQrCode();
+    if (!qr) {
+      res
+        .status(404)
+        .json({ message: "No QR available. Already connected or still initialising." });
+      return;
+    }
+    res.json({ qr });
+  },
+);
+
+// POST /admin/whatsapp/disconnect — clears session and shows a fresh QR
+app.post(
+  "/admin/whatsapp/disconnect",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    try {
+      await pool.query("DELETE FROM whatsapp_session");
+      await resetConnection();
+      res.json({ success: true });
+    } catch (err) {
+      console.error("[whatsapp disconnect]", err);
+      res.status(500).json({ message: "Failed to disconnect." });
+    }
+  },
+);
+
+const PHONE_RE = /^\+[1-9]\d{6,14}$/;
+
+// GET /admin/whatsapp/recipients — list configured recipient numbers
+app.get(
+  "/admin/whatsapp/recipients",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'whatsapp_recipients'",
+    );
+    const numbers: string[] = result.rows[0]?.value?.numbers ?? [];
+    res.json({ numbers });
+  },
+);
+
+// POST /admin/whatsapp/recipients — add a recipient number
+app.post(
+  "/admin/whatsapp/recipients",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const { number } = req.body as { number?: string };
+    if (!number || !PHONE_RE.test(number)) {
+      res.status(400).json({ message: "Invalid number. Use E.164 format: +393497080551" });
+      return;
+    }
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'whatsapp_recipients'",
+    );
+    const current: string[] = result.rows[0]?.value?.numbers ?? [];
+    if (current.includes(number)) {
+      res.status(409).json({ message: "Number already in the list." });
+      return;
+    }
+    const updated = [...current, number];
+    await pool.query(
+      `INSERT INTO app_settings (key, value, updated_at)
+       VALUES ('whatsapp_recipients', $1, NOW())
+       ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+      [JSON.stringify({ numbers: updated })],
+    );
+    res.json({ numbers: updated });
+  },
+);
+
+// DELETE /admin/whatsapp/recipients/:number — remove a recipient number
+app.delete(
+  "/admin/whatsapp/recipients/:number",
+  requireAuth,
+  requireAdmin,
+  async (req: AuthedRequest, res) => {
+    const number = decodeURIComponent(req.params.number as string);
+    const result = await pool.query(
+      "SELECT value FROM app_settings WHERE key = 'whatsapp_recipients'",
+    );
+    const current: string[] = result.rows[0]?.value?.numbers ?? [];
+    const updated = current.filter((n) => n !== number);
+    await pool.query(
+      `INSERT INTO app_settings (key, value, updated_at)
+       VALUES ('whatsapp_recipients', $1, NOW())
+       ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`,
+      [JSON.stringify({ numbers: updated })],
+    );
+    res.json({ numbers: updated });
+  },
+);
+
+// GET /admin/whatsapp/messages — last 100 sent messages, newest first
+app.get(
+  "/admin/whatsapp/messages",
+  requireAuth,
+  requireAdmin,
+  async (_req: AuthedRequest, res) => {
+    const result = await pool.query(
+      `SELECT id, extraction_id, subject, message_text, recipients, sent_by, sent_at
+       FROM whatsapp_messages
+       ORDER BY sent_at DESC
+       LIMIT 100`,
+    );
+    res.json({ messages: result.rows });
   },
 );
 
@@ -2636,6 +2801,10 @@ if (process.env.NODE_ENV === "production") {
 const PORT = Number(process.env.PORT ?? 4000);
 app.listen(PORT, () => {
   console.log(`[team-cargo] backend running on port ${PORT}`);
+  // Initialise Baileys WhatsApp connection (loads session from PostgreSQL)
+  initWhatsApp().catch((err) =>
+    console.error("[WhatsApp] init failed:", err),
+  );
 });
 
 // Prevent unhandled DB connection errors from crashing the process

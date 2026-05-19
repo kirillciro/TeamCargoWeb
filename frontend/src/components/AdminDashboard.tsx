@@ -13,6 +13,7 @@ import {
   User,
   LogOut,
   Palette,
+  MessageSquare,
 } from "lucide-react";
 import AdminEmailsTab from "@/components/AdminEmailsTab";
 import AdminCustomizationTab from "@/components/AdminCustomizationTab";
@@ -25,16 +26,19 @@ import {
   W98IcUser,
   W98IcMail,
   W98IcGear,
+  W98IcWhatsApp,
 } from "./admin-dashboard/Win98Helpers";
 
 const OverviewTab = lazy(() => import("./admin-dashboard/OverviewTab"));
 const UsersTab = lazy(() => import("./admin-dashboard/UsersTab"));
+const WhatsAppTab = lazy(() => import("./admin-dashboard/WhatsAppTab"));
 
 const TAB_ICONS: Record<Tab, React.ElementType> = {
   overview: BarChart3,
   users: Users,
   emails: Mail,
   customization: Palette,
+  whatsapp: MessageSquare,
 };
 
 const TabSpinner = () => (
@@ -686,6 +690,7 @@ export default function AdminDashboard({
                 users: dict.admin.tab_users,
                 emails: dict.admin.tab_emails,
                 customization: dict.admin.tab_customization,
+                whatsapp: "WhatsApp",
               }[key];
               return (
                 <button
@@ -779,6 +784,18 @@ export default function AdminDashboard({
             </Win98Window>
           ) : (
             <AdminCustomizationTab dict={dict} win98={win98} />
+          ))}
+        {active === "whatsapp" &&
+          (win98 ? (
+            <Win98Window title="WhatsApp Connection" icon={<W98IcWhatsApp />}>
+              <Suspense fallback={<TabSpinner />}>
+                <WhatsAppTab win98 />
+              </Suspense>
+            </Win98Window>
+          ) : (
+            <Suspense fallback={<TabSpinner />}>
+              <WhatsAppTab />
+            </Suspense>
           ))}
       </div>
     </div>
