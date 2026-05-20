@@ -1,3 +1,26 @@
+/**
+ * WhatsAppTab — Admin panel for managing the WhatsApp sender connection.
+ *
+ * Dual-theme component: pass `win98={true}` to render the Windows 98 styled
+ * version; default renders the modern Tailwind version.
+ *
+ * Win98 theme  — inline `style={}` using W98_RAISED / W98_SUNKEN helpers.
+ * Modern theme — Tailwind utility classes + Lucide icons.
+ *
+ * Both themes share identical state, hooks, and event handlers defined in
+ * the section below the type declarations.
+ *
+ * API routes used (all require Bearer auth)
+ *   GET    /api/admin/whatsapp/status
+ *   GET    /api/admin/whatsapp/qr
+ *   POST   /api/admin/whatsapp/disconnect
+ *   GET    /api/admin/whatsapp/recipients
+ *   POST   /api/admin/whatsapp/recipients
+ *   DELETE /api/admin/whatsapp/recipients/:number
+ *   GET    /api/admin/whatsapp/messages?year=&month=&day=
+ *   DELETE /api/admin/whatsapp/messages/:id
+ *   DELETE /api/admin/whatsapp/messages
+ */
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -20,6 +43,8 @@ import { W98_RAISED, W98_SUNKEN } from "./Win98Helpers";
 
 const PHONE_RE = /^\+[1-9]\d{6,14}$/;
 
+// ── Types ────────────────────────────────────────────────────────────────
+
 type WaStatus = {
   status: "open" | "connecting" | "close";
   hasQr: boolean;
@@ -36,7 +61,10 @@ type WaMessage = {
   sent_at: string;
 };
 
+// ── Component ─────────────────────────────────────────────────────────
+
 export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
+  // ── State ────────────────────────────────────────────────────────────
   const [waStatus, setWaStatus] = useState<WaStatus | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -65,6 +93,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
   const closeConfirm = () => setConfirmModal(null);
 
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // ── Data fetching ────────────────────────────────────────────────────────
 
   const fetchStatus = useCallback(async () => {
     try {
@@ -119,6 +149,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
       if (pollRef.current) clearInterval(pollRef.current);
     };
   }, [fetchStatus, fetchRecipients, fetchMessages]);
+
+  // ── Event handlers ────────────────────────────────────────────────────
 
   const handleDisconnect = () =>
     showConfirm(

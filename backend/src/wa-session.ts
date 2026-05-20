@@ -13,6 +13,8 @@ import {
 } from "@whiskeysockets/baileys";
 import { pool } from "./db.js";
 
+// ── DB helpers ────────────────────────────────────────────────────────────
+
 async function readData(key: string): Promise<unknown> {
   const res = await pool.query(
     "SELECT value FROM whatsapp_session WHERE key = $1",
@@ -35,6 +37,8 @@ async function writeData(key: string, data: unknown): Promise<void> {
 async function removeData(key: string): Promise<void> {
   await pool.query("DELETE FROM whatsapp_session WHERE key = $1", [key]);
 }
+
+// ── Auth state factory ────────────────────────────────────────────────────
 
 export async function usePgAuthState(): Promise<{
   state: AuthenticationState;
