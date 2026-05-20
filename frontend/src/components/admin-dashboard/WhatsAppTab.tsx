@@ -504,7 +504,6 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
         </div>
 
         </div>{/* end right column */}
-      </div>
 
       {/* Win98 confirm modal */}
       {confirmModal && (
