@@ -45,7 +45,7 @@ export async function usePgAuthState(): Promise<{
   saveCreds: () => Promise<void>;
 }> {
   const creds: AuthenticationCreds =
-    (await readData("creds")) as AuthenticationCreds ?? initAuthCreds();
+    ((await readData("creds")) as AuthenticationCreds) ?? initAuthCreds();
 
   return {
     state: {
@@ -70,12 +70,16 @@ export async function usePgAuthState(): Promise<{
         set: async (data) => {
           const tasks: Promise<void>[] = [];
           for (const category in data) {
-            const categoryData =
-              data[category as keyof typeof data] as Record<string, unknown>;
+            const categoryData = data[category as keyof typeof data] as Record<
+              string,
+              unknown
+            >;
             for (const id in categoryData) {
               const value = categoryData[id];
               const key = `${category}-${id}`;
-              tasks.push(value == null ? removeData(key) : writeData(key, value));
+              tasks.push(
+                value == null ? removeData(key) : writeData(key, value),
+              );
             }
           }
           await Promise.all(tasks);

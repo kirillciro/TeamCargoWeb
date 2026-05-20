@@ -354,7 +354,11 @@ export const CONTACT_ICON_OPTS: {
 ];
 
 // ── Housing perk icon options (paginated) ────────────────────────────────
-export const HOUSING_ICON_OPTS: { id: string; Icon: LucideIcon; label: string }[][] = [
+export const HOUSING_ICON_OPTS: {
+  id: string;
+  Icon: LucideIcon;
+  label: string;
+}[][] = [
   [
     { id: "home", Icon: Home, label: "Home" },
     { id: "bed-double", Icon: BedDouble, label: "Bedroom" },

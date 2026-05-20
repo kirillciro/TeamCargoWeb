@@ -26,11 +26,7 @@
 import { Router } from "express";
 import { pool } from "./db.js";
 import { requireAuth, requireAdmin, type AuthedRequest } from "./middleware.js";
-import {
-  getWhatsAppStatus,
-  getQrCode,
-  resetConnection,
-} from "./whatsapp.js";
+import { getWhatsAppStatus, getQrCode, resetConnection } from "./whatsapp.js";
 
 // ── Validation ────────────────────────────────────────────────────────────
 
@@ -198,14 +194,26 @@ waRouter.get(
   requireAuth,
   requireAdmin,
   async (req: AuthedRequest, res) => {
-    const { year, month, day } = req.query as Record<string, string | undefined>;
+    const { year, month, day } = req.query as Record<
+      string,
+      string | undefined
+    >;
 
     const conditions: string[] = [];
     const params: number[] = [];
 
-    if (year)  { params.push(parseInt(year,  10)); conditions.push(`EXTRACT(YEAR  FROM sent_at) = $${params.length}`); }
-    if (month) { params.push(parseInt(month, 10)); conditions.push(`EXTRACT(MONTH FROM sent_at) = $${params.length}`); }
-    if (day)   { params.push(parseInt(day,   10)); conditions.push(`EXTRACT(DAY   FROM sent_at) = $${params.length}`); }
+    if (year) {
+      params.push(parseInt(year, 10));
+      conditions.push(`EXTRACT(YEAR  FROM sent_at) = $${params.length}`);
+    }
+    if (month) {
+      params.push(parseInt(month, 10));
+      conditions.push(`EXTRACT(MONTH FROM sent_at) = $${params.length}`);
+    }
+    if (day) {
+      params.push(parseInt(day, 10));
+      conditions.push(`EXTRACT(DAY   FROM sent_at) = $${params.length}`);
+    }
 
     const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
 

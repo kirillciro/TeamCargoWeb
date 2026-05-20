@@ -1,7 +1,18 @@
 // Shared types and constants for AdminDashboard and its sub-components
 
-export type Tab = "overview" | "users" | "emails" | "customization" | "whatsapp";
-export const TABS: Tab[] = ["overview", "users", "emails", "customization", "whatsapp"];
+export type Tab =
+  | "overview"
+  | "users"
+  | "emails"
+  | "customization"
+  | "whatsapp";
+export const TABS: Tab[] = [
+  "overview",
+  "users",
+  "emails",
+  "customization",
+  "whatsapp",
+];
 
 export type DriverProfile = {
   phone: string | null;

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Suspense } from "react";
 import "./globals.css";
 import WebVitals from "@/components/WebVitals";
+import GaPageView from "@/components/GaPageView";
 
 // Allow TypeScript to recognise window.gtag injected by GA4 and window.google from GSI
 declare global {
@@ -68,18 +70,26 @@ export default function RootLayout({
         />
         {children}
         <WebVitals />
+        {/* ── Google Analytics 4 ── */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-17RWXXE1Y6"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="ga4-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments);};window.gtag('js',new Date());window.gtag('config','G-17RWXXE1Y6');`,
+          }}
+        />
+        {/* Tracks subsequent SPA navigations that don't trigger a full reload */}
+        <Suspense fallback={null}>
+          <GaPageView />
+        </Suspense>
         {/* ── Google Identity Services ── */}
         <Script
           src="https://accounts.google.com/gsi/client"
           strategy="afterInteractive"
-        />
-        {/* ── Google Analytics 4 ── load on first user interaction (or 6s idle) to keep TBT minimal */}
-        <Script
-          id="ga4-defer"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var loaded=false;function load(){if(loaded)return;loaded=true;cleanup();var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-17RWXXE1Y6';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments);};window.gtag('js',new Date());window.gtag('config','G-17RWXXE1Y6');}function cleanup(){window.removeEventListener('scroll',load);window.removeEventListener('pointerdown',load);window.removeEventListener('keydown',load);}window.addEventListener('scroll',load,{passive:true,once:true});window.addEventListener('pointerdown',load,{passive:true,once:true});window.addEventListener('keydown',load,{once:true});setTimeout(load,6000);})();`,
-          }}
         />
       </body>
     </html>

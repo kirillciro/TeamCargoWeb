@@ -1253,12 +1253,21 @@ app.post(
       const recipients = dbNumbers.length > 0 ? dbNumbers : envNumber;
 
       if (recipients.length === 0) {
-        res.status(400).json({ message: "No WhatsApp recipients configured. Add one in the WhatsApp tab." });
+        res
+          .status(400)
+          .json({
+            message:
+              "No WhatsApp recipients configured. Add one in the WhatsApp tab.",
+          });
         return;
       }
 
       const messageText = formatCargoMessage(row.extracted_json, row.subject);
-      const sid = await sendCargoWhatsApp(row.extracted_json, row.subject, recipients);
+      const sid = await sendCargoWhatsApp(
+        row.extracted_json,
+        row.subject,
+        recipients,
+      );
       await pool.query(
         `UPDATE cargo_extractions
          SET status = 'sent', whatsapp_message_sid = $1, whatsapp_sent_at = NOW(), updated_at = NOW()
@@ -1279,7 +1288,10 @@ app.post(
           ],
         );
       } catch (logErr) {
-        console.warn("[whatsapp-log] Failed to persist message log (table may not exist yet):", logErr instanceof Error ? logErr.message : logErr);
+        console.warn(
+          "[whatsapp-log] Failed to persist message log (table may not exist yet):",
+          logErr instanceof Error ? logErr.message : logErr,
+        );
       }
       res.json({ success: true, messageSid: sid });
     } catch (err) {
@@ -2678,9 +2690,7 @@ const PORT = Number(process.env.PORT ?? 4000);
 app.listen(PORT, () => {
   console.log(`[team-cargo] backend running on port ${PORT}`);
   // Initialise Baileys WhatsApp connection (loads session from PostgreSQL)
-  initWhatsApp().catch((err) =>
-    console.error("[WhatsApp] init failed:", err),
-  );
+  initWhatsApp().catch((err) => console.error("[WhatsApp] init failed:", err));
 });
 
 // Prevent unhandled DB connection errors from crashing the process
