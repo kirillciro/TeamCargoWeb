@@ -70,6 +70,16 @@ let reconnectAttempts = 0;
 /** Handle for the pending back-off timer so it can be cancelled if needed. */
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
+/**
+ * Timer that resets reconnectAttempts after the connection has been
+ * continuously open for STABLE_CONNECTION_MS.  We deliberately do NOT reset
+ * the counter immediately on "open" because the socket can crash within
+ * milliseconds (e.g. LID-session error, code 440), which would keep the
+ * back-off stuck at 1 s forever and hammer WhatsApp servers.
+ */
+let stabilityTimer: ReturnType<typeof setTimeout> | null = null;
+const STABLE_CONNECTION_MS = 30_000; // 30 s of uptime before resetting back-off
+
 /** Maximum delay between reconnect attempts. */
 const MAX_RECONNECT_DELAY_MS = 30_000;
 
@@ -77,6 +87,7 @@ const MAX_RECONNECT_DELAY_MS = 30_000;
 
 /** Tears down the current socket cleanly without triggering auto-reconnect. */
 function destroySocket(): void {
+  if (stabilityTimer) { clearTimeout(stabilityTimer); stabilityTimer = null; }
   if (!sock) return;
   try {
     (sock.ev as unknown as { removeAllListeners(): void }).removeAllListeners();
@@ -177,10 +188,18 @@ export async function initWhatsApp(): Promise<void> {
     if (connection === "open") {
       connectionStatus = "open";
       qrCodeDataUrl = null;
-      reconnectAttempts = 0; // reset back-off on successful connect
       console.log(
         `[WhatsApp] Connected ✓  (sender: ${getSenderPhone() ?? "unknown"})`,
       );
+      // Reset back-off only after the connection has been stable for 30 s.
+      // Resetting immediately causes infinite 1 s loops when the socket
+      // crashes right after "open" (e.g. LID-session / code 440 errors).
+      if (stabilityTimer) clearTimeout(stabilityTimer);
+      stabilityTimer = setTimeout(() => {
+        stabilityTimer = null;
+        reconnectAttempts = 0;
+        console.log("[WhatsApp] Connection stable — back-off counter reset.");
+      }, STABLE_CONNECTION_MS);
     }
 
     if (connection === "close") {

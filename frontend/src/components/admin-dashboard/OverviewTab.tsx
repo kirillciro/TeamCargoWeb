@@ -138,6 +138,7 @@ export default function AdminOverviewTab({
 }) {
   const [stats, setStats] = useState<Stats | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
+  const [analyticsError, setAnalyticsError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -153,6 +154,10 @@ export default function AdminOverviewTab({
         setStats(data);
         if (analyticsRes.ok) {
           setAnalytics((await analyticsRes.json()) as AnalyticsSummary);
+        } else {
+          const body = await analyticsRes.json().catch(() => ({})) as { error?: string };
+          console.warn("[GA4] analytics/summary failed:", analyticsRes.status, body.error);
+          setAnalyticsError(`GA4 error (${analyticsRes.status}): ${body.error ?? "check Railway env vars"}`);
         }
       } catch {
         setError(dict.admin.error_load_stats);
@@ -349,8 +354,8 @@ export default function AdminOverviewTab({
                       )}
                     </>
                   ) : (
-                    <span style={{ fontSize: 11, color: "#808080" }}>
-                      No GA4 data
+                    <span style={{ fontSize: 11, color: analyticsError ? "#c0392b" : "#808080", wordBreak: "break-all" }}>
+                      {analyticsError ?? "No GA4 data"}
                     </span>
                   )}
                 </div>
