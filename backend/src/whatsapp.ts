@@ -5,6 +5,7 @@ import makeWASocket, {
 } from "@whiskeysockets/baileys";
 import qrcode from "qrcode";
 import { usePgAuthState } from "./wa-session.js";
+import { pool } from "./db.js";
 import type { CargoData } from "./ai-extract.js";
 
 // ── Singleton connection ───────────────────────────────────────────────────
@@ -12,6 +13,17 @@ import type { CargoData } from "./ai-extract.js";
 let sock: WASocket | null = null;
 let qrCodeDataUrl: string | null = null;
 let connectionStatus: "connecting" | "open" | "close" = "close";
+
+/** Set to true only during intentional user-initiated disconnect; suppresses auto-reconnect. */
+let manualDisconnect = false;
+
+/** Tracks consecutive reconnect attempts for exponential back-off. */
+let reconnectAttempts = 0;
+
+/** Handle used to cancel any pending back-off timer. */
+let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+
+const MAX_RECONNECT_DELAY_MS = 30_000; // cap at 30 s
 
 export function getWhatsAppStatus() {
   return {
@@ -33,20 +45,41 @@ export function getSenderPhone(): string | null {
   return "+" + raw;
 }
 
+/** Cleanly tears down the current socket without triggering auto-reconnect. */
+function destroySocket() {
+  if (!sock) return;
+  try { (sock.ev as unknown as { removeAllListeners(): void }).removeAllListeners(); } catch { /* ignore */ }
+  try { sock.end(undefined); } catch { /* ignore */ }
+  sock = null;
+}
+
+/** Schedules a reconnect with exponential back-off (1 s → 2 s → 4 s … ≤ 30 s). */
+function scheduleReconnect() {
+  if (manualDisconnect) return;
+  if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+  reconnectAttempts += 1;
+  const delay = Math.min(1_000 * 2 ** (reconnectAttempts - 1), MAX_RECONNECT_DELAY_MS);
+  console.log(`[WhatsApp] Reconnecting in ${delay / 1_000}s (attempt ${reconnectAttempts})…`);
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    if (!manualDisconnect) void initWhatsApp();
+  }, delay);
+}
+
 /**
  * Clears the current connection and reinitialises so a fresh QR is shown.
- * Caller must DELETE FROM whatsapp_session before calling this.
+ * Called when the user clicks "Change sender number".
+ * index.ts must DELETE FROM whatsapp_session BEFORE calling this.
  */
 export async function resetConnection(): Promise<void> {
+  manualDisconnect = true;         // stop any in-flight reconnect
+  if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
   connectionStatus = "close";
   qrCodeDataUrl = null;
-  if (sock) {
-    // Remove all listeners by passing empty string — Baileys requires an event name or we just null-replace sock
-    try { (sock.ev as unknown as { removeAllListeners(): void }).removeAllListeners(); } catch { /* ignore */ }
-    try { sock.end(undefined); } catch { /* ignore */ }
-    sock = null;
-  }
-  await new Promise<void>((resolve) => setTimeout(resolve, 300));
+  destroySocket();
+  await new Promise<void>((r) => setTimeout(r, 300));
+  reconnectAttempts = 0;
+  manualDisconnect = false;        // allow the new QR flow to reconnect
   await initWhatsApp();
 }
 
@@ -63,9 +96,8 @@ export async function initWhatsApp(): Promise<void> {
 
     if (qr) {
       qrCodeDataUrl = await qrcode.toDataURL(qr);
-      // Print QR as ASCII art directly in the terminal so you can scan immediately
       const terminalQr = await qrcode.toString(qr, { type: "terminal", small: true });
-      console.log("\n[WhatsApp] Scan this QR with +31644351451:\n");
+      console.log("\n[WhatsApp] Scan QR code:\n");
       console.log(terminalQr);
       console.log("[WhatsApp] (also available as image at GET /admin/whatsapp/qr)\n");
     }
@@ -73,19 +105,31 @@ export async function initWhatsApp(): Promise<void> {
     if (connection === "open") {
       connectionStatus = "open";
       qrCodeDataUrl = null;
-      console.log("[WhatsApp] Connected");
+      reconnectAttempts = 0; // reset back-off counter on successful connect
+      console.log("[WhatsApp] Connected ✓");
     }
 
     if (connection === "close") {
       connectionStatus = "close";
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const statusCode = (lastDisconnect?.error as any)?.output?.statusCode;
-      const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
-      console.log(
-        `[WhatsApp] Disconnected (code ${statusCode}), reconnect: ${shouldReconnect}`,
-      );
-      if (shouldReconnect) {
-        await initWhatsApp();
+      const loggedOut = statusCode === DisconnectReason.loggedOut;
+
+      console.log(`[WhatsApp] Disconnected (code ${statusCode ?? "unknown"})`);
+
+      if (loggedOut) {
+        // Phone removed this device from Linked Devices — wipe session so fresh QR is shown
+        console.log("[WhatsApp] Logged out by phone. Clearing session and requesting new QR…");
+        try {
+          await pool.query("DELETE FROM whatsapp_session");
+        } catch (e) {
+          console.warn("[WhatsApp] Could not clear session:", e);
+        }
+        reconnectAttempts = 0;
+        if (!manualDisconnect) void initWhatsApp();
+      } else {
+        // Any other close reason (network blip, Railway restart, timeout) → reconnect
+        scheduleReconnect();
       }
     }
   });
