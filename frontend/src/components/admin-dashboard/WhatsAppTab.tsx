@@ -291,7 +291,23 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
           )}
 
           {waStatus?.status === "connecting" && !qrDataUrl && (
-            <div style={{ fontSize: 12, color: "#808000" }}>Initialising, please wait...</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <div style={{ fontSize: 12, color: "#808000" }}>Initialising, please wait...</div>
+              <button
+                onClick={() =>
+                  showConfirm(
+                    "Clear the current session and force a fresh QR code scan?",
+                    async () => {
+                      await fetchWithAuth("/api/admin/whatsapp/disconnect", { method: "POST" });
+                      await fetchStatus();
+                    },
+                  )
+                }
+                style={{ alignSelf: "flex-start", padding: "2px 10px", fontSize: 11, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0", color: "#000080" }}
+              >
+                Force new QR code...
+              </button>
+            </div>
           )}
         </div>
 
@@ -617,7 +633,23 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
           )}
 
           {waStatus?.status === "connecting" && !qrDataUrl && (
-            <p className="text-sm text-slate-400">Initialising connection… QR code will appear shortly.</p>
+            <div className="flex flex-col gap-3">
+              <p className="text-sm text-slate-400">Initialising connection… QR code will appear shortly.</p>
+              <button
+                onClick={() =>
+                  showConfirm(
+                    "Clear the current session and force a fresh QR code scan?",
+                    async () => {
+                      await fetchWithAuth("/api/admin/whatsapp/disconnect", { method: "POST" });
+                      await fetchStatus();
+                    },
+                  )
+                }
+                className="self-start flex items-center gap-2 text-xs text-amber-400 hover:text-amber-300 border border-amber-400/30 hover:border-amber-400/60 rounded-lg px-3 py-1.5 transition-colors"
+              >
+                Force new QR code
+              </button>
+            </div>
           )}
         </div>
 
