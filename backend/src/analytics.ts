@@ -2,14 +2,15 @@
  * GA4 Analytics helper — uses the Google Analytics Data API v1beta
  * via the `googleapis` package (already in dependencies).
  *
- * Auth: OAuth 2.0 with a stored refresh token (no service-account key needed).
- * Run `node get-ga4-token.mjs` once to get your refresh token.
+ * Auth: OAuth 2.0 with a stored refresh token.
+ * The OAuth client must be a **Desktop app** type (not Web application),
+ * so the get-ga4-token.mjs helper can complete the local redirect flow.
  *
  * Required env vars:
  *   GA4_PROPERTY_ID     – numeric property ID (GA4 Admin → Property Settings)
- *   GA4_CLIENT_ID       – OAuth 2.0 client ID  (GCP → Credentials)
- *   GA4_CLIENT_SECRET   – OAuth 2.0 client secret
- *   GA4_REFRESH_TOKEN   – from running get-ga4-token.mjs
+ *   GA4_CLIENT_ID       – Desktop app OAuth 2.0 client ID  (GCP → Credentials)
+ *   GA4_CLIENT_SECRET   – Desktop app OAuth 2.0 client secret
+ *   GA4_REFRESH_TOKEN   – from running: node get-ga4-token.mjs
  */
 
 import { google } from "googleapis";
