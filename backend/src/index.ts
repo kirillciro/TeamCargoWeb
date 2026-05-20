@@ -1461,7 +1461,7 @@ app.delete(
   requireAuth,
   requireAdmin,
   async (req: AuthedRequest, res) => {
-    const { ids } = req.body as { ids?: number[] };
+    const ids = (req.body as { ids?: number[] } | undefined)?.ids;
     if (Array.isArray(ids) && ids.length > 0) {
       await pool.query(
         `DELETE FROM whatsapp_messages WHERE id = ANY($1::int[])`,

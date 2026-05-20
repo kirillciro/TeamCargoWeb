@@ -58,6 +58,12 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
   const [filterMonth, setFilterMonth] = useState<string>("");
   const [filterDay, setFilterDay] = useState<string>("");
 
+  // Confirmation modal
+  const [confirmModal, setConfirmModal] = useState<{ message: string; onConfirm: () => void } | null>(null);
+  const showConfirm = (message: string, onConfirm: () => void) =>
+    setConfirmModal({ message, onConfirm });
+  const closeConfirm = () => setConfirmModal(null);
+
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchStatus = useCallback(async () => {
@@ -114,16 +120,19 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
     };
   }, [fetchStatus, fetchRecipients, fetchMessages]);
 
-  const handleDisconnect = async () => {
-    if (!confirm("Disconnect current WhatsApp account? You'll need to scan a QR code with the new phone.")) return;
-    setDisconnecting(true);
-    try {
-      await fetchWithAuth("/api/admin/whatsapp/disconnect", { method: "POST" });
-      await fetchStatus();
-    } finally {
-      setDisconnecting(false);
-    }
-  };
+  const handleDisconnect = () =>
+    showConfirm(
+      "Disconnect current WhatsApp account? You'll need to scan a QR code with the new phone.",
+      async () => {
+        setDisconnecting(true);
+        try {
+          await fetchWithAuth("/api/admin/whatsapp/disconnect", { method: "POST" });
+          await fetchStatus();
+        } finally {
+          setDisconnecting(false);
+        }
+      },
+    );
 
   const handleAddRecipient = async () => {
     const num = newNumber.trim();
@@ -179,25 +188,35 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
         : new Set(messages.map((m) => m.id)),
     );
 
-  const handleDeleteSelected = async () => {
+  const handleDeleteSelected = () => {
     if (selectedIds.size === 0) return;
-    if (!confirm(`Delete ${selectedIds.size} selected message${selectedIds.size !== 1 ? "s" : ""}?`)) return;
-    setDeletingIds(new Set(selectedIds));
-    await fetchWithAuth("/api/admin/whatsapp/messages", {
-      method: "DELETE",
-      body: JSON.stringify({ ids: [...selectedIds] }),
-    });
-    setDeletingIds(new Set());
-    await fetchMessages(filterYear, filterMonth, filterDay);
+    showConfirm(
+      `Delete ${selectedIds.size} selected message${selectedIds.size !== 1 ? "s" : ""}?`,
+      async () => {
+        setDeletingIds(new Set(selectedIds));
+        await fetchWithAuth("/api/admin/whatsapp/messages", {
+          method: "DELETE",
+          body: JSON.stringify({ ids: [...selectedIds] }),
+        });
+        setDeletingIds(new Set());
+        await fetchMessages(filterYear, filterMonth, filterDay);
+      },
+    );
   };
 
-  const handleDeleteAll = async () => {
-    if (!confirm("Delete ALL WhatsApp message logs? This cannot be undone.")) return;
-    setDeletingAll(true);
-    await fetchWithAuth("/api/admin/whatsapp/messages", { method: "DELETE" });
-    setDeletingAll(false);
-    await fetchMessages(filterYear, filterMonth, filterDay);
-  };
+  const handleDeleteAll = () =>
+    showConfirm(
+      "Delete ALL WhatsApp message logs? This cannot be undone.",
+      async () => {
+        setDeletingAll(true);
+        await fetchWithAuth("/api/admin/whatsapp/messages", {
+          method: "DELETE",
+          body: JSON.stringify({}),
+        });
+        setDeletingAll(false);
+        await fetchMessages(filterYear, filterMonth, filterDay);
+      },
+    );
 
   const applyFilter = () => void fetchMessages(filterYear, filterMonth, filterDay);
   const clearFilter = () => {
@@ -486,6 +505,27 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
 
         </div>{/* end right column */}
       </div>
+
+      {/* Win98 confirm modal */}
+      {confirmModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999 }}>
+          <div style={{ ...W98_RAISED, background: "#c0c0c0", minWidth: 280, maxWidth: 380, display: "flex", flexDirection: "column", gap: 0 }}>
+            <div style={{ background: "#000080", color: "#fff", padding: "3px 8px", fontSize: 12, fontWeight: "bold" }}>Confirm</div>
+            <div style={{ padding: "14px 16px 10px", fontSize: 12 }}>{confirmModal.message}</div>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 6, padding: "0 12px 12px" }}>
+              <button
+                onClick={() => { closeConfirm(); void (confirmModal.onConfirm as () => Promise<void>)(); }}
+                style={{ padding: "2px 16px", fontSize: 12, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0", fontWeight: "bold" }}
+              >OK</button>
+              <button
+                onClick={closeConfirm}
+                style={{ padding: "2px 16px", fontSize: 12, ...W98_RAISED, cursor: "pointer", background: "#c0c0c0" }}
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
     );
   }
 
@@ -808,6 +848,25 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
         </div>{/* end right column */}
 
       </div>
+
+      {/* Modern confirm modal */}
+      {confirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-6 flex flex-col gap-5 w-full max-w-sm mx-4">
+            <p className="text-sm text-slate-200 leading-relaxed">{confirmModal.message}</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={closeConfirm}
+                className="px-4 py-2 text-sm rounded-lg border border-slate-600 text-slate-400 hover:text-white hover:border-slate-400 transition-colors"
+              >Cancel</button>
+              <button
+                onClick={() => { closeConfirm(); void (confirmModal.onConfirm as () => Promise<void>)(); }}
+                className="px-4 py-2 text-sm font-medium rounded-lg bg-red-600 hover:bg-red-500 text-white transition-colors"
+              >Confirm</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

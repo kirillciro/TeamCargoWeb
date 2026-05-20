@@ -84,6 +84,7 @@ export async function resetConnection(): Promise<void> {
 }
 
 export async function initWhatsApp(): Promise<void> {
+  destroySocket(); // always clean up stale socket before creating a new one
   connectionStatus = "connecting";
   const { state, saveCreds } = await usePgAuthState();
 
