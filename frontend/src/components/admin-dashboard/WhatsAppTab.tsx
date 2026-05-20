@@ -399,16 +399,14 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
           {/* Filter row */}
           <div style={{ ...W98_SUNKEN, background: "#fff", padding: "6px 8px", display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             <span style={{ fontSize: 11, whiteSpace: "nowrap" }}>Filter:</span>
-            <select
+            <input
+              type="number"
               value={filterYear}
               onChange={(e) => setFilterYear(e.target.value)}
-              style={{ fontSize: 11, padding: "1px 2px", ...W98_SUNKEN, background: "#fff" }}
-            >
-              <option value="">All years</option>
-              {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((y) => (
-                <option key={y} value={String(y)}>{y}</option>
-              ))}
-            </select>
+              placeholder="Year"
+              min={2020}
+              style={{ fontSize: 11, padding: "1px 4px", ...W98_SUNKEN, background: "#fff", width: 60 }}
+            />
             <select
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
@@ -755,16 +753,14 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
           {/* Filter row */}
           <div className="flex flex-wrap items-end gap-2 bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2.5">
             <span className="text-xs text-slate-400 shrink-0 self-center">Filter:</span>
-            <select
+            <input
+              type="number"
               value={filterYear}
               onChange={(e) => setFilterYear(e.target.value)}
-              className="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-slate-200 outline-none"
-            >
-              <option value="">All years</option>
-              {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((y) => (
-                <option key={y} value={String(y)}>{y}</option>
-              ))}
-            </select>
+              placeholder="Year"
+              min={2020}
+              className="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-slate-200 outline-none w-20"
+            />
             <select
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
