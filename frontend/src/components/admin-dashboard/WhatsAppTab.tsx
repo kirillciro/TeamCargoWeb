@@ -726,6 +726,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
                   ...W98_SUNKEN,
                   background: "#fff",
                   width: 60,
+                  height: 20,
+                  boxSizing: "border-box",
                 }}
               />
               <select
@@ -736,6 +738,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
                   padding: "1px 2px",
                   ...W98_SUNKEN,
                   background: "#fff",
+                  height: 20,
+                  boxSizing: "border-box",
                 }}
               >
                 <option value="">All months</option>
@@ -766,6 +770,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
                   padding: "1px 2px",
                   ...W98_SUNKEN,
                   background: "#fff",
+                  height: 20,
+                  boxSizing: "border-box",
                 }}
               >
                 <option value="">All days</option>
@@ -783,6 +789,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
                   ...W98_RAISED,
                   cursor: "pointer",
                   background: "#c0c0c0",
+                  height: 20,
+                  boxSizing: "border-box",
                 }}
               >
                 Apply
@@ -796,6 +804,8 @@ export default function WhatsAppTab({ win98 = false }: { win98?: boolean }) {
                     ...W98_RAISED,
                     cursor: "pointer",
                     background: "#c0c0c0",
+                    height: 20,
+                    boxSizing: "border-box",
                   }}
                 >
                   Clear
